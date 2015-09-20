@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         login = new Login();
         register1 = new Register1();
+        register2 = new Register2();
 
         getFragmentManager().beginTransaction().add(R.id.container, login).commit();
 
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
                     break;
                 case 2:
-                   // getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
+                   getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
                     break;
                 case 3:
                     break;
