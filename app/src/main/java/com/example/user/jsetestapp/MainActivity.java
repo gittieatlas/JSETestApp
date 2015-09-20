@@ -1,20 +1,17 @@
 package com.example.user.jsetestapp;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.TabHost;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,15 +19,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TabLayout tabLayout;
     Toolbar toolbar;
 
+    Login login;
+    Register1 register1;
+    Register2 register2;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        login = new Login();
+        register1 = new Register1();
+
+        getFragmentManager().beginTransaction().add(R.id.container, login).commit();
+
         setupToolbar();
         setupTablayout();
         setupFab();
-        setUpSpinner();
+        initializeViews();
+        //setUpSpinner();
+    }
+
+    private void initializeViews() {
+
+
     }
 
     private void setupFab() {
@@ -66,21 +79,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_grey600_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_grey600_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_map_marker_grey600_24dp));
+
+        tabLayout.setOnTabSelectedListener(tabListener);
     }
 
-    private void setUpSpinner() {
-        // you need to have a list of data that you want the spinner to display
-        List<String> spinnerArray =  new ArrayList<String>();
-        spinnerArray.add("item1");
-        spinnerArray.add("item2");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+    TabLayout.OnTabSelectedListener tabListener = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) findViewById(R.id.spinner);
-        sItems.setAdapter(adapter);
-    }
+
+            switch (tabLayout.getSelectedTabPosition()) {
+                case 0:
+                    getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
+                    break;
+                case 1:
+                    getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
+                    break;
+                case 2:
+                   // getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    };
+
+
+//    private void setUpSpinner() {
+//        // you need to have a list of data that you want the spinner to display
+//        List<String> spinnerArray =  new ArrayList<String>();
+//        spinnerArray.add("item1");
+//        spinnerArray.add("item2");
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+//
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        Spinner sItems = (Spinner) findViewById(R.id.spinner);
+//        sItems.setAdapter(adapter);
+//    }
 
     @Override
     public void onClick(View view) {

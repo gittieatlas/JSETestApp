@@ -4,7 +4,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register1">
+    tools:context=".Register2">
 
 
     <LinearLayout
@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register 1"
+            android:text="Register 2"
             android:textColor="@color/primary" />
 
 

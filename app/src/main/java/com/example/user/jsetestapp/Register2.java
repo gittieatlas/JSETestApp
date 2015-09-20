@@ -1,13 +1,12 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Login extends Fragment {
+public class Register2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -15,6 +14,6 @@ public class Login extends Fragment {
         //Inflate the layout for this fragment
 
         return inflater.inflate(
-                R.layout.login, container, false);
+                R.layout.register2, container, false);
     }
 }
