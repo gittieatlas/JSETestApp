@@ -4,4 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="test">This is a test</string>
-</resources>
+    <string name="test2">This is test2</string>
+
+
+    </resources>
