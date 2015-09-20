@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Login login;
     Register1 register1;
     Register2 register2;
+    UpdateProfile updateProfile;
 
 
     @Override
@@ -29,21 +30,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        login = new Login();
-        register1 = new Register1();
-        register2 = new Register2();
-
-        getFragmentManager().beginTransaction().add(R.id.container, login).commit();
+        setupFragments();
 
         setupToolbar();
         setupTablayout();
         setupFab();
         initializeViews();
+
+        getFragmentManager().beginTransaction().add(R.id.container, login).commit();
+        toolbar.setTitle("Login");
+
         //setUpSpinner();
     }
 
     private void initializeViews() {
 
+
+    }
+
+    private void setupFragments() {
+        login = new Login();
+        register1 = new Register1();
+        register2 = new Register2();
+        updateProfile = new UpdateProfile();
 
     }
 
@@ -93,12 +102,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
                     getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
+                    toolbar.setTitle("Login");
                     break;
                 case 1:
                     getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
+                    toolbar.setTitle("Register");
                     break;
                 case 2:
                    getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
+                    toolbar.setTitle("Register");
                     break;
                 case 3:
                     break;
@@ -165,12 +177,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.log_out) {
-            toolbar.setTitle("Log Out");
+            getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
+            toolbar.setTitle("Login");
+
+            Snackbar
+                    .make(findViewById(R.id.rootLayout),
+                            "You've been logged out",
+                            Snackbar.LENGTH_LONG)
+                    .setAction(null, this)
+                    .show(); // Do not forget to show!
             return true;
 
         }
         if (id == R.id.update_profile) {
             toolbar.setTitle("Update Profile");
+            getFragmentManager().beginTransaction().replace(R.id.container, updateProfile).commit();
             return true;
         }
 
