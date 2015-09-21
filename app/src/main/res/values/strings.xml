@@ -41,7 +41,24 @@
     <string name="jse_office_hours_mon_thurs_hours">9:00 AM - 5:00 PM</string>
     <string name="jse_office_hours_friday_hours">9:00 AM - 2:00 PM</string>
 
+    <!-- location_info.xml controls-->
+    <string name="location_address">1818 18th Ave. Brooklyn, NY 11204</string>
+    <string name="location_phone_number">718-789-6548</string>
+    <string name="hours_title">HOURS</string>
 
+    <!-- search.xml controls-->
+    <string name="searchButton">Search</string>
+    <string name="registration_date_range">Registration is currently open from September 7 2015 to september 20 2015</string>
 
+    <!-- dashboard.xml controls-->
+    <string name="location">Brooklyn - BY 18th Ave.</string>
+    <string name="alerts">LOCATION ALERTS</string>
+    <string name="alerts_day">Sunday</string>
+    <string name="alerts_date">September 7 2015</string>
+    <string name="alerts_time">9:57 AM</string>
+    <string name="alerts_message">Please be aware of school closing today.</string>
 
+    <!-- location_info_list_item.xml controls-->
+    <string name="library_day_title">Sunday</string>
+    <string name="library_hour">9:00 AM - 5:00 PM</string>
 </resources>
