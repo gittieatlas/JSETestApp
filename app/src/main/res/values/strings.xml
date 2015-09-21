@@ -6,4 +6,42 @@
     <string name="test">This is a test</string>
     <string name="test2">This is a second test</string>
     <string name="test3">This is a third test</string>
+
+    <!-- login.xml, register1.xml, register2.xml, update_profile.xml controls-->
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login_right">SIGN IN</string>
+    <string name="login_left">CREATE ACCOUNT</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_1_right">CONTINUE</string>
+    <string name="register_1_left">BACK</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="dob">Birthday</string>
+    <string name="gender">Gender</string>
+    <string name="ssn">Last 4 SSN</string>
+    <string name="default_location">Choose a Default Location</string>
+    <string name="register_2_right">CREATE ACCOUNT</string>
+    <string name="register_2_left">PREVIOUS</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="update_profile_right">UPDATE PROFILE</string>
+    <string name="update_profile_left">CANCEL</string>
+
+    <!-- contact.xml controls-->
+    <string name="jse_office">JSE OFFICE</string>
+    <string name="jse_phone_number">732-888-8978</string>
+    <string name="schedule_test">SCHEDULE A TEST</string>
+    <string name="schedule_test_phone_number">800-989-6985</string>
+    <string name="jse_email_address">info@jseoffice.com</string>
+    <string name="office_hours">OFFICE HOURS</string>
+    <string name="jse_office_hours_mon_thurs">Monday - Thursday</string>
+    <string name="jse_office_hours_friday">Friday</string>
+    <string name="jse_office_hours_mon_thurs_hours">9:00 AM - 5:00 PM</string>
+    <string name="jse_office_hours_friday_hours">9:00 AM - 2:00 PM</string>
+
+
+
+
 </resources>

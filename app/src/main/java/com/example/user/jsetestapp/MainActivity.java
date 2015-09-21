@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Register1 register1;
     Register2 register2;
     UpdateProfile updateProfile;
+    Contact contact;
 
 
     @Override
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register1 = new Register1();
         register2 = new Register2();
         updateProfile = new UpdateProfile();
+        contact = new Contact();
 
     }
 
@@ -113,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     toolbar.setTitle("Register");
                     break;
                 case 3:
+                    getFragmentManager().beginTransaction().replace(R.id.container, contact).commit();
+                    toolbar.setTitle("Contact");
                     break;
                 default:
                     break;
