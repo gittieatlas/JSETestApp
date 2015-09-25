@@ -34,4 +34,9 @@
         android:orderInCategory="600"
         android:title="Dashboard"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/results"
+        android:orderInCategory="700"
+        android:title="Tests Results"
+        app:showAsAction="never" />
 </menu>

@@ -9,13 +9,32 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-public class Register2 extends Fragment {
+public class Register2Fragment extends Fragment {
+
+    //Controls
+    View rootView;
+
+    //Activities
+    MainActivity mainActivity;
+
+    //Fragments
+
+
+    //Variables
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.register2,
+        rootView = inflater.inflate(R.layout.register2_fragment,
                 container, false);
+
+
+
+        mainActivity.setToolbarTitle("Create Account");
+
+
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
         Button buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
@@ -47,4 +66,9 @@ public class Register2 extends Fragment {
 
         return rootView;
     }
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
+
 }

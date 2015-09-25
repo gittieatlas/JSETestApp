@@ -1,20 +1,36 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class Register1 extends Fragment {
+public class Register1Fragment extends Fragment {
+
+    //Controls
+    View rootView;
+
+    //Activities
+    MainActivity mainActivity;
+
+    //Fragments
+
+
+    //Variables
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.register1,
+        rootView = inflater.inflate(R.layout.register1_fragment,
                 container, false);
+
+
+        mainActivity.setToolbarTitle("Create Account");
+
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
         Button buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
@@ -22,5 +38,10 @@ public class Register1 extends Fragment {
 
 
         return rootView;
+    }
+
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 }

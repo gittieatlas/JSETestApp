@@ -6,16 +6,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
-public class Search extends Fragment {
+public class SearchFragment extends Fragment {
+
+    //Controls
+    View rootView;
+
+    //Activities
+    MainActivity mainActivity;
+
+    //Fragments
+
+
+    //Variables
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.search,
+        rootView = inflater.inflate(R.layout.search_fragment,
                 container, false);
+
+
+
+        mainActivity.setToolbarTitle("Tests");
+
+
         Spinner locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
 
 // Create an adapter from the string array resource and use
@@ -44,5 +62,10 @@ public class Search extends Fragment {
         daysOfWeekSpinner.setSelection(0);
 
         return rootView;
+    }
+
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 }

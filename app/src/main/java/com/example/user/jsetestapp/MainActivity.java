@@ -1,10 +1,7 @@
 package com.example.user.jsetestapp;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,23 +12,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TabHost;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    FloatingActionButton fab;
+    //Controls
     TabLayout tabLayout;
     Toolbar toolbar;
+    ScrollView scrollView;
 
-    Login login;
-    Register1 register1;
-    Register2 register2;
-    UpdateProfile updateProfile;
-    Contact contact;
-    Search search;
-    Libraries libraries;
-    Dashboard dashboard;
+    //Activities
+
+    //Fragments
+    LoginFragment loginFragment;
+    Register1Fragment register1Fragment;
+    Register2Fragment register2Fragment;
+    UpdateProfileFragment updateProfileFragment;
+    ContactFragment contactFragment;
+    SearchFragment searchFragment;
+    LibrariesFragment librariesFragment;
+    DashboardFragment dashboardFragment;
+    ResultsFragment resultsFragment;
+
+    //Variables
 
 
     @Override
@@ -39,50 +42,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupFragments();
-
+        createFragmentsActivitiesClasses();
         setupToolbar();
         setupTablayout();
-       // setupFab();
+        setScrollViewMinHeight();
         initializeViews();
 
-        getFragmentManager().beginTransaction().add(R.id.container, login).commit();
+        getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
         toolbar.setTitle("Welcome to JSE");
 
-        LinearLayout tabLayoutLinearLayout = (LinearLayout)findViewById(R.id.tabLayoutLinearLayout);
+        LinearLayout tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
         //tabLayoutLinearLayout.removeAllViews();
         //setUpSpinner();
     }
 
-    private void initializeViews() {
+    private void setScrollViewMinHeight() {
         Display display = getWindowManager().getDefaultDisplay();
-        Point size  = new Point();
+        Point size = new Point();
         display.getSize(size);
-        int width = size.x;
         int height = size.y;
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollView.setMinimumHeight(height);
     }
 
-    private void removeToolbarAndTabLayout(){
+    private void initializeViews() {
     }
 
-    private void setupFragments() {
-        login = new Login();
-        register1 = new Register1();
-        register2 = new Register2();
-        updateProfile = new UpdateProfile();
-        contact = new Contact();
-        search = new Search();
-        libraries = new Libraries();
-        dashboard = new Dashboard();
-
+    private void createFragmentsActivitiesClasses() {
+        loginFragment = new LoginFragment();
+        loginFragment.setMainActivity(this);
+        register1Fragment = new Register1Fragment();
+        register1Fragment.setMainActivity(this);
+        register2Fragment = new Register2Fragment();
+        register2Fragment.setMainActivity(this);
+        updateProfileFragment = new UpdateProfileFragment();
+        updateProfileFragment.setMainActivity(this);
+        contactFragment = new ContactFragment();
+        contactFragment.setMainActivity(this);
+        searchFragment = new SearchFragment();
+        searchFragment.setMainActivity(this);
+        librariesFragment = new LibrariesFragment();
+        librariesFragment.setMainActivity(this);
+        dashboardFragment = new DashboardFragment();
+        dashboardFragment.setMainActivity(this);
+        resultsFragment = new ResultsFragment();
+        resultsFragment.setMainActivity(this);
     }
 
-//    private void setupFab() {
-//        fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(this);
-//    }
 
     private void setupToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar); // Set navigation icon
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            }
 //        });
 
+        toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.getMenu().clear(); // Clear toolbar icons
         toolbar.setTitle("Page Title");// Set title
@@ -124,19 +131,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    getFragmentManager().beginTransaction().replace(R.id.container, dashboard).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.container, dashboardFragment).commit();
                     toolbar.setTitle("Dashboard");
                     break;
                 case 1:
-                    getFragmentManager().beginTransaction().replace(R.id.container, search).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.container, searchFragment).commit();
                     toolbar.setTitle("Tests");
                     break;
                 case 2:
-                   getFragmentManager().beginTransaction().replace(R.id.container, libraries).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.container, librariesFragment).commit();
                     toolbar.setTitle("Libraries");
                     break;
                 case 3:
-                    getFragmentManager().beginTransaction().replace(R.id.container, contact).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.container, contactFragment).commit();
                     toolbar.setTitle("Contact");
                     break;
                 default:
@@ -202,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.log_out) {
-            getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
             toolbar.setTitle("Welcome to JSE");
 
             Snackbar
@@ -216,32 +223,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (id == R.id.update_profile) {
             toolbar.setTitle("Update Profile");
-            getFragmentManager().beginTransaction().replace(R.id.container, updateProfile).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, updateProfileFragment).commit();
             return true;
         }
 
         if (id == R.id.register1) {
             toolbar.setTitle("Create Account");
-            getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, register1Fragment).commit();
             return true;
         }
         if (id == R.id.register2) {
             toolbar.setTitle("Create Account");
-            getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, register2Fragment).commit();
             return true;
         }
 
         if (id == R.id.dashboard) {
             toolbar.setTitle("Dashboard");
-            getFragmentManager().beginTransaction().replace(R.id.container, dashboard).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, dashboardFragment).commit();
             return true;
         }
         if (id == R.id.login) {
             toolbar.setTitle("Welcome to JSE");
-            getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
+            return true;
+        }
+        if (id == R.id.results) {
+            getFragmentManager().beginTransaction().replace(R.id.container, resultsFragment).commit();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setToolbarTitle(String toolbarTitle) {
+        toolbar.setTitle(toolbarTitle);
     }
 }

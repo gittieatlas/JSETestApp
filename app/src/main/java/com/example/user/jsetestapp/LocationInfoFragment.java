@@ -5,20 +5,34 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-public class UpdateProfile extends Fragment {
+public class LocationInfoFragment extends Fragment {
+
+    //Controls
+    View rootView;
+
+    //Activities
+    MainActivity mainActivity;
+
+    //Fragments
+
+
+    //Variables
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.update_profile,
+        rootView = inflater.inflate(R.layout.location_info_fragment,
                 container, false);
 
-        Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
-        Button buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
 
 
         return rootView;
+    }
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 }

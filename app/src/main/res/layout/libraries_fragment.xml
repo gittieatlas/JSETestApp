@@ -4,28 +4,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".contact"
+    tools:context=".LibrariesFragment"
     android:paddingBottom="72dp" >
 
     <Spinner
         android:id="@+id/locationSpinner"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="@dimen/default_margin"
+        style="@style/App_Spinner" />
 
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:paddingLeft="4dp"
-        android:background="@color/divider" />
+        style="@style/App_Divider"
+        android:paddingLeft="4dp" />
 
     <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-        android:layout_marginLeft="16dp">
+        android:layout_marginLeft="@dimen/default_margin">
 
 
 
@@ -44,10 +40,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/top_margin_large"
                     android:text="@string/searchButton"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/cardlayout"/>
+                    android:background="@drawable/card_layout"/>
 
             </LinearLayout>
 </LinearLayout>

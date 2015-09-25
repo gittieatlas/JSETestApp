@@ -6,12 +6,15 @@ android:layout_height="match_parent"
 tools:context=".UpdateProfile">
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginBottom="72dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingBottom="72dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +26,7 @@ tools:context=".UpdateProfile">
         android:id="@+id/editTextFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        style="@style/App_EditText"
         android:inputType="textPersonName" />
 
     <TextView
@@ -37,7 +40,7 @@ tools:context=".UpdateProfile">
         android:id="@+id/editTextLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        style="@style/App_EditText"
         android:inputType="textPersonName" />
 
     <TextView
@@ -56,8 +59,9 @@ tools:context=".UpdateProfile">
             android:id="@+id/editTextDobMonth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/App_EditText"
+            android:layout_marginRight="7dp"
             android:layout_weight="1"
-            android:ems="10"
             android:inputType="text" />
 
         <LinearLayout
@@ -70,16 +74,17 @@ tools:context=".UpdateProfile">
                 android:id="@+id/editTextDobDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/App_EditText"
+                android:layout_marginRight="7dp"
                 android:layout_weight="1"
-                android:ems="10"
                 android:inputType="number" />
 
             <EditText
                 android:id="@+id/editTextDobYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/App_EditText"
                 android:layout_weight="1"
-                android:ems="10"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -94,16 +99,10 @@ tools:context=".UpdateProfile">
 
     <Spinner
         android:id="@+id/spinnerGender"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/App_Spinner" />
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:paddingLeft="4dp"
-        android:background="@color/divider" />
+    <View style="@style/App_Divider_Spinner" />
 
     <TextView
         android:layout_width="match_parent"
@@ -116,7 +115,7 @@ tools:context=".UpdateProfile">
         android:id="@+id/editTextSsn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        style="@style/App_EditText"
         android:inputType="numberPassword" />
 
     <TextView
@@ -128,14 +127,10 @@ tools:context=".UpdateProfile">
 
     <Spinner
         android:id="@+id/spinnerDefaultLocation"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:paddingLeft="4dp"
-        android:background="@color/divider"/>
+        style="@style/App_Spinner" />
+
+        <View
+            style="@style/App_Divider_Spinner"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -148,6 +143,7 @@ tools:context=".UpdateProfile">
         android:id="@+id/editTextNewPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/App_EditText"
         android:inputType="textPassword" />
 
     <TextView
@@ -159,9 +155,9 @@ tools:context=".UpdateProfile">
 
     <EditText
         android:id="@+id/editTextConfirmNewPassword"
+        style="@style/App_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:inputType="textPassword" />
 
 

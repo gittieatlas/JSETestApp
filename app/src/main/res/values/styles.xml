@@ -13,6 +13,7 @@
         <item name="colorControlNormal">@color/divider</item>
         <item name="colorControlActivated">@color/accent</item>
         <item name="colorControlHighlight">@color/accent</item>
+
     </style>
 
     <style name="MyActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -21,6 +22,38 @@
 
     <style name="TabBar" parent="Widget.Design.TabLayout">
         <item name="tabBackground">@drawable/tab_layout_background</item>
+    </style>
+
+
+
+    <style name="MyButton">
+        <item name="android:minWidth">88dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+
+    <style name="App_Spinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <style name="App_Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+    <style name="App_Divider_Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+
+    <style name="App_EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginRight">-7dp</item>
+        <item name="android:ems">10</item>
     </style>
 
 </resources>

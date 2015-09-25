@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -11,14 +10,30 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class Login extends Fragment {
+public class LoginFragment extends Fragment {
+
+    //Controls
+    View rootView;
+
+    //Activities
+    MainActivity mainActivity;
+
+    //Fragments
+
+
+    //Variables
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.login,
+        rootView = inflater.inflate(R.layout.login_fragment,
                 container, false);
+
+
+        mainActivity.setToolbarTitle("Welcome to JSE");
+
 
         final RelativeLayout rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
@@ -38,5 +53,10 @@ public class Login extends Fragment {
         });
 
         return rootView;
+    }
+
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 }

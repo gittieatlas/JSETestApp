@@ -22,7 +22,7 @@
             android:id="@+id/libraryHourTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/top_margin_large"
             android:text="@string/library_hour"
             android:textColor="@color/divider"/>
 

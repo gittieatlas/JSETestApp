@@ -8,19 +8,33 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class Libraries extends Fragment {
+public class LibrariesFragment extends Fragment {
 
-    LocationInfo locationInfo;
+    //Controls
+    View rootView;
+
+    //Activities
+    MainActivity mainActivity;
+
+    //Fragments
+
+
+    //Variables
+
+
+    LocationInfoFragment locationInfoFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.libraries,
+        rootView = inflater.inflate(R.layout.libraries_fragment,
                 container, false);
 
+        mainActivity.setToolbarTitle("Libraries");
 
-        locationInfo = new LocationInfo();
-        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfo).commit();
+        locationInfoFragment = new LocationInfoFragment();
+        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
 
         Spinner locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
 
@@ -35,5 +49,10 @@ public class Libraries extends Fragment {
 
         locationsSpinner.setSelection(2);
         return rootView;
+    }
+
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 }

@@ -7,7 +7,7 @@
     <string name="test2">This is a second test</string>
     <string name="test3">This is a third test</string>
 
-    <!-- login.xml, register1.xml, register2.xml, update_profile.xml controls-->
+    <!-- login_fragment_fragment.xml, register1_fragment.xmlgment.xml, register2_fragment_fragment.xml, update_profile_fragment_fragment.xml controls-->
     <string name="email">Email Address</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -29,7 +29,7 @@
     <string name="update_profile_right">UPDATE PROFILE</string>
     <string name="update_profile_left">CANCEL</string>
 
-    <!-- contact.xml controls-->
+    <!-- contact_fragment.xmlgment.xml controls-->
     <string name="jse_office">JSE OFFICE</string>
     <string name="jse_phone_number">732-888-8978</string>
     <string name="schedule_test">SCHEDULE A TEST</string>
@@ -41,16 +41,16 @@
     <string name="jse_office_hours_mon_thurs_hours">9:00 AM - 5:00 PM</string>
     <string name="jse_office_hours_friday_hours">9:00 AM - 2:00 PM</string>
 
-    <!-- location_info.xml controls-->
+    <!-- location_info_fragment_fragment.xml controls-->
     <string name="location_address">1818 18th Ave. Brooklyn, NY 11204</string>
     <string name="location_phone_number">718-789-6548</string>
     <string name="hours_title">HOURS</string>
 
-    <!-- search.xml controls-->
+    <!-- search_fragment.xmlgment.xml controls-->
     <string name="searchButton">Search</string>
     <string name="registration_date_range">Registration is currently open from September 7 2015 to september 20 2015</string>
 
-    <!-- dashboard.xml controls-->
+    <!-- dashboard_fragment_fragment.xml controls-->
     <string name="location">Brooklyn - BY 18th Ave.</string>
     <string name="alerts">LOCATION ALERTS</string>
     <string name="alerts_day">Sunday</string>
