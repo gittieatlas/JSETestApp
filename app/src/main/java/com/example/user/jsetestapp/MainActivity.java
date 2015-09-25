@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Register2 register2;
     UpdateProfile updateProfile;
     Contact contact;
+    Search search;
 
 
     @Override
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register2 = new Register2();
         updateProfile = new UpdateProfile();
         contact = new Contact();
+        search = new Search();
 
     }
 
@@ -107,9 +109,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     toolbar.setTitle("Login");
                     break;
                 case 1:
-                    getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
-                    toolbar.setTitle("Register");
+//                    getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
+//                    toolbar.setTitle("Register");
+//                    break;
+                    getFragmentManager().beginTransaction().replace(R.id.container, search).commit();
+                    toolbar.setTitle("Search");
                     break;
+
                 case 2:
                    getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
                     toolbar.setTitle("Register");

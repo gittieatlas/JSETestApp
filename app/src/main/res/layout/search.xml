@@ -52,7 +52,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/searchButton" />
+                    android:text="@string/searchButton"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/cardlayout"/>
+
+
 
             </LinearLayout>
         </RelativeLayout>
