@@ -1,36 +1,16 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UpdateProfile">
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollIndicators="none">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin">
+    tools:context=".contact"
+    android:paddingBottom="72dp" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:text="@string/jse_office"
                     android:textColor="@color/primary" />
 
@@ -60,30 +40,11 @@
                     android:text="@string/jse_email_address"
                     android:textColor="@color/secondary_text" />
 
-                <LinearLayout
-                    android:id="@+id/buttonBarLayout"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:divider="?android:dividerHorizontal"
-                    android:orientation="vertical"
-                    android:showDividers="middle">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip" />
-
-                    <LinearLayout
-                        style="?android:buttonBarStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="?android:dividerHorizontal"
-                        android:dividerPadding="10dp"
-                        android:orientation="horizontal"
-                        android:showDividers="middle"><View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip" /></LinearLayout>
-                </LinearLayout>
+                    android:background="@color/divider" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -141,37 +102,14 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/buttonBarLayout2"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:divider="?android:dividerHorizontal"
-                    android:orientation="vertical"
-                    android:showDividers="middle">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip" />
-
-                    <LinearLayout
-                        style="?android:buttonBarStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="?android:dividerHorizontal"
-                        android:dividerPadding="10dp"
-                        android:orientation="horizontal"
-                        android:showDividers="middle"><View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip" /></LinearLayout>
-                </LinearLayout>
+                    android:background="@color/divider" />
 
 
-            </LinearLayout>
-        </RelativeLayout>
-
-    </ScrollView>
-</RelativeLayout>
+</LinearLayout>
 
 
 

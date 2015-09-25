@@ -9,6 +9,10 @@
         <item name="actionMenuTextColor">@style/MyActionBarTitleText</item>
         <item name="actionModeBackground">@color/primary</item>
         <item name="android:windowBackground">@color/window_background</item>
+
+        <item name="colorControlNormal">@color/divider</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent</item>
     </style>
 
     <style name="MyActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

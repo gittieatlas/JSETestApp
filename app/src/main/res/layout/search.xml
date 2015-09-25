@@ -1,65 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Search"
+    android:paddingBottom="72dp">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+
+    <TextView
+        android:id="@+id/registrationDateTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollIndicators="none">
+        android:layout_height="wrap_content"
+        android:text="@string/registration_date_range"
+        android:textColor="@color/secondary_text"
+        android:layout_marginRight="16dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginLeft="16dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <Spinner
+        android:id="@+id/locationSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingLeft="4dp"
+        android:background="@color/divider" />
+
+    <Spinner
+        android:id="@+id/dayOfWeekSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingLeft="4dp"
+        android:background="@color/divider" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="@string/searchButton"/>
 
 
-                <TextView
-                    android:id="@+id/registrationDateTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/registration_date_range"
-                    android:textColor="@color/primary_text" />
-
-                <Spinner
-                    android:id="@+id/locationSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin" />
-
-                <Spinner
-                    android:id="@+id/dayOfWeekSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/searchButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/searchButton"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/cardlayout"/>
+</LinearLayout>
 
 
 
-            </LinearLayout>
-        </RelativeLayout>
 
-    </ScrollView>
-</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
