@@ -1,111 +1,119 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Dashboard"
+    android:paddingBottom="72dp">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollIndicators="none">
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/locationTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primary" />
+
+        <FrameLayout
+            android:id="@+id/dashboardContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </FrameLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/alertsLinearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/alertsTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/alerts"
+                android:textColor="@color/primary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin">
+
 
                 <TextView
-                    android:id="@+id/locationTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/location"
-                    android:textColor="@color/primary" />
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:background="@color/divider" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
-
-                <TextView
-                    android:id="@+id/alertsTitleTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/alerts"
-                    android:textColor="@color/primary" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin">
-
-
-                    <TextView
-                        android:id="@+id/alertsDayTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:textColor="@color/secondary_text"
-                        android:text="@string/alerts_day" />
-
-
-                    <TextView
-                        android:id="@+id/alertsDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:textColor="@color/secondary_text"
-                        android:text="@string/alerts_date" />
-
-
-                    <TextView
-                        android:id="@+id/alertsTimeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:textColor="@color/secondary_text"
-                        android:text="@string/alerts_time" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/AlertsMessageTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/alerts_message"
-                    android:textColor="@color/divider" />
-
-                <Button
-                    android:id="@+id/searchButton"
+                    android:id="@+id/alertsDayTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/searchButton" />
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:text="@string/alerts_day"
+                    android:textColor="@color/primary_text" />
+
+
+                <TextView
+                    android:id="@+id/alertsDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:text="@string/alerts_date"
+                    android:textColor="@color/primary_text" />
+
+
+                <TextView
+                    android:id="@+id/alertsTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="@string/alerts_time"
+                    android:textColor="@color/primary_text" />
 
             </LinearLayout>
-        </RelativeLayout>
 
-    </ScrollView>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/AlertsMessageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alerts_message"
+                android:textColor="@color/secondary_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="@color/divider" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="@string/find_test" />
+
+</LinearLayout>
 
 
 

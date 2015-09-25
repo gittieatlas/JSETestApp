@@ -12,4 +12,26 @@
         android:orderInCategory="200"
         android:title="Log Out"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/login"
+        android:orderInCategory="300"
+        android:title="Login"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/register1"
+        android:orderInCategory="400"
+        android:title="Register 1"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/register2"
+        android:orderInCategory="500"
+        android:title="Register 2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/dashboard"
+        android:orderInCategory="600"
+        android:title="Dashboard"
+        app:showAsAction="never" />
 </menu>

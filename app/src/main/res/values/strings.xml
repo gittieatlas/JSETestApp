@@ -57,6 +57,7 @@
     <string name="alerts_date">September 7 2015</string>
     <string name="alerts_time">9:57 AM</string>
     <string name="alerts_message">Please be aware of school closing today.</string>
+    <string name="find_test">Find Test at This Location</string>
 
     <!-- location_info_list_item.xml controls-->
     <string name="library_day_title">Sunday</string>
@@ -72,7 +73,17 @@
     <string-array name="locations_array">
         <item> </item>
         <item>Brooklyn</item>
-        <item>Lakewood</item>>
+        <item>Lakewood</item>
         <item>Monsey</item>
+    </string-array>
+
+    <string-array name="days_of_week_array">
+        <item>(Choose a day of the week)</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
     </string-array>
 </resources>

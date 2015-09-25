@@ -2,15 +2,19 @@ package com.example.user.jsetestapp;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TabHost;
 
 
@@ -25,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Register2 register2;
     UpdateProfile updateProfile;
     Contact contact;
+    Search search;
+    Libraries libraries;
+    Dashboard dashboard;
 
 
     @Override
@@ -36,18 +43,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setupToolbar();
         setupTablayout();
-        setupFab();
+       // setupFab();
         initializeViews();
 
         getFragmentManager().beginTransaction().add(R.id.container, login).commit();
-        toolbar.setTitle("Login");
+        toolbar.setTitle("Welcome to JSE");
 
+        LinearLayout tabLayoutLinearLayout = (LinearLayout)findViewById(R.id.tabLayoutLinearLayout);
+        //tabLayoutLinearLayout.removeAllViews();
         //setUpSpinner();
     }
 
     private void initializeViews() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size  = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView.setMinimumHeight(height);
+    }
 
-
+    private void removeToolbarAndTabLayout(){
     }
 
     private void setupFragments() {
@@ -56,29 +73,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register2 = new Register2();
         updateProfile = new UpdateProfile();
         contact = new Contact();
+        search = new Search();
+        libraries = new Libraries();
+        dashboard = new Dashboard();
 
     }
 
-    private void setupFab() {
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
-    }
+//    private void setupFab() {
+//        fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(this);
+//    }
 
     private void setupToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar); // Set navigation icon
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_left_white_24dp));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {// Navigation onClickLister
-            @Override
-            public void onClick(View v) {
-                // finish(); // or your action here
-                Snackbar
-                        .make(findViewById(R.id.rootLayout),
-                                "This is the snackbar with no action",
-                                Snackbar.LENGTH_LONG)
-                        .setAction(null, this)
-                        .show(); // Do not forget to show!
-            }
-        });
+        //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_left_white_24dp));
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {// Navigation onClickLister
+//            @Override
+//            public void onClick(View v) {
+//                // finish(); // or your action here
+//                Snackbar
+//                        .make(findViewById(R.id.rootLayout),
+//                                "This is the snackbar with no action",
+//                                Snackbar.LENGTH_LONG)
+//                        .setAction(null, this)
+//                        .show(); // Do not forget to show!
+//            }
+//        });
 
         toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.getMenu().clear(); // Clear toolbar icons
@@ -104,16 +124,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
-                    toolbar.setTitle("Login");
+                    getFragmentManager().beginTransaction().replace(R.id.container, dashboard).commit();
+                    toolbar.setTitle("Dashboard");
                     break;
                 case 1:
-                    getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
-                    toolbar.setTitle("Register");
+                    getFragmentManager().beginTransaction().replace(R.id.container, search).commit();
+                    toolbar.setTitle("Tests");
                     break;
                 case 2:
-                   getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
-                    toolbar.setTitle("Register");
+                   getFragmentManager().beginTransaction().replace(R.id.container, libraries).commit();
+                    toolbar.setTitle("Libraries");
                     break;
                 case 3:
                     getFragmentManager().beginTransaction().replace(R.id.container, contact).commit();
@@ -155,14 +175,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.fab) {
-            Snackbar
-                    .make(findViewById(R.id.rootLayout),
-                            "This is Snackbar",
-                            Snackbar.LENGTH_LONG)
-                    .setAction("Action", this)
-                    .show(); // Do not forget to show!
-        }
+//        if (view.getId() == R.id.fab) {
+//            Snackbar
+//                    .make(findViewById(R.id.rootLayout),
+//                            "This is Snackbar",
+//                            Snackbar.LENGTH_LONG)
+//                    .setAction("Action", this)
+//                    .show(); // Do not forget to show!
+//        }
     }
 
 
@@ -183,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //noinspection SimplifiableIfStatement
         if (id == R.id.log_out) {
             getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
-            toolbar.setTitle("Login");
+            toolbar.setTitle("Welcome to JSE");
 
             Snackbar
                     .make(findViewById(R.id.rootLayout),
@@ -197,6 +217,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.update_profile) {
             toolbar.setTitle("Update Profile");
             getFragmentManager().beginTransaction().replace(R.id.container, updateProfile).commit();
+            return true;
+        }
+
+        if (id == R.id.register1) {
+            toolbar.setTitle("Create Account");
+            getFragmentManager().beginTransaction().replace(R.id.container, register1).commit();
+            return true;
+        }
+        if (id == R.id.register2) {
+            toolbar.setTitle("Create Account");
+            getFragmentManager().beginTransaction().replace(R.id.container, register2).commit();
+            return true;
+        }
+
+        if (id == R.id.dashboard) {
+            toolbar.setTitle("Dashboard");
+            getFragmentManager().beginTransaction().replace(R.id.container, dashboard).commit();
+            return true;
+        }
+        if (id == R.id.login) {
+            toolbar.setTitle("Welcome to JSE");
+            getFragmentManager().beginTransaction().replace(R.id.container, login).commit();
             return true;
         }
 
