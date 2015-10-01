@@ -31,15 +31,20 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
         rootView = inflater.inflate(R.layout.results_fragment, container, false);
 
+        initializeViews(rootView);
         setupFab();
-        mainActivity.setToolbarTitle("Tests");
 
         return rootView;
     }
 
+    private void initializeViews(View rootView) {
+        mainActivity.setToolbarTitle(R.string.nav_tests);
 
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    }
+
+    private void setupFab() {
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -48,16 +53,16 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
         if (view.getId() == R.id.fab) {
             Snackbar
                     .make(rootView.findViewById(R.id.rootLayout),
-                            "This is Snackbar",
+                            "You clicked the FAB",
                             Snackbar.LENGTH_LONG)
                     .setAction("Action", this)
                     .show(); // Do not forget to show!
         }
     }
 
-    private void setupFab() {
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+    public void setMainActivity(MainActivity mainActivity) {
+
+        this.mainActivity = mainActivity;
     }
 
 }

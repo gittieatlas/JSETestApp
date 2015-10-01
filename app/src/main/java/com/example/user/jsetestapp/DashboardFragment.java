@@ -27,20 +27,19 @@ public class DashboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.dashboard_fragment,
                 container, false);
 
-
-
-        mainActivity.setToolbarTitle("Dashboard");
-
-
-        locationInfoFragment = new LocationInfoFragment();
-
-        getFragmentManager().beginTransaction().add(R.id.dashboardContainer, locationInfoFragment).commit();
+        initializeViews(rootView);
 
         return rootView;
     }
 
+    private void initializeViews(View rootView) {
+
+        mainActivity.setToolbarTitle(R.string.nav_dashboard);
+    }
+
 
     public void setMainActivity(MainActivity mainActivity) {
+
         this.mainActivity = mainActivity;
     }
 }

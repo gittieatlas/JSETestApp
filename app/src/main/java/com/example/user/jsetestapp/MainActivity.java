@@ -132,19 +132,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
                     getFragmentManager().beginTransaction().replace(R.id.container, dashboardFragment).commit();
-                    toolbar.setTitle("Dashboard");
                     break;
                 case 1:
                     getFragmentManager().beginTransaction().replace(R.id.container, searchFragment).commit();
-                    toolbar.setTitle("Tests");
                     break;
                 case 2:
                     getFragmentManager().beginTransaction().replace(R.id.container, librariesFragment).commit();
-                    toolbar.setTitle("Libraries");
                     break;
                 case 3:
                     getFragmentManager().beginTransaction().replace(R.id.container, contactFragment).commit();
-                    toolbar.setTitle("Contact");
                     break;
                 default:
                     break;
@@ -210,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //noinspection SimplifiableIfStatement
         if (id == R.id.log_out) {
             getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
-            toolbar.setTitle("Welcome to JSE");
 
             Snackbar
                     .make(findViewById(R.id.rootLayout),
@@ -222,29 +217,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (id == R.id.update_profile) {
-            toolbar.setTitle("Update Profile");
             getFragmentManager().beginTransaction().replace(R.id.container, updateProfileFragment).commit();
             return true;
         }
 
         if (id == R.id.register1) {
-            toolbar.setTitle("Create Account");
             getFragmentManager().beginTransaction().replace(R.id.container, register1Fragment).commit();
             return true;
         }
         if (id == R.id.register2) {
-            toolbar.setTitle("Create Account");
             getFragmentManager().beginTransaction().replace(R.id.container, register2Fragment).commit();
             return true;
         }
 
         if (id == R.id.dashboard) {
-            toolbar.setTitle("Dashboard");
             getFragmentManager().beginTransaction().replace(R.id.container, dashboardFragment).commit();
             return true;
         }
         if (id == R.id.login) {
-            toolbar.setTitle("Welcome to JSE");
             getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
             return true;
         }
@@ -256,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    public void setToolbarTitle(String toolbarTitle) {
+    public void setToolbarTitle(int toolbarTitle) {
         toolbar.setTitle(toolbarTitle);
     }
 }

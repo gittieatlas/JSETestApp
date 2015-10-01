@@ -13,6 +13,7 @@ public class UpdateProfileFragment extends Fragment {
 
     //Controls
     View rootView;
+    Spinner genderSpinner, locationsSpinner;
 
     //Activities
     MainActivity mainActivity;
@@ -30,42 +31,41 @@ public class UpdateProfileFragment extends Fragment {
         rootView = inflater.inflate(R.layout.update_profile_fragment,
                 container, false);
 
-
-        mainActivity.setToolbarTitle("Update Profile");
-
-
-        Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
-        Button buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
-
-
-        Spinner genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
-
-// Create an adapter from the string array resource and use
-// android's inbuilt layout file simple_spinner_item
-// that represents the default spinner in the UI
-        ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.gender_array, R.layout.spinner_dropdown_item);
-// Set the layout to use for each dropdown item
-        genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-
-        genderSpinner.setAdapter(genderAdapter);
-
-
-        Spinner locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
-
-// Create an adapter from the string array resource and use
-// android's inbuilt layout file simple_spinner_item
-// that represents the default spinner in the UI
-        ArrayAdapter locationsAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.locations_array, R.layout.spinner_dropdown_item);
-// Set the layout to use for each dropdown item
-        locationsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-
-        locationsSpinner.setAdapter(locationsAdapter);
+        initializeViews(rootView);
 
         return rootView;
     }
 
+    private void initializeViews(View rootView) {
+        mainActivity.setToolbarTitle(R.string.nav_update_profile);
+
+        Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
+
+        Button buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
+
+        genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
+        locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
+        bindSpinnerData();
+
+    }
+
+    private void bindSpinnerData() {
+        // Create an adapter from the string array resource and use android's inbuilt layout file simple_spinner_item that represents the default spinner in the UI
+        ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.gender_array, R.layout.spinner_dropdown_item);
+        // Set the layout to use for each dropdown item
+        genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
+        genderSpinner.setAdapter(genderAdapter);
+
+        // Create an adapter from the string array resource and use android's inbuilt layout file simple_spinner_item that represents the default spinner in the UI
+        ArrayAdapter locationsAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.locations_array, R.layout.spinner_dropdown_item);
+        // Set the layout to use for each dropdown item
+        locationsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
+        locationsSpinner.setAdapter(locationsAdapter);
+    }
+
 
     public void setMainActivity(MainActivity mainActivity) {
+
         this.mainActivity = mainActivity;
     }
 }

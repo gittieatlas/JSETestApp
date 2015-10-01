@@ -14,6 +14,7 @@ public class LoginFragment extends Fragment {
 
     //Controls
     View rootView;
+    RelativeLayout rootLayout;
 
     //Activities
     MainActivity mainActivity;
@@ -31,14 +32,21 @@ public class LoginFragment extends Fragment {
         rootView = inflater.inflate(R.layout.login_fragment,
                 container, false);
 
+        initializeViews(rootView);
 
-        mainActivity.setToolbarTitle("Welcome to JSE");
+        return rootView;
+    }
 
+    private void initializeViews(View rootView) {
+        mainActivity.setToolbarTitle(R.string.nav_login);
 
-        final RelativeLayout rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
+        rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
+
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
+
         Button buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
         buttonRight.setEnabled(false);
+
         TextView textViewForgotPassword = (TextView) rootView.findViewById(R.id.textViewForgotPassword);
         textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,12 +59,11 @@ public class LoginFragment extends Fragment {
                         .show(); // Do not forget to show!
             }
         });
-
-        return rootView;
     }
 
 
     public void setMainActivity(MainActivity mainActivity) {
+
         this.mainActivity = mainActivity;
     }
 }

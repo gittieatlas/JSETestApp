@@ -27,12 +27,17 @@ public class LocationInfoFragment extends Fragment {
         rootView = inflater.inflate(R.layout.location_info_fragment,
                 container, false);
 
-
+        initializeViews(rootView);
 
         return rootView;
     }
 
+    private void initializeViews(View rootView) {
+
+    }
+
     public void setMainActivity(MainActivity mainActivity) {
+
         this.mainActivity = mainActivity;
     }
 }

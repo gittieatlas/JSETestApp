@@ -56,4 +56,11 @@
         <item name="android:ems">10</item>
     </style>
 
+
+    <style name="App_Button.Tinted" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/accent</item>
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

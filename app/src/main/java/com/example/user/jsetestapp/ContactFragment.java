@@ -25,18 +25,20 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.contact_fragment,
-                container, false);
+        rootView = inflater.inflate(R.layout.contact_fragment, container, false);
 
-        mainActivity.setToolbarTitle("Contact");
-
-
-
-
+        initializeViews(rootView);
+        
         return rootView;
     }
 
+    private void initializeViews(View rootView) {
+
+        mainActivity.setToolbarTitle(R.string.nav_contact);
+    }
+
     public void setMainActivity(MainActivity mainActivity) {
+
         this.mainActivity = mainActivity;
     }
 }

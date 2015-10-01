@@ -47,7 +47,7 @@
     <string name="hours_title">HOURS</string>
 
     <!-- search_fragment.xmlgment.xml controls-->
-    <string name="searchButton">Search</string>
+    <string name="searchButton">SEARCH</string>
     <string name="registration_date_range">Registration is currently open from September 7 2015 to september 20 2015</string>
 
     <!-- dashboard_fragment_fragment.xml controls-->
@@ -86,4 +86,13 @@
         <item>Thursday</item>
         <item>Friday</item>
     </string-array>
+
+    <!-- Navigation Bar Titles-->
+    <string name="nav_contact">Contact</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_libraries">Libraries</string>
+    <string name="nav_login">Welcome to JSE</string>
+    <string name="nav_register">Create Account</string>
+    <string name="nav_tests">Tests</string>
+    <string name="nav_update_profile">Update Profile</string>
 </resources>

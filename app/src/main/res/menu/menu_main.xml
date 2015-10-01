@@ -30,11 +30,6 @@
         android:title="Register 2"
         app:showAsAction="never" />
     <item
-        android:id="@+id/dashboard"
-        android:orderInCategory="600"
-        android:title="Dashboard"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/results"
         android:orderInCategory="700"
         android:title="Tests Results"
