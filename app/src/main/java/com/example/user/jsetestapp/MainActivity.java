@@ -12,7 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ScrollView scrollView;
 
     //Activities
+    DatabaseOperations databaseOperations;
 
     //Fragments
     LoginFragment loginFragment;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Variables
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setScrollViewMinHeight();
         initializeViews();
 
+
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
         toolbar.setTitle("Welcome to JSE");
 
@@ -55,6 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //tabLayoutLinearLayout.removeAllViews();
         //setUpSpinner();
     }
+
+
+
+
+
+
+
+
+
 
     private void setScrollViewMinHeight() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -87,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dashboardFragment.setMainActivity(this);
         resultsFragment = new ResultsFragment();
         resultsFragment.setMainActivity(this);
+        databaseOperations = new DatabaseOperations();
+        databaseOperations.setMainActivity(this);
+        databaseOperations.testDB();
     }
 
 
@@ -230,10 +246,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
 
-        if (id == R.id.dashboard) {
-            getFragmentManager().beginTransaction().replace(R.id.container, dashboardFragment).commit();
-            return true;
-        }
         if (id == R.id.login) {
             getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
             return true;

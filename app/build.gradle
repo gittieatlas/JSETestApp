@@ -20,11 +20,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'joda-time:joda-time:2.8.2' // for joda
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'joda-time:joda-time:2.8.2'
+    // for joda
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.+'
     compile 'com.android.support:cardview-v7:23.0.0'
-
+    // compile files('libs/mysql-connector-java:5.1.36.jar')
+    //compile files('libs/mysql:mysql-connector-java:5.1.36')
+    // compile project(':libs')
+   // compile files('libs/mysql-connector-java-5.1.36.jar')
+    compile files('C:/Users/gatlas/AndroidStudioProjects/JSETestApp/libs/mysql-connector-java-5.1.36.jar')
 }

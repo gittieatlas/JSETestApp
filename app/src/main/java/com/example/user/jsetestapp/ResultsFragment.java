@@ -20,7 +20,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     MainActivity mainActivity;
 
     //Fragments
-
+RecyclerViewActivity recyclerViewActivity;
 
     //Variables
 
@@ -38,6 +38,10 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initializeViews(View rootView) {
+
+        recyclerViewActivity = new RecyclerViewActivity();
+        getFragmentManager().beginTransaction().add(R.id.resultsContainer, recyclerViewActivity).commit();
+
         mainActivity.setToolbarTitle(R.string.nav_tests);
 
     }

@@ -20,7 +20,7 @@
         android:textColor="@color/secondary_text" />
 
     <FrameLayout
-        android:id="@+id/dashboardContainer"
+        android:id="@+id/resultsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
