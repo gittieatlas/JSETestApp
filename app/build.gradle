@@ -31,5 +31,5 @@ dependencies {
     //compile files('libs/mysql:mysql-connector-java:5.1.36')
     // compile project(':libs')
    // compile files('libs/mysql-connector-java-5.1.36.jar')
-    compile files('C:/Users/gatlas/AndroidStudioProjects/JSETestApp/libs/mysql-connector-java-5.1.36.jar')
+   // compile files('C:/Users/gatlas/AndroidStudioProjects/JSETestApp/libs/mysql-connector-java-5.1.36.jar')
 }

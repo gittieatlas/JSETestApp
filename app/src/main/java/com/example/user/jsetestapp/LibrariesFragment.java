@@ -19,7 +19,7 @@ public class LibrariesFragment extends Fragment {
 
     //Fragments
     LocationInfoFragment locationInfoFragment;
-
+    HelperMethods helperMethods;
     //Variables
 
 
@@ -37,6 +37,7 @@ public class LibrariesFragment extends Fragment {
 
     private void initializeViews(View rootView) {
         locationInfoFragment = new LocationInfoFragment();
+        //helperMethods.replaceFragment(R.id.librariesContainer, locationInfoFragment);
         getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
         mainActivity.setToolbarTitle(R.string.nav_libraries);
 

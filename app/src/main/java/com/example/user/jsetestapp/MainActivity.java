@@ -1,5 +1,6 @@
 package com.example.user.jsetestapp;
 
+import android.app.Fragment;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
+    HelperMethods helperMethods;
+    //RecyclerViewFragment recyclerViewFragment;
 
     //Variables
 
@@ -61,11 +64,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupTablayout();
         setScrollViewMinHeight();
         initializeViews();
+        addFragment(R.id.container, loginFragment);
         databaseOperations.Connect();
 
-        getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
+        //getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
 
         //setUpSpinner();
+    }
+
+    public void addFragment(int container, Fragment fragment){
+        getFragmentManager().beginTransaction().add(container, fragment).commit();
+    }
+
+    public void replaceFragment(int container, Fragment fragment){
+        getFragmentManager().beginTransaction().replace(container, fragment).commit();
     }
 
     private void initializeViews() {
@@ -94,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultsFragment.setMainActivity(this);
         databaseOperations = new DatabaseOperations();
         databaseOperations.setMainActivity(this);
+        helperMethods = new HelperMethods();
+        helperMethods.setMainActivity(this);
+        //recyclerViewFragment = new RecyclerViewFragment();
+        //recyclerViewFragment.setMainActivity(this);
     }
 
     private void setupToolbar() {
@@ -137,16 +153,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    getFragmentManager().beginTransaction().replace(R.id.container, dashboardFragment).commit();
+                    replaceFragment(R.id.container, dashboardFragment);
                     break;
                 case 1:
-                    getFragmentManager().beginTransaction().replace(R.id.container, searchFragment).commit();
+                    replaceFragment(R.id.container, searchFragment);
                     break;
                 case 2:
-                    getFragmentManager().beginTransaction().replace(R.id.container, librariesFragment).commit();
+                    replaceFragment(R.id.container, librariesFragment);
                     break;
                 case 3:
-                    getFragmentManager().beginTransaction().replace(R.id.container, contactFragment).commit();
+                    replaceFragment(R.id.container, contactFragment);
                     break;
                 default:
                     break;
@@ -221,25 +237,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (id == R.id.update_profile) {
-            getFragmentManager().beginTransaction().replace(R.id.container, updateProfileFragment).commit();
+            replaceFragment(R.id.container, updateProfileFragment);
             return true;
         }
 
         if (id == R.id.register1) {
-            getFragmentManager().beginTransaction().replace(R.id.container, register1Fragment).commit();
+            replaceFragment(R.id.container, register1Fragment);
             return true;
         }
         if (id == R.id.register2) {
-            getFragmentManager().beginTransaction().replace(R.id.container, register2Fragment).commit();
+            replaceFragment(R.id.container, register2Fragment);
             return true;
         }
 
         if (id == R.id.login) {
-            getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
+            replaceFragment(R.id.container, loginFragment);
             return true;
         }
         if (id == R.id.results) {
-            getFragmentManager().beginTransaction().replace(R.id.container, resultsFragment).commit();
+            replaceFragment(R.id.container, resultsFragment);
             return true;
         }
 
@@ -260,3 +276,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scrollView.setMinimumHeight(height);
     }
 }
+ 
