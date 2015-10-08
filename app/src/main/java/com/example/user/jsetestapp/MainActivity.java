@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -15,14 +16,25 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import static android.widget.Toast.LENGTH_LONG;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Controls
     TabLayout tabLayout;
     Toolbar toolbar;
     ScrollView scrollView;
+    LinearLayout tabLayoutLinearLayout;
 
-    //Activities
+    //Activities;
     DatabaseOperations databaseOperations;
 
     //Fragments
@@ -39,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Variables
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,35 +61,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupTablayout();
         setScrollViewMinHeight();
         initializeViews();
-
+        databaseOperations.Connect();
 
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
-        toolbar.setTitle("Welcome to JSE");
 
-        LinearLayout tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
-        //tabLayoutLinearLayout.removeAllViews();
         //setUpSpinner();
     }
 
-
-
-
-
-
-
-
-
-
-    private void setScrollViewMinHeight() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        scrollView.setMinimumHeight(height);
-    }
-
     private void initializeViews() {
+        tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
+        //tabLayoutLinearLayout.removeAllViews(); //for Login pages
     }
 
     private void createFragmentsActivitiesClasses() {
@@ -102,9 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultsFragment.setMainActivity(this);
         databaseOperations = new DatabaseOperations();
         databaseOperations.setMainActivity(this);
-        databaseOperations.testDB();
     }
-
 
     private void setupToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar); // Set navigation icon
@@ -161,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 default:
                     break;
             }
-
-
         }
 
         @Override
@@ -260,5 +248,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setToolbarTitle(int toolbarTitle) {
         toolbar.setTitle(toolbarTitle);
+    }
+
+
+    private void setScrollViewMinHeight() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView.setMinimumHeight(height);
     }
 }

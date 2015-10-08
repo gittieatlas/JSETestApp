@@ -40,45 +40,15 @@ public class ContactFragment extends Fragment {
         rootView = inflater.inflate(R.layout.contact_fragment, container, false);
 
         initializeViews(rootView);
-
-        //testDB();
-
         return rootView;
     }
 
     private void initializeViews(View rootView) {
-
         mainActivity.setToolbarTitle(R.string.nav_contact);
     }
 
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
-    }
-
-    public void testDB() {
-        //TextView tv = (TextView)this.findViewById(R.id.text_view);
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, pass);
-            /* System.out.println("Databaseection success"); */
-
-            String result = "Database connection success\n";
-//            Statement st = con.createStatement();
-//            ResultSet rs = st.executeQuery("select * from table_name");
-//            ResultSetMetaData rsmd = rs.getMetaData();
-//
-//            while(rs.next()) {
-//                result += rsmd.getColumnName(1) + ": " + rs.getInt(1) + "\n";
-//                result += rsmd.getColumnName(2) + ": " + rs.getString(2) + "\n";
-//                result += rsmd.getColumnName(3) + ": " + rs.getString(3) + "\n";
-//            }
-            Toast.makeText(mainActivity.getApplicationContext(), result, Toast.LENGTH_LONG).show();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            Toast.makeText(mainActivity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        }
-
     }
 }

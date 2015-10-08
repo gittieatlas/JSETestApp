@@ -39,8 +39,8 @@ RecyclerViewActivity recyclerViewActivity;
 
     private void initializeViews(View rootView) {
 
-        recyclerViewActivity = new RecyclerViewActivity();
-        getFragmentManager().beginTransaction().add(R.id.resultsContainer, recyclerViewActivity).commit();
+//        recyclerViewActivity = new RecyclerViewActivity();
+//        getFragmentManager().beginTransaction().add(R.id.resultsContainer, recyclerViewActivity).commit();
 
         mainActivity.setToolbarTitle(R.string.nav_tests);
 
