@@ -27,15 +27,12 @@ public class DatabaseOperations {
     //Fragments
 
     //Variables
-    String dbUrl;
-    String user;
-    String password;
-    String result;
+    public static String url;
+    public static String username;
+    public static String password;
+    public static String result;
 
     public DatabaseOperations() {
-        dbUrl = "jdbc:mysql://127.0.0.1:3306/test";
-        user = "root";
-        password = "";
     }
 
     public void Connect() {
@@ -56,9 +53,9 @@ public class DatabaseOperations {
             String result = "";
 
             //declare DB url, username, and password
-            String url = "jdbc:mysql://127.0.0.1:3306/test";
-            String username = "testUser";
-            String password = "testPassword";
+            url = "jdbc:mysql://127.0.0.1:3306/test";
+            username = "testUser";
+            password = "testPassword";
 
             //declare connection, statement and resultset objects
             Connection connection = null;
@@ -70,7 +67,7 @@ public class DatabaseOperations {
                 Class.forName("com.mysql.jdbc.Driver");
 
                 publishProgress("Able to load driver");
-            }catch(Exception e) {
+            } catch (Exception e) {
                 publishProgress("Unable to load driver " + e.toString());
             }
 
@@ -84,7 +81,7 @@ public class DatabaseOperations {
             }
 
             //if connection is successfully established, create statement
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     statement = connection.createStatement();
                     publishProgress("Able to create statement");
@@ -94,7 +91,7 @@ public class DatabaseOperations {
             }
 
             //if statement is created successfully, execute query and get results
-            if(statement != null) {
+            if (statement != null) {
                 try {
                     resultSet = statement.executeQuery("SELECT name FROM branches");
                     publishProgress("Able to execute query and get results");
@@ -105,9 +102,9 @@ public class DatabaseOperations {
 
             //if resultset is received and is not empty,
             // iterate over resultset to get values
-            if(resultSet != null) {
+            if (resultSet != null) {
                 try {
-                    while(resultSet.next()) {
+                    while (resultSet.next()) {
                         publishProgress("Value in 1st column " + resultSet.getString(1));
                     }
                 } catch (SQLException e) {
@@ -143,8 +140,6 @@ public class DatabaseOperations {
             // with access to the result of the long running task
         }
     }
-
-
 
 
     public void setMainActivity(MainActivity mainActivity) {

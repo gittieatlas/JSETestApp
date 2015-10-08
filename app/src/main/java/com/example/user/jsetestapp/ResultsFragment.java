@@ -4,11 +4,14 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 public class ResultsFragment extends Fragment implements View.OnClickListener {
 
@@ -20,9 +23,12 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     MainActivity mainActivity;
 
     //Fragments
-RecyclerViewActivity recyclerViewActivity;
 
     //Variables
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private static String LOG_TAG = "RecyclerViewActivity";
 
 
     @Override
@@ -34,7 +40,44 @@ RecyclerViewActivity recyclerViewActivity;
         initializeViews(rootView);
         setupFab();
 
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(mainActivity.getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new RecyclerViewAdapter(getDataSet());
+        mRecyclerView.setAdapter(mAdapter);
+        RecyclerView.ItemDecoration itemDecoration =
+                new DividerItemDecoration(mainActivity.getApplicationContext(), LinearLayoutManager.VERTICAL);
+        mRecyclerView.addItemDecoration(itemDecoration);
+
+        // Code to Add an item with default animation
+        //((RecyclerViewAdapter) mAdapter).addItem(obj, index);
+
+        // Code to remove an item with default animation
+        //((RecyclerViewAdapter) mAdapter).deleteItem(index);
+
         return rootView;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new
+                                                                          RecyclerViewAdapter.MyClickListener() {
+                                                                              @Override
+                                                                              public void onItemClick(int position, View v) {
+                                                                                  Log.i(LOG_TAG, " Clicked on Item " + position);
+                                                                              }
+                                                                          });
+    }
+
+    private ArrayList<DataObject> getDataSet() {
+        ArrayList results = new ArrayList<DataObject>();
+        for (int index = 0; index < 10; index++) {
+            DataObject obj = new DataObject("Brooklyn - HASC ",
+                    "Thuesday " , " 10:30 AM " , " September 8 2015 ","Deadline to register " , "September 7 2015");
+            results.add(index, obj);
+        }
+        return results;
     }
 
     private void initializeViews(View rootView) {

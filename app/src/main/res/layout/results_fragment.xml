@@ -4,28 +4,16 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="-16dp"
     android:focusableInTouchMode="true"
     android:paddingBottom="38dp"
     tools:context=".Results">
 
-    <TextView
-        android:id="@+id/registrationDateTextView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:gravity="center"
-        android:text="Results Page"
-        android:textAlignment="center"
-        android:textColor="@color/secondary_text" />
-
-    <FrameLayout
-        android:id="@+id/resultsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:scrollbars="none" />
 
 
     <android.support.design.widget.FloatingActionButton

@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="default_margin_negative">-16dp</dimen>
     <dimen name="top_margin_large">64dp</dimen>
 </resources>
