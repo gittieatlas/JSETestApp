@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -34,9 +35,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Toolbar toolbar;
     ScrollView scrollView;
     LinearLayout tabLayoutLinearLayout;
+    FrameLayout container;
 
-    //Activities;
+    //Activities HelperClasses Classes;
     DatabaseOperations databaseOperations;
+    HelperMethods helperMethods;
 
     //Fragments
     LoginFragment loginFragment;
@@ -48,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
-    HelperMethods helperMethods;
-    //RecyclerViewFragment recyclerViewFragment;
 
     //Variables
 
@@ -67,22 +68,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addFragment(R.id.container, loginFragment);
         databaseOperations.Connect();
 
-        //getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
-
         //setUpSpinner();
     }
 
     public void addFragment(int container, Fragment fragment){
-        getFragmentManager().beginTransaction().add(container, fragment).commit();
+        scrollView.scrollTo(0, 0); // Scroll to top
+    getFragmentManager().beginTransaction().add(container, fragment).commit();
     }
 
-    public void replaceFragment(int container, Fragment fragment){
+    public void replaceFragment(int container, Fragment fragment) {
+        scrollView.scrollTo(0, 0); // Scroll to top
         getFragmentManager().beginTransaction().replace(container, fragment).commit();
     }
 
     private void initializeViews() {
         tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
         //tabLayoutLinearLayout.removeAllViews(); //for Login pages
+
+        container = (FrameLayout) findViewById(R.id.container);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
     }
 
     private void createFragmentsActivitiesClasses() {

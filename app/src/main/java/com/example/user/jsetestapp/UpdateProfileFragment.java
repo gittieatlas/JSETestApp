@@ -37,7 +37,7 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.nav_update_profile);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_update_profile);
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
 

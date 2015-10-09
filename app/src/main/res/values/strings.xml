@@ -87,12 +87,16 @@
         <item>Friday</item>
     </string-array>
 
-    <!-- Navigation Bar Titles-->
-    <string name="nav_contact">Contact</string>
-    <string name="nav_dashboard">Dashboard</string>
-    <string name="nav_libraries">Libraries</string>
-    <string name="nav_login">Welcome to JSE</string>
-    <string name="nav_register">Create Account</string>
-    <string name="nav_tests">Tests</string>
-    <string name="nav_update_profile">Update Profile</string>
+    <!-- Toolbar Titles-->
+    <string name="toolbar_title_contact">Contact</string>
+    <string name="toolbar_title_dashboard">Dashboard</string>
+    <string name="toolbar_title_libraries">Libraries</string>
+    <string name="toolbar_title_login">Welcome to JSE</string>
+    <string name="toolbar_title_register">Create Account</string>
+    <string name="toolbar_title_tests">Tests</string>
+    <string name="toolbar_title_update_profile">Update Profile</string>
+
+    <!-- Menu Item Titles-->
+    <string name="menu_item_log_out">Log Out</string>
+    <string name="menu_item_update_profile">Update Profile</string>
 </resources>

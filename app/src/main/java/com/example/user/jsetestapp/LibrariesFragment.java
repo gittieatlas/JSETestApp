@@ -39,7 +39,7 @@ public class LibrariesFragment extends Fragment {
         locationInfoFragment = new LocationInfoFragment();
         //helperMethods.replaceFragment(R.id.librariesContainer, locationInfoFragment);
         getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
-        mainActivity.setToolbarTitle(R.string.nav_libraries);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
 
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         bindSpinnerData();

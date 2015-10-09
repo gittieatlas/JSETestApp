@@ -34,7 +34,7 @@ public class DashboardFragment extends Fragment {
 
     private void initializeViews(View rootView) {
 
-        mainActivity.setToolbarTitle(R.string.nav_dashboard);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
     }
 
 

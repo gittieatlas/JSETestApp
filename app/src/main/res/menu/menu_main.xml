@@ -5,12 +5,12 @@
     <item
         android:id="@+id/update_profile"
         android:orderInCategory="100"
-        android:title="Update Profile"
+        android:title="@string/menu_item_update_profile"
         app:showAsAction="never"/>
     <item
         android:id="@+id/log_out"
         android:orderInCategory="200"
-        android:title="Log Out"
+        android:title="@string/menu_item_log_out"
         app:showAsAction="never" />
 
     <item

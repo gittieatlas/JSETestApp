@@ -36,7 +36,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.nav_tests);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
 
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         daysOfWeekSpinner = (Spinner) rootView.findViewById(R.id.dayOfWeekSpinner);

@@ -38,7 +38,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.nav_login);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
 

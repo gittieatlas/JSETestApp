@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".Search"
-    android:paddingBottom="72dp">
+    android:paddingBottom="72dp"
+    android:paddingTop="@dimen/default_margin">
 
 
     <TextView

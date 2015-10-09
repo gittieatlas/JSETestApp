@@ -1,79 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:layout_marginLeft="@dimen/default_margin"
-    android:layout_marginRight="@dimen/default_margin"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
-    <TextView
-        android:id="@+id/locationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location"
-        android:textColor="@color/primary" />
+    android:orientation="horizontal"
+    android:padding="@dimen/default_margin">
 
-    <LinearLayout
-        android:orientation="horizontal"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginRight="16dp">
 
-
-            <TextView
-                android:id="@+id/testDayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Day of Week"
-                android:textColor="@color/secondary_text"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/testTimeTextView"
+                android:id="@+id/locationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
-                android:textColor="@color/divider"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_weight="1" />
+                android:text="Location"
+                android:textColor="@color/primary" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/testDayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Day of Week"
+                    android:textColor="@color/primary_text" />
+
+                <TextView
+                    android:id="@+id/testTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text"
+                    android:text="Time"
+                    android:layout_marginLeft="6dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/testDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
-                android:textColor="@color/divider"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_weight="1" />
+                android:textColor="@color/primary_text"
+                android:text="Date" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/testDealineTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deadline to Register is"
+                    android:textColor="@color/secondary_text"  />
+
+                <TextView
+                    android:id="@+id/testDealineDetailsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textColor="@color/secondary_text" />
+            </LinearLayout>
         </LinearLayout>
+    </FrameLayout>
 
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_weight="10">
 
-        <TextView
-            android:id="@+id/testDealineTitleTextView"
+        <ImageButton
+            android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deadline to Register"
-            android:textColor="@color/secondary_text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/testDealineDetailsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="40dp"
-            android:text="Date"
-            android:textColor="@color/divider"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_gravity="center_vertical|right"
+            android:background="@drawable/ic_calendar_clock_grey600_24dp"
+            android:contentDescription="Calendar Icon" />
+    </FrameLayout>
 
 </LinearLayout>
+

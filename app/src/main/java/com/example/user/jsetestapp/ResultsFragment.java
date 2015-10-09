@@ -68,13 +68,14 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
                                                                                   Log.i(LOG_TAG, " Clicked on Item " + position);
                                                                               }
                                                                           });
+
     }
 
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
         for (int index = 0; index < 10; index++) {
-            DataObject obj = new DataObject("Brooklyn - HASC ",
-                    "Thuesday " , " 10:30 AM " , " September 8 2015 ","Deadline to register " , "September 7 2015");
+            DataObject obj = new DataObject("Brooklyn - HASC",
+                    "Wednesday", "10:30 AM", "September 8 2015", "Registration Deadline: " , "September 7 2015");
             results.add(index, obj);
         }
         return results;
@@ -85,7 +86,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 //        recyclerViewActivity = new RecyclerViewActivity();
 //        getFragmentManager().beginTransaction().add(R.id.resultsContainer, recyclerViewActivity).commit();
 
-        mainActivity.setToolbarTitle(R.string.nav_tests);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
 
     }
 

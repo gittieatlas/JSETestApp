@@ -37,7 +37,7 @@ public class Register2Fragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.nav_register);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_register);
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
 

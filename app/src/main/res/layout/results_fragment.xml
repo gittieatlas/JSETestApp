@@ -4,7 +4,6 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="-16dp"
     android:focusableInTouchMode="true"
     android:paddingBottom="38dp"
     tools:context=".Results">
@@ -13,7 +12,7 @@
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:scrollbars="none"/>
 
 
     <android.support.design.widget.FloatingActionButton
