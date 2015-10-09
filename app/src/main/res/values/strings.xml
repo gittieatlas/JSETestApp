@@ -48,7 +48,7 @@
 
     <!-- search_fragment.xmlgment.xml controls-->
     <string name="searchButton">SEARCH</string>
-    <string name="registration_date_range">Registration is currently open from September 7 2015 to september 20 2015</string>
+    <string name="registration_date_range">Registration is currently open from %1$s to %2$s</string>
 
     <!-- dashboard_fragment_fragment.xml controls-->
     <string name="location">Brooklyn - BY 18th Ave.</string>
@@ -71,14 +71,14 @@
     </string-array>
 
     <string-array name="locations_array">
-        <item> </item>
+        <item>Location</item>
         <item>Brooklyn</item>
         <item>Lakewood</item>
         <item>Monsey</item>
     </string-array>
 
     <string-array name="days_of_week_array">
-        <item>(Choose a day of the week)</item>
+        <item>Day of Week</item>
         <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
