@@ -82,11 +82,7 @@ public class SearchFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        //String[] locations = {"Locations", "Brooklyn", "Lakewood", "Monsey", "Jerusalem"};
-        String[] locations = getResources().getStringArray(R.array.locations_array);
-        ArrayList<String> locationsArrayList = new ArrayList<String>();
-        locationsArrayList.add("Location");
-        for (String s : locations) locationsArrayList.add(s);
+        ArrayList<String> locationsArrayList = mainActivity.getLocationsArrayList();
         mainActivity.addDataToSpinner(locationsArrayList, locationsSpinner, "location");
 
         String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
