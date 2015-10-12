@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class SearchFragment extends Fragment {
 
     //Controls
@@ -80,19 +82,17 @@ public class SearchFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        // Create an adapter from the string array resource and use android's inbuilt layout file simple_spinner_item that represents the default spinner in the UI
-        ArrayAdapter locationsAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.locations_array, R.layout.location_spinner_dropdown_item);
-        // Set the layout to use for each dropdown item
-        locationsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-        locationsSpinner.setAdapter(locationsAdapter);
-        locationsSpinner.setSelection(2);
+        //String[] locations = {"Locations", "Brooklyn", "Lakewood", "Monsey", "Jerusalem"};
+        String[] locations = getResources().getStringArray(R.array.locations_array);
+        ArrayList<String> locationsArrayList = new ArrayList<String>();
+        locationsArrayList.add("Location");
+        for (String s : locations) locationsArrayList.add(s);
+        mainActivity.addDataToSpinner(locationsArrayList, locationsSpinner, "location");
 
-        // Create an adapter from the string array resource and use android's inbuilt layout file simple_spinner_item that represents the default spinner in the UI
-        ArrayAdapter daysOfWeekAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.days_of_week_array, R.layout.location_spinner_dropdown_item);
-        // Set the layout to use for each dropdown item
-        daysOfWeekAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-        daysOfWeekSpinner.setAdapter(daysOfWeekAdapter);
-        daysOfWeekSpinner.setSelection(0);
+        String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
+        ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();
+        for (String s : daysOfWeek) daysOfWeekArrayList.add(s);
+        mainActivity.addDataToSpinner(daysOfWeekArrayList, daysOfWeekSpinner, "dayOfWeek");
     }
 
     public void setMainActivity(MainActivity mainActivity) {

@@ -64,28 +64,6 @@
     <string name="library_hour">9:00 AM - 5:00 PM</string>
 
 
-    <string-array name="gender_array">
-        <item> </item>
-        <item>Female</item>
-        <item>Male</item>
-    </string-array>
-
-    <string-array name="locations_array">
-        <item>Location</item>
-        <item>Brooklyn</item>
-        <item>Lakewood</item>
-        <item>Monsey</item>
-    </string-array>
-
-    <string-array name="days_of_week_array">
-        <item>Day of Week</item>
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-    </string-array>
 
     <!-- Toolbar Titles-->
     <string name="toolbar_title_contact">Contact</string>

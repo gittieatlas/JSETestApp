@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -278,6 +280,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int height = size.y;
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollView.setMinimumHeight(height);
+    }
+
+    //adding stuff
+
+    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag){
+        helperMethods.addDataToSpinner(arrayList, spinner, tag);
     }
 }
  
