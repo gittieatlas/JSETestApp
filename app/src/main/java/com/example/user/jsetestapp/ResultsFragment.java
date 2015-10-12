@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,17 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "RecyclerViewActivity";
+    ImageButton imageButton;
 
+//    OnClickListener imageButtonListener = new OnClickListener() {
+//
+//        @Override
+//        public void onClick(View v) {
+//
+//            //Toast.makeText(mainActivity.getApplicationContext(), "open calendar" , Toast.LENGTH_LONG).show();
+//
+//        }
+//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -38,6 +49,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
         rootView = inflater.inflate(R.layout.results_fragment, container, false);
 
         initializeViews(rootView);
+        // registerListeners();
         setupFab();
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
@@ -58,16 +70,17 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
         return rootView;
     }
+
     @Override
     public void onResume() {
         super.onResume();
         ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new
-                                                                          RecyclerViewAdapter.MyClickListener() {
-                                                                              @Override
-                                                                              public void onItemClick(int position, View v) {
-                                                                                  Log.i(LOG_TAG, " Clicked on Item " + position);
-                                                                              }
-                                                                          });
+                                                                        RecyclerViewAdapter.MyClickListener() {
+                                                                            @Override
+                                                                            public void onItemClick(int position, View v) {
+                                                                                Log.i(LOG_TAG, " Clicked on Item " + position);
+                                                                            }
+                                                                        });
 
     }
 
@@ -75,7 +88,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
         ArrayList results = new ArrayList<DataObject>();
         for (int index = 0; index < 10; index++) {
             DataObject obj = new DataObject("Brooklyn - HASC",
-                    "Wednesday", "10:30 AM", "September 8 2015", "Registration Deadline: " , "September 7 2015");
+                    "Wednesday", "10:30 AM", "September 8 2015", "Registration Deadline: ", "September 7 2015");
             results.add(index, obj);
         }
         return results;
@@ -85,10 +98,14 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
 //        recyclerViewActivity = new RecyclerViewActivity();
 //        getFragmentManager().beginTransaction().add(R.id.resultsContainer, recyclerViewActivity).commit();
-
+        imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
         mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
 
     }
+//    private void registerListeners() {
+//
+//        imageButton.setOnClickListener(imageButtonListener);
+//    }
 
     private void setupFab() {
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
