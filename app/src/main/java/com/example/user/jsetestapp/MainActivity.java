@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ResultsFragment resultsFragment;
 
     //Variables
-
+    ArrayList<String> locationsArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,16 +287,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag){
         helperMethods.addDataToSpinner(arrayList, spinner, tag);
     }
-    String title = "activity";
-    String message = "My message";
-    public void showDialog(String title, String message) {
-        FragmentManager fm = getFragmentManager();
-        MyDialogFragment dialogFragment = new MyDialogFragment ();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("message", message);
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(fm, "Sample Fragment");
+
+    public ArrayList getLocationsArrayList() {
+        //String[] locations = {"Locations", "Brooklyn", "Lakewood", "Monsey", "Jerusalem"};
+        String[] locations = getResources().getStringArray(R.array.locations_array);
+        locationsArrayList = new ArrayList<String>();
+        locationsArrayList.add("Location");
+        for (String s : locations) locationsArrayList.add(s);
+        return locationsArrayList;
+
+        //test
     }
 
 }
