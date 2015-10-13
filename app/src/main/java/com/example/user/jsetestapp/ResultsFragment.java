@@ -3,14 +3,12 @@ package com.example.user.jsetestapp;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -20,27 +18,16 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     FloatingActionButton fab;
     View rootView;
 
+    //Fragments
+
+
     //Activities
     MainActivity mainActivity;
-
-    //Fragments
 
     //Variables
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static String LOG_TAG = "RecyclerViewActivity";
-    ImageButton imageButton;
-
-//    OnClickListener imageButtonListener = new OnClickListener() {
-//
-//        @Override
-//        public void onClick(View v) {
-//
-//            //Toast.makeText(mainActivity.getApplicationContext(), "open calendar" , Toast.LENGTH_LONG).show();
-//
-//        }
-//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -49,15 +36,22 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
         rootView = inflater.inflate(R.layout.results_fragment, container, false);
 
         initializeViews(rootView);
-        // registerListeners();
+        mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
         setupFab();
+        setUpRecyclerView();
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        return rootView;
+    }
+
+    private void setUpRecyclerView() {
         mRecyclerView.setHasFixedSize(true);
+
         mLayoutManager = new LinearLayoutManager(mainActivity.getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
         mAdapter = new RecyclerViewAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
+
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(mainActivity.getApplicationContext(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
@@ -67,45 +61,23 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
         // Code to remove an item with default animation
         //((RecyclerViewAdapter) mAdapter).deleteItem(index);
-
-        return rootView;
     }
 
     @Override
     public void onResume() {
-        super.onResume();
-        ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new
-                                                                        RecyclerViewAdapter.MyClickListener() {
-                                                                            @Override
-                                                                            public void onItemClick(int position, View v) {
-                                                                                Log.i(LOG_TAG, " Clicked on Item " + position);
-                                                                            }
-                                                                        });
 
+        super.onResume();
     }
 
     private ArrayList<DataObject> getDataSet() {
-        ArrayList results = new ArrayList<DataObject>();
-        for (int index = 0; index < 10; index++) {
-            DataObject obj = new DataObject("Brooklyn - HASC",
-                    "Wednesday", "10:30 AM", "September 8 2015", "Registration Deadline: ", "September 7 2015");
-            results.add(index, obj);
-        }
-        return results;
+
+        return mainActivity.getTestsArrayList();
     }
 
     private void initializeViews(View rootView) {
 
-//        recyclerViewActivity = new RecyclerViewActivity();
-//        getFragmentManager().beginTransaction().add(R.id.resultsContainer, recyclerViewActivity).commit();
-        imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
-        mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
-
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
     }
-//    private void registerListeners() {
-//
-//        imageButton.setOnClickListener(imageButtonListener);
-//    }
 
     private void setupFab() {
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -113,21 +85,15 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
+         public void onClick(View view) {
 
-        if (view.getId() == R.id.fab) {
-            Snackbar
-                    .make(rootView.findViewById(R.id.rootLayout),
-                            "You clicked the FAB",
-                            Snackbar.LENGTH_LONG)
-                    .setAction("Action", this)
-                    .show(); // Do not forget to show!
-        }
+        mainActivity.callJse();
     }
 
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
     }
+
 
 }
