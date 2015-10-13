@@ -295,6 +295,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationsArrayList.add("Location");
         for (String s : locations) locationsArrayList.add(s);
         return locationsArrayList;
+
+        //test
     }
 
 }
