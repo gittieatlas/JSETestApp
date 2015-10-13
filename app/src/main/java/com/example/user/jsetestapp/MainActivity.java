@@ -1,6 +1,8 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,7 +32,8 @@ import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener
+{
 
     //Controls
     TabLayout tabLayout;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Activities HelperClasses Classes;
     DatabaseOperations databaseOperations;
     HelperMethods helperMethods;
+    QueryMethods queryMethods;
 
     //Fragments
     LoginFragment loginFragment;
@@ -53,9 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
+    RecyclerViewAdapter recyclerViewAdapter;
 
     //Variables
     ArrayList<String> locationsArrayList;
+    ArrayList<DataObject> testsArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,20 +73,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupTablayout();
         setScrollViewMinHeight();
         initializeViews();
-        addFragment(R.id.container, loginFragment);
+        helperMethods.addFragment(R.id.container, loginFragment);
         databaseOperations.Connect();
 
         //setUpSpinner();
-    }
-
-    public void addFragment(int container, Fragment fragment){
-        scrollView.scrollTo(0, 0); // Scroll to top
-    getFragmentManager().beginTransaction().add(container, fragment).commit();
-    }
-
-    public void replaceFragment(int container, Fragment fragment) {
-        scrollView.scrollTo(0, 0); // Scroll to top
-        getFragmentManager().beginTransaction().replace(container, fragment).commit();
     }
 
     private void initializeViews() {
@@ -114,8 +110,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         databaseOperations.setMainActivity(this);
         helperMethods = new HelperMethods();
         helperMethods.setMainActivity(this);
-        //recyclerViewFragment = new RecyclerViewFragment();
-        //recyclerViewFragment.setMainActivity(this);
+        queryMethods = new QueryMethods();
+        queryMethods.setMainActivity(this);
+//        recyclerViewAdapter = new RecyclerViewAdapter();
+//        recyclerViewAdapter.setMainActivity(this);
+
     }
 
     private void setupToolbar() {
@@ -156,19 +155,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
 
-
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    replaceFragment(R.id.container, dashboardFragment);
+                    helperMethods.replaceFragment(R.id.container, dashboardFragment);
+                    //replaceFragment(R.id.container, dashboardFragment);
                     break;
                 case 1:
-                    replaceFragment(R.id.container, searchFragment);
+                    helperMethods.replaceFragment(R.id.container, searchFragment);
+                    //replaceFragment(R.id.container, searchFragment);
                     break;
                 case 2:
-                    replaceFragment(R.id.container, librariesFragment);
+                    helperMethods.replaceFragment(R.id.container, librariesFragment);
+                    //replaceFragment(R.id.container, librariesFragment);
                     break;
                 case 3:
-                    replaceFragment(R.id.container, contactFragment);
+                    helperMethods.replaceFragment(R.id.container, contactFragment);
+                    //replaceFragment(R.id.container, contactFragment);
                     break;
                 default:
                     break;
@@ -185,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     };
-
 
 //    private void setUpSpinner() {
 //        // you need to have a list of data that you want the spinner to display
@@ -213,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    .show(); // Do not forget to show!
 //        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,25 +243,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (id == R.id.update_profile) {
-            replaceFragment(R.id.container, updateProfileFragment);
+            helperMethods.replaceFragment(R.id.container, updateProfileFragment);
             return true;
         }
 
         if (id == R.id.register1) {
-            replaceFragment(R.id.container, register1Fragment);
+            helperMethods.replaceFragment(R.id.container, register1Fragment);
             return true;
         }
+
         if (id == R.id.register2) {
-            replaceFragment(R.id.container, register2Fragment);
+            helperMethods.replaceFragment(R.id.container, register2Fragment);
             return true;
         }
 
         if (id == R.id.login) {
-            replaceFragment(R.id.container, loginFragment);
+            helperMethods.replaceFragment(R.id.container, loginFragment);
             return true;
         }
+
         if (id == R.id.results) {
-            replaceFragment(R.id.container, resultsFragment);
+            helperMethods.replaceFragment(R.id.container, resultsFragment);
             return true;
         }
 
@@ -271,7 +273,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setToolbarTitle(int toolbarTitle) {
         toolbar.setTitle(toolbarTitle);
     }
-
 
     private void setScrollViewMinHeight() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -288,16 +289,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         helperMethods.addDataToSpinner(arrayList, spinner, tag);
     }
 
-    public ArrayList getLocationsArrayList() {
-        //String[] locations = {"Locations", "Brooklyn", "Lakewood", "Monsey", "Jerusalem"};
-        String[] locations = getResources().getStringArray(R.array.locations_array);
-        locationsArrayList = new ArrayList<String>();
-        locationsArrayList.add("Location");
-        for (String s : locations) locationsArrayList.add(s);
-        return locationsArrayList;
+    public ArrayList<String> getLocationsArrayList() {
 
-        //test
+        return queryMethods.getLocationsArrayList();
     }
 
+    public ArrayList<DataObject> getTestsArrayList() {
+
+        return queryMethods.getTestsArrayList();
+    }
+
+    public void showDialog(String title, String message) {
+        helperMethods.showMyDialog(title,message);
+    }
+
+    public void addFragment(int container, Fragment fragment){
+        helperMethods.addFragment(container,fragment);
+    }
+
+    public void replaceFragment(int container, Fragment fragment) {
+        helperMethods.addFragment(container, fragment);
+    }
+
+    public static void callJse(){
+    //MainActivity mainActivity = new MainActivity();
+      //Toast.makeText(, "ITEM PRESSED FROM MAIN ACTIVITY", Toast.LENGTH_SHORT).show();
+
+    }
 }
  
