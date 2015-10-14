@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;

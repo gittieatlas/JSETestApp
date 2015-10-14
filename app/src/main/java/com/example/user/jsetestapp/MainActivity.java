@@ -1,10 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Context;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -18,22 +15,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.sql.Connection;
-
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import static android.widget.Toast.LENGTH_LONG;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
-{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Controls
     TabLayout tabLayout;
@@ -63,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> locationsArrayList;
     ArrayList<DataObject> testsArrayList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +60,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setScrollViewMinHeight();
         initializeViews();
         helperMethods.addFragment(R.id.container, loginFragment);
-        databaseOperations.Connect();
+
+        queryMethods.setUpLocationsArrayList();
+
 
         //setUpSpinner();
     }
@@ -285,13 +273,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //adding stuff
 
-    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag){
+    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
         helperMethods.addDataToSpinner(arrayList, spinner, tag);
     }
 
     public ArrayList<String> getLocationsArrayList() {
 
-        return queryMethods.getLocationsArrayList();
+        return locationsArrayList;
     }
 
     public ArrayList<DataObject> getTestsArrayList() {
@@ -300,21 +288,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showDialog(String title, String message) {
-        helperMethods.showMyDialog(title,message);
+        helperMethods.showMyDialog(title, message);
     }
 
-    public void addFragment(int container, Fragment fragment){
-        helperMethods.addFragment(container,fragment);
-    }
-
-    public void replaceFragment(int container, Fragment fragment) {
+    public void addFragment(int container, Fragment fragment) {
         helperMethods.addFragment(container, fragment);
     }
 
-    public static void callJse(){
-    //MainActivity mainActivity = new MainActivity();
-      //Toast.makeText(, "ITEM PRESSED FROM MAIN ACTIVITY", Toast.LENGTH_SHORT).show();
+    public void replaceFragment(int container, Fragment fragment) {
+        helperMethods.replaceFragment(container, fragment);
+    }
+
+    public static void callJse() {
+        //MainActivity mainActivity = new MainActivity();
+        //Toast.makeText(, "ITEM PRESSED FROM MAIN ACTIVITY", Toast.LENGTH_SHORT).show();
 
     }
+
 }
- 

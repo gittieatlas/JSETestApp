@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,8 +81,7 @@ public class SearchFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        ArrayList<String> locationsArrayList = mainActivity.getLocationsArrayList();
-        mainActivity.addDataToSpinner(locationsArrayList, locationsSpinner, "location");
+        mainActivity.addDataToSpinner(mainActivity.locationsArrayList, locationsSpinner, "location");
 
         String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
         ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();
