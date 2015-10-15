@@ -21,12 +21,15 @@ public class RecyclerViewAdapter extends RecyclerView
         .DataObjectHolder> {
     private static String LOG_TAG = "RecyclerViewAdapter";
     private ArrayList<DataObject> mDataset;
-    private static MyClickListener myClickListener;
-    MainActivity mainActivity;
-    Context context; //global
+    private MyClickListener myClickListener;
+    public MainActivity mainActivity;
+    Context mContext; //global
+    private MyInterface listener;
 
-    public RecyclerViewAdapter(Context context){
-        this.context = context;
+    public RecyclerViewAdapter(Context context, ArrayList<DataObject> mDataset){
+        this.mContext = context;
+        this.mDataset=mDataset;
+        setMyClickListener(myClickListener);
     }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder
@@ -51,10 +54,11 @@ public class RecyclerViewAdapter extends RecyclerView
             testDedlineDetails = (TextView) itemView.findViewById(R.id.testDealineDetailsTextView);
             imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
             imageButton.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
-                    MainActivity.callJse();
+                    //Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+                    //MainActivity.callJse();
                 }
             });
             Log.i(LOG_TAG, "Adding Listener");
@@ -63,12 +67,18 @@ public class RecyclerViewAdapter extends RecyclerView
 
         @Override
         public void onClick(View v) {
-            myClickListener.onItemClick(getPosition(), v);
-            Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+            listener.foo();
+            //((MainActivity)mContext).callJse();
+            //mainActivity.callJse();
+//            if (myClickListener !=null){
+//                myClickListener.onItemClick(getPosition(),v);
+//            }
+            //myClickListener.onItemClick(getPosition(), v);
+           // Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void setOnItemClickListener(MyClickListener myClickListener) {
+    public void setMyClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
 
@@ -113,10 +123,18 @@ public class RecyclerViewAdapter extends RecyclerView
     }
 
     public interface MyClickListener {
+
         public void onItemClick(int position, View v);
     }
+
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
+    }
+    public interface MyInterface{
+        public void foo();
+    }
+    public RecyclerViewAdapter(MyInterface listener){
+        this.listener = listener;
     }
 }

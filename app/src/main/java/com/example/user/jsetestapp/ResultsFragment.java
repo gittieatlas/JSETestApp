@@ -5,20 +5,21 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class ResultsFragment extends Fragment implements View.OnClickListener {
+public class ResultsFragment extends Fragment implements RecyclerViewAdapter.MyClickListener, View.OnClickListener {
 
     //Controls
     FloatingActionButton fab;
     View rootView;
 
     //Fragments
-
 
     //Activities
     MainActivity mainActivity;
@@ -27,9 +28,6 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -42,7 +40,6 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
         setupFab();
         setUpRecyclerView();
 
-
         return rootView;
     }
 
@@ -54,10 +51,13 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
         mAdapter = new RecyclerViewAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
+        //mAdapter.setMyClickListener(this);
+
 
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(mainActivity.getApplicationContext(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
+
 
         // Code to Add an item with default animation
         //((RecyclerViewAdapter) mAdapter).addItem(obj, index);
@@ -75,6 +75,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     private ArrayList<DataObject> getDataSet() {
 
         return mainActivity.getTestsFitlteredArrayList();
+
     }
 
     private void initializeViews(View rootView) {
@@ -84,13 +85,13 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
     private void setupFab() {
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+
         fab.setOnClickListener(this);
     }
-
     @Override
-    public void onClick(View view) {
+         public void onClick(View view) {
 
-        mainActivity.callJse();
+        mainActivity.showDialog("test","fab");
     }
 
     public void setMainActivity(MainActivity mainActivity) {
@@ -99,6 +100,8 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-
+    @Override
+    public void onItemClick(int position, View v) {
+        Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+    }
 }

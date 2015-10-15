@@ -17,7 +17,8 @@
         android:text="@string/registration_date_range"
         android:textColor="@color/secondary_text"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="16dp"
+        />
 
     <Spinner
         android:id="@+id/locationSpinner"

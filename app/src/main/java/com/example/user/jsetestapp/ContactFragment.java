@@ -34,7 +34,8 @@ public class ContactFragment extends Fragment {
 
     private void initializeViews(View rootView) {
         mainActivity.setToolbarTitle(R.string.toolbar_title_contact);
-        mainActivity.showDialog("this is a test title","this is a test messgae");
+        mainActivity.showDialog("CALL","Call JSE");
+
     }
 
     public void setMainActivity(MainActivity mainActivity) {

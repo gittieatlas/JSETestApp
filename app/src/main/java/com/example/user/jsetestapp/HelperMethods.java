@@ -16,6 +16,9 @@ import java.util.ArrayList;
 public class HelperMethods extends Activity {
 
     MainActivity mainActivity;
+    String number;
+    String title;
+    String messgae;
 
     public HelperMethods() {
 
@@ -50,12 +53,46 @@ public class HelperMethods extends Activity {
     }
 
     public void showMyDialog(String title, String message) {
+        number = getNumber();
         FragmentManager fm = mainActivity.getFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment();
+        MyDialogFragment dialogFragment = new MyDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("message", message);
+        bundle.putString("number", number);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, "Sample Fragment");
     }
+
+    public String getNumber() {
+        if (mainActivity.isJseMember) return number = "7328148432";
+        return "7328148430";
+    }
+
+    //    public String getTitle() {
+//        if (mainActivity.isJseMember) return title = "CALL JSE";
+//        return "CALL OFFICE";
+//    }
+
+//    public String getMessage() {
+//        if (mainActivity.isJseMember) return message = "";
+//        return "In order to schedule a test you must be a JSE member. call the ofiice to become one.";
+//    }
+
+    //    public void addToCalendar(){
+//        Calendar beginTime = Calendar.getInstance();
+//        beginTime.set(2012, 0, 19, 7, 30);
+//        Calendar endTime = Calendar.getInstance();
+//        endTime.set(2012, 0, 19, 8, 30);
+//        Intent intent = new Intent(Intent.ACTION_INSERT)
+//                .setData(Events.CONTENT_URI)
+//                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+//                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+//                .putExtra(Events.TITLE, "Yoga")
+//                .putExtra(Events.DESCRIPTION, "Group class")
+//                .putExtra(Events.EVENT_LOCATION, "The gym")
+//                .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY)
+//                .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com");
+//        startActivity(intent);
+//    }
 }

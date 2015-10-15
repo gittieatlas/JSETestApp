@@ -63,7 +63,8 @@
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_weight="1"
                     android:text="@string/alerts_day"
-                    android:textColor="@color/primary_text" />
+                    android:textColor="@color/primary_text"
+                    android:textSize="14sp"/>
 
 
                 <TextView
@@ -73,7 +74,8 @@
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_weight="1"
                     android:text="@string/alerts_date"
-                    android:textColor="@color/primary_text" />
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp"/>
 
 
                 <TextView
