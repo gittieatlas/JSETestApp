@@ -51,6 +51,7 @@
             android:scrollbars="horizontal"
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
-            app:tabMode="fixed" />
+            app:tabMode="fixed"
+            app:tabIndicatorHeight="4dp"/>
     </LinearLayout>
 </RelativeLayout>

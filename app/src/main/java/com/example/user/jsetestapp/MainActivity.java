@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupTablayout();
         setScrollViewMinHeight();
         initializeViews();
-        helperMethods.addFragment(R.id.container, loginFragment);
+        helperMethods.addFragment(R.id.container, dashboardFragment);
 
         queryMethods.setUpLocationsArrayList();
 
@@ -124,16 +124,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.getMenu().clear(); // Clear toolbar icons
-        toolbar.setTitle("Page Title");// Set title
+        toolbar.setTitle("JSE");// Set title
         toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
     }
 
     private void setupTablayout() {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_account_box_grey600_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_grey600_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_grey600_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_map_marker_grey600_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_account_box_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_map_marker_white_24dp));
 
         tabLayout.setOnTabSelectedListener(tabListener);
     }
