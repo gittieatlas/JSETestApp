@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,9 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
         mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
         setupFab();
         setUpRecyclerView();
+
 
         return rootView;
     }
@@ -71,7 +74,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
     private ArrayList<DataObject> getDataSet() {
 
-        return mainActivity.getTestsArrayList();
+        return mainActivity.getTestsFitlteredArrayList();
     }
 
     private void initializeViews(View rootView) {
@@ -85,7 +88,7 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-         public void onClick(View view) {
+    public void onClick(View view) {
 
         mainActivity.callJse();
     }
@@ -94,6 +97,8 @@ public class ResultsFragment extends Fragment implements View.OnClickListener {
 
         this.mainActivity = mainActivity;
     }
+
+
 
 
 }

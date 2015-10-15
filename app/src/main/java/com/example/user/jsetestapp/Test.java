@@ -6,14 +6,25 @@ public class Test {
 
     public static enum DayOfWeek {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY}
 
+    public static enum Gender {MALE, FEMALE, BOTH}
+
     ;
 
     //long id;
     String location;
     DayOfWeek dayOfWeek;
-    DateTime date, deadlineDate, time;
+    Gender gender;
+
+
+    DateTime date;
+    DateTime time;
+
+    DateTime deadlineDate;
+    DateTime deadlineTime;
+
 
     public Test() {
+
 
 //        location = "";
 //        dayOfWeek = DayOfWeek.SUNDAY;
@@ -62,4 +73,27 @@ public class Test {
         this.time = time;
     }
 
+    public DateTime getDeadlineTime() {
+        return deadlineTime;
+    }
+
+    public void setDeadlineTime(DateTime deadlineTime) {
+        this.deadlineTime = deadlineTime;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setGender(String gender) {
+        try {
+            this.gender = Gender.valueOf(gender);
+        } catch (Exception ex) {
+            this.gender = Gender.BOTH;
+        }
+    }
 }

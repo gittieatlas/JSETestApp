@@ -46,7 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Variables
     ArrayList<String> locationsArrayList;
-    ArrayList<DataObject> testsArrayList;
+    ArrayList<DataObject> testsFitlteredArrayList;
+
+    ArrayList<Test> testsArrayList;
+    boolean isJseMember = false;
 
 
     @Override
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         helperMethods.addFragment(R.id.container, dashboardFragment);
 
         queryMethods.setUpLocationsArrayList();
+        queryMethods.setUpTestsArrayList();
+
 
 
         //setUpSpinner();
@@ -94,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dashboardFragment.setMainActivity(this);
         resultsFragment = new ResultsFragment();
         resultsFragment.setMainActivity(this);
-        databaseOperations = new DatabaseOperations();
-        databaseOperations.setMainActivity(this);
         helperMethods = new HelperMethods();
         helperMethods.setMainActivity(this);
         queryMethods = new QueryMethods();
@@ -250,11 +253,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
 
-        if (id == R.id.results) {
-            helperMethods.replaceFragment(R.id.container, resultsFragment);
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -282,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return locationsArrayList;
     }
 
-    public ArrayList<DataObject> getTestsArrayList() {
+    public ArrayList<DataObject> getTestsFitlteredArrayList() {
 
         return queryMethods.getTestsArrayList();
     }
