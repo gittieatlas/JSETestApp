@@ -29,6 +29,8 @@ public class ResultsFragment extends Fragment implements RecyclerViewAdapter.MyC
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private static String LOG_TAG = "RecyclerViewActivity";
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +74,18 @@ public class ResultsFragment extends Fragment implements RecyclerViewAdapter.MyC
         super.onResume();
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
+//            @Override
+//            public void onItemClick(int position, View v) {
+//                Log.i(LOG_TAG, " Clicked on Item " + position);
+//            }
+//        });
+//    }
+
+
     private ArrayList<DataObject> getDataSet() {
 
         return mainActivity.getTestsFitlteredArrayList();
@@ -88,10 +102,11 @@ public class ResultsFragment extends Fragment implements RecyclerViewAdapter.MyC
 
         fab.setOnClickListener(this);
     }
-    @Override
-         public void onClick(View view) {
 
-        mainActivity.showDialog("test","fab");
+    @Override
+    public void onClick(View view) {
+
+        mainActivity.showDialog("test", "fab");
     }
 
     public void setMainActivity(MainActivity mainActivity) {

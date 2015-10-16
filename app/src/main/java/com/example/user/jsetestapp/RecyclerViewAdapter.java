@@ -3,8 +3,11 @@ package com.example.user.jsetestapp;
 /**
  * Created by Rochel on 9/21/2015.
  */
+
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,16 +24,15 @@ public class RecyclerViewAdapter extends RecyclerView
         .DataObjectHolder> {
     private static String LOG_TAG = "RecyclerViewAdapter";
     private ArrayList<DataObject> mDataset;
-    private MyClickListener myClickListener;
+    private static MyClickListener myClickListener;
     public MainActivity mainActivity;
     Context mContext; //global
-    private MyInterface listener;
 
-    public RecyclerViewAdapter(Context context, ArrayList<DataObject> mDataset){
-        this.mContext = context;
-        this.mDataset=mDataset;
-        setMyClickListener(myClickListener);
-    }
+//    public RecyclerViewAdapter(Context context, ArrayList<DataObject> mDataset, MyClickListener myClickListener){
+//        this.mContext = context;
+//        this.mDataset=mDataset;
+//        this.myClickListener=myClickListener;
+//    }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -45,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            Context context= itemView.getContext();
+            //Context context= itemView.getContext();
             location = (TextView) itemView.findViewById(R.id.locationTextView);
             testDay = (TextView) itemView.findViewById(R.id.testDayTextView);
             testTime = (TextView) itemView.findViewById(R.id.testTimeTextView);
@@ -53,29 +55,32 @@ public class RecyclerViewAdapter extends RecyclerView
             testDedlineTitle = (TextView) itemView.findViewById(R.id.testDealineTitleTextView);
             testDedlineDetails = (TextView) itemView.findViewById(R.id.testDealineDetailsTextView);
             imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
-            imageButton.setOnClickListener(new View.OnClickListener() {
+//          imageButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    //Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+//                    //MainActivity.callJse();
+//                }
+//            });
 
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
-                    //MainActivity.callJse();
-                }
-            });
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            listener.foo();
-            //((MainActivity)mContext).callJse();
-            //mainActivity.callJse();
-//            if (myClickListener !=null){
-//                myClickListener.onItemClick(getPosition(),v);
-//            }
             //myClickListener.onItemClick(getPosition(), v);
-           // Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+
+            // Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+
+            //((MainActivity)mContext).callJse();
+
+            //mainActivity.callJse();
+            //if (myClickListener !=null){
+            //myClickListener.onItemClick(getPosition(),v);
+            //}
         }
+
     }
 
     public void setMyClickListener(MyClickListener myClickListener) {
@@ -111,7 +116,6 @@ public class RecyclerViewAdapter extends RecyclerView
         notifyItemInserted(index);
     }
 
-
     public void deleteItem(int index) {
         mDataset.remove(index);
         notifyItemRemoved(index);
@@ -131,10 +135,5 @@ public class RecyclerViewAdapter extends RecyclerView
 
         this.mainActivity = mainActivity;
     }
-    public interface MyInterface{
-        public void foo();
-    }
-    public RecyclerViewAdapter(MyInterface listener){
-        this.listener = listener;
-    }
+
 }
