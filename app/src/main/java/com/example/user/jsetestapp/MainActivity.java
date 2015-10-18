@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_account_box_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_map_marker_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_bank_white_24dp));
 
         tabLayout.setOnTabSelectedListener(tabListener);
     }
