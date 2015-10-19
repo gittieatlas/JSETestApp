@@ -2,15 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+
     <item
-        android:id="@+id/update_profile"
+        android:id="@+id/register1"
         android:orderInCategory="100"
-        android:title="@string/menu_item_update_profile"
-        app:showAsAction="never"/>
+        android:title="Register 1"
+        app:showAsAction="never" />
     <item
-        android:id="@+id/log_out"
+        android:id="@+id/register2"
         android:orderInCategory="200"
-        android:title="@string/menu_item_log_out"
+        android:title="Register 2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/dashboard"
+        android:orderInCategory="300"
+        android:title="Dashboard"
         app:showAsAction="never" />
 
 </menu>

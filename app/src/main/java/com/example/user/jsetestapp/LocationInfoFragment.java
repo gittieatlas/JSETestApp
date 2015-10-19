@@ -24,7 +24,7 @@ public class LocationInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.location_info_fragment,
+        rootView = inflater.inflate(R.layout.fragment_location_info,
                 container, false);
 
         initializeViews(rootView);

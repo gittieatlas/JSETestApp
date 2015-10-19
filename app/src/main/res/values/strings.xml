@@ -1,13 +1,9 @@
 <resources>
-    <string name="app_name">JSETestApp</string>
+    <string name="app_name">JSE</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="test">This is a test</string>
-    <string name="test2">This is a second test</string>
-    <string name="test3">This is a third test</string>
 
-    <!-- login_fragment_fragment.xml, register1_fragment.xmlgment.xml, register2_fragment_fragment.xml, update_profile_fragment_fragment.xml controls-->
+    <!-- login_fragment_fragment.xml, fragment_register1.xmlgment.xml, register2_fragment_fragment.xml, update_profile_fragment_fragment.xml controls-->
     <string name="email">Email Address</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -29,7 +25,7 @@
     <string name="update_profile_right">UPDATE PROFILE</string>
     <string name="update_profile_left">CANCEL</string>
 
-    <!-- contact_fragment.xmlgment.xml controls-->
+    <!-- fragment_contact.xmlgment.xml controls-->
     <string name="jse_office">JSE OFFICE</string>
     <string name="jse_phone_number">732-888-8978</string>
     <string name="schedule_test">SCHEDULE A TEST</string>
@@ -46,7 +42,7 @@
     <string name="location_phone_number">718-789-6548</string>
     <string name="hours_title">HOURS</string>
 
-    <!-- search_fragment.xmlgment.xml controls-->
+    <!-- fragment_search.xmlgment.xml controls-->
     <string name="searchButton">SEARCH</string>
     <string name="registration_date_range">Registration is currently open from %1$s to %2$s</string>
 
@@ -66,12 +62,14 @@
 
 
     <!-- Toolbar Titles-->
-    <string name="toolbar_title_contact">Contact</string>
+    <string name="toolbar_title_contact">About JSE</string>
     <string name="toolbar_title_dashboard">Dashboard</string>
     <string name="toolbar_title_libraries">Libraries</string>
-    <string name="toolbar_title_login">Welcome to JSE</string>
-    <string name="toolbar_title_register">Create Account</string>
-    <string name="toolbar_title_tests">Tests</string>
+    <string name="toolbar_title_login">Welcome to JSE - Login</string>
+    <string name="toolbar_title_register1">Create an Account - Step 1</string>
+    <string name="toolbar_title_register2">Create an Account - Step 2</string>
+    <string name="toolbar_title_search">Search for a Test</string>
+    <string name="toolbar_title_results">Search Results</string>
     <string name="toolbar_title_update_profile">Update Profile</string>
 
     <!-- Menu Item Titles-->

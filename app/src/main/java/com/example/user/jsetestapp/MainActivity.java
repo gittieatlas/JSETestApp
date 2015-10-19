@@ -1,9 +1,12 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,10 +18,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     //Controls
     TabLayout tabLayout;
@@ -49,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<DataObject> testsFitlteredArrayList;
 
     ArrayList<Test> testsArrayList;
-    boolean isJseMember = false;
+    User user = new User();
+    boolean isJseMember = false;// flag for Internet connection status
 
 
     @Override
@@ -57,25 +62,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initializeViews();
         createFragmentsActivitiesClasses();
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
-        initializeViews();
         helperMethods.addFragment(R.id.container, dashboardFragment);
 
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpTestsArrayList();
 
 
+        loadSavedPreferences();
 
-        //setUpSpinner();
     }
 
+    private void loadSavedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
+        // providing the key for the value you want, and optionally a default value to return if the key isn't present.
+        user.setFirstName(sharedPreferences.getString("first_name", null));
+        user.setLastName(sharedPreferences.getString("last_name", null));
+        user.setEmail(sharedPreferences.getString("email", null));
+        user.setPassword(sharedPreferences.getString("password", null));
+        user.setSsn(sharedPreferences.getString("ssn", null));
+        user.setDefaultLocation(sharedPreferences.getString("default_location", "COPE"));
+      //  user.setDob(sharedPreferences.getString("dob", "COPE")); covert back to DateTime
+        user.setGender(sharedPreferences.getString("gender", "2"));
+        user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
+        Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
+    }
+
+
+
     private void initializeViews() {
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
         //tabLayoutLinearLayout.removeAllViews(); //for Login pages
-
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
     }
@@ -83,12 +108,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void createFragmentsActivitiesClasses() {
         loginFragment = new LoginFragment();
         loginFragment.setMainActivity(this);
-        register1Fragment = new Register1Fragment();
-        register1Fragment.setMainActivity(this);
-        register2Fragment = new Register2Fragment();
-        register2Fragment.setMainActivity(this);
-        updateProfileFragment = new UpdateProfileFragment();
-        updateProfileFragment.setMainActivity(this);
         contactFragment = new ContactFragment();
         contactFragment.setMainActivity(this);
         searchFragment = new SearchFragment();
@@ -109,30 +128,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar); // Set navigation icon
-        //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_left_white_24dp));
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {// Navigation onClickLister
-//            @Override
-//            public void onClick(View v) {
-//                // finish(); // or your action here
-//                Snackbar
-//                        .make(findViewById(R.id.rootLayout),
-//                                "This is the snackbar with no action",
-//                                Snackbar.LENGTH_LONG)
-//                        .setAction(null, this)
-//                        .show(); // Do not forget to show!
-//            }
-//        });
-
-        toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.getMenu().clear(); // Clear toolbar icons
-        toolbar.setTitle("JSE");// Set title
+        toolbar.setTitle(R.string.app_name);// Set title
         toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
+        // Set navigation icon
+        toolbar.setNavigationIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {// Navigation onClickLister
+            @Override
+            public void onClick(View v) {
+                if (toolbar.getTitle().toString().equals(getResources().getString(R.string.toolbar_title_results))) {
+
+                    Toast.makeText(MainActivity.this, "Toolbar icon pressed", Toast.LENGTH_LONG).show();
+                } // else nothing
+            }
+        });
     }
 
     private void setupTablayout() {
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_account_box_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_white_24dp));
@@ -179,33 +194,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-//    private void setUpSpinner() {
-//        // you need to have a list of data that you want the spinner to display
-//        List<String> spinnerArray =  new ArrayList<String>();
-//        spinnerArray.add("item1");
-//        spinnerArray.add("item2");
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        Spinner sItems = (Spinner) findViewById(R.id.spinner);
-//        sItems.setAdapter(adapter);
-//    }
-
-    @Override
-    public void onClick(View view) {
-
-//        if (view.getId() == R.id.fab) {
-//            Snackbar
-//                    .make(findViewById(R.id.rootLayout),
-//                            "This is Snackbar",
-//                            Snackbar.LENGTH_LONG)
-//                    .setAction("Action", this)
-//                    .show(); // Do not forget to show!
-//        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -222,34 +210,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.log_out) {
-            getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("fragment", "log_out");
+            startActivity(intent);
 
-            Snackbar
-                    .make(findViewById(R.id.rootLayout),
-                            "You've been logged out",
-                            Snackbar.LENGTH_LONG)
-                    .setAction(null, this)
-                    .show(); // Do not forget to show!
+            Toast.makeText(this, "You've been logged out!", Toast.LENGTH_LONG).show();
             return true;
 
         }
+
         if (id == R.id.update_profile) {
-            helperMethods.replaceFragment(R.id.container, updateProfileFragment);
-            return true;
-        }
-
-        if (id == R.id.register1) {
-            helperMethods.replaceFragment(R.id.container, register1Fragment);
-            return true;
-        }
-
-        if (id == R.id.register2) {
-            helperMethods.replaceFragment(R.id.container, register2Fragment);
-            return true;
-        }
-
-        if (id == R.id.login) {
-            helperMethods.replaceFragment(R.id.container, loginFragment);
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("fragment", "update_profile");
+            startActivity(intent);
             return true;
         }
 
@@ -265,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollView.setMinimumHeight(height);
     }
 
@@ -302,5 +274,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Toast.makeText(, "ITEM PRESSED FROM MAIN ACTIVITY", Toast.LENGTH_SHORT).show();
 
     }
+
 
 }

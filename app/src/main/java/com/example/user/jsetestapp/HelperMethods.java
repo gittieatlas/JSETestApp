@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -26,12 +25,12 @@ public class HelperMethods extends Activity {
 
     public void replaceFragment(int container, Fragment fragment) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).commit();
+        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(null).commit();
     }
 
     public void addFragment(int container, Fragment fragment) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).commit();
+        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(null).commit();
     }
 
     public void setMainActivity(MainActivity mainActivity) {
@@ -95,4 +94,7 @@ public class HelperMethods extends Activity {
 //                .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com");
 //        startActivity(intent);
 //    }
+
+
+
 }

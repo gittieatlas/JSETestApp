@@ -18,6 +18,7 @@ public class LoginFragment extends Fragment {
 
     //Activities
     MainActivity mainActivity;
+    LoginActivity loginActivity;
 
     //Fragments
 
@@ -29,7 +30,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.login_fragment,
+        rootView = inflater.inflate(R.layout.fragment_login,
                 container, false);
 
         initializeViews(rootView);
@@ -38,7 +39,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.toolbar_title_login);
+        //loginActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
 
@@ -65,5 +66,10 @@ public class LoginFragment extends Fragment {
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
+    }
+
+    public void setLoginActivity(LoginActivity loginActivity) {
+
+        this.loginActivity = loginActivity;
     }
 }
