@@ -41,8 +41,8 @@ public class MyDecoration extends ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                State state) {
-        //outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
         outRect.set(0, 0, 0, mDivider.getIntrinsicWidth());
+     //  outRect.set(0, 0, 0, mDivider.getIntrinsicWidth());
     }
 
 }

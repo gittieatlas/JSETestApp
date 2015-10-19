@@ -5,12 +5,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -64,31 +64,30 @@ public class ResultsFragment extends Fragment implements MyItemClickListener, My
     /**
      * ³õÊ¼»¯RecylerView
      */
-    private void initView(){
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.my_recycler_view);
+    private void initView() {
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
         mRecyclerView.setHasFixedSize(true);
+//
+//        MyLayoutManager manager = new MyLayoutManager(mainActivity.getApplicationContext());
+//        manager.setOrientation(LinearLayout.VERTICAL);//Ä¬ÈÏÊÇLinearLayout.VERTICAL
 
-        MyLayoutManager manager = new MyLayoutManager(mainActivity.getApplicationContext());
-        manager.setOrientation(LinearLayout.VERTICAL);//Ä¬ÈÏÊÇLinearLayout.VERTICAL
-        mRecyclerView.setLayoutManager(manager);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mainActivity.getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    private void initData(){
-//        this.mData = new ArrayList<DataObject>();
-//        for(int i=0;i<20;i++){
-//            MyItemBean bean = new MyItemBean();
-//            bean.tv = "Xmy"+i;
-//            mData.add(bean);
-//        }
+    private void initData() {
         this.mAdapter = new MyAdapter(getDataSet());
         this.mRecyclerView.setAdapter(mAdapter);
-        RecyclerView.ItemDecoration decoration = new MyDecoration(mainActivity.getApplicationContext());
-        this.mRecyclerView.addItemDecoration(decoration);
+        //RecyclerView.ItemDecoration decoration = new MyDecoration(mainActivity.getApplicationContext());
+       // this.mRecyclerView.addItemDecoration(decoration);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         this.mAdapter.setOnItemClickListener(this);
         this.mAdapter.setOnItemLongClickListener(this);
-       this.mAdapter.setOnItemImageClickListener(this);
+        this.mAdapter.setOnItemImageClickListener(this);
 
 
     }
@@ -98,7 +97,7 @@ public class ResultsFragment extends Fragment implements MyItemClickListener, My
      */
     @Override
     public void onItemClick(View view, int postion) {
-      //  MyItemBean bean = mData.get(postion);
+        //  MyItemBean bean = mData.get(postion);
         //if(bean != null){
         //Toast.makeText(mainActivity.getApplicationContext(), "item clicked", Toast.LENGTH_SHORT).show();
 
@@ -107,10 +106,10 @@ public class ResultsFragment extends Fragment implements MyItemClickListener, My
 
     @Override
     public void onItemLongClick(View view, int postion) {
-      //  MyItemBean bean = mData.get(postion);
+        //  MyItemBean bean = mData.get(postion);
 //        if(bean != null){
-            Toast.makeText(mainActivity.getApplicationContext(), "Long Click ", Toast.LENGTH_SHORT).show();
-       // }
+        Toast.makeText(mainActivity.getApplicationContext(), "Long Click ", Toast.LENGTH_SHORT).show();
+        // }
     }
 
     @Override
