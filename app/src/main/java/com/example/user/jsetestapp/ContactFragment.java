@@ -18,9 +18,6 @@ public class ContactFragment extends Fragment {
 
 
     //Variables
-    private static final String url = "jdbc:mysql://localhost:3306/test";
-    private static final String user = "root";
-    private static final String pass = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -34,7 +31,7 @@ public class ContactFragment extends Fragment {
 
     private void initializeViews(View rootView) {
         mainActivity.setToolbarTitle(R.string.toolbar_title_contact);
-        mainActivity.showDialog("CALL","Call JSE");
+       // mainActivity.showDialog("CALL","Call JSE");
 
     }
 

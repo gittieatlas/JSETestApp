@@ -1,14 +1,18 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class LibrariesFragment extends Fragment {
 
@@ -23,8 +27,9 @@ public class LibrariesFragment extends Fragment {
     //Fragments
     LocationInfoFragment locationInfoFragment;
     HelperMethods helperMethods;
-    //Variables
 
+    //Variables
+    ListView lvDetail;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -33,20 +38,36 @@ public class LibrariesFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_libraries,
                 container, false);
 
+        locationInfoFragment = new LocationInfoFragment();
+        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
+
         initializeViews(rootView);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
+
+
+        setupListView();
         findTestButton.setOnClickListener(findTestButtonListener);
 
         return rootView;
     }
 
     private void initializeViews(View rootView) {
-        locationInfoFragment = new LocationInfoFragment();
-        //helperMethods.replaceFragment(R.id.librariesContainer, locationInfoFragment);
-        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
-        mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         bindSpinnerData();
+    }
+
+    private void setupListView() {
+
+        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
+        Context context = getActivity().getApplicationContext();
+        lvDetail.setAdapter(new MyBaseAdapter(context, getDataSet()));
+    }
+
+    private ArrayList<HoursDataObject> getDataSet() {
+
+        return mainActivity.getHoursFilteredArrayList();
+
     }
 
     OnClickListener findTestButtonListener = new OnClickListener() {

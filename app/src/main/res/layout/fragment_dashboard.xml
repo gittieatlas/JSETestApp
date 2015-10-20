@@ -34,11 +34,12 @@
         <ListView
             android:id="@+id/libraryHoursListView"
             android:layout_width="match_parent"
-            android:layout_marginTop="32dp"
-            android:clickable="true"
             android:scrollbars="none"
             android:layout_height="300dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/default_margin"
+            android:dividerHeight="0dp"
+            android:divider="@null"/>
         <View
             style="@style/App_Divider"
             android:layout_marginTop="@dimen/default_margin" />

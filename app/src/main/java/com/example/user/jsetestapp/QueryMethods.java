@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class QueryMethods extends Activity {
 
@@ -61,7 +60,7 @@ public class QueryMethods extends Activity {
 
     public ArrayList<DataObject> getTestsArrayList() {
 
-        mainActivity.testsFitlteredArrayList = new ArrayList<DataObject>();
+        mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
 
         for (Test test : mainActivity.testsArrayList) {
             //if test.Gender == user.gender then do...
@@ -72,10 +71,10 @@ public class QueryMethods extends Activity {
                     "Registration Deadline: ",
                     test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
 
-            mainActivity.testsFitlteredArrayList.add(obj);
+            mainActivity.testsFilteredArrayList.add(obj);
         }
 
-        return mainActivity.testsFitlteredArrayList;
+        return mainActivity.testsFilteredArrayList;
     }
 
 
@@ -108,7 +107,7 @@ public class QueryMethods extends Activity {
 
     public void setUpTestsArrayList() {
 
-        mainActivity.testsFitlteredArrayList = new ArrayList<DataObject>();
+        mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
         mainActivity.testsArrayList = new ArrayList<Test>();
 
 

@@ -1,139 +1,57 @@
 package com.example.user.jsetestapp;
 
-/**
- * Created by Rochel on 9/21/2015.
- */
-
-import android.app.FragmentManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView
-        .Adapter<RecyclerViewAdapter
-        .DataObjectHolder> {
-    private static String LOG_TAG = "RecyclerViewAdapter";
-    private ArrayList<DataObject> mDataset;
-    private static MyClickListener myClickListener;
-    public MainActivity mainActivity;
-    Context mContext; //global
+public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
 
-//    public RecyclerViewAdapter(Context context, ArrayList<DataObject> mDataset, MyClickListener myClickListener){
-//        this.mContext = context;
-//        this.mDataset=mDataset;
-//        this.myClickListener=myClickListener;
-//    }
+    private ArrayList<DataObject> arrayListDataObject;
 
-    public class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View
-            .OnClickListener {
-        TextView location;
-        TextView testDay;
-        TextView testTime;
-        TextView testDate;
-        TextView testDedlineTitle;
-        TextView testDedlineDetails;
-        ImageButton imageButton;
+    private RecyclerViewItemClickListener itemClickListener;
+    private RecyclerViewItemImageClickListener itemImageClickListener;
 
-        public DataObjectHolder(View itemView) {
-            super(itemView);
-            //Context context= itemView.getContext();
-            location = (TextView) itemView.findViewById(R.id.locationTextView);
-            testDay = (TextView) itemView.findViewById(R.id.testDayTextView);
-            testTime = (TextView) itemView.findViewById(R.id.testTimeTextView);
-            testDate = (TextView) itemView.findViewById(R.id.testDateTextView);
-            testDedlineTitle = (TextView) itemView.findViewById(R.id.testDealineTitleTextView);
-            testDedlineDetails = (TextView) itemView.findViewById(R.id.testDealineDetailsTextView);
-            imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
-//          imageButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    //Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
-//                    //MainActivity.callJse();
-//                }
-//            });
-
-            Log.i(LOG_TAG, "Adding Listener");
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            //myClickListener.onItemClick(getPosition(), v);
-
-            // Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
-
-            //((MainActivity)mContext).callJse();
-
-            //mainActivity.callJse();
-            //if (myClickListener !=null){
-            //myClickListener.onItemClick(getPosition(),v);
-            //}
-        }
-
-    }
-
-    public void setMyClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
-    }
-
-    public RecyclerViewAdapter(ArrayList<DataObject> myDataset) {
-        mDataset = myDataset;
+    public RecyclerViewAdapter(ArrayList<DataObject> data) {
+        this.arrayListDataObject = data;
     }
 
     @Override
-    public DataObjectHolder onCreateViewHolder(ViewGroup parent,
-                                               int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view_item, parent, false);
+    public void onBindViewHolder(RecyclerViewViewHolder holder, int position) {
 
-        DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
-        return dataObjectHolder;
+        holder.location.setText(arrayListDataObject.get(position).getmText1());
+        holder.testDay.setText(arrayListDataObject.get(position).getmText2());
+        holder.testTime.setText(arrayListDataObject.get(position).getmText3());
+        holder.testDate.setText(arrayListDataObject.get(position).getmText4());
+        holder.testDeadlineTitle.setText(arrayListDataObject.get(position).getmText5());
+        holder.testDeadlineDetails.setText(arrayListDataObject.get(position).getmText6());
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.location.setText(mDataset.get(position).getmText1());
-        holder.testDay.setText(mDataset.get(position).getmText2());
-        holder.testTime.setText(mDataset.get(position).getmText3());
-        holder.testDate.setText(mDataset.get(position).getmText4());
-        holder.testDedlineTitle.setText(mDataset.get(position).getmText5());
-        holder.testDedlineDetails.setText(mDataset.get(position).getmText6());
+    public RecyclerViewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
+        RecyclerViewViewHolder vh = new RecyclerViewViewHolder(itemView, itemClickListener, itemImageClickListener);
+        return vh;
     }
 
-    public void addItem(DataObject dataObj, int index) {
-        mDataset.add(dataObj);
-        notifyItemInserted(index);
+    /**
+     * Listeners
+     *
+     * @param listener
+     */
+    public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
+        this.itemClickListener = listener;
     }
 
-    public void deleteItem(int index) {
-        mDataset.remove(index);
-        notifyItemRemoved(index);
+    public void setOnItemImageClickListener(RecyclerViewItemImageClickListener listener) {
+        this.itemImageClickListener = listener;
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return arrayListDataObject.size();
     }
-
-    public interface MyClickListener {
-
-        public void onItemClick(int position, View v);
-    }
-
-    public void setMainActivity(MainActivity mainActivity) {
-
-        this.mainActivity = mainActivity;
-    }
-
 }

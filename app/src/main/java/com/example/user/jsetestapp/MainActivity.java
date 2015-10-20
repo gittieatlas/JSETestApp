@@ -32,29 +32,25 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout container;
 
     //Activities HelperClasses Classes;
-    DatabaseOperations databaseOperations;
     HelperMethods helperMethods;
     QueryMethods queryMethods;
 
     //Fragments
     LoginFragment loginFragment;
-    Register1Fragment register1Fragment;
-    Register2Fragment register2Fragment;
-    UpdateProfileFragment updateProfileFragment;
     ContactFragment contactFragment;
     SearchFragment searchFragment;
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
-    RecyclerViewAdapter recyclerViewAdapter;
 
     //Variables
     ArrayList<String> locationsArrayList;
-    ArrayList<DataObject> testsFitlteredArrayList;
-
+    ArrayList<DataObject> testsFilteredArrayList;
     ArrayList<Test> testsArrayList;
+    ArrayList<Hours> hoursArrayList;
+    ArrayList<HoursDataObject> hoursFilteredArrayList;
     User user = new User();
-    boolean isJseMember = false;// flag for Internet connection status
+    boolean isJseMember = false;
 
 
     @Override
@@ -71,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpTestsArrayList();
-
+        queryMethods.setUpHoursArrayList();
 
         loadSavedPreferences();
 
@@ -79,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadSavedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         //To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
         // providing the key for the value you want, and optionally a default value to return if the key isn't present.
         user.setFirstName(sharedPreferences.getString("first_name", null));
@@ -87,19 +84,17 @@ public class MainActivity extends AppCompatActivity {
         user.setPassword(sharedPreferences.getString("password", null));
         user.setSsn(sharedPreferences.getString("ssn", null));
         user.setDefaultLocation(sharedPreferences.getString("default_location", "COPE"));
-      //  user.setDob(sharedPreferences.getString("dob", "COPE")); covert back to DateTime
+        //  user.setDob(sharedPreferences.getString("dob", "COPE")); covert back to DateTime
         user.setGender(sharedPreferences.getString("gender", "2"));
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
+
         Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
     }
-
-
 
     private void initializeViews() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
-        //tabLayoutLinearLayout.removeAllViews(); //for Login pages
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -122,9 +117,6 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.setMainActivity(this);
         queryMethods = new QueryMethods();
         queryMethods.setMainActivity(this);
-//        recyclerViewAdapter = new RecyclerViewAdapter();
-//        recyclerViewAdapter.setMainActivity(this);
-
     }
 
     private void setupToolbar() {
@@ -151,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_account_box_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_bank_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_phone_white_24dp));
 
         tabLayout.setOnTabSelectedListener(tabListener);
     }
@@ -164,19 +156,15 @@ public class MainActivity extends AppCompatActivity {
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
                     helperMethods.replaceFragment(R.id.container, dashboardFragment);
-                    //replaceFragment(R.id.container, dashboardFragment);
                     break;
                 case 1:
                     helperMethods.replaceFragment(R.id.container, searchFragment);
-                    //replaceFragment(R.id.container, searchFragment);
                     break;
                 case 2:
                     helperMethods.replaceFragment(R.id.container, librariesFragment);
-                    //replaceFragment(R.id.container, librariesFragment);
                     break;
                 case 3:
                     helperMethods.replaceFragment(R.id.container, contactFragment);
-                    //replaceFragment(R.id.container, contactFragment);
                     break;
                 default:
                     break;
@@ -241,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setMinimumHeight(height);
     }
 
-    //adding stuff
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
         helperMethods.addDataToSpinner(arrayList, spinner, tag);
@@ -252,9 +239,14 @@ public class MainActivity extends AppCompatActivity {
         return locationsArrayList;
     }
 
-    public ArrayList<DataObject> getTestsFitlteredArrayList() {
+    public ArrayList<DataObject> getTestsFilteredArrayList() {
 
         return queryMethods.getTestsArrayList();
+    }
+
+    public ArrayList<HoursDataObject> getHoursFilteredArrayList() {
+
+        return queryMethods.getHoursArrayList();
     }
 
     public void showDialog(String title, String message) {
