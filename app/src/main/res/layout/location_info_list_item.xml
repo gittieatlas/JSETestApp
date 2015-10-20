@@ -19,13 +19,20 @@
             android:textColor="@color/secondary_text"/>
 
         <TextView
-            android:id="@+id/libraryHourTextView"
+            android:id="@+id/libraryOpeningTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/top_margin_large"
+            android:paddingLeft="@dimen/default_margin"
             android:text="@string/library_hour"
             android:textColor="@color/divider"/>
 
+        <TextView
+            android:id="@+id/libraryClosingTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_margin"
+            android:text="@string/library_hour"
+            android:textColor="@color/divider"/>
 
     </LinearLayout>
 
