@@ -1,19 +1,29 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ResultsFragment extends Fragment implements RecyclerViewAdapter.MyClickListener, View.OnClickListener {
+public class ResultsFragment extends Fragment implements MyItemClickListener, MyItemLongClickListener, MyItemImageClickListener {
+
+
+    private RecyclerView mRecyclerView;
+
+    private List<DataObject> mData;
+    private MyAdapter mAdapter;
+
 
     //Controls
     FloatingActionButton fab;
@@ -23,100 +33,130 @@ public class ResultsFragment extends Fragment implements RecyclerViewAdapter.MyC
 
     //Activities
     MainActivity mainActivity;
+    SearchFragment searchFragment;
 
     //Variables
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    private static String LOG_TAG = "RecyclerViewActivity";
+//    private RecyclerView mRecyclerView;
+//    private RecyclerView.Adapter mAdapter;
+//    private RecyclerView.LayoutManager mLayoutManager;
+//    private static String LOG_TAG = "RecyclerViewActivity";
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.results_fragment, container, false);
+        rootView = inflater.inflate(R.layout.fragment_results, container, false);
 
         initializeViews(rootView);
-        mainActivity.setToolbarTitle(R.string.toolbar_title_tests);
+        mainActivity.setToolbarTitle(R.string.toolbar_title_results);
         setupFab();
-        setUpRecyclerView();
+        //Set icon
+        mainActivity.toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_left_white_24dp));
+
+        initView();
+        initData();
+
+//        setUpRecyclerView();
 
         return rootView;
     }
 
-    private void setUpRecyclerView() {
-        mRecyclerView.setHasFixedSize(true);
+    /**
+     * ³õÊ¼»¯RecylerView
+     */
+    private void initView() {
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
-        mLayoutManager = new LinearLayoutManager(mainActivity.getApplicationContext());
+        mRecyclerView.setHasFixedSize(true);
+//
+//        MyLayoutManager manager = new MyLayoutManager(mainActivity.getApplicationContext());
+//        manager.setOrientation(LinearLayout.VERTICAL);//Ä¬ÈÏÊÇLinearLayout.VERTICAL
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mainActivity.getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerViewAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
-        //mAdapter.setMyClickListener(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void initData() {
+        this.mAdapter = new MyAdapter(getDataSet());
+        this.mRecyclerView.setAdapter(mAdapter);
+        //RecyclerView.ItemDecoration decoration = new MyDecoration(mainActivity.getApplicationContext());
+       // this.mRecyclerView.addItemDecoration(decoration);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        this.mAdapter.setOnItemClickListener(this);
+        this.mAdapter.setOnItemLongClickListener(this);
+        this.mAdapter.setOnItemImageClickListener(this);
 
 
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerItemDecoration(mainActivity.getApplicationContext(), LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(itemDecoration);
+    }
 
+    /**
+     * Item click
+     */
+    @Override
+    public void onItemClick(View view, int postion) {
+        //  MyItemBean bean = mData.get(postion);
+        //if(bean != null){
+        //Toast.makeText(mainActivity.getApplicationContext(), "item clicked", Toast.LENGTH_SHORT).show();
 
-        // Code to Add an item with default animation
-        //((RecyclerViewAdapter) mAdapter).addItem(obj, index);
-
-        // Code to remove an item with default animation
-        //((RecyclerViewAdapter) mAdapter).deleteItem(index);
+        mainActivity.showDialog("CALL", "Call JSE");
     }
 
     @Override
-    public void onResume() {
-
-        super.onResume();
+    public void onItemLongClick(View view, int postion) {
+        //  MyItemBean bean = mData.get(postion);
+//        if(bean != null){
+        Toast.makeText(mainActivity.getApplicationContext(), "Long Click ", Toast.LENGTH_SHORT).show();
+        // }
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
-//            @Override
-//            public void onItemClick(int position, View v) {
-//                Log.i(LOG_TAG, " Clicked on Item " + position);
-//            }
-//        });
-//    }
+    @Override
+    public void onImageItemClick(View view, int postion) {
+        Toast.makeText(mainActivity.getApplicationContext(), "Image Click ", Toast.LENGTH_SHORT).show();
+    }
 
 
     private ArrayList<DataObject> getDataSet() {
-
         return mainActivity.getTestsFitlteredArrayList();
-
     }
 
     private void initializeViews(View rootView) {
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
     }
+
 
     private void setupFab() {
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
-        fab.setOnClickListener(this);
+        fab.setOnClickListener(fabListener);
     }
 
-    @Override
-    public void onClick(View view) {
+    OnClickListener fabListener = new OnClickListener() {
 
-        mainActivity.showDialog("test", "fab");
-    }
+        @Override
+        public void onClick(View v) {
+
+            mainActivity.showDialog("test", "fab");
+        }
+    };
 
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
     }
 
-
     @Override
-    public void onItemClick(int position, View v) {
-        Toast.makeText(v.getContext(), "ITEM PRESSED", Toast.LENGTH_SHORT).show();
+    public void onStop() {
+
+        super.onStop();
+        // Set navigation icon
+        mainActivity.toolbar.setNavigationIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+
+
     }
+
+
 }

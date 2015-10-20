@@ -13,7 +13,7 @@ public class Register1Fragment extends Fragment {
     View rootView;
 
     //Activities
-    MainActivity mainActivity;
+    LoginActivity loginActivity;
 
     //Fragments
 
@@ -25,7 +25,7 @@ public class Register1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.register1_fragment,
+        rootView = inflater.inflate(R.layout.fragment_register1,
                 container, false);
 
         initializeViews(rootView);
@@ -35,7 +35,7 @@ public class Register1Fragment extends Fragment {
 
     private void initializeViews(View rootView) {
 
-        mainActivity.setToolbarTitle(R.string.toolbar_title_register);
+        loginActivity.setToolbarTitle(R.string.toolbar_title_register1);
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
 
@@ -43,9 +43,8 @@ public class Register1Fragment extends Fragment {
         buttonRight.setEnabled(false);
     }
 
+    public void setLoginActivity(LoginActivity loginActivity) {
 
-    public void setMainActivity(MainActivity mainActivity) {
-
-        this.mainActivity = mainActivity;
+        this.loginActivity = loginActivity;
     }
 }

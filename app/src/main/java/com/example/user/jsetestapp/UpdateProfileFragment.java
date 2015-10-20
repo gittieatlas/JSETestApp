@@ -17,7 +17,7 @@ public class UpdateProfileFragment extends Fragment {
 
     //Activities
     MainActivity mainActivity;
-
+LoginActivity loginActivity;
     //Fragments
 
 
@@ -28,7 +28,7 @@ public class UpdateProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.update_profile_fragment,
+        rootView = inflater.inflate(R.layout.fragment_update_profile,
                 container, false);
 
         initializeViews(rootView);
@@ -37,7 +37,7 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.toolbar_title_update_profile);
+        loginActivity.setToolbarTitle(R.string.toolbar_title_update_profile);
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
 
@@ -64,8 +64,8 @@ public class UpdateProfileFragment extends Fragment {
     }
 
 
-    public void setMainActivity(MainActivity mainActivity) {
+    public void setLoginActivity(LoginActivity loginActivity) {
 
-        this.mainActivity = mainActivity;
+        this.loginActivity = loginActivity;
     }
 }

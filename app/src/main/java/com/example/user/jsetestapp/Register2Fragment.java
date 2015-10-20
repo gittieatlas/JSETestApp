@@ -16,7 +16,7 @@ public class Register2Fragment extends Fragment {
     Spinner genderSpinner, locationsSpinner;
 
     //Activities
-    MainActivity mainActivity;
+    LoginActivity loginActivity;
 
     //Fragments
 
@@ -28,7 +28,7 @@ public class Register2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.register2_fragment,
+        rootView = inflater.inflate(R.layout.fragment_register2,
                 container, false);
 
         initializeViews(rootView);
@@ -37,7 +37,7 @@ public class Register2Fragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mainActivity.setToolbarTitle(R.string.toolbar_title_register);
+        loginActivity.setToolbarTitle(R.string.toolbar_title_register2);
 
         Button buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
 
@@ -47,6 +47,7 @@ public class Register2Fragment extends Fragment {
         genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
         bindSpinnerData();
+
 
     }
 
@@ -65,9 +66,9 @@ public class Register2Fragment extends Fragment {
 
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
+    public void setLoginActivity(LoginActivity loginActivity) {
 
-        this.mainActivity = mainActivity;
+        this.loginActivity = loginActivity;
     }
 
 }
