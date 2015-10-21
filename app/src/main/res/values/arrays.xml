@@ -23,4 +23,8 @@
         <item>Friday</item>
     </string-array>
 
+    <string-array name="addresses">
+        <item>info@jseoffice.com</item>
+    </string-array>
+
 </resources>

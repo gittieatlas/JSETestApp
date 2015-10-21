@@ -2,18 +2,15 @@ package com.example.user.jsetestapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 
 /**
  * Created by Rochel on 10/9/2015.
  */
 public class MyDialogFragment extends android.app.DialogFragment {
-MainActivity mainActivity;
+    MainActivity mainActivity;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
@@ -23,7 +20,7 @@ MainActivity mainActivity;
         String positiveButton = getArguments().getString("positiveButton");
         String negativeButton = getArguments().getString("negativeButton");
         int icon = getArguments().getInt("icon");
-        final String TAG_LISTENER = getArguments().getString("tag_listener");
+        final String TAG_LISTENER = getArguments().getString("tagListener");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
@@ -33,7 +30,7 @@ MainActivity mainActivity;
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                 //((MainActivity)getActivity()).helperMethods.positiveButtonOnClickListener(TAG_LISTENER);
+                ((MainActivity) getActivity()).helperMethods.positiveButtonOnClickListener(TAG_LISTENER);
 
             }
 
@@ -42,12 +39,12 @@ MainActivity mainActivity;
         builder.setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               // dismiss();
-               //((MainActivity)getActivity()).helperMethods.negativeButtonOnClickListener(TAG_LISTENER);
+                // dismiss();
+                ((MainActivity) getActivity()).helperMethods.negativeButtonOnClickListener(TAG_LISTENER);
             }
         });
 
-//            builder.setThirdButton(positiveButton, new DialogInterface.OnClickListener() {
+//            builder.setNeutralButton(positiveButton, new DialogInterface.OnClickListener() {
 //                @Override
 //                public void onClick(DialogInterface dialog, int which) {
 //
@@ -55,6 +52,7 @@ MainActivity mainActivity;
 
         return builder.create();
     }
+
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;

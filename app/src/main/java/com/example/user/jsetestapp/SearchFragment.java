@@ -9,7 +9,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -84,13 +83,19 @@ public class SearchFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //TODO pass to method that will query and then update araay and then notify data set changed
-            String searchCriteriaLocation = locationsSpinner.getSelectedItem().toString();
-            int searchCriteriaDayOfWeek = daysOfWeekSpinner.getSelectedItemPosition();
-            Toast.makeText(mainActivity.getApplicationContext(), searchCriteriaLocation + " " + searchCriteriaDayOfWeek, Toast.LENGTH_LONG).show();
-            //Change fragment
-            mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
-        }
+            //TODO pass to method that will query and then update array and then notify data set changed
+
+        String searchCriteriaLocation = locationsSpinner.getSelectedItem().toString();
+        if (searchCriteriaLocation.equals("Location")) searchCriteriaLocation = null;
+
+        String searchCriteriaDayOfWeek = daysOfWeekSpinner.getSelectedItem().toString();
+        if (searchCriteriaDayOfWeek.equals("Day of Week")) searchCriteriaDayOfWeek = null;
+        //Toast.makeText(mainActivity.getApplicationContext(), searchCriteriaLocation + " " + searchCriteriaDayOfWeek, Toast.LENGTH_LONG).show();
+        mainActivity.filterTestsArray(searchCriteriaLocation, searchCriteriaDayOfWeek);
+
+        //Change fragment
+        mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
+    }
     };
 
     public void setMainActivity(MainActivity mainActivity) {

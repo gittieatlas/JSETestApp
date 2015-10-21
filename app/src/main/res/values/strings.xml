@@ -25,17 +25,20 @@
     <string name="update_profile_right">UPDATE PROFILE</string>
     <string name="update_profile_left">CANCEL</string>
 
-    <!-- fragment_contact.xmlgment.xml controls-->
+    <!-- fragment_contact.xml controls-->
     <string name="jse_office">JSE OFFICE</string>
     <string name="jse_phone_number">732-888-8978</string>
     <string name="schedule_test">SCHEDULE A TEST</string>
     <string name="schedule_test_phone_number">800-989-6985</string>
+    <string name="email_address">EMAIL ADDRESS</string>
     <string name="jse_email_address">info@jseoffice.com</string>
     <string name="office_hours">OFFICE HOURS</string>
     <string name="jse_office_hours_mon_thurs">Monday - Thursday</string>
     <string name="jse_office_hours_friday">Friday</string>
     <string name="jse_office_hours_mon_thurs_hours">9:00 AM - 5:00 PM</string>
     <string name="jse_office_hours_friday_hours">9:00 AM - 2:00 PM</string>
+    <string name="jse_office_email_subject">Contact JSE Android App</string>
+
 
     <!-- location_info_fragment_fragment.xml controls-->
     <string name="location_address">1818 18th Ave. Brooklyn, NY 11204</string>

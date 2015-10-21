@@ -1,11 +1,14 @@
 package com.example.user.jsetestapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.os.Bundle;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -51,18 +54,6 @@ public class HelperMethods extends Activity {
         else spinner.setSelection(0);
     }
 
-    public void showMyDialog(String title, String message) {
-        number = getNumber();
-        FragmentManager fm = mainActivity.getFragmentManager();
-        MyDialogFragment dialogFragment = new MyDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("message", message);
-        bundle.putString("number", number);
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(fm, "Sample Fragment");
-    }
-
     public String getNumber() {
         if (mainActivity.isJseMember) return number = "7328148432";
         return "7328148430";
@@ -95,6 +86,100 @@ public class HelperMethods extends Activity {
 //        startActivity(intent);
 //    }
 
+    /**
+     * Function to send email with an intent
+     *
+     * @param addresses - array of email addresses
+     * @param subject   - subject line of email
+     */
+    public void composeEmail(String[] addresses, String subject) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(mainActivity.getApplicationContext().getPackageManager()) != null) {
+            mainActivity.doIntent(intent);
+        } else {
+            Toast.makeText(mainActivity.getApplicationContext(), "No email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 
+
+    /**
+     * Function to display simple Alert Dialog
+     *
+     * @param title          - alert dialog title
+     * @param message        - alert message
+     * @param icon           - drawable for icon
+     * @param positiveButton - text for positive button
+     * @param negativeButton - text for negative button
+     * @param TAG_LISTENER   - tag to pass through to listener method
+     */
+    public void showAlertDialog(String title, String message, int icon, String positiveButton, String negativeButton, final String TAG_LISTENER) {
+        AlertDialog alertDialog = new AlertDialog.Builder(mainActivity.getContext()).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(title);
+
+        // Setting Dialog Message
+        alertDialog.setMessage(message);
+
+        // Setting alert dialog icon
+        alertDialog.setIcon(icon);
+
+        // Setting Positive Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, positiveButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                positiveButtonOnClickListener(TAG_LISTENER);
+            }
+        });
+
+        // Setting Negative Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, negativeButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                negativeButtonOnClickListener(TAG_LISTENER);
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    public void positiveButtonOnClickListener(String TAG_LISTENER) {
+        switch (TAG_LISTENER) {
+
+            case "schedule_test": {
+                // TODO add method to remove dashes from string
+                //callIntent(getResources().getString(R.string.schedule_test_phone_number));
+                callIntent("732-121-1212");
+                break;
+            }
+
+            case "call_jse_during_non_office_hours": {
+                // TODO set calendar
+
+                break;
+            }
+
+            case "call_jse_during_office_hours": {
+                // TODO add method to remove dashes from string
+                callIntent("732-898-9898");
+                break;
+            }
+        }
+    }
+
+    public void negativeButtonOnClickListener(String TAG_LISTENER) {
+
+    }
+
+    private void callIntent(String number) {
+        Uri call = Uri.parse("tel:" + number);
+        Intent intent = new Intent(Intent.ACTION_CALL, call);
+        mainActivity.doIntent(intent);
+    }
 
 }

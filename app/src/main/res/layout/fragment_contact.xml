@@ -9,37 +9,68 @@
     android:paddingTop="@dimen/default_margin"
     tools:context=".contactFragment">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/jse_office"
-        android:textColor="@color/primary" />
+        android:id="@+id/officeNumberTextViews"
+        android:clickable="true" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/jse_phone_number"
-        android:textColor="@color/secondary_text" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/jse_office"
+            android:textColor="@color/primary" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:text="@string/schedule_test"
-        android:textColor="@color/primary" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/jse_phone_number"
+            android:textColor="@color/secondary_text"/>
+    </LinearLayout>
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/schedule_test_phone_number"
-        android:textColor="@color/secondary_text" />
+        android:id="@+id/scheduleTestNumberTextViews"
+        android:clickable="true" >
 
-    <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/schedule_test"
+            android:textColor="@color/primary" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule_test_phone_number"
+            android:textColor="@color/secondary_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:text="@string/jse_email_address"
-        android:textColor="@color/secondary_text" />
+        android:id="@+id/emailAddressTextViews"
+        android:clickable="true" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/email_address"
+            android:textColor="@color/primary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/jse_email_address"
+            android:textColor="@color/secondary_text"/>
+    </LinearLayout>
 
     <View
         style="@style/App_Divider"
@@ -104,15 +135,6 @@
     <View
         style="@style/App_Divider"
         android:layout_marginTop="@dimen/default_margin" />
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textColor="@color/secondary_text"
-        android:id="@+id/testJDBC" />
-
 
 </LinearLayout>
 

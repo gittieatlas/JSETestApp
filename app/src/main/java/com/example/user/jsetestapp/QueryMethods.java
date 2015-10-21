@@ -41,9 +41,9 @@ public class QueryMethods extends Activity {
     // JSON Node names - hours
     private static final String TAG_HOURS = "hours";
     private static final String TAG_LIBRARY_LOCATION = "name";
-    private static final String TAG_DAY_OF_WEEK= "dayOfWeek";
-    private static final String TAG_OPENING_TIME= "openingTime";
-    private static final String TAG_DURATION= "duration";
+    private static final String TAG_DAY_OF_WEEK = "dayOfWeek";
+    private static final String TAG_OPENING_TIME = "openingTime";
+    private static final String TAG_DURATION = "duration";
 
     // locationsJsonArray JSONArray
     JSONArray locationsJsonArray = null;
@@ -122,6 +122,78 @@ public class QueryMethods extends Activity {
 
         // Calling async task to get json
         new GetHours().execute();
+    }
+
+    public void filterTestsArray(String location, String dayOfWeek) {
+//        if (location.equals(null) && dayOfWeek.equals(null)) {
+//            filter();
+//        } else if (!location.equals(null) && dayOfWeek.equals(null)) {
+//            filterByLocation(location);
+//        } else if (location.equals(null) && !dayOfWeek.equals(null)) {
+//            filterByDayOfWeek(dayOfWeek);
+//        } else if (!location.equals(null) && !dayOfWeek.equals(null)) {
+//            filterByLocationAndDayOfWeek(location, dayOfWeek);
+//        }
+        filter();
+
+    }
+
+    public void filter() {
+        for (Test test : mainActivity.testsArrayList) {
+            //if test.Gender == user.gender then do...
+            DataObject obj = new DataObject(test.getLocation(),
+                    "Wednesday",
+                    test.getTime().toString(),
+                    test.getDate().toString(),
+                    "Registration Deadline: ",
+                    test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
+            mainActivity.testsFilteredArrayList.add(obj);
+        }
+    }
+
+    public void filterByLocation(String location) {
+        for (Test test : mainActivity.testsArrayList) {
+            //if test.Gender == user.gender then do...
+            if (test.location.equals(location)) {
+                DataObject obj = new DataObject(test.getLocation(),
+                        "Wednesday",
+                        test.getTime().toString(),
+                        test.getDate().toString(),
+                        "Registration Deadline: ",
+                        test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
+                mainActivity.testsFilteredArrayList.add(obj);
+            }
+        }
+    }
+
+    public void filterByDayOfWeek(String dayOfWeek) {
+        for (Test test : mainActivity.testsArrayList) {
+            //if test.Gender == user.gender then do...
+            if (test.dayOfWeek.toString().equals(dayOfWeek)) {
+                DataObject obj = new DataObject(test.getLocation(),
+                        "Wednesday",
+                        test.getTime().toString(),
+                        test.getDate().toString(),
+                        "Registration Deadline: ",
+                        test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
+                mainActivity.testsFilteredArrayList.add(obj);
+            }
+        }
+    }
+
+    public void filterByLocationAndDayOfWeek(String location, String dayOfWeek) {
+        for (Test test : mainActivity.testsArrayList) {
+            //if test.Gender == user.gender then do...
+            if (test.location.equals(location) && test.dayOfWeek.toString().equals(dayOfWeek)) {
+                DataObject obj = new DataObject(test.getLocation(),
+                        "Wednesday",
+                        test.getTime().toString(),
+                        test.getDate().toString(),
+                        "Registration Deadline: ",
+                        test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
+                mainActivity.testsFilteredArrayList.add(obj);
+            }
+        }
     }
 
     public void setMainActivity(MainActivity mainActivity) {
@@ -255,7 +327,6 @@ public class QueryMethods extends Activity {
         }
 
     }
-
 
 
     /**

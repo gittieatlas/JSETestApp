@@ -74,7 +74,10 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
         @Override
         public void onClick(View v) {
 
-            mainActivity.showDialog("test", "fab");
+            mainActivity.showDialog("JSE Office",
+                    "732-888-8978", "CALL",
+                    "CANCEL", R.drawable.ic_calendar_clock_grey600_24dp,
+                    "call_jse_during_office_hours");
         }
     };
 
@@ -100,7 +103,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     public void onItemClick(View view, int position) {
 
 
-        mainActivity.showDialog("CALL", "Call JSE");
+      //  mainActivity.showDialog("CALL", "Call JSE");
     }
 
     @Override

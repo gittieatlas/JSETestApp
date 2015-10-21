@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
+    MyDialogFragment myDialogFragment;
 
     //Variables
     ArrayList<String> locationsArrayList;
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.setMainActivity(this);
         queryMethods = new QueryMethods();
         queryMethods.setMainActivity(this);
+        myDialogFragment = new MyDialogFragment();
+        myDialogFragment.setMainActivity(this);
     }
 
     private void setupToolbar() {
@@ -241,16 +245,12 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<DataObject> getTestsFilteredArrayList() {
 
-        return queryMethods.getTestsArrayList();
+        return testsFilteredArrayList;
     }
 
     public ArrayList<HoursDataObject> getHoursFilteredArrayList() {
 
         return queryMethods.getHoursArrayList();
-    }
-
-    public void showDialog(String title, String message) {
-        helperMethods.showMyDialog(title, message);
     }
 
     public void addFragment(int container, Fragment fragment) {
@@ -261,11 +261,32 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.replaceFragment(container, fragment);
     }
 
-    public static void callJse() {
-        //MainActivity mainActivity = new MainActivity();
-        //Toast.makeText(, "ITEM PRESSED FROM MAIN ACTIVITY", Toast.LENGTH_SHORT).show();
+    public void filterTestsArray(String location, String dayOfWeek) {
+        queryMethods.filterTestsArray(location, dayOfWeek);
+    }
+
+    public void doIntent(Intent intent) {
+        startActivity(intent);
+    }
+
+    public Context getContext() {
+        return MainActivity.this;
 
     }
 
+    public void showDialog(String title, String message, String positiveButton, String negativeButton, int icon, String tag) {
+
+        android.app.FragmentManager fm = this.getFragmentManager();
+        MyDialogFragment dialogFragment = new MyDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        bundle.putString("message", message);
+        bundle.putString("positiveButton", positiveButton);
+        bundle.putString("negativeButton", negativeButton);
+        bundle.putInt("icon", icon);
+        bundle.putString("tagListener", tag);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(fm, "Sample Fragment");
+    }
 
 }

@@ -22,6 +22,7 @@
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustNothing">
+
         </activity>
 
         <activity
