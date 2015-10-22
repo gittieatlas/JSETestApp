@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     HelperMethods helperMethods;
     QueryMethods queryMethods;
     DialogListeners dialogListeners;
+    IntentMethods intentMethods;
 
     //Fragments
     LoginFragment loginFragment;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
     MyDialogFragment myDialogFragment;
+
 
     //Variables
     ArrayList<String> locationsArrayList;
@@ -123,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
         myDialogFragment = new MyDialogFragment();
         myDialogFragment.setMainActivity(this);
         dialogListeners = new DialogListeners();
-        dialogListeners.setMainActivity(this);
+        intentMethods = new IntentMethods();
+        intentMethods.setMainActivity(this);
+
     }
 
     private void setupToolbar() {

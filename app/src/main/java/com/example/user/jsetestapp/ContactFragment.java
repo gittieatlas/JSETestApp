@@ -85,7 +85,6 @@ public class ContactFragment extends Fragment {
                 mainActivity.helperMethods.scheduleTest();
                 mainActivity.user.isJseMember = false;
             }
-
         }
     };
 
@@ -95,7 +94,7 @@ public class ContactFragment extends Fragment {
         public void onClick(View v) {
             String[] addresses = {"info@jseoffice.com"};
             String subject = "Contact JSE - Android App";
-            mainActivity.helperMethods.composeEmail(addresses, subject);
+            mainActivity.intentMethods.composeEmail(addresses, subject);
         }
     };
 

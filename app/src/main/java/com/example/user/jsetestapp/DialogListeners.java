@@ -11,23 +11,24 @@ public class DialogListeners extends Activity {
         switch (TAG_LISTENER) {
 
             case "schedule_test": {
-                mainActivity.helperMethods.callIntent(mainActivity.getStringFromResources(R.string.schedule_test_phone_number));
+                mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.schedule_test_phone_number));
                 break;
             }
 
             case "become_jse_member": {
-                mainActivity.helperMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
+                mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
                 break;
             }
 
             case "call_jse_during_non_office_hours": {
-                // TODO set calendar
 
+                // TODO send JSE office hours
+                mainActivity.intentMethods.calendarIntent("Call JSE", "", "");
                 break;
             }
 
             case "call_jse_during_office_hours": {
-                mainActivity.helperMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
+                mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
                 break;
             }
         }

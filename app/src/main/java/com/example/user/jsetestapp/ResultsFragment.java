@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -104,7 +103,8 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
 
     @Override
     public void onImageItemClick(View view, int position) {
-        Toast.makeText(mainActivity.getApplicationContext(), "Image Click ", Toast.LENGTH_SHORT).show();
+        Test test = mainActivity.testsArrayList.get(position);
+        mainActivity.intentMethods.calendarIntent(test.getLocation(), "Test", "Lakewood, NJ");
     }
 
     private ArrayList<DataObject> getDataSet() {
