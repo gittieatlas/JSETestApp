@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         defaultLocation = "BKLYN - BY 18th Ave";
         dob = DateTime.now();
         gender = "2";
-        isJseMember = true;
+        isJseMember = false;
 
         savePreferences("first_name", firstName);
         savePreferences("last_name", lastName);

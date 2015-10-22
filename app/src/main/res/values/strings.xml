@@ -3,7 +3,7 @@
 
     <string name="action_settings">Settings</string>
 
-    <!-- login_fragment_fragment.xml, fragment_register1.xmlgment.xml, register2_fragment_fragment.xml, update_profile_fragment_fragment.xml controls-->
+    <!-- fragment_login, fragment_register1, fragment_register2, fragment_update_profile -->
     <string name="email">Email Address</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -39,7 +39,6 @@
     <string name="jse_office_hours_friday_hours">9:00 AM - 2:00 PM</string>
     <string name="jse_office_email_subject">Contact JSE Android App</string>
 
-
     <!-- location_info_fragment_fragment.xml controls-->
     <string name="location_address">1818 18th Ave. Brooklyn, NY 11204</string>
     <string name="location_phone_number">718-789-6548</string>
@@ -62,8 +61,6 @@
     <string name="library_day_title">Sunday</string>
     <string name="library_hour">9:00 AM - 5:00 PM</string>
 
-
-
     <!-- Toolbar Titles-->
     <string name="toolbar_title_contact">About JSE</string>
     <string name="toolbar_title_dashboard">Dashboard</string>
@@ -78,4 +75,7 @@
     <!-- Menu Item Titles-->
     <string name="menu_item_log_out">Log Out</string>
     <string name="menu_item_update_profile">Update Profile</string>
+
+    <!-- Dialog Fragment -->
+    <string name="df_">Log Out</string>
 </resources>

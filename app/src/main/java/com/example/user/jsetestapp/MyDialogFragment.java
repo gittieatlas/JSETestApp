@@ -5,9 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-/**
- * Created by Rochel on 10/9/2015.
- */
 public class MyDialogFragment extends android.app.DialogFragment {
     MainActivity mainActivity;
 
@@ -19,36 +16,54 @@ public class MyDialogFragment extends android.app.DialogFragment {
         String message = getArguments().getString("message");
         String positiveButton = getArguments().getString("positiveButton");
         String negativeButton = getArguments().getString("negativeButton");
-        int icon = getArguments().getInt("icon");
+        String neutralButton = getArguments().getString("neutralButton");
+        Integer icon = getArguments().getInt("icon");
         final String TAG_LISTENER = getArguments().getString("tagListener");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setIcon(icon);
-        builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+
+        // Setting Dialog Title
+        if (title != null)
+            builder.setTitle(title);
+
+        // Setting Dialog Message
+        if (message != null)
+            builder.setMessage(message);
+
+        // Setting alert dialog icon
+        if (icon != null)
+            builder.setIcon(icon);
+
+        // Setting Positive Button
+        if (positiveButton != null) {
+            builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MainActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                }
+
+            });
+        }
+
+        // Setting Negative Button
+        if (negativeButton != null) {
+            builder.setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // dismiss();
+                    ((MainActivity) getActivity()).dialogListeners.negativeButtonOnClickListener(TAG_LISTENER);
+                }
+            });
+        }
+
+        if (neutralButton != null) {
+        builder.setNeutralButton(neutralButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                ((MainActivity) getActivity()).helperMethods.positiveButtonOnClickListener(TAG_LISTENER);
-
-            }
-
-        });
-
-        builder.setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // dismiss();
-                ((MainActivity) getActivity()).helperMethods.negativeButtonOnClickListener(TAG_LISTENER);
+                ((MainActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
             }
         });
-
-//            builder.setNeutralButton(positiveButton, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
+        }
 
         return builder.create();
     }

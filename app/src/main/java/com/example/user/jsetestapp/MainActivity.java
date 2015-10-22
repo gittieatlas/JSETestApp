@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     //Activities HelperClasses Classes;
     HelperMethods helperMethods;
     QueryMethods queryMethods;
+    DialogListeners dialogListeners;
 
     //Fragments
     LoginFragment loginFragment;
@@ -121,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setMainActivity(this);
         myDialogFragment = new MyDialogFragment();
         myDialogFragment.setMainActivity(this);
+        dialogListeners = new DialogListeners();
+        dialogListeners.setMainActivity(this);
     }
 
     private void setupToolbar() {
@@ -274,19 +277,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void showDialog(String title, String message, String positiveButton, String negativeButton, int icon, String tag) {
+    /**
+     * Function to create an instance of MyDialogFragment
+     *
+     * @param title          - alert dialog title
+     * @param message        - alert message
+     * @param positiveButton - text for positive button
+     * @param negativeButton - text for negative button
+     * @param neutralButton - text for neutral button
+     * @param icon           - drawable for icon
+     * @param tagListener    - tag to pass through to listener method
+     */
+    public void showDialog(String title, String message, String positiveButton, String negativeButton, String neutralButton, int icon, String tagListener) {
 
         android.app.FragmentManager fm = this.getFragmentManager();
+
         MyDialogFragment dialogFragment = new MyDialogFragment();
+
         Bundle bundle = new Bundle();
+
         bundle.putString("title", title);
         bundle.putString("message", message);
         bundle.putString("positiveButton", positiveButton);
         bundle.putString("negativeButton", negativeButton);
+        bundle.putString("neutralButton", neutralButton);
         bundle.putInt("icon", icon);
-        bundle.putString("tagListener", tag);
+        bundle.putString("tagListener", tagListener);
+
         dialogFragment.setArguments(bundle);
-        dialogFragment.show(fm, "Sample Fragment");
+
+        dialogFragment.show(fm, tagListener);
+    }
+
+    public String getStringFromResources(int number){
+        return getResources().getString(number);
     }
 
 }

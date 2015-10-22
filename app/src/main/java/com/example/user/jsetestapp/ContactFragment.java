@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class ContactFragment extends Fragment {
 
@@ -57,47 +56,36 @@ public class ContactFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+
+            // ToDo get value of isDuringOfficeHours
             boolean isDuringOfficeHours = false;
-            try {
+
+            if (isDuringOfficeHours) {
+
                 // TODO change icon to phone grey 24; add string to strings.xml
-                if (isDuringOfficeHours) {
-                    mainActivity.helperMethods.showAlertDialog("JSE Office",
-                            "732-888-8978",
-                            R.drawable.ic_calendar_clock_grey600_24dp, "CALL",
-                            "CANCEL",
-                            "call_jse_during_office_hours");
-                }
-                else {
-                    // TODO change icon?; add string to strings.xml
-                    mainActivity.helperMethods.showAlertDialog("JSE Office",
-                            "THe JSE office is currently closed. Would you like to set a reminder on your phone to call during office hours?",
-                            R.drawable.ic_calendar_clock_grey600_24dp,
-                            "YES",
-                            "NO",
-                            "call_jse_during_non_office_hours");
-                }
-            } catch (Exception e){
-                Toast.makeText(mainActivity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                // TODO show number in message?
+                mainActivity.showDialog("JSE Office", null, "CALL", "CANCEL", null, R.drawable.ic_calendar_clock_grey600_24dp, "call_jse_during_office_hours");
+            } else {
+
+                // TODO change icon?; add string to strings.xml
+                String message = "The JSE office is currently closed. Would you like to set a reminder on your phone to call during office hours?";
+                mainActivity.showDialog("JSE Office", message, "YES", "NO", null, R.drawable.ic_calendar_clock_grey600_24dp, "call_jse_during_non_office_hours");
             }
         }
     };
 
     OnClickListener scheduleTestNumberListener = new OnClickListener() {
-
         @Override
         public void onClick(View v) {
-            try {
-                // TODO change icon to phone grey 24; add string to strings.xml
 
-                    mainActivity.helperMethods.showAlertDialog("Schedule a Test",
-                            "800-989-6985",
-                            R.drawable.ic_calendar_clock_grey600_24dp, "Call",
-                            "CANCEL",
-                            "schedule_test");
-
-            } catch (Exception e){
-                Toast.makeText(mainActivity.getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            if (mainActivity.user.isJseMember) {
+                mainActivity.helperMethods.scheduleTest();
+            } else {
+                mainActivity.user.isJseMember = true;
+                mainActivity.helperMethods.scheduleTest();
+                mainActivity.user.isJseMember = false;
             }
+
         }
     };
 
