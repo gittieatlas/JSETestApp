@@ -6,8 +6,6 @@ import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -153,11 +151,14 @@ public class QueryMethods extends Activity {
         for (Test test : mainActivity.testsArrayList) {
             //if test.Gender == user.gender then do...
             DataObject obj = new DataObject(test.getLocation(),
-                    "Wednesday",
+//                    "Wednesday",
+                    //test.getDate().getDayOfWeek(),
+                    test.getDayOfWeek().toString(),
+
                     test.getTime().toString(),
-                    test.getDate().toString(),
+                   test.date.toString("MMMMMMMMMM dd yyyy"),
                     "Registration Deadline: ",
-                    test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
+                    test.deadlineDate.toString("MMMMMMMMMM dd yyyy") + " " + test.getDeadlineTime().toString());
             mainActivity.testsFilteredArrayList.add(obj);
         }
     }
@@ -308,11 +309,10 @@ public class QueryMethods extends Activity {
                         Test test = new Test();
 
                         test.location = c.getString(TAG_LOCATION);
-
-                        //test.date = convertStringToLocalDate(c.getString(TAG_DATE));
                         test.date = LocalDate.parse(c.getString(TAG_DATE));
+                        test.setDayOfWeek(Test.DayOfWeek.values()[(test.getDate().getDayOfWeek() - 1)].toString());
                         test.time = DateTime.parse(c.getString(TAG_TIME));
-                        test.deadlineDate = DateTime.parse(c.getString(TAG_CLOSING_DATE));
+                        test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
                         test.deadlineTime = DateTime.parse(c.getString(TAG_CLOSING_TIME));
                         test.setGender(c.getString(TAG_GENDER));
 

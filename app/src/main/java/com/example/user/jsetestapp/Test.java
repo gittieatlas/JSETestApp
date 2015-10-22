@@ -2,14 +2,10 @@ package com.example.user.jsetestapp;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.SimpleDateFormat;
 
 public class Test {
 
-    public static enum DayOfWeek {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY}
+    public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
     public static enum Gender {MALE, FEMALE, BOTH}
 
@@ -24,7 +20,7 @@ public class Test {
     LocalDate date;
     DateTime time;
 
-    DateTime deadlineDate;
+    LocalDate deadlineDate;
     DateTime deadlineTime;
 
 
@@ -54,6 +50,14 @@ public class Test {
         this.dayOfWeek = dayOfWeek;
     }
 
+    public void setDayOfWeek(String dayOfWeek) {
+        try {
+            this.dayOfWeek = DayOfWeek.valueOf(dayOfWeek);
+        } catch (Exception ex) {
+            this.dayOfWeek = DayOfWeek.SUNDAY;
+        }
+    }
+
     public LocalDate getDate() {
 
         return date;
@@ -63,11 +67,11 @@ public class Test {
         this.date = date;
     }
 
-    public DateTime getDeadlineDate() {
+    public LocalDate getDeadlineDate() {
         return deadlineDate;
     }
 
-    public void setDeadlineDate(DateTime deadlineDate) {
+    public void setDeadlineDate(LocalDate deadlineDate) {
         this.deadlineDate = deadlineDate;
     }
 

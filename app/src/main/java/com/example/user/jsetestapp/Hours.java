@@ -1,9 +1,7 @@
 package com.example.user.jsetestapp;
 
-import org.joda.time.DateTime;
-
 public class Hours {
-    public static enum DayOfWeek {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY};
+    public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
     String name;
     DayOfWeek dayOfWeek;

@@ -194,7 +194,7 @@ public class DataMethods {
                         test.location = c.getString(TAG_LOCATION);
                         test.date = LocalDate.parse(c.getString(TAG_DATE));
                         test.time = DateTime.parse(c.getString(TAG_TIME));
-                        test.deadlineDate = DateTime.parse(c.getString(TAG_CLOSING_DATE));
+                        test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
                         test.deadlineTime = DateTime.parse(c.getString(TAG_CLOSING_TIME));
                         test.setGender(c.getString(TAG_GENDER));
 
