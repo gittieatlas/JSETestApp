@@ -1,24 +1,25 @@
 package com.example.user.jsetestapp;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class QueryMethods extends Activity {
+/**
+ * Created by Rochel on 10/22/2015.
+ */
+public class DataMethods {
 
+    //fragments
+    SplashActivity splashActivity;
     MainActivity mainActivity;
+
     //variables
     // URL to get locationsJsonArray JSON
     private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
@@ -60,10 +61,6 @@ public class QueryMethods extends Activity {
     String pid;
 
 
-    public QueryMethods() {
-
-    }
-
     public void setUpLocationsArrayList() {
 
         mainActivity.locationsArrayList = new ArrayList<String>();
@@ -93,119 +90,6 @@ public class QueryMethods extends Activity {
     }
 
 
-
-    public ArrayList<DataObject> getTestsArrayList() {
-
-        mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
-
-        for (Test test : mainActivity.testsArrayList) {
-            //if test.Gender == user.gender then do...
-            DataObject obj = new DataObject(test.getLocation(),
-                    "Wednesday",
-                    test.getTime().toString(),
-                    //mainActivity.helperMethods.convertLocalDateToString(test.getDate()),
-                    test.getDate().toString("MMMMMMMMM dd yyyy"),
-                    "Registration Deadline: ",
-                    test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
-
-            mainActivity.testsFilteredArrayList.add(obj);
-        }
-
-        return mainActivity.testsFilteredArrayList;
-    }
-
-
-    public ArrayList<HoursDataObject> getHoursArrayList() {
-
-        mainActivity.hoursFilteredArrayList = new ArrayList<HoursDataObject>();
-
-        for (Hours hours : mainActivity.hoursArrayList) {
-
-            HoursDataObject obj = new HoursDataObject(hours.getDayOfWeek().toString(),
-
-                    hours.getStartTime().toString(),
-                    hours.getEndTime().toString());
-
-            mainActivity.hoursFilteredArrayList.add(obj);
-        }
-
-        return mainActivity.hoursFilteredArrayList;
-    }
-
-
-
-
-    public void filterTestsArray(String location, String dayOfWeek) {
-//        if (location.equals(null) && dayOfWeek.equals(null)) {
-//            filter();
-//        } else if (!location.equals(null) && dayOfWeek.equals(null)) {
-//            filterByLocation(location);
-//        } else if (location.equals(null) && !dayOfWeek.equals(null)) {
-//            filterByDayOfWeek(dayOfWeek);
-//        } else if (!location.equals(null) && !dayOfWeek.equals(null)) {
-//            filterByLocationAndDayOfWeek(location, dayOfWeek);
-//        }
-        filter();
-
-    }
-
-    public void filter() {
-        for (Test test : mainActivity.testsArrayList) {
-            //if test.Gender == user.gender then do...
-            DataObject obj = new DataObject(test.getLocation(),
-                    "Wednesday",
-                    test.getTime().toString(),
-                    test.getDate().toString(),
-                    "Registration Deadline: ",
-                    test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
-            mainActivity.testsFilteredArrayList.add(obj);
-        }
-    }
-
-    public void filterByLocation(String location) {
-        for (Test test : mainActivity.testsArrayList) {
-            //if test.Gender == user.gender then do...
-            if (test.location.equals(location)) {
-                DataObject obj = new DataObject(test.getLocation(),
-                        "Wednesday",
-                        test.getTime().toString(),
-                        test.getDate().toString(),
-                        "Registration Deadline: ",
-                        test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
-                mainActivity.testsFilteredArrayList.add(obj);
-            }
-        }
-    }
-
-    public void filterByDayOfWeek(String dayOfWeek) {
-        for (Test test : mainActivity.testsArrayList) {
-            //if test.Gender == user.gender then do...
-            if (test.dayOfWeek.toString().equals(dayOfWeek)) {
-                DataObject obj = new DataObject(test.getLocation(),
-                        "Wednesday",
-                        test.getTime().toString(),
-                        test.getDate().toString(),
-                        "Registration Deadline: ",
-                        test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
-                mainActivity.testsFilteredArrayList.add(obj);
-            }
-        }
-    }
-
-    public void filterByLocationAndDayOfWeek(String location, String dayOfWeek) {
-        for (Test test : mainActivity.testsArrayList) {
-            //if test.Gender == user.gender then do...
-            if (test.location.equals(location) && test.dayOfWeek.toString().equals(dayOfWeek)) {
-                DataObject obj = new DataObject(test.getLocation(),
-                        "Wednesday",
-                        test.getTime().toString(),
-                        test.getDate().toString(),
-                        "Registration Deadline: ",
-                        test.getDeadlineDate().toString() + " " + test.getDeadlineTime().toString());
-                mainActivity.testsFilteredArrayList.add(obj);
-            }
-        }
-    }
 
     /**
      * Async task class to get json by making HTTP call
@@ -308,8 +192,6 @@ public class QueryMethods extends Activity {
                         Test test = new Test();
 
                         test.location = c.getString(TAG_LOCATION);
-
-                        //test.date = convertStringToLocalDate(c.getString(TAG_DATE));
                         test.date = LocalDate.parse(c.getString(TAG_DATE));
                         test.time = DateTime.parse(c.getString(TAG_TIME));
                         test.deadlineDate = DateTime.parse(c.getString(TAG_CLOSING_DATE));
@@ -336,19 +218,6 @@ public class QueryMethods extends Activity {
 
     }
 
-    public LocalDate convertStringToLocalDate(String stringDate){
-
-        List strList = new ArrayList(); // this part iterates
-        strList.addAll(Arrays.asList(stringDate.split("-")));
-        strList.toArray(); // you have an array with all the split string.
-
-        int year = Integer.parseInt(strList.get(0).toString());
-        int month = Integer.parseInt(strList.get(1).toString());
-        int day = Integer.parseInt(strList.get(2).toString());
-
-        LocalDate date = new LocalDate(year, month, day);
-        return date;
-        }
 
     /**
      * Async task class to get json by making HTTP call
@@ -416,11 +285,14 @@ public class QueryMethods extends Activity {
     }
 
 
+
+
+
+    public void setSplashActivity(SplashActivity splashActivity) {
+        this.splashActivity = splashActivity;
+    }
+
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
-
-
-
-
 }

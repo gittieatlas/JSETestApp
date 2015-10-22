@@ -21,7 +21,14 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpHoursArrayList();
+
+        //Test test = testsArrayList.get(0);
+//        LocalDate date = LocalDate.parse("2015-10-25");
+//            String formattedDate = helperMethods.convertLocalDateToString(date);
+//             Toast.makeText(this,formattedDate,Toast.LENGTH_LONG).show();
+//
 
         loadSavedPreferences();
 
@@ -316,5 +329,7 @@ public class MainActivity extends AppCompatActivity {
     public String getStringFromResources(int number){
         return getResources().getString(number);
     }
+
+
 
 }

@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.util.ArrayList;
+
 import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity {
@@ -22,18 +24,32 @@ public class SplashActivity extends AppCompatActivity {
     //Fragments
     LoginFragment loginFragment;
     DashboardFragment dashboardFragment;
-
+    DataMethods dataMethods;
+    MainActivity mainActivity;
 
     //Variables
     Boolean isInternetPresent = false;
     ConnectionDetector cd;  // Connection detector class
     boolean startUpActivityDone = true;
 
+    ArrayList<String> locationsArrayList;
+    ArrayList<Test> testsArrayList;
+    ArrayList<Hours> hoursArrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
+        setUpFragments();
+    }
+
+    private void setUpFragments() {
+
+        dataMethods = new DataMethods();
+        dataMethods.setSplashActivity(this);
+        //mainActivity = new MainActivity();
+
 
     }
 
@@ -61,6 +77,9 @@ public class SplashActivity extends AppCompatActivity {
                 //showAlertDialog(SplashActivity.this, "Internet Connection",
                 //        "You have internet connection", true);
 
+//            dataMethods.setUpLocationsArrayList();
+//            dataMethods.setUpTestsArrayList();
+//            dataMethods.setUpHoursArrayList();
 
             changeActivities(startUpActivityDone);
         } else {
@@ -108,6 +127,9 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+    }
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
 }

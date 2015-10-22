@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
@@ -46,6 +51,15 @@ public class HelperMethods extends Activity {
         }
 
     }
+
+    public String convertLocalDateToString(LocalDate date) {
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("MMMMMMMM dd yyyy");
+        return formatter.print(date);
+
+        // Toast.makeText(this,formattedDate,Toast.LENGTH_LONG).show();
+    }
+
 
     public void setMainActivity(MainActivity mainActivity) {
 

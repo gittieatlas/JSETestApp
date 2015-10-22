@@ -5,7 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
 
@@ -28,6 +35,7 @@ public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
         holder.testDeadlineTitle.setText(arrayListDataObject.get(position).getmText5());
         holder.testDeadlineDetails.setText(arrayListDataObject.get(position).getmText6());
     }
+
 
     @Override
     public RecyclerViewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

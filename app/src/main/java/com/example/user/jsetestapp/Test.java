@@ -1,6 +1,11 @@
 package com.example.user.jsetestapp;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.SimpleDateFormat;
 
 public class Test {
 
@@ -16,7 +21,7 @@ public class Test {
     Gender gender;
 
 
-    DateTime date;
+    LocalDate date;
     DateTime time;
 
     DateTime deadlineDate;
@@ -49,11 +54,12 @@ public class Test {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public DateTime getDate() {
+    public LocalDate getDate() {
+
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
