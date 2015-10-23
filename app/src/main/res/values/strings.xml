@@ -48,7 +48,7 @@
     <string name="searchButton">SEARCH</string>
     <string name="registration_date_range">Registration is currently open from %1$s to %2$s</string>
 
-    <!-- dashboard_fragment_fragment.xml controls-->
+    <!-- fragment_ controls-->
     <string name="location">Brooklyn - BY 18th Ave.</string>
     <string name="alerts">LOCATION ALERTS</string>
     <string name="alerts_day">Sunday</string>

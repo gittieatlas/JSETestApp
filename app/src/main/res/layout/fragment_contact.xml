@@ -72,9 +72,9 @@
             android:textColor="@color/secondary_text"/>
     </LinearLayout>
 
-    <View
+    <!--<View
         style="@style/App_Divider"
-        android:layout_marginTop="@dimen/default_margin" />
+        android:layout_marginTop="@dimen/default_margin" />-->
 
     <TextView
         android:layout_width="match_parent"
@@ -132,9 +132,9 @@
 
     </LinearLayout>
 
-    <View
+    <!--<View
         style="@style/App_Divider"
-        android:layout_marginTop="@dimen/default_margin" />
+        android:layout_marginTop="@dimen/default_margin" /> -->
 
 </LinearLayout>
 
