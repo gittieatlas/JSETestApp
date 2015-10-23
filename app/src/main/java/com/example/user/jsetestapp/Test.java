@@ -2,6 +2,7 @@ package com.example.user.jsetestapp;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 public class Test {
 
@@ -16,22 +17,12 @@ public class Test {
     DayOfWeek dayOfWeek;
     Gender gender;
 
-
-    LocalDate date;
-    DateTime time;
-
-    LocalDate deadlineDate;
-    DateTime deadlineTime;
+    LocalDate date, deadlineDate;
+    LocalTime time, deadlineTime;
 
 
     public Test() {
 
-
-//        location = "";
-//        dayOfWeek = DayOfWeek.SUNDAY;
-//        date = DateTime.now();
-//        deadlineDate = DateTime.now();
-//        time = DateTime.now();
     }
 
     public String getLocation() {
@@ -75,19 +66,19 @@ public class Test {
         this.deadlineDate = deadlineDate;
     }
 
-    public DateTime getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(DateTime time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
-    public DateTime getDeadlineTime() {
+    public LocalTime getDeadlineTime() {
         return deadlineTime;
     }
 
-    public void setDeadlineTime(DateTime deadlineTime) {
+    public void setDeadlineTime(LocalTime deadlineTime) {
         this.deadlineTime = deadlineTime;
     }
 

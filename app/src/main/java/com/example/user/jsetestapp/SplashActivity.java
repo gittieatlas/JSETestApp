@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     //Fragments
     LoginFragment loginFragment;
     DashboardFragment dashboardFragment;
-    DataMethods dataMethods;
+    //DataMethods dataMethods;
     MainActivity mainActivity;
 
     //Variables
@@ -46,8 +46,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private void setUpFragments() {
 
-        dataMethods = new DataMethods();
-        dataMethods.setSplashActivity(this);
+//        dataMethods = new DataMethods();
+//        dataMethods.setSplashActivity(this);
         //mainActivity = new MainActivity();
 
 

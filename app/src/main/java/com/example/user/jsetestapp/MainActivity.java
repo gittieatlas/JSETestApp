@@ -22,8 +22,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,12 +82,6 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpHoursArrayList();
-
-        //Test test = testsArrayList.get(0);
-//        LocalDate date = LocalDate.parse("2015-10-25");
-//            String formattedDate = helperMethods.convertLocalDateToString(date);
-//             Toast.makeText(this,formattedDate,Toast.LENGTH_LONG).show();
-//
 
         loadSavedPreferences();
 

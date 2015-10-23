@@ -47,6 +47,19 @@ public class HelperMethods extends Activity {
 
     }
 
+    /**
+     * Function to make the first letter caps and the rest lowercase.
+     *
+     * @param data              - capitalize this
+     * @return String        - alert message
+     *
+     */
+    static public String firstLetterCaps(String data) {
+        String firstLetter = data.substring(0, 1).toUpperCase();
+        String restLetters = data.substring(1).toLowerCase();
+        return firstLetter + restLetters;
+    }
+
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;

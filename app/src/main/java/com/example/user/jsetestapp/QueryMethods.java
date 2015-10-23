@@ -6,6 +6,9 @@ import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,9 +122,9 @@ public class QueryMethods extends Activity {
 
         for (Hours hours : mainActivity.hoursArrayList) {
 
-            HoursDataObject obj = new HoursDataObject(hours.getDayOfWeek().toString(),
+            HoursDataObject obj = new HoursDataObject(mainActivity.helperMethods.firstLetterCaps(hours.getDayOfWeek().toString()),
 
-                    hours.getStartTime().toString(),
+                    hours.getStartTime().toString("hh:mm a"),
                     hours.getEndTime().toString());
 
             mainActivity.hoursFilteredArrayList.add(obj);
@@ -151,14 +154,11 @@ public class QueryMethods extends Activity {
         for (Test test : mainActivity.testsArrayList) {
             //if test.Gender == user.gender then do...
             DataObject obj = new DataObject(test.getLocation(),
-//                    "Wednesday",
-                    //test.getDate().getDayOfWeek(),
-                    test.getDayOfWeek().toString(),
-
-                    test.getTime().toString(),
-                   test.date.toString("MMMMMMMMMM dd yyyy"),
+                    mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
+                    test.getTime().toString("hh:mm a"),
+                    test.getDate().toString("MMMM dd yyyy"),
                     "Registration Deadline: ",
-                    test.deadlineDate.toString("MMMMMMMMMM dd yyyy") + " " + test.getDeadlineTime().toString());
+                    test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
             mainActivity.testsFilteredArrayList.add(obj);
         }
     }
@@ -207,6 +207,16 @@ public class QueryMethods extends Activity {
             }
         }
     }
+
+
+//    static final DateTimeFormatter hours24 = DateTimeFormat.forPattern("HH:mm:ss");
+//    static final DateTimeFormatter hours12 = DateTimeFormat.forPattern("hh:mm:ssa");
+//    static String convertTo12HoursFormat(String format24hours) {
+//        return hours12.print(hours24.parseDateTime(format24hours));
+//    }
+
+
+
 
     /**
      * Async task class to get json by making HTTP call
@@ -311,9 +321,9 @@ public class QueryMethods extends Activity {
                         test.location = c.getString(TAG_LOCATION);
                         test.date = LocalDate.parse(c.getString(TAG_DATE));
                         test.setDayOfWeek(Test.DayOfWeek.values()[(test.getDate().getDayOfWeek() - 1)].toString());
-                        test.time = DateTime.parse(c.getString(TAG_TIME));
+                        test.time = LocalTime.parse(new StringBuilder(c.getString(TAG_TIME)).insert(c.getString(TAG_TIME).length()-2,":").toString());
                         test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
-                        test.deadlineTime = DateTime.parse(c.getString(TAG_CLOSING_TIME));
+                        test.deadlineTime = LocalTime.parse(new StringBuilder(c.getString(TAG_CLOSING_TIME)).insert(c.getString(TAG_CLOSING_TIME).length()-2,":").toString());
                         test.setGender(c.getString(TAG_GENDER));
 
                         mainActivity.testsArrayList.add(test);
@@ -392,7 +402,7 @@ public class QueryMethods extends Activity {
                         hours.name = c.getString(TAG_LIBRARY_LOCATION);
                         //hours.dayOfWeek = c.getString(TAG_DAY_OF_WEEK);
                         hours.setDayOfWeek(c.getString(TAG_DAY_OF_WEEK));
-                        hours.startTime = c.getString(TAG_OPENING_TIME);
+                        hours.startTime = LocalTime.parse(c.getString(TAG_OPENING_TIME));
                         hours.endTime = c.getString(TAG_DURATION);
 
                         mainActivity.hoursArrayList.add(hours);

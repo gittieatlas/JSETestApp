@@ -1,13 +1,15 @@
 package com.example.user.jsetestapp;
 
+import org.joda.time.LocalTime;
+
 public class Hours {
     public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
+    //TODO change startTime dataType in database to LocalTime
     String name;
     DayOfWeek dayOfWeek;
-    //DateTime startTime, endTime;
-    String startTime, endTime;
-    //String dayOfWeek;
+    String endTime;
+    LocalTime startTime;
 
     public Hours() {
 
@@ -28,22 +30,6 @@ public class Hours {
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
-//
-//    public DateTime getStartTime() {
-//        return startTime;
-//    }
-//
-//    public void setStartTime(DateTime startTime) {
-//        this.startTime = startTime;
-//    }
-//
-//    public DateTime getEndTime() {
-//        return endTime;
-//    }
-//
-//    public void setEndTime(DateTime endTime) {
-//        this.endTime = endTime;
-//    }
 
     public void setDayOfWeek(String dayOfWeek) {
         try {
@@ -53,11 +39,11 @@ public class Hours {
         }
     }
 
-public String getStartTime() {
+public LocalTime getStartTime() {
     return startTime;
 }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
@@ -69,10 +55,4 @@ public String getStartTime() {
         this.endTime = endTime;
     }
 
-//    public String getDayOfWeek() {
-//        return dayOfWeek;
-//    }
-//    public void setDayOfWeek(String dayOfWeek) {
-//        this.dayOfWeek = dayOfWeek;
-//    }
 }
