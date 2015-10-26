@@ -62,6 +62,7 @@ public class LibrariesFragment extends Fragment {
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
         Context context = getActivity().getApplicationContext();
         lvDetail.setAdapter(new MyBaseAdapter(context, getDataSet()));
+        mainActivity.helperMethods.setListViewHeightBasedOnItems(lvDetail);
     }
 
     private ArrayList<HoursDataObject> getDataSet() {
@@ -83,7 +84,7 @@ public class LibrariesFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        mainActivity.addDataToSpinner(mainActivity.locationsArrayList, locationsSpinner, "location");
+        mainActivity.addDataToSpinner(mainActivity.locationsArrayList, locationsSpinner, "libraries_location");
     }
 
     public void setMainActivity(MainActivity mainActivity) {

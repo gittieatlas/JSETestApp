@@ -2,7 +2,11 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -26,14 +30,17 @@ public class HelperMethods extends Activity {
     }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
-
+int spinnerDropdownItem = R.layout.spinner_dropdown_item;
+        if (tag.equals("location") || tag.equals("dayOfWeek")){
+            spinnerDropdownItem = R.layout.spinner_dropdown_item_colored;
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mainActivity.getApplicationContext(),
-                R.layout.location_spinner_dropdown_item, arrayList);
+                spinnerDropdownItem, arrayList);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         spinner.setAdapter(adapter);
 
-        if (tag.equals("location")) spinner.setSelection(2);
+        if (tag.equals("location") || tag.equals("libraries_location")) spinner.setSelection(2);
         else spinner.setSelection(0);
     }
 
@@ -63,6 +70,45 @@ public class HelperMethods extends Activity {
     public void setMainActivity(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
+    }
+
+    /**
+     * Sets ListView height dynamically based on the height of the items.
+     *
+     * @param listView to be resized
+     * @return true if the listView is successfully resized, false otherwise
+     */
+    public static boolean setListViewHeightBasedOnItems(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter != null) {
+
+            int numberOfItems = listAdapter.getCount();
+
+            // Get total height of all items.
+            int totalItemsHeight = 0;
+            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+                View item = listAdapter.getView(itemPos, null, listView);
+                item.measure(0, 0);
+                totalItemsHeight += item.getMeasuredHeight();
+            }
+
+            // Get total height of all item dividers.
+            int totalDividersHeight = listView.getDividerHeight() *
+                    (numberOfItems - 1);
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalItemsHeight + totalDividersHeight;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+
+            return true;
+
+        } else {
+            return false;
+        }
+
     }
 
 }

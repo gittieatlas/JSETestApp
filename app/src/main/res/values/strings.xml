@@ -49,7 +49,8 @@
     <string name="registration_date_range">Registration is currently open from %1$s to %2$s</string>
 
     <!-- fragment_ controls-->
-    <string name="location">Brooklyn - BY 18th Ave.</string>
+    <string name="default_location_label">Default Location</string>
+    <string name="location">Location Name</string>
     <string name="alerts">LOCATION ALERTS</string>
     <string name="alerts_day">Sunday</string>
     <string name="alerts_date">September 7 2015</string>
@@ -59,7 +60,8 @@
 
     <!-- location_info_list_item.xml controls-->
     <string name="library_day_title">Sunday</string>
-    <string name="library_hour">9:00 AM - 5:00 PM</string>
+    <string name="library_hour_to">9:00 AM</string>
+    <string name="library_hour_from">12:00 PM</string>
 
     <!-- Toolbar Titles-->
     <string name="toolbar_title_contact">About JSE</string>

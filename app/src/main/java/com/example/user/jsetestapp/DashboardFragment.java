@@ -57,6 +57,7 @@ public class DashboardFragment extends Fragment {
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
         Context context = getActivity().getApplicationContext();
         lvDetail.setAdapter(new MyBaseAdapter(context, getDataSet()));
+        mainActivity.helperMethods.setListViewHeightBasedOnItems(lvDetail);
     }
 
     private void initializeViews(View rootView) {
