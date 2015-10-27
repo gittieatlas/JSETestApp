@@ -57,7 +57,7 @@
     <string name="alerts_date">September 7 2015</string>
     <string name="alerts_time">9:57 AM</string>
     <string name="alerts_message">Please be aware of school closing today.</string>
-    <string name="find_test">Find Test at This Location</string>
+    <string name="find_test">FIND TEST AT THIS LOCATION</string>
 
     <!-- location_info_list_item.xml controls-->
     <string name="library_day_title">Sunday</string>

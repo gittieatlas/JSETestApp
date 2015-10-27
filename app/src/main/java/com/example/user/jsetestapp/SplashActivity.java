@@ -37,8 +37,10 @@ public class SplashActivity extends AppCompatActivity {
     ConnectionDetector cd;  // Connection detector class
     Boolean gotLocations = false;
     Boolean gotTests = false;
+    Boolean gotHours = false;
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
+    ArrayList<Hours> hoursArrayList;
 
     // URL to get locationsJsonArray JSON
     //private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
@@ -87,6 +89,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         locationsArrayList = new ArrayList<Location>();
         testsArrayList = new ArrayList<Test>();
+        hoursArrayList = new ArrayList<Hours>();
         checkInternetConnection();
     }
 
@@ -103,6 +106,7 @@ public class SplashActivity extends AppCompatActivity {
 
             new GetLocations().execute();
             new GetTests().execute();
+            new GetHours().execute();
 
         } else {
 
@@ -235,13 +239,75 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Async task class to get json by making HTTP call
+     */
+    private class GetHours extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+
+            // Making a request to locations_url and getting response
+            String jsonStr = sh.makeServiceCall(hours_url, ServiceHandler.GET);
+
+            Log.d("Response Hours: ", "> " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    // Getting JSON Array node
+                    hoursJsonArray = jsonObj.getJSONArray(TAG_HOURS);
+
+                    // looping through All Tests
+                    for (int i = 0; i < hoursJsonArray.length(); i++) {
+
+                        JSONObject c = hoursJsonArray.getJSONObject(i);
+
+                        Hours hours = new Hours();
+                        hours.name = c.getString(TAG_LIBRARY_LOCATION);
+                        String day = c.getString(TAG_DAY_OF_WEEK);
+                        hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day)-1)]);
+                        hours.startTime = LocalTime.parse(c.getString(TAG_OPENING_TIME));
+                        LocalTime duration = LocalTime.parse(c.getString(TAG_DURATION));
+                        hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay()).plusMinutes(duration.getMinuteOfHour());
+
+                        hoursArrayList.add(hours);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the hours_url");
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            gotHours = true;
+            changeActivities();
+        }
+
+    }
+
     private void changeActivities() {
-        if (gotLocations && gotTests) {
+        if (gotLocations && gotTests && gotHours) {
             // TODO check if loggedIn == true then go to MainActivity
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
             b.putSerializable("testsArrayList", testsArrayList);
+            b.putSerializable("hoursArrayList", hoursArrayList);
             intent.putExtras(b);
             startActivity(intent);
         }

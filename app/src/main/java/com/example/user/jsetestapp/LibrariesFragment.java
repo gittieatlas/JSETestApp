@@ -79,6 +79,8 @@ public class LibrariesFragment extends Fragment {
                 libraryInfoLinearLayout.setVisibility(View.GONE);
             else
                 libraryInfoLinearLayout.setVisibility(View.VISIBLE);
+            //mainActivity.queryMethods.getFilteredHoursArrayList("BKLYN - BY 18th Ave");
+            setupListView();
         }
 
         @Override
@@ -91,7 +93,7 @@ public class LibrariesFragment extends Fragment {
 
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
         Context context = getActivity().getApplicationContext();
-        lvDetail.setAdapter(new MyBaseAdapter(context, getDataSet()));
+        lvDetail.setAdapter(new MyBaseAdapter(context, mainActivity.queryMethods.getFilteredHoursArrayList(locationsSpinner.getSelectedItem().toString())));
         mainActivity.helperMethods.setListViewHeightBasedOnItems(lvDetail);
     }
 

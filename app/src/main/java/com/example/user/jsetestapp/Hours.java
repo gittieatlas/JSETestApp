@@ -3,7 +3,9 @@ package com.example.user.jsetestapp;
 
 import org.joda.time.LocalTime;
 
-public class Hours {
+import java.io.Serializable;
+
+public class Hours implements Serializable{
     public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
     //TODO change startTime dataType in database to LocalTime

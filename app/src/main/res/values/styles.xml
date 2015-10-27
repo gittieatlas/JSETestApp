@@ -24,7 +24,7 @@
     </style>
 
     <style name="App_TabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">9sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/icons</item>
         <item name="android:layout_gravity">center</item>

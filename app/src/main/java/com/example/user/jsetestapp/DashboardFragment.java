@@ -46,6 +46,7 @@ public class DashboardFragment extends Fragment {
         setupListView();
         setUpText();
         mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
+       // mainActivity.filterHoursArray("brooklyn");
 
         return rootView;
     }
@@ -68,16 +69,17 @@ public class DashboardFragment extends Fragment {
 
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
         Context context = getActivity().getApplicationContext();
-        lvDetail.setAdapter(new MyBaseAdapter(context, getDataSet()));
+        lvDetail.setAdapter(new MyBaseAdapter(context, mainActivity.queryMethods.getFilteredHoursArrayList(mainActivity.defaultLocation.getName())));
         mainActivity.helperMethods.setListViewHeightBasedOnItems(lvDetail);
     }
 
 
-    private ArrayList<HoursDataObject> getDataSet() {
+//    private ArrayList<HoursDataObject> getDataSet() {
+//
+//        return mainActivity.getHoursFilteredArrayList();
+//
+//    }
 
-        return mainActivity.getHoursFilteredArrayList();
-
-    }
 
     OnClickListener findTestButtonListener = new OnClickListener() {
 

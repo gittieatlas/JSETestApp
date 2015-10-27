@@ -122,6 +122,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     }
 
     private ArrayList<DataObject> getDataSet() {
+
         return mainActivity.getTestsFilteredArrayList();
     }
 

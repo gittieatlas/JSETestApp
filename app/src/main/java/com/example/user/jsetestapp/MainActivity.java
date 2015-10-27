@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();
-
+        hoursFilteredArrayList = new ArrayList<HoursDataObject>();
+        //queryMethods.setUpHoursFilteredArrayList();
         loadSavedPreferences();
 
     }
@@ -168,13 +170,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void setupTablayout() {
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_account_box_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_clipboard_text_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_phone_white_24dp));
+        createTab(R.layout.tab_layout_dashboard, R.id.tab_title_dashboard, getResources().getString(R.string.tabLayout_dashboard));
+        createTab(R.layout.tab_layout_tests, R.id.tab_title_tests, getResources().getString(R.string.tabLayout_tests));
+        createTab(R.layout.tab_layout_libraries, R.id.tab_title_libraries, getResources().getString(R.string.tabLayout_libraries));
+        createTab(R.layout.tab_layout_contact, R.id.tab_title_contact, getResources().getString(R.string.tabLayout_contact));
 
         tabLayout.setOnTabSelectedListener(tabListener);
+    }
+
+    public void createTab(int view, int titleView, String title) {
+        TabLayout.Tab tab = tabLayout.newTab();
+        tab.setCustomView(view);
+        tabLayout.addTab(tab);
+
+        ((TextView) findViewById(titleView)).setText(title);
     }
 
 
@@ -270,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<HoursDataObject> getHoursFilteredArrayList() {
 
-        return queryMethods.getHoursArrayList();
+        return hoursFilteredArrayList;
     }
 
     public void addFragment(int container, Fragment fragment) {
@@ -284,6 +295,10 @@ public class MainActivity extends AppCompatActivity {
     public void filterTestsArray(String location, String dayOfWeek) {
         queryMethods.filter(location, dayOfWeek);
     }
+
+//    public void filterHoursArray(String location) {
+//        queryMethods.getHoursArrayList(location);
+//    }
 
     public void doIntent(Intent intent) {
         startActivity(intent);
