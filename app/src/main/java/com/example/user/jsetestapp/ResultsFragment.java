@@ -117,7 +117,8 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     @Override
     public void onImageItemClick(View view, int position) {
         Test test = mainActivity.testsArrayList.get(position);
-        mainActivity.intentMethods.calendarIntent(test.getLocation(), "Test", "Lakewood, NJ");
+        mainActivity.intentMethods.calendarIntent("JSE Test", test.getLocation(),
+                "Test", test.getDate().toString(), test.getTime().toString());
     }
 
     private ArrayList<DataObject> getDataSet() {

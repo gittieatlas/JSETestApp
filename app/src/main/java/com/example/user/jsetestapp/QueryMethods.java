@@ -100,7 +100,7 @@ public class QueryMethods extends Activity {
             HoursDataObject obj = new HoursDataObject(mainActivity.helperMethods.firstLetterCaps(hours.getDayOfWeek().toString()),
 
                     hours.getStartTime().toString("hh:mm a"),
-                    hours.getEndTime().toString());
+                    hours.getEndTime().toString("hh:mm a"));
 
             mainActivity.hoursFilteredArrayList.add(obj);
         }
@@ -169,10 +169,11 @@ public class QueryMethods extends Activity {
 
                         Hours hours = new Hours();
                         hours.name = c.getString(TAG_LIBRARY_LOCATION);
-                        //hours.dayOfWeek = c.getString(TAG_DAY_OF_WEEK);
-                        hours.setDayOfWeek(c.getString(TAG_DAY_OF_WEEK));
+                        String day = c.getString(TAG_DAY_OF_WEEK);
+                        hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day)-1)]);
                         hours.startTime = LocalTime.parse(c.getString(TAG_OPENING_TIME));
-                        hours.endTime = c.getString(TAG_DURATION);
+                        LocalTime duration = LocalTime.parse(c.getString(TAG_DURATION));
+                        hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay()).plusMinutes(duration.getMinuteOfHour());
 
                         mainActivity.hoursArrayList.add(hours);
                     }

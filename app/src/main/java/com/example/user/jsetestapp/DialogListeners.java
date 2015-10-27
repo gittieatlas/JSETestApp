@@ -23,7 +23,7 @@ public class DialogListeners extends Activity {
             case "call_jse_during_non_office_hours": {
 
                 // TODO send JSE office hours
-                mainActivity.intentMethods.calendarIntent("Call JSE", "", "");
+                mainActivity.intentMethods.calendarIntent("Call JSE", "", "", "", "");
                 break;
             }
 

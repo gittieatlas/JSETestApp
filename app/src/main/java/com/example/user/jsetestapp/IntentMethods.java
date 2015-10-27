@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by gatlas on 10/22/2015.
@@ -54,22 +55,35 @@ public class IntentMethods extends Activity {
         this.mainActivity = mainActivity;
     }
 
-    public void calendarIntent(String title, String description, String location) {
+    public void calendarIntent(String title, String location, String description, String testDate, String testTime) {
 
-        //TODO work on startTime and endTime
+        //TODO work on startTime and endTime and date
         //TODO check if any params are null
         //TODO set Alarm
+        //TODO for location - show address?
 
-        long startTime = System.currentTimeMillis() + 1000 * 60 * 60;
-        long endTime = System.currentTimeMillis() + 1000 * 60 * 60 * 2;
+        // long startTime = System.currentTimeMillis() + 1000 * 60 * 60;
+        // long endTime = System.currentTimeMillis() + 1000 * 60 * 60 * 2;
+
+        //String startDate = testDate;
+
+        Date date = null;
+        long starttime, endtime;
+
+        //try {
+        //Date testdate = new SimpleDateFormat("MMMMMMMMM dd yyyy").parse("10 28 2015");
+        //startTime=date.getTime();
+        // date = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:Ss z").parse(tit1);
+        //}
+        //catch(Exception e){ }
 
         Calendar cal = Calendar.getInstance();
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
-        intent.putExtra("beginTime", startTime);
+        intent.putExtra("beginTime", "12 28 2016");
         intent.putExtra("allDay", false);
         intent.putExtra("rrule", "FREQ=YEARLY");
-        intent.putExtra("endTime", endTime);
+        intent.putExtra("endTime", "12 28 2016");
         intent.putExtra("title", title);
         intent.putExtra("description", description);
         intent.putExtra("eventLocation", location);

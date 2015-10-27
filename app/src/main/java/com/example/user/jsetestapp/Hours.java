@@ -1,3 +1,4 @@
+
 package com.example.user.jsetestapp;
 
 import org.joda.time.LocalTime;
@@ -6,14 +7,16 @@ public class Hours {
     public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
     //TODO change startTime dataType in database to LocalTime
+//TODO is duration min out of 60 or %?
     String name;
     DayOfWeek dayOfWeek;
-    String endTime;
-    LocalTime startTime;
+    LocalTime startTime, endTime;
 
     public Hours() {
 
     }
+
+
 
     public String getName() {
         return name;
@@ -39,19 +42,20 @@ public class Hours {
         }
     }
 
-public LocalTime getStartTime() {
-    return startTime;
-}
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
 
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
