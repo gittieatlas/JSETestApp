@@ -52,6 +52,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabIndicatorHeight="4dp"/>
+            app:tabIndicatorHeight="4dp"
+            app:tabTextAppearance="@style/App_TabLayoutTextAppearance"/>
     </LinearLayout>
 </RelativeLayout>

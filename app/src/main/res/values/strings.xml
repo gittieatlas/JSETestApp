@@ -81,4 +81,10 @@
 
     <!-- Dialog Fragment -->
     <string name="df_">Log Out</string>
+
+    <!-- TabLayout -->
+    <string name="tabLayout_dashboard">Dashboard</string>
+    <string name="tabLayout_tests">Tests</string>
+    <string name="tabLayout_libraries">Libraries</string>
+    <string name="tabLayout_contact">Contact</string>
 </resources>

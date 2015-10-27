@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADDRESS"
-        android:textColor="@color/primary"/>
+        style="@style/App_TextView_Colored_Label"/>
     <TextView
         android:id="@+id/locationAddress"
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="PHONE NUMBER"
-        android:textColor="@color/primary"
+        style="@style/App_TextView_Colored_Label"
         android:layout_marginTop="@dimen/default_margin"/>
     <TextView
         android:id="@+id/locationPhoneNumber"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
         android:text="@string/hours_title"
-        android:textColor="@color/primary" />
+        style="@style/App_TextView_Colored_Label" />
 
 
 

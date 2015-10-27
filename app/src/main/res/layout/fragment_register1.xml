@@ -19,7 +19,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/email"
-                    android:textColor="@color/primary" />
+                    style="@style/App_TextView_Colored_Label" />
 
                 <EditText
                     android:id="@+id/editTextEmail"
@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
                     android:text="@string/password"
-                    android:textColor="@color/primary" />
+                    style="@style/App_TextView_Colored_Label"/>
 
                 <EditText
                     android:id="@+id/editTextPassword"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
                     android:text="@string/confirm_password"
-                    android:textColor="@color/primary" />
+                    style="@style/App_TextView_Colored_Label" />
 
                 <EditText
                     android:id="@+id/editTextConfirmPassword"

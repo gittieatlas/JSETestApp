@@ -19,8 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/default_location_label"
-
-            android:textColor="@color/primary" />
+            style="@style/App_TextView_Colored_Label" />
 
         <TextView
             android:id="@+id/locationTextView"

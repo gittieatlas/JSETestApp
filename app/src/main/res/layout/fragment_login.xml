@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email"
-            android:textColor="@color/primary" />
+            style="@style/App_TextView_Colored_Label" />
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/password"
-                android:textColor="@color/primary" />
+                style="@style/App_TextView_Colored_Label"/>
 
             <TextView
                 android:id="@+id/textViewForgotPassword"
