@@ -16,6 +16,8 @@ import android.widget.ScrollView;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     //Controls
@@ -40,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     DateTime dob;
     boolean isJseMember;
 
+    ArrayList<Location> locationsArrayList;
+    ArrayList<Test> testsArrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,15 @@ public class LoginActivity extends AppCompatActivity {
         setupToolbar();
 
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
+
+      //  loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
+
+        locationsArrayList = new ArrayList<Location>();
+
+        Bundle bundle = new Bundle();
+        bundle = getIntent().getExtras();
+        locationsArrayList = (ArrayList<Location>)bundle.getSerializable("locationsArrayList");
+        testsArrayList = (ArrayList<Test>)bundle.getSerializable("testsArrayList");
 
         try {
             Intent intent = getIntent();
@@ -68,9 +82,9 @@ public class LoginActivity extends AppCompatActivity {
         email = "chanicohen@gmail.com";
         password = "1234";
         ssn = "XXX-XX-1234";
-        defaultLocation = "BKLYN - BY 18th Ave";
+        defaultLocation = "BKLYN - BY 18th Ave. (M)";
         dob = DateTime.now();
-        gender = "2";
+        gender = "1";
         isJseMember = false;
 
         savePreferences("first_name", firstName);
@@ -159,6 +173,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (id == R.id.dashboard) {
             Intent intent = new Intent(this, MainActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("locationsArrayList", locationsArrayList);
+            b.putSerializable("testsArrayList", testsArrayList);
+            intent.putExtras(b);
             startActivity(intent);
             return true;
         }

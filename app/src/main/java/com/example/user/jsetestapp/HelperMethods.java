@@ -30,17 +30,14 @@ public class HelperMethods extends Activity {
     }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
-int spinnerDropdownItem = R.layout.spinner_dropdown_item;
-        if (tag.equals("location") || tag.equals("dayOfWeek")){
-            spinnerDropdownItem = R.layout.spinner_dropdown_item_colored;
-        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mainActivity.getApplicationContext(),
-                spinnerDropdownItem, arrayList);
+                R.layout.spinner_dropdown_item, arrayList);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         spinner.setAdapter(adapter);
 
-        if (tag.equals("location") || tag.equals("libraries_location")) spinner.setSelection(2);
+        if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
         else spinner.setSelection(0);
     }
 
@@ -57,8 +54,8 @@ int spinnerDropdownItem = R.layout.spinner_dropdown_item;
     /**
      * Function to make the first letter caps and the rest lowercase.
      *
-     * @param data              - capitalize this
-     * @return String        - alert message
+     * @param data          - capitalize this
+     * @return String       - alert message?
      *
      */
     static public String firstLetterCaps(String data) {

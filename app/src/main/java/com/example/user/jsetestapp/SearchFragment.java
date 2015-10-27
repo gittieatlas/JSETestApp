@@ -46,6 +46,13 @@ public class SearchFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        locationsSpinner.setSelection(2); // ToDo set to default location
+        daysOfWeekSpinner.setSelection(0);
+    }
+
     private String getOpenRegistrationDates() {
 
         //TODO run sql query to get fromDate and toDate
@@ -71,12 +78,12 @@ public class SearchFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        mainActivity.addDataToSpinner(mainActivity.locationsArrayList, locationsSpinner, "location");
+        mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList, locationsSpinner, "location");
 
         String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
         ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();
         for (String s : daysOfWeek) daysOfWeekArrayList.add(s);
-        mainActivity.addDataToSpinner(daysOfWeekArrayList, daysOfWeekSpinner, "dayOfWeek");
+        mainActivity.helperMethods.addDataToSpinner(daysOfWeekArrayList, daysOfWeekSpinner, "dayOfWeek");
     }
 
     OnClickListener searchButtonListener = new OnClickListener() {

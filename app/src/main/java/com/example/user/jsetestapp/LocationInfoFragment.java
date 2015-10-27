@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class LocationInfoFragment extends Fragment {
 
     //Controls
     View rootView;
+    TextView locationAddress, locationPhoneNumber;
 
     //Activities
     MainActivity mainActivity;
@@ -26,18 +28,27 @@ public class LocationInfoFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_location_info,
                 container, false);
-
+mainActivity = ((MainActivity) getActivity());
         initializeViews(rootView);
+        setUpScreen();
 
         return rootView;
     }
 
+    private void setUpScreen() {
+        locationAddress.setText(mainActivity.defaultLocation.getAddress());
+        locationPhoneNumber.setText(mainActivity.getDefaultLocation().getPhone());
+    }
+
     private void initializeViews(View rootView) {
-
+        locationAddress = (TextView) rootView.findViewById(R.id.locationAddress);
+        locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-
-        this.mainActivity = mainActivity;
+    @Override
+    public void onResume(){
+        super.onResume();
+        setUpScreen();
     }
+
 }

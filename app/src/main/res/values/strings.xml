@@ -44,9 +44,10 @@
     <string name="location_phone_number">718-789-6548</string>
     <string name="hours_title">HOURS</string>
 
-    <!-- fragment_search.xmlgment.xml controls-->
+    <!-- fragment_search controls-->
     <string name="searchButton">SEARCH</string>
     <string name="registration_date_range">Registration is currently open from %1$s to %2$s</string>
+    <string name="location_spinner_title">Select a location</string>
 
     <!-- fragment_ controls-->
     <string name="default_location_label">Default Location</string>

@@ -13,7 +13,6 @@
         <item name="colorControlNormal">@color/divider</item>
         <item name="colorControlActivated">@color/accent</item>
         <item name="colorControlHighlight">@color/accent</item>
-        <item name="android:textAppearance">@style/customTextViewSize</item>
     </style>
 
     <style name="MyActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -63,8 +62,24 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="customTextViewSize" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">16sp</item>
-
+    <style name="App_CardLayout_Button" parent="CardView">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="cardBackgroundColor">@color/accent</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">1dp</item>
     </style>
+
+    <style name="App_Button" parent="CardView">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,6 +29,7 @@
             android:text="@string/location"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/primary_text" />
+
 
         <FrameLayout
             android:id="@+id/dashboardContainer"
@@ -114,14 +114,7 @@
         android:id="@+id/findTestButton"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_below="@+id/button2"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardBackgroundColor="@color/accent"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="1dp">
+        style="@style/App_CardLayout_Button">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -131,14 +124,8 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:minWidth="88dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
                 android:text="@string/find_test"
-                android:textColor="@android:color/white"/>
+                style="@style/App_Button"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

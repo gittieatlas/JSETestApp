@@ -63,10 +63,10 @@
 //    String pid;
 //
 //
-//    public void setUpLocationsArrayList() {
+//    public void setUpLocationsNameArrayList() {
 //
-//        mainActivity.locationsArrayList = new ArrayList<String>();
-//        mainActivity.locationsArrayList.add("Location");
+//        mainActivity.locationsNameArrayList = new ArrayList<String>();
+//        mainActivity.locationsNameArrayList.add("Location");
 //
 //        // Calling async task to get json
 //        new GetLocations().execute();
@@ -132,7 +132,7 @@
 //                        JSONObject c = locationsJsonArray.getJSONObject(i);
 //
 //                        String name = c.getString(TAG_NAME);
-//                        mainActivity.locationsArrayList.add(name);
+//                        mainActivity.locationsNameArrayList.add(name);
 //                    }
 //                } catch (JSONException e) {
 //                    e.printStackTrace();

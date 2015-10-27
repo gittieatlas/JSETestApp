@@ -31,6 +31,11 @@ public class DialogListeners extends Activity {
                 mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
                 break;
             }
+
+            case "results_no_tests": {
+                mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment);
+            }
+
         }
     }
 
@@ -46,4 +51,5 @@ public class DialogListeners extends Activity {
 
         this.mainActivity = mainActivity;
     }
+
 }

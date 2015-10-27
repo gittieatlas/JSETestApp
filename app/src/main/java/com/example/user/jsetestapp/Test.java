@@ -1,10 +1,11 @@
 package com.example.user.jsetestapp;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-public class Test {
+import java.io.Serializable;
+
+public class Test implements Serializable {
 
     public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 

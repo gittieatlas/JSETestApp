@@ -18,19 +18,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     QueryMethods queryMethods;
     DialogListeners dialogListeners;
     IntentMethods intentMethods;
+    SplashActivity splashActivity;
 
     //Fragments
     LoginFragment loginFragment;
@@ -58,13 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Variables
-    ArrayList<String> locationsArrayList;
-    ArrayList<DataObject> testsFilteredArrayList;
+    ArrayList<Location> locationsArrayList;
+    ArrayList<String> locationsNameArrayList;
     ArrayList<Test> testsArrayList;
+    ArrayList<DataObject> testsFilteredArrayList;
     ArrayList<Hours> hoursArrayList;
     ArrayList<HoursDataObject> hoursFilteredArrayList;
     User user = new User();
-    boolean isJseMember = false;
+    Location defaultLocation = new Location();
+
+    // boolean isJseMember = false;
 
 
     @Override
@@ -80,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.addFragment(R.id.container, dashboardFragment);
 
         queryMethods.setUpLocationsArrayList();
+        queryMethods.setUpLocationsNameArrayList();
         queryMethods.setUpTestsArrayList();
+        queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();
 
         loadSavedPreferences();
@@ -103,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
 
         Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
+
+        // location.setName(sharedPreferences.getString("default_location", "COPE"));
+
+        for (Location location : locationsArrayList) {
+            if (location.getName().equals(sharedPreferences.getString("default_location", "COPE"))) {
+                defaultLocation = location;
+            }
+        }
+      //  Toast.makeText(getApplicationContext(), defaultLocation.getAddress(), Toast.LENGTH_LONG).show();
+
     }
 
     private void initializeViews() {
@@ -134,8 +140,11 @@ public class MainActivity extends AppCompatActivity {
         myDialogFragment = new MyDialogFragment();
         myDialogFragment.setMainActivity(this);
         dialogListeners = new DialogListeners();
+        dialogListeners.setMainActivity(this);
         intentMethods = new IntentMethods();
         intentMethods.setMainActivity(this);
+        splashActivity = new SplashActivity();
+        splashActivity.setMainActivity(this);
 
     }
 
@@ -249,14 +258,9 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setMinimumHeight(height);
     }
 
+    public ArrayList<String> getLocationsNameArrayList() {
 
-    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
-        helperMethods.addDataToSpinner(arrayList, spinner, tag);
-    }
-
-    public ArrayList<String> getLocationsArrayList() {
-
-        return locationsArrayList;
+        return locationsNameArrayList;
     }
 
     public ArrayList<DataObject> getTestsFilteredArrayList() {
@@ -278,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void filterTestsArray(String location, String dayOfWeek) {
-        queryMethods.filterTestsArray(location, dayOfWeek);
+        queryMethods.filter(location, dayOfWeek);
     }
 
     public void doIntent(Intent intent) {
@@ -297,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
      * @param message        - alert message
      * @param positiveButton - text for positive button
      * @param negativeButton - text for negative button
-     * @param neutralButton - text for neutral button
+     * @param neutralButton  - text for neutral button
      * @param icon           - drawable for icon
      * @param tagListener    - tag to pass through to listener method
      */
@@ -322,10 +326,14 @@ public class MainActivity extends AppCompatActivity {
         dialogFragment.show(fm, tagListener);
     }
 
-    public String getStringFromResources(int number){
+    public String getStringFromResources(int number) {
         return getResources().getString(number);
     }
 
+
+    public Location getDefaultLocation() {
+        return defaultLocation;
+    }
 
 
 }

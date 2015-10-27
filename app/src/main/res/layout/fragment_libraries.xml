@@ -1,30 +1,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="72dp"
-    android:paddingLeft="16dp"
     android:paddingTop="16dp"
     tools:context=".LibrariesFragment">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOCATION"
+        android:text="Search for a Library"
         android:textColor="@color/primary"
+        android:layout_marginLeft="@dimen/default_margin"
         />
     <Spinner
         android:id="@+id/locationSpinner"
         style="@style/App_Spinner"
-        android:layout_marginLeft="-4dp"/>
+        android:layout_marginLeft="@dimen/default_margin"/>
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:id="@+id/libraryInfoLinearLayout">
 
 
         <FrameLayout
@@ -48,15 +53,8 @@
             android:id="@+id/findTestButton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:layout_below="@+id/button2"
-            android:layout_gravity="center"
             android:layout_marginLeft="-16dp"
-            android:layout_marginTop="32dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            card_view:cardBackgroundColor="@color/accent"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardElevation="1dp">
+            style="@style/App_CardLayout_Button">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -66,14 +64,8 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:minWidth="88dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:singleLine="true"
                     android:text="@string/find_test"
-                    android:textColor="@android:color/white" />
+                    style="@style/App_Button"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

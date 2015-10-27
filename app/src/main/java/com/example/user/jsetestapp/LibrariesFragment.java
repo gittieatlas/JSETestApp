@@ -8,11 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
 
 public class LibrariesFragment extends Fragment {
 
@@ -20,6 +24,8 @@ public class LibrariesFragment extends Fragment {
     View rootView;
     Spinner locationsSpinner;
     CardView findTestButton;
+    LinearLayout libraryInfoLinearLayout;
+
 
     //Activities
     MainActivity mainActivity;
@@ -42,11 +48,12 @@ public class LibrariesFragment extends Fragment {
         getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
 
         initializeViews(rootView);
-        mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
 
+        registerListeners();
+        mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
+        libraryInfoLinearLayout.setVisibility(View.GONE);
 
         setupListView();
-        findTestButton.setOnClickListener(findTestButtonListener);
 
         return rootView;
     }
@@ -55,7 +62,30 @@ public class LibrariesFragment extends Fragment {
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         bindSpinnerData();
+        libraryInfoLinearLayout = (LinearLayout) rootView.findViewById(R.id.libraryInfoLinearLayout);
     }
+
+    private void registerListeners() {
+        findTestButton.setOnClickListener(findTestButtonListener);
+        locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
+    }
+
+    OnItemSelectedListener locationsSpinnerOnItemSelectedListener = new OnItemSelectedListener() {
+
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position == 0)
+                libraryInfoLinearLayout.setVisibility(View.GONE);
+            else
+                libraryInfoLinearLayout.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     private void setupListView() {
 
@@ -84,7 +114,7 @@ public class LibrariesFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        mainActivity.addDataToSpinner(mainActivity.locationsArrayList, locationsSpinner, "libraries_location");
+        mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList, locationsSpinner, "libraries_location");
     }
 
     public void setMainActivity(MainActivity mainActivity) {

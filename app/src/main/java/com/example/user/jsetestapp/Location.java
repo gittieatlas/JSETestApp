@@ -1,24 +1,24 @@
 package com.example.user.jsetestapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Location {
+public class Location implements Serializable {
 
     //long id;
-    String locationName, address, phone;
+    String name, address, phone;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Alerts> alertsArrayList;
 
     public Location() {
 
     }
-
-    public String getLocationName() {
-        return locationName;
+    public String getName() {
+        return name;
     }
 
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {

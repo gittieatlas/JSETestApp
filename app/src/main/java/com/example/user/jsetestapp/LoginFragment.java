@@ -24,6 +24,7 @@ public class LoginFragment extends Fragment {
 
 
     //Variables
+   // ArrayList<Location> locationsArrayList;
 
 
     @Override

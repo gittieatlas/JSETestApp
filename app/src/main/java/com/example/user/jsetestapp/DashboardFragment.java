@@ -42,14 +42,26 @@ public class DashboardFragment extends Fragment {
         getFragmentManager().beginTransaction().add(R.id.dashboardContainer, locationInfoFragment).commit();
 
         initializeViews(rootView);
+        registerListeners();
+        setupListView();
+        setUpText();
         mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
 
-        setupListView();
-        locationTextView.setText(mainActivity.user.defaultLocation);
-        findTestButton.setOnClickListener(findTestButtonListener);
-
-
         return rootView;
+    }
+
+    private void setUpText() {
+        locationTextView.setText(mainActivity.defaultLocation.getName());
+    }
+
+    private void initializeViews(View rootView) {
+        locationTextView = (TextView) rootView.findViewById(R.id.locationTextView);
+
+        findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
+    }
+
+    private void registerListeners() {
+        findTestButton.setOnClickListener(findTestButtonListener);
     }
 
     private void setupListView() {
@@ -60,10 +72,6 @@ public class DashboardFragment extends Fragment {
         mainActivity.helperMethods.setListViewHeightBasedOnItems(lvDetail);
     }
 
-    private void initializeViews(View rootView) {
-        locationTextView = (TextView) rootView.findViewById(R.id.locationTextView);
-        findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
-    }
 
     private ArrayList<HoursDataObject> getDataSet() {
 

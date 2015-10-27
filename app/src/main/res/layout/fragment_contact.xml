@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/jse_phone_number"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/primary_text"/>
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/schedule_test_phone_number"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/primary_text"/>
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/jse_email_address"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/primary_text"/>
     </LinearLayout>
 
     <!--<View
@@ -99,14 +99,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/jse_office_hours_mon_thurs"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/primary_text" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/jse_office_hours_friday"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/primary_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,14 +120,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/jse_office_hours_mon_thurs_hours"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/primary_text" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/jse_office_hours_friday_hours"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/primary_text" />
         </LinearLayout>
 
     </LinearLayout>

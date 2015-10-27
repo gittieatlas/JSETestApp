@@ -44,6 +44,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
 
         setupFab();
         setupRecyclerView();
+        checkIfNoResults();
 
         return rootView;
     }
@@ -93,6 +94,18 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
 
         recyclerViewAdapter.setOnItemClickListener(this);
         recyclerViewAdapter.setOnItemImageClickListener(this);
+    }
+
+    private void checkIfNoResults(){
+        if (mainActivity.getTestsFilteredArrayList().size() == 0) {
+            String title = "Tests";
+            String message = "No results found. Try again?";
+            String positiveButton = "OK";
+            int icon = R.drawable.ic_clipboard_text_white_24dp; // TODO Change icon test grey 24
+            String tagListener = "results_no_tests";
+            mainActivity.showDialog(title, message, positiveButton, null, null, icon, tagListener);
+
+            }
     }
 
     @Override
