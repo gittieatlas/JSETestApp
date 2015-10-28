@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     //Variables
     ArrayList<Location> locationsArrayList;
     ArrayList<String> locationsNameArrayList;
+    ArrayList<String> branchesNameArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<DataObject> testsFilteredArrayList;
     ArrayList<Hours> hoursArrayList;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpLocationsNameArrayList();
+        queryMethods.setUpBranchesNameArrayList();
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();

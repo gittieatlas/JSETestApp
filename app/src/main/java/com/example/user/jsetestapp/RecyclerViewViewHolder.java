@@ -3,6 +3,7 @@ package com.example.user.jsetestapp;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ public class RecyclerViewViewHolder extends ViewHolder {
     TextView testDeadlineTitle;
     TextView testDeadlineDetails;
     ImageButton imageButton;
+    FrameLayout imageButtonWrapper;
 
 
     private RecyclerViewItemClickListener mListener;
@@ -30,12 +32,14 @@ public class RecyclerViewViewHolder extends ViewHolder {
         testDeadlineTitle = (TextView) this.itemView.findViewById(R.id.testDealineTitleTextView);
         testDeadlineDetails = (TextView) this.itemView.findViewById(R.id.testDealineDetailsTextView);
         imageButton = (ImageButton) this.itemView.findViewById(R.id.imageButton);
+        imageButtonWrapper = (FrameLayout) this.itemView.findViewById(R.id.imageButtonWrapper);
 
         this.mListener = listener;
         this.mImageListener = imageListener;
 
         itemView.setOnClickListener(itemClickListener);
         imageButton.setOnClickListener(imageClickListener);
+        imageButtonWrapper.setOnClickListener(imageClickListener);
     }
 
     OnClickListener itemClickListener = new OnClickListener() {

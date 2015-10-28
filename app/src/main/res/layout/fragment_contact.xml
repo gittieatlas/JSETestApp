@@ -22,11 +22,24 @@
             android:text="@string/jse_office"
             android:textColor="@color/primary" />
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/jse_phone_number"
-            android:textColor="@color/primary_text"/>
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/ic_phone_grey600_18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/jse_phone_number"
+                android:textColor="@color/primary_text"
+                android:layout_marginLeft="4dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -43,12 +56,24 @@
             android:text="@string/schedule_test"
             android:textColor="@color/primary" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:id="@+id/imageView"
+                android:background="@drawable/ic_phone_grey600_18dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/schedule_test_phone_number"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text"
+            android:layout_marginLeft="4dp" />
+            </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -65,11 +90,24 @@
             android:text="@string/email_address"
             android:textColor="@color/primary" />
 
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/ic_email_grey600_18dp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/jse_email_address"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text"
+            android:layout_marginLeft="4dp" />
+            </LinearLayout>
     </LinearLayout>
 
     <!--<View

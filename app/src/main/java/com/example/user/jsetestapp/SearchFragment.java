@@ -78,7 +78,7 @@ public class SearchFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList, locationsSpinner, "location");
+        mainActivity.helperMethods.addDataToSpinner(mainActivity.branchesNameArrayList, locationsSpinner, "location");
 
         String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
         ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();

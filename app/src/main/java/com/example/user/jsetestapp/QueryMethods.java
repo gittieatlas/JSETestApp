@@ -1,19 +1,9 @@
 package com.example.user.jsetestapp;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class QueryMethods extends Activity {
 
@@ -35,6 +25,13 @@ public class QueryMethods extends Activity {
         for (Location location : mainActivity.locationsArrayList) {
             mainActivity.locationsNameArrayList.add(location.getName());
         }
+    }
+
+    public void setUpBranchesNameArrayList() {
+        mainActivity.branchesNameArrayList = new ArrayList<String>();
+        Bundle bundle = mainActivity.getIntent().getExtras();
+        mainActivity.branchesNameArrayList = (ArrayList<String>) bundle.getSerializable("branchesNameArrayList");
+
     }
 
     public void setUpTestsArrayList() {

@@ -4,14 +4,16 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:padding="@dimen/default_margin">
+    android:divider="?android:dividerHorizontal"
+    android:dividerPadding="10dp"
+    android:showDividers="middle" >
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_marginRight="16dp">
+        android:layout_margin="@dimen/default_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,13 +81,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="10">
+        android:layout_weight="4"
+        android:id="@+id/imageButtonWrapper">
 
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
+            android:layout_gravity="center"
             android:background="@drawable/ic_calendar_clock_grey600_24dp"
             android:contentDescription="Calendar Icon" />
     </FrameLayout>

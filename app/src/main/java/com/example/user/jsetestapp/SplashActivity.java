@@ -38,13 +38,17 @@ public class SplashActivity extends AppCompatActivity {
     Boolean gotLocations = false;
     Boolean gotTests = false;
     Boolean gotHours = false;
+    Boolean gotBranches = false;
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
+    ArrayList<String> branchesNameArrayList;
 
     // URL to get locationsJsonArray JSON
-    //private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
-    private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations2.php";
+    private static String branches_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
+
+    // URL to get locationsJsonArray JSON
+    private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
 
     // URL to get testsJsonArray JSON
     private static String tests_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php";
@@ -52,11 +56,21 @@ public class SplashActivity extends AppCompatActivity {
     // URL to get hoursJsonArray JSON
     private static String hours_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php";
 
+    // URL to get alertsJsonArray JSON
+    private static String alerts_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php";
+
+
+    // JSON Node names - locations
+    private static final String TAG_BRANCHES = "branches";
 
     // JSON Node names - locations
     private static final String TAG_LOCATIONS = "locations";
     private static final String TAG_NAME = "name";
     private static final String TAG_ADDRESS = "address";
+    private static final String TAG_CITY = "city";
+    private static final String TAG_STATE = "state";
+    private static final String TAG_ZIP = "zip";
+    private static final String TAG_COUNTRY = "country";
     private static final String TAG_PHONE = "phoneNumber";
 
     // JSON Node names - tests
@@ -81,6 +95,8 @@ public class SplashActivity extends AppCompatActivity {
     JSONArray testsJsonArray = null;
     // hoursJsonArray JSONArray
     JSONArray hoursJsonArray = null;
+    // branchesNameArrayListJsonArray JSONArray
+    JSONArray branchesJsonArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +106,8 @@ public class SplashActivity extends AppCompatActivity {
         locationsArrayList = new ArrayList<Location>();
         testsArrayList = new ArrayList<Test>();
         hoursArrayList = new ArrayList<Hours>();
+        branchesNameArrayList = new ArrayList<String>();
+        branchesNameArrayList.add("Branches");
         checkInternetConnection();
     }
 
@@ -107,6 +125,7 @@ public class SplashActivity extends AppCompatActivity {
             new GetLocations().execute();
             new GetTests().execute();
             new GetHours().execute();
+            new GetBranches().execute();
 
         } else {
 
@@ -149,11 +168,18 @@ public class SplashActivity extends AppCompatActivity {
 
                         String name = c.getString(TAG_NAME);
                         String address = c.getString(TAG_ADDRESS);
+                        String city = c.getString(TAG_CITY);
+                        String state = c.getString(TAG_STATE);
+                        String zip = c.getString(TAG_ZIP);
+                        String country = c.getString(TAG_COUNTRY);
+
+                        // ToDo handle if any values are null
+                        String fullAddress = address + " " + city + ", " + state + " " + zip + " " + country;
                         String phone = c.getString(TAG_PHONE);
 
                         Location location = new Location();
                         location.setName(name);
-                        location.setAddress(address);
+                        location.setAddress(fullAddress);
                         location.setPhone(phone);
 
                         locationsArrayList.add(location);
@@ -297,17 +323,71 @@ public class SplashActivity extends AppCompatActivity {
             gotHours = true;
             changeActivities();
         }
-
     }
 
+    /**
+     * Async task class to get json by making HTTP call
+     */
+    private class GetBranches extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+
+            // Making a request to locations_url and getting response
+            String jsonStr = sh.makeServiceCall(branches_url, ServiceHandler.GET);
+
+            Log.d("Response Branches: ", "> " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    // Getting JSON Array node
+                    branchesJsonArray = jsonObj.getJSONArray(TAG_BRANCHES);
+
+                    // looping through All Locations
+                    for (int i = 0; i < branchesJsonArray.length(); i++) {
+
+                        JSONObject c = branchesJsonArray.getJSONObject(i);
+
+                        String name = c.getString(TAG_NAME);
+                        branchesNameArrayList.add(name);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the branches_url");
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            gotBranches = true;
+            changeActivities();
+        }
+    }
+
+
     private void changeActivities() {
-        if (gotLocations && gotTests && gotHours) {
+        if (gotLocations && gotTests && gotHours && gotBranches) {
             // TODO check if loggedIn == true then go to MainActivity
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
             b.putSerializable("testsArrayList", testsArrayList);
             b.putSerializable("hoursArrayList", hoursArrayList);
+            b.putSerializable("branchesNameArrayList", branchesNameArrayList);
             intent.putExtras(b);
             startActivity(intent);
         }
