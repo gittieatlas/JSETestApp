@@ -100,10 +100,8 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            mainActivity.filterTestsArray(mainActivity.user.defaultLocation, null);
+            mainActivity.helperMethods.findTests(mainActivity.defaultLocation);
 
-            Toast.makeText(mainActivity.getApplicationContext(), mainActivity.user.defaultLocation, Toast.LENGTH_LONG).show();
-            mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
         }
     };
 

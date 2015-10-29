@@ -14,6 +14,7 @@ public class Test implements Serializable {
     ;
 
     //long id;
+    int branchId;
     String location;
     DayOfWeek dayOfWeek;
     Gender gender;
@@ -24,6 +25,13 @@ public class Test implements Serializable {
 
     public Test() {
 
+    }
+    public int getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
     }
 
     public String getLocation() {

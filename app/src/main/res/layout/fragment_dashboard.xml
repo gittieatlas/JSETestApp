@@ -102,7 +102,7 @@
                 android:id="@+id/AlertsMessageTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/alerts_message"
+
                 android:textColor="@color/secondary_text" />
 
         </LinearLayout>

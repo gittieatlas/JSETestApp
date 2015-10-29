@@ -114,6 +114,76 @@ public class HelperMethods extends Activity {
         bundle.putSerializable("location", location);
         return bundle;
     }
+//
+//
+//    public void setUpHoursFilteredArrayList(String location) {
+//
+//        if (mainActivity.getHoursFilteredArrayList()!= null)
+//            mainActivity.getHoursFilteredArrayList().clear();
+//        for (Hours hours : mainActivity.hoursArrayList) {
+//
+//            if (hours.getName().equals(location)) {
+//
+//                HoursDataObject obj = new HoursDataObject(mainActivity.helperMethods.firstLetterCaps(hours.getDayOfWeek().toString()),
+//
+//                        hours.getStartTime().toString("hh:mm a"),
+//                        hours.getEndTime().toString("hh:mm a"));
+//
+//                mainActivity.hoursFilteredArrayList.add(obj);
+//            }
+//        }
+//    }
 
+
+    //for dashboard and library search
+    public void findTests(Location location){
+            clearTestsFilteredArrayList();
+            filterTests(location);
+        }
+
+    //for search page
+    private void findTests(Branch branch, int dayOfWeek){
+        clearTestsFilteredArrayList();
+         }
+
+    private void filterTests(Location location){
+        for (Test test : mainActivity.testsArrayList){
+            if (test.getLocation().equals(location.name)){
+                DataObject obj = new DataObject(test.getLocation(),
+                        mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
+                        test.getTime().toString("hh:mm a"),
+                        test.getDate().toString("MMMM dd yyyy"),
+                        "Registration Deadline: ",
+                        test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
+                mainActivity.testsFilteredArrayList.add(obj);
+            }
+        }
+       replaceFragment(R.id.container, mainActivity.resultsFragment);
+    }
+    
+
+
+    // none
+    private void filterTests(){
+
+    }
+    //for branches only
+    private void filterTests(Branch branch){
+
+    }
+    //for dayOfWeek only
+    private void filterTests(int dayOfWeek){
+
+    }
+    //for brnach and dayOfWeek
+    private void filterTests(Branch branch, int dayOfWeek){
+
+    }
+
+    private void clearTestsFilteredArrayList(){
+
+        if (mainActivity.getTestsFilteredArrayList()!= null)
+            mainActivity.getTestsFilteredArrayList().clear();
+    }
 
 }

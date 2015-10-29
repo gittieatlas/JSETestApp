@@ -114,9 +114,9 @@ public class LibrariesFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-
-            Toast.makeText(mainActivity.getApplicationContext(), locationsSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-            mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
+            mainActivity.helperMethods.findTests(getSelectedLocation());
+//            Toast.makeText(mainActivity.getApplicationContext(), locationsSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+//            mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
         }
     };
 

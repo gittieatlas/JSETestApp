@@ -21,6 +21,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         initializeViews();
         createFragmentsActivitiesClasses();
         setupToolbar();
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpHoursArrayList();
         queryMethods.setUpAlertsArrayList();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
+
         //queryMethods.setUpHoursFilteredArrayList();
         loadSavedPreferences();
 

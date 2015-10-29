@@ -81,6 +81,9 @@ public class QueryMethods extends Activity {
         mainActivity.alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
     }
 
+
+
+
     public ArrayList<DataObject> getTestsArrayList() {
 
         mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();

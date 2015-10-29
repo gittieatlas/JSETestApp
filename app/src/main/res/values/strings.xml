@@ -50,7 +50,7 @@
     <string name="location_spinner_title">Select a branch</string>
 
     <!-- fragment_ controls-->
-    <string name="default_location_label">Default Location</string>
+    <string name="default_location_label">Your Default Location</string>
     <string name="location">Location Name</string>
     <string name="alerts">LOCATION ALERTS</string>
     <string name="alerts_day">Sunday</string>

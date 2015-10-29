@@ -78,6 +78,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // JSON Node names - tests
     private static final String TAG_TESTS = "tests";
+    private static final String TAG_BRANCH_ID = "branchId";
     private static final String TAG_LOCATION = "NAME";
     private static final String TAG_DATE = "date";
     private static final String TAG_TIME = "time";
@@ -253,6 +254,7 @@ public class SplashActivity extends AppCompatActivity {
 
                         Test test = new Test();
 
+                        test.branchId = Integer.parseInt(c.getString(TAG_BRANCH_ID));
                         test.location = c.getString(TAG_LOCATION);
                         test.date = LocalDate.parse(c.getString(TAG_DATE));
                         test.setDayOfWeek(Test.DayOfWeek.values()[(test.getDate().getDayOfWeek() - 1)].toString());
@@ -260,7 +262,7 @@ public class SplashActivity extends AppCompatActivity {
                         test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
                         test.deadlineTime = LocalTime.parse(new StringBuilder(c.getString(TAG_CLOSING_TIME)).insert(c.getString(TAG_CLOSING_TIME).length() - 2, ":").toString());
                         test.setGender(c.getString(TAG_GENDER));
-
+                        //TODO check gender
                         testsArrayList.add(test);
                     }
                 } catch (JSONException e) {

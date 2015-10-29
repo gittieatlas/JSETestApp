@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         email = "chanicohen@gmail.com";
         password = "1234";
         ssn = "XXX-XX-1234";
-        defaultLocation = "BKLYN - BY 18th Ave";
+        defaultLocation = "BKLYN - BY 18th Ave. (M)";
         dob = DateTime.now();
         gender = "1";
         isJseMember = false;
