@@ -30,7 +30,7 @@ public class LibrariesFragment extends Fragment {
 
     //Fragments
     LocationInfoFragment locationInfoFragment;
-    HelperMethods helperMethods;
+    //  HelperMethods helperMethods;
 
     //Variables
     ListView lvDetail;
@@ -43,15 +43,15 @@ public class LibrariesFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_libraries,
                 container, false);
 
-        locationInfoFragment = new LocationInfoFragment();
-        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
-
         initializeViews(rootView);
+
+        locationInfoFragment = new LocationInfoFragment();
+        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
+        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
 
         registerListeners();
         mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
         libraryInfoLinearLayout.setVisibility(View.GONE);
-
 
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
 
@@ -59,12 +59,23 @@ public class LibrariesFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, locationsSpinner.getSelectedItem().toString());
 
+        locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
+
     }
 
+    private Location getSelectedLocation() {
+        Location locationToPass = new Location();
+        for (Location location : mainActivity.locationsArrayList){
+            if (location.getName().equals(locationsSpinner.getSelectedItem().toString()))
+                locationToPass = location;
+        }
+        if (locationToPass == null)locationToPass = mainActivity.defaultLocation;
+        return locationToPass;
+    }
 
     private void initializeViews(View rootView) {
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
@@ -88,9 +99,10 @@ public class LibrariesFragment extends Fragment {
                 libraryInfoLinearLayout.setVisibility(View.GONE);
             else
                 libraryInfoLinearLayout.setVisibility(View.VISIBLE);
-            //mainActivity.queryMethods.getFilteredHoursArrayList("BKLYN - BY 18th Ave");
 
             mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
+
+            locationInfoFragment.setUpScreen(getSelectedLocation());
         }
 
         @Override

@@ -22,6 +22,11 @@ public class LocationInfoFragment extends Fragment {
 
     //Variables
 
+    Location location;
+
+    public LocationInfoFragment() {
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -30,16 +35,16 @@ public class LocationInfoFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_location_info,
                 container, false);
         mainActivity = ((MainActivity) getActivity());
+
         initializeViews(rootView);
-        setUpScreen();
         registerListeners();
 
-        return rootView;
-    }
+        if (this.getArguments() != null)
+            location = (Location) this.getArguments().getSerializable("location");
 
-    private void setUpScreen() {
-        locationAddress.setText(mainActivity.defaultLocation.getAddress());
-        locationPhoneNumber.setText(mainActivity.getDefaultLocation().getPhone());
+        setUpScreen(location);
+
+        return rootView;
     }
 
     private void initializeViews(View rootView) {
@@ -52,10 +57,15 @@ public class LocationInfoFragment extends Fragment {
         locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
     }
 
+    public void setUpScreen(Location location) {
+        locationAddress.setText(location.getAddress());
+        locationPhoneNumber.setText(location.getPhone());
+    }
+
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            // TODO set navigation intent
         }
     };
 
@@ -69,7 +79,7 @@ public class LocationInfoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setUpScreen();
+        setUpScreen(location);
     }
 
 }

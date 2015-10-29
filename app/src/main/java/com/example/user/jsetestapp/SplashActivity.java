@@ -430,9 +430,12 @@ public class SplashActivity extends AppCompatActivity {
                         // ToDo handle if any values are null
                         Alerts alert = new Alerts();
                         alert.setLocationName(c.getString(TAG_LOCATION_NAME));
-                        alert.setDayOfWeek(Alerts.DayOfWeek.values()[3]);
-                        //alert.setDate(LocalDate.parse(c.getString("10/28/2015")));
-                        //alert.setTime(LocalTime.parse(c.getString("10:00 am")));
+                        String timeStamp= (c.getString(TAG_TIME_STAMP));
+                        String date=timeStamp.substring(0, 10);
+                        alert.date = LocalDate.parse(date);
+                        alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate().getDayOfWeek() - 1)]);
+                        String time = timeStamp.substring(timeStamp.length() - 8);
+                        alert.setTime(LocalTime.parse(time));
                         alert.setAlertText(c.getString(TAG_ALERT_TEXT));
 
                         alertsArrayList.add(alert);

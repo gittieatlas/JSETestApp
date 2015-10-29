@@ -41,15 +41,14 @@ public class DashboardFragment extends Fragment {
                 container, false);
 
         locationInfoFragment = new LocationInfoFragment();
+        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
         getFragmentManager().beginTransaction().add(R.id.dashboardContainer, locationInfoFragment).commit();
 
         initializeViews(rootView);
         registerListeners();
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
-        setUpText();
         setUpAlerts();
         mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
-        // mainActivity.filterHoursArray("brooklyn");
 
         return rootView;
     }
@@ -58,6 +57,8 @@ public class DashboardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
+
+        locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
 
     }
 
@@ -82,13 +83,14 @@ public class DashboardFragment extends Fragment {
         findTestButton.setOnClickListener(findTestButtonListener);
     }
 
+
     public void setUpAlerts(){
         for (Alerts alerts : mainActivity.alertsArrayList){
             if (alerts.locationName.equals(mainActivity.defaultLocation.getName())){
                 alertsMessageTextView.setText(alerts.alertText);
-                alertsDayTextView.setText("Monday");
-                alertsDateTextView.setText("10/29/2015");
-                alertsTimeTextView.setText("10:00 PM");
+                alertsDayTextView.setText(mainActivity.helperMethods.firstLetterCaps(alerts.getDayOfWeek().toString()));
+                alertsDateTextView.setText(alerts.getDate().toString("MMMM dd yyyy"));
+                alertsTimeTextView.setText(alerts.getTime().toString("hh:mm a"));
             }
         }
 

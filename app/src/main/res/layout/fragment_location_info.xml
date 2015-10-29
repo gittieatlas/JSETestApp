@@ -15,7 +15,6 @@
         android:id="@+id/locationAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/location_address"
         android:textColor="@color/primary_text" />
     <TextView
         android:layout_width="match_parent"
@@ -27,7 +26,6 @@
         android:id="@+id/locationPhoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/location_phone_number"
         android:textColor="@color/primary_text"/>
 
 

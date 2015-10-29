@@ -6,7 +6,7 @@ import org.joda.time.LocalTime;
 import java.io.Serializable;
 
 public class Alerts implements Serializable {
-    public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
+    public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
     int locationId;
     String locationName;
     DayOfWeek dayOfWeek;
@@ -19,14 +19,6 @@ public class Alerts implements Serializable {
     }
     public void setLocationName(String locationName){
         this.locationName= locationName;
-    }
-
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
     }
 
     public DayOfWeek getDayOfWeek() {
