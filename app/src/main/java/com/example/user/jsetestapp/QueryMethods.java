@@ -2,6 +2,9 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -27,10 +30,19 @@ public class QueryMethods extends Activity {
         }
     }
 
+    public void setUpBranchesArrayList() {
+        Bundle bundle = mainActivity.getIntent().getExtras();
+        mainActivity.branchesArrayList = (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
+
+    }
+
     public void setUpBranchesNameArrayList() {
         mainActivity.branchesNameArrayList = new ArrayList<String>();
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.branchesNameArrayList = (ArrayList<String>) bundle.getSerializable("branchesNameArrayList");
+        mainActivity.branchesNameArrayList.add("Branch");
+
+        for (Branch branch : mainActivity.branchesArrayList) {
+            mainActivity.branchesNameArrayList.add(branch.getName());
+        }
 
     }
 
@@ -49,9 +61,24 @@ public class QueryMethods extends Activity {
         mainActivity.hoursArrayList = (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
     }
 
-    public void setUpHoursFilteredArrayList() {
 
-        mainActivity.hoursFilteredArrayList = new ArrayList<HoursDataObject>();
+    public void updateHoursArrayListView(ListView listView, String name){
+
+        setUpHoursFilteredArrayList(name);
+        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        mainActivity.helperMethods.setListViewHeightBasedOnItems(listView);
+    }
+
+
+    public void setupListView(ListAdapter adapter, ListView listView,String name) {
+        adapter = new MyBaseAdapter(mainActivity.getContext(), mainActivity.hoursFilteredArrayList);
+        listView.setAdapter(adapter);
+        updateHoursArrayListView(listView, name);
+    }
+
+    public void setUpAlertsArrayList() {
+        Bundle bundle = mainActivity.getIntent().getExtras();
+        mainActivity.alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
     }
 
     public ArrayList<DataObject> getTestsArrayList() {
@@ -74,6 +101,24 @@ public class QueryMethods extends Activity {
         return mainActivity.testsFilteredArrayList;
     }
 
+
+    public void setUpHoursFilteredArrayList(String location) {
+
+        if (mainActivity.getHoursFilteredArrayList()!= null)
+            mainActivity.getHoursFilteredArrayList().clear();
+        for (Hours hours : mainActivity.hoursArrayList) {
+
+            if (hours.getName().equals(location)) {
+
+                HoursDataObject obj = new HoursDataObject(mainActivity.helperMethods.firstLetterCaps(hours.getDayOfWeek().toString()),
+
+                        hours.getStartTime().toString("hh:mm a"),
+                        hours.getEndTime().toString("hh:mm a"));
+
+                mainActivity.hoursFilteredArrayList.add(obj);
+            }
+        }
+    }
 
     public ArrayList<HoursDataObject> getFilteredHoursArrayList(String location) {
 

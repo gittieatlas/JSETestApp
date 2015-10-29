@@ -45,7 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
-    ArrayList<String> branchesNameArrayList;
+    ArrayList<Branch> branchesArrayList;
+    ArrayList<Alerts> alertsArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +66,10 @@ public class LoginActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
         locationsArrayList = (ArrayList<Location>)bundle.getSerializable("locationsArrayList");
-        branchesNameArrayList = (ArrayList<String>)bundle.getSerializable("branchesNameArrayList");
+        branchesArrayList = (ArrayList<Branch>)bundle.getSerializable("branchesArrayList");
         testsArrayList = (ArrayList<Test>)bundle.getSerializable("testsArrayList");
         hoursArrayList = (ArrayList<Hours>)bundle.getSerializable("hoursArrayList");
+        alertsArrayList = (ArrayList<Alerts>)bundle.getSerializable("alertsArrayList");
         try {
             Intent intent = getIntent();
 
@@ -180,7 +182,8 @@ public class LoginActivity extends AppCompatActivity {
             b.putSerializable("locationsArrayList", locationsArrayList);
             b.putSerializable("testsArrayList", testsArrayList);
             b.putSerializable("hoursArrayList", hoursArrayList);
-            b.putSerializable("branchesNameArrayList", branchesNameArrayList);
+            b.putSerializable("branchesArrayList", branchesArrayList);
+            b.putSerializable("alertsArrayList", alertsArrayList);
             intent.putExtras(b);
             startActivity(intent);
             return true;

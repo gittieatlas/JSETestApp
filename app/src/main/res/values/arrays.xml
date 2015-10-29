@@ -15,12 +15,13 @@
 
     <string-array name="days_of_week_array">
         <item>Day of Week</item>
-        <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
     </string-array>
 
     <string-array name="addresses">

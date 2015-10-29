@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -11,11 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 
 public class LibrariesFragment extends Fragment {
@@ -36,6 +34,7 @@ public class LibrariesFragment extends Fragment {
 
     //Variables
     ListView lvDetail;
+    ListAdapter hoursAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -53,16 +52,26 @@ public class LibrariesFragment extends Fragment {
         mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
         libraryInfoLinearLayout.setVisibility(View.GONE);
 
-        setupListView();
+
+        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
 
         return rootView;
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mainActivity.queryMethods.updateHoursArrayListView(lvDetail, locationsSpinner.getSelectedItem().toString());
+
+    }
+
 
     private void initializeViews(View rootView) {
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         bindSpinnerData();
         libraryInfoLinearLayout = (LinearLayout) rootView.findViewById(R.id.libraryInfoLinearLayout);
+        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
     }
 
     private void registerListeners() {
@@ -80,7 +89,8 @@ public class LibrariesFragment extends Fragment {
             else
                 libraryInfoLinearLayout.setVisibility(View.VISIBLE);
             //mainActivity.queryMethods.getFilteredHoursArrayList("BKLYN - BY 18th Ave");
-            setupListView();
+
+            mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
         }
 
         @Override
@@ -88,21 +98,6 @@ public class LibrariesFragment extends Fragment {
 
         }
     };
-
-    private void setupListView() {
-
-        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
-        Context context = getActivity().getApplicationContext();
-        lvDetail.setAdapter(new MyBaseAdapter(context, mainActivity.queryMethods.getFilteredHoursArrayList(locationsSpinner.getSelectedItem().toString())));
-        mainActivity.helperMethods.setListViewHeightBasedOnItems(lvDetail);
-    }
-
-    private ArrayList<HoursDataObject> getDataSet() {
-
-        return mainActivity.getHoursFilteredArrayList();
-
-    }
-
     OnClickListener findTestButtonListener = new OnClickListener() {
 
         @Override

@@ -55,7 +55,7 @@ public class IntentMethods extends Activity {
         this.mainActivity = mainActivity;
     }
 
-    public void calendarIntent(String title, String location, String description, String testDate, String testTime) {
+    public void calendarIntent(String title, String eventLocation, String description, String testDate, String testTime) {
 
         //TODO work on startTime and endTime and date
         //TODO check if any params are null
@@ -86,7 +86,7 @@ public class IntentMethods extends Activity {
         intent.putExtra("endTime", "12 28 2016");
         intent.putExtra("title", title);
         intent.putExtra("description", description);
-        intent.putExtra("eventLocation", location);
+        intent.putExtra("eventLocation", eventLocation);
         intent.putExtra("hasAlarm", 1);
 
         if (intent.resolveActivity(mainActivity.getApplicationContext().getPackageManager()) != null) {

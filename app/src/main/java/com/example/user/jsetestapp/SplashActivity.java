@@ -39,10 +39,12 @@ public class SplashActivity extends AppCompatActivity {
     Boolean gotTests = false;
     Boolean gotHours = false;
     Boolean gotBranches = false;
+    Boolean gotAlerts = false;
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
-    ArrayList<String> branchesNameArrayList;
+    ArrayList<Branch> branchesArrayList;
+    ArrayList<Alerts> alertsArrayList;
 
     // URL to get locationsJsonArray JSON
     private static String branches_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
@@ -62,6 +64,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // JSON Node names - locations
     private static final String TAG_BRANCHES = "branches";
+    private static final String TAG_ID = "id";
 
     // JSON Node names - locations
     private static final String TAG_LOCATIONS = "locations";
@@ -89,14 +92,22 @@ public class SplashActivity extends AppCompatActivity {
     private static final String TAG_OPENING_TIME = "openingTime";
     private static final String TAG_DURATION = "duration";
 
+    //JSON Nodes names - alerts
+    private static final String TAG_ALERTS = "alerts";
+    private static final String TAG_LOCATION_NAME = "NAME";
+    private static final String TAG_ALERT_TEXT = "alertText";
+    private static final String TAG_TIME_STAMP = "timeStamp";
+
     // locationsJsonArray JSONArray
     JSONArray locationsJsonArray = null;
     // testsJsonArray JSONArray
     JSONArray testsJsonArray = null;
     // hoursJsonArray JSONArray
     JSONArray hoursJsonArray = null;
-    // branchesNameArrayListJsonArray JSONArray
+    // branchesArrayListJsonArray JSONArray
     JSONArray branchesJsonArray = null;
+    // alertsArrayList JSONArray
+    JSONArray alertsJsonArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +117,8 @@ public class SplashActivity extends AppCompatActivity {
         locationsArrayList = new ArrayList<Location>();
         testsArrayList = new ArrayList<Test>();
         hoursArrayList = new ArrayList<Hours>();
-        branchesNameArrayList = new ArrayList<String>();
-        branchesNameArrayList.add("Branches");
+        branchesArrayList = new ArrayList<Branch>();
+        alertsArrayList = new ArrayList<Alerts>();
         checkInternetConnection();
     }
 
@@ -126,6 +137,7 @@ public class SplashActivity extends AppCompatActivity {
             new GetTests().execute();
             new GetHours().execute();
             new GetBranches().execute();
+            new getAlerts().execute();
 
         } else {
 
@@ -172,14 +184,18 @@ public class SplashActivity extends AppCompatActivity {
                         String state = c.getString(TAG_STATE);
                         String zip = c.getString(TAG_ZIP);
                         String country = c.getString(TAG_COUNTRY);
-
-                        // ToDo handle if any values are null
-                        String fullAddress = address + " " + city + ", " + state + " " + zip + " " + country;
                         String phone = c.getString(TAG_PHONE);
+
+                        StringBuilder fullAddress = new StringBuilder();
+                        if (!address.equals("null")) fullAddress.append(address + " ");
+                        if (!city.equals("null")) fullAddress.append(city + " ");
+                        if (!state.equals("null")) fullAddress.append(state + " ");
+                        if (!zip.equals("null")) fullAddress.append(zip + " ");
+                        if (!country.equals("null")) fullAddress.append(country);
 
                         Location location = new Location();
                         location.setName(name);
-                        location.setAddress(fullAddress);
+                        location.setAddress(fullAddress.toString());
                         location.setPhone(phone);
 
                         locationsArrayList.add(location);
@@ -300,7 +316,7 @@ public class SplashActivity extends AppCompatActivity {
                         Hours hours = new Hours();
                         hours.name = c.getString(TAG_LIBRARY_LOCATION);
                         String day = c.getString(TAG_DAY_OF_WEEK);
-                        hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day)-1)]);
+                        hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
                         hours.startTime = LocalTime.parse(c.getString(TAG_OPENING_TIME));
                         LocalTime duration = LocalTime.parse(c.getString(TAG_DURATION));
                         hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay()).plusMinutes(duration.getMinuteOfHour());
@@ -357,8 +373,10 @@ public class SplashActivity extends AppCompatActivity {
 
                         JSONObject c = branchesJsonArray.getJSONObject(i);
 
-                        String name = c.getString(TAG_NAME);
-                        branchesNameArrayList.add(name);
+                        Branch branch = new Branch();
+                        branch.id = Integer.parseInt(c.getString(TAG_ID));
+                        branch.name = c.getString(TAG_NAME);
+                        branchesArrayList.add(branch);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -378,6 +396,66 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Async task class to get json by making HTTP call
+     */
+    private class getAlerts extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+
+            // Making a request to locations_url and getting response
+            String jsonStr = sh.makeServiceCall(alerts_url, ServiceHandler.GET);
+
+            Log.d("Response Alerts: ", "> " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    // Getting JSON Array node
+                    alertsJsonArray = jsonObj.getJSONArray(TAG_ALERTS);
+
+                    // looping through All Locations
+                    for (int i = 0; i < alertsJsonArray.length(); i++) {
+
+                        JSONObject c = alertsJsonArray.getJSONObject(i);
+                        // ToDo handle if any values are null
+                        Alerts alert = new Alerts();
+                        alert.setLocationName(c.getString(TAG_LOCATION_NAME));
+                        alert.setDayOfWeek(Alerts.DayOfWeek.values()[3]);
+                        //alert.setDate(LocalDate.parse(c.getString("10/28/2015")));
+                        //alert.setTime(LocalTime.parse(c.getString("10:00 am")));
+                        alert.setAlertText(c.getString(TAG_ALERT_TEXT));
+
+                        alertsArrayList.add(alert);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the alerts_url");
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            gotAlerts = true;
+            changeActivities();
+        }
+    }
+
 
     private void changeActivities() {
         if (gotLocations && gotTests && gotHours && gotBranches) {
@@ -387,14 +465,15 @@ public class SplashActivity extends AppCompatActivity {
             b.putSerializable("locationsArrayList", locationsArrayList);
             b.putSerializable("testsArrayList", testsArrayList);
             b.putSerializable("hoursArrayList", hoursArrayList);
-            b.putSerializable("branchesNameArrayList", branchesNameArrayList);
+            b.putSerializable("branchesArrayList", branchesArrayList);
+            b.putSerializable("alertsArrayList", alertsArrayList);
             intent.putExtras(b);
             startActivity(intent);
         }
     }
 
     /**
-     * Function to display simple Alert Dialog
+     * Function to display simple Alerts Dialog
      *
      * @param context - application context
      * @param title   - alert dialog title
@@ -419,7 +498,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        // Showing Alert Message
+        // Showing Alerts Message
         alertDialog.show();
     }
 

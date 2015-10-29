@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -28,9 +29,10 @@ public class LocationInfoFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_location_info,
                 container, false);
-mainActivity = ((MainActivity) getActivity());
+        mainActivity = ((MainActivity) getActivity());
         initializeViews(rootView);
         setUpScreen();
+        registerListeners();
 
         return rootView;
     }
@@ -45,8 +47,27 @@ mainActivity = ((MainActivity) getActivity());
         locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
     }
 
+    private void registerListeners() {
+        locationAddress.setOnClickListener(locationAddressOnClickListener);
+        locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
+    }
+
+    OnClickListener locationAddressOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mainActivity.intentMethods.callIntent(locationPhoneNumber.getText().toString());
+        }
+    };
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         setUpScreen();
     }

@@ -52,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
     //Variables
     ArrayList<Location> locationsArrayList;
     ArrayList<String> locationsNameArrayList;
+    ArrayList<Branch> branchesArrayList;
     ArrayList<String> branchesNameArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<DataObject> testsFilteredArrayList;
     ArrayList<Hours> hoursArrayList;
     ArrayList<HoursDataObject> hoursFilteredArrayList;
+    ArrayList<Alerts> alertsArrayList;
     User user = new User();
     Location defaultLocation = new Location();
 
@@ -77,10 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpLocationsNameArrayList();
+        queryMethods.setUpBranchesArrayList();
         queryMethods.setUpBranchesNameArrayList();
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();
+        queryMethods.setUpAlertsArrayList();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         //queryMethods.setUpHoursFilteredArrayList();
         loadSavedPreferences();
