@@ -94,16 +94,20 @@ public class Test implements Serializable {
     public Gender getGender() {
         return gender;
     }
-
+//    public int getGender(Test test) {
+//        return gender.ordinal();
+//    }
     public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         try {
-            this.gender = Gender.valueOf(gender);
+            this.gender = Gender.values()[gender-1];
         } catch (Exception ex) {
             this.gender = Gender.BOTH;
         }
     }
+
+
 }

@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -45,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
     ArrayList<Hours> hoursArrayList;
     ArrayList<Branch> branchesArrayList;
     ArrayList<Alerts> alertsArrayList;
-
+    SharedPreferences sharedPreferences;
     // URL to get locationsJsonArray JSON
     private static String branches_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
 
@@ -121,6 +123,7 @@ public class SplashActivity extends AppCompatActivity {
         branchesArrayList = new ArrayList<Branch>();
         alertsArrayList = new ArrayList<Alerts>();
         checkInternetConnection();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     private void checkInternetConnection() {
@@ -261,8 +264,14 @@ public class SplashActivity extends AppCompatActivity {
                         test.time = LocalTime.parse(new StringBuilder(c.getString(TAG_TIME)).insert(c.getString(TAG_TIME).length() - 2, ":").toString());
                         test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
                         test.deadlineTime = LocalTime.parse(new StringBuilder(c.getString(TAG_CLOSING_TIME)).insert(c.getString(TAG_CLOSING_TIME).length() - 2, ":").toString());
-                        test.setGender(c.getString(TAG_GENDER));
+                        test.setGender(Integer.parseInt(c.getString(TAG_GENDER)));
                         //TODO check gender
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("gender", "2");
+                        editor.commit();
+
+                        if (sharedPreferences.getString("gender","3").equals(getGender(test)))
+                        //||(getGender(test).equals("3"))
                         testsArrayList.add(test);
                     }
                 } catch (JSONException e) {
@@ -505,6 +514,16 @@ public class SplashActivity extends AppCompatActivity {
 
         // Showing Alerts Message
         alertDialog.show();
+    }
+
+
+
+    public int getGender(Test test){
+        if (test.getGender().equals("MALE"))
+            return 1;
+        else if(test.getGender().equals("FEMALE"))
+            return 2;
+        else return 3;
     }
 
 

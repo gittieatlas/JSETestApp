@@ -91,17 +91,14 @@ public class SearchFragment extends Fragment {
         @Override
         public void onClick(View v) {
             //TODO pass to method that will query and then update array and then notify data set changed
+            Branch searchCriteriaBranch=new Branch();
+            for (Branch branch: mainActivity.branchesArrayList){
+                if (locationsSpinner.getSelectedItem().toString().equals(branch.getName()))
+                     searchCriteriaBranch =branch;
+            }
 
-        String searchCriteriaLocation = locationsSpinner.getSelectedItem().toString();
-        if (searchCriteriaLocation.equals("Location")) searchCriteriaLocation = null;
-
-        String searchCriteriaDayOfWeek = daysOfWeekSpinner.getSelectedItem().toString();
-        if (searchCriteriaDayOfWeek.equals("Day of Week")) searchCriteriaDayOfWeek = null;
-        //Toast.makeText(mainActivity.getApplicationContext(), searchCriteriaLocation + " " + searchCriteriaDayOfWeek, Toast.LENGTH_LONG).show();
-        mainActivity.filterTestsArray(searchCriteriaLocation, searchCriteriaDayOfWeek);
-
-        //Change fragment
-        mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
+            int  searchCriteriaDayOfWeek= daysOfWeekSpinner.getSelectedItemPosition();
+            mainActivity.helperMethods.findTests(searchCriteriaBranch,searchCriteriaDayOfWeek);
     }
     };
 

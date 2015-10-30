@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         user.setSsn(sharedPreferences.getString("ssn", null));
         user.setDefaultLocation(sharedPreferences.getString("default_location", "COPE"));
         //  user.setDob(sharedPreferences.getString("dob", "COPE")); covert back to DateTime
-        user.setGender(sharedPreferences.getString("gender", "2"));
+        user.setGender(sharedPreferences.getString("gender", "3"));
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
 
         Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
@@ -301,14 +301,6 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(int container, Fragment fragment) {
         helperMethods.replaceFragment(container, fragment);
     }
-
-    public void filterTestsArray(String location, String dayOfWeek) {
-        queryMethods.filter(location, dayOfWeek);
-    }
-
-//    public void filterHoursArray(String location) {
-//        queryMethods.getHoursArrayList(location);
-//    }
 
     public void doIntent(Intent intent) {
         startActivity(intent);

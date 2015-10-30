@@ -142,46 +142,70 @@ public class HelperMethods extends Activity {
         }
 
     //for search page
-    private void findTests(Branch branch, int dayOfWeek){
+    public void findTests(Branch branch, int dayOfWeek){
         clearTestsFilteredArrayList();
-         }
+        if (branch.equals("branch")&& dayOfWeek == 0)
+            filterTests();
+        else if (!branch.equals("branch")&& dayOfWeek == 0)
+            filterTests(branch);
+        else if (branch.equals("branch")&& dayOfWeek != 0)
+            filterTests(dayOfWeek);
+        else if (!branch.equals("branch")&& dayOfWeek != 0)
+            filterTests(branch,dayOfWeek);
+        replaceFragment(R.id.container, mainActivity.resultsFragment);
+    }
 
     private void filterTests(Location location){
         for (Test test : mainActivity.testsArrayList){
             if (test.getLocation().equals(location.name)){
-                DataObject obj = new DataObject(test.getLocation(),
-                        mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
-                        test.getTime().toString("hh:mm a"),
-                        test.getDate().toString("MMMM dd yyyy"),
-                        "Registration Deadline: ",
-                        test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
-                mainActivity.testsFilteredArrayList.add(obj);
+               addTestToArrayList(test);
             }
         }
        replaceFragment(R.id.container, mainActivity.resultsFragment);
     }
-    
 
+    private void addTestToArrayList(Test test){
+        DataObject obj = new DataObject(test.getLocation(),
+                mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
+                test.getTime().toString("hh:mm a"),
+                test.getDate().toString("MMMM dd yyyy"),
+                "Registration Deadline: ",
+                test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
+        mainActivity.testsFilteredArrayList.add(obj);
+    }
 
     // none
     private void filterTests(){
-
+        for (Test test : mainActivity.testsArrayList) {
+                addTestToArrayList(test);
+        }
     }
     //for branches only
     private void filterTests(Branch branch){
-
+        for (Test test : mainActivity.testsArrayList) {
+            if (test.getBranchId()==(branch.id)) {
+                addTestToArrayList(test);
+            }
+        }
     }
     //for dayOfWeek only
     private void filterTests(int dayOfWeek){
-
+        for (Test test : mainActivity.testsArrayList) {
+            if (test.getDayOfWeek().ordinal()+1==(dayOfWeek)) {
+                addTestToArrayList(test);
+            }
+        }
     }
     //for brnach and dayOfWeek
     private void filterTests(Branch branch, int dayOfWeek){
-
+        for (Test test : mainActivity.testsArrayList) {
+            if (test.getBranchId()==(branch.id)&& (test.getDayOfWeek().ordinal()+1 ==(dayOfWeek))){
+                addTestToArrayList(test);
+            }
+        }
     }
 
     private void clearTestsFilteredArrayList(){
-
         if (mainActivity.getTestsFilteredArrayList()!= null)
             mainActivity.getTestsFilteredArrayList().clear();
     }
