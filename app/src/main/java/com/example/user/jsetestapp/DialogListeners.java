@@ -33,7 +33,8 @@ public class DialogListeners extends Activity {
             }
 
             case "results_no_tests": {
-                mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment);
+                mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment, getResources().getString(R.string.toolbar_title_search));
+                mainActivity.tabLayout.getTabAt(1).select();
             }
 
         }

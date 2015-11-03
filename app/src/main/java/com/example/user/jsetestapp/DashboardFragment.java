@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DashboardFragment extends Fragment {
 
-    //Controls
+
+       //Controls
     View rootView;
     TextView locationTextView, alertsTitleTextView, alertsDayTextView,
             alertsDateTextView, alertsTimeTextView, alertsMessageTextView;;
@@ -40,12 +40,9 @@ public class DashboardFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_dashboard,
                 container, false);
 
-        locationInfoFragment = new LocationInfoFragment();
-        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
-        getFragmentManager().beginTransaction().add(R.id.dashboardContainer, locationInfoFragment).commit();
-
         initializeViews(rootView);
         registerListeners();
+        setUpText();
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
         setUpAlerts();
         mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
@@ -56,6 +53,11 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        locationInfoFragment = new LocationInfoFragment();
+        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
+        getFragmentManager().beginTransaction().add(R.id.dashboardContainer, locationInfoFragment).commit();
+
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
 
         locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));

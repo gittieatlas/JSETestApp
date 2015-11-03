@@ -1,6 +1,5 @@
 package com.example.user.jsetestapp;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,8 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 
@@ -78,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
-        helperMethods.addFragment(R.id.container, dashboardFragment);
+        helperMethods.addFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
 
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpLocationsNameArrayList();
@@ -110,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         user.setGender(sharedPreferences.getString("gender", "3"));
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
 
-        Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
 
         // location.setName(sharedPreferences.getString("default_location", "COPE"));
 
@@ -119,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 defaultLocation = location;
             }
         }
-      //  Toast.makeText(getApplicationContext(), defaultLocation.getAddress(), Toast.LENGTH_LONG).show();
+        //  Toast.makeText(getApplicationContext(), defaultLocation.getAddress(), Toast.LENGTH_LONG).show();
 
     }
 
@@ -173,13 +170,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (toolbar.getTitle().toString().equals(getResources().getString(R.string.toolbar_title_results))) {
+                    getFragmentManager().popBackStack();
 
-                    Toast.makeText(MainActivity.this, "Toolbar icon pressed", Toast.LENGTH_LONG).show();
                 } // else nothing
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        ResultsFragment resultsFragment = new ResultsFragment();
+        try {
+            resultsFragment = (ResultsFragment) getFragmentManager().findFragmentById(R.id.container);
+        } catch (Exception ex) {
+
+        }
+
+        if (resultsFragment != null && resultsFragment.isVisible()) {
+            getFragmentManager().popBackStack();
+        }
+        // ToDo add else for if coming from dashboard- show dialog to exit
+        else {
+            tabLayout.getTabAt(0).select();
+            getFragmentManager().popBackStack(getResources().getString(R.string.toolbar_title_dashboard), 0);
+        }
+    }
 
     private void setupTablayout() {
         createTab(R.layout.tab_layout_dashboard, R.id.tab_title_dashboard, getResources().getString(R.string.tabLayout_dashboard));
@@ -205,16 +221,16 @@ public class MainActivity extends AppCompatActivity {
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    helperMethods.replaceFragment(R.id.container, dashboardFragment);
+                    helperMethods.replaceFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
                     break;
                 case 1:
-                    helperMethods.replaceFragment(R.id.container, searchFragment);
+                    helperMethods.replaceFragment(R.id.container, searchFragment, getResources().getString(R.string.toolbar_title_search));
                     break;
                 case 2:
-                    helperMethods.replaceFragment(R.id.container, librariesFragment);
+                    helperMethods.replaceFragment(R.id.container, librariesFragment, getResources().getString(R.string.toolbar_title_libraries));
                     break;
                 case 3:
-                    helperMethods.replaceFragment(R.id.container, contactFragment);
+                    helperMethods.replaceFragment(R.id.container, contactFragment, getResources().getString(R.string.toolbar_title_contact));
                     break;
                 default:
                     break;
@@ -292,14 +308,6 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<HoursDataObject> getHoursFilteredArrayList() {
 
         return hoursFilteredArrayList;
-    }
-
-    public void addFragment(int container, Fragment fragment) {
-        helperMethods.addFragment(container, fragment);
-    }
-
-    public void replaceFragment(int container, Fragment fragment) {
-        helperMethods.replaceFragment(container, fragment);
     }
 
     public void doIntent(Intent intent) {
