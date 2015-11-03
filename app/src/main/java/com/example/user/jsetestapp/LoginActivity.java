@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         ssn = "XXX-XX-1234";
         defaultLocation = "BKLYN - BY 18th Ave. (M)";
         dob = DateTime.now();
+        // TODO filter testArrayList according to gender
         gender = "1";
         isJseMember = false;
 
@@ -185,7 +186,11 @@ public class LoginActivity extends AppCompatActivity {
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
             intent.putExtras(b);
+           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
+
+            finish();
             return true;
         }
 

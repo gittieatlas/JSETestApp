@@ -4,28 +4,33 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
-public class Test implements Serializable {
+public class Test implements Serializable , Comparable<Test>{
+
+
+    @Override
+    public int compareTo(Test t) {
+        //sorts by date
+        return getDate().compareTo(t.getDate());
+    }
 
     public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
-    public static enum Gender {MALE, FEMALE, BOTH}
-
-    ;
+    public static enum Gender {MALE, FEMALE, BOTH};
 
     //long id;
     int branchId;
     String location;
-    DayOfWeek dayOfWeek;
+    DayOfWeek dayOfWeek, deadlineDayOfWeek;
     Gender gender;
-
     LocalDate date, deadlineDate;
     LocalTime time, deadlineTime;
-
 
     public Test() {
 
     }
+
     public int getBranchId() {
         return branchId;
     }
@@ -42,6 +47,10 @@ public class Test implements Serializable {
         this.location = location;
     }
 
+
+
+
+
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
@@ -57,6 +66,26 @@ public class Test implements Serializable {
             this.dayOfWeek = DayOfWeek.SUNDAY;
         }
     }
+
+    public DayOfWeek getDeadlineDayOfWeek() {
+        return deadlineDayOfWeek;
+    }
+
+    public void setDeadlineDayOfWeek(DayOfWeek deadlineDayOfWeek) {
+        this.deadlineDayOfWeek = deadlineDayOfWeek;
+    }
+
+    public void setDeadlineDayOfWeek(String dayOfWeek) {
+        try {
+            this.deadlineDayOfWeek = DayOfWeek.valueOf(dayOfWeek);
+        } catch (Exception ex) {
+            this.deadlineDayOfWeek = DayOfWeek.SUNDAY;
+        }
+    }
+
+
+
+
 
     public LocalDate getDate() {
 
@@ -111,3 +140,21 @@ public class Test implements Serializable {
 
 
 }
+
+
+class LocationDateComparator implements Comparator<Test> {
+    public int compare(Test test1, Test test2) {
+        int value1 = test1.getLocation().compareTo(test2.getLocation());
+        if (value1==0){
+            int value2= test1.getLocation().compareToIgnoreCase(test2.getLocation());
+            if (value2 == 0){
+                return test2.getDate().compareTo(test2.getDate());
+
+            }
+            else
+                return value2;
+        }
+        return value1;
+    }
+}
+

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HelperMethods extends Activity {
 
@@ -20,14 +21,16 @@ public class HelperMethods extends Activity {
 
     }
 
-    public void replaceFragment(int container, Fragment fragment) {
+
+    public void replaceFragment(int container, Fragment fragment, String tag) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(null).commit();
+        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
+
     }
 
-    public void addFragment(int container, Fragment fragment) {
+    public void addFragment(int container, Fragment fragment, String tag) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(null).commit();
+        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
     }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
@@ -114,26 +117,6 @@ public class HelperMethods extends Activity {
         bundle.putSerializable("location", location);
         return bundle;
     }
-//
-//
-//    public void setUpHoursFilteredArrayList(String location) {
-//
-//        if (mainActivity.getHoursFilteredArrayList()!= null)
-//            mainActivity.getHoursFilteredArrayList().clear();
-//        for (Hours hours : mainActivity.hoursArrayList) {
-//
-//            if (hours.getName().equals(location)) {
-//
-//                HoursDataObject obj = new HoursDataObject(mainActivity.helperMethods.firstLetterCaps(hours.getDayOfWeek().toString()),
-//
-//                        hours.getStartTime().toString("hh:mm a"),
-//                        hours.getEndTime().toString("hh:mm a"));
-//
-//                mainActivity.hoursFilteredArrayList.add(obj);
-//            }
-//        }
-//    }
-
 
     //for dashboard and library search
     public void findTests(Location location){
@@ -144,6 +127,8 @@ public class HelperMethods extends Activity {
     //for search page
     public void findTests(Branch branch, int dayOfWeek){
         clearTestsFilteredArrayList();
+        Collections.sort(mainActivity.testsArrayList, new LocationDateComparator());
+        //Collections.sort(mainActivity.testsArrayList);
         if (branch.equals("branch")&& dayOfWeek == 0)
             filterTests();
         else if (!branch.equals("branch")&& dayOfWeek == 0)
@@ -152,7 +137,8 @@ public class HelperMethods extends Activity {
             filterTests(dayOfWeek);
         else if (!branch.equals("branch")&& dayOfWeek != 0)
             filterTests(branch,dayOfWeek);
-        replaceFragment(R.id.container, mainActivity.resultsFragment);
+
+        replaceFragment(R.id.container, mainActivity.resultsFragment, mainActivity.getResources().getString(R.string.toolbar_title_results));
     }
 
     private void filterTests(Location location){
@@ -161,16 +147,17 @@ public class HelperMethods extends Activity {
                addTestToArrayList(test);
             }
         }
-       replaceFragment(R.id.container, mainActivity.resultsFragment);
+        replaceFragment(R.id.container, mainActivity.resultsFragment, mainActivity.getResources().getString(R.string.toolbar_title_results));
     }
 
     private void addTestToArrayList(Test test){
+        String day =mainActivity.helperMethods.firstLetterCaps(test.getDeadlineDayOfWeek().toString());
         DataObject obj = new DataObject(test.getLocation(),
                 mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
                 test.getTime().toString("hh:mm a"),
                 test.getDate().toString("MMMM dd yyyy"),
                 "Registration Deadline: ",
-                test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
+                 day + " " + test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
         mainActivity.testsFilteredArrayList.add(obj);
     }
 
@@ -209,5 +196,6 @@ public class HelperMethods extends Activity {
         if (mainActivity.getTestsFilteredArrayList()!= null)
             mainActivity.getTestsFilteredArrayList().clear();
     }
+
 
 }

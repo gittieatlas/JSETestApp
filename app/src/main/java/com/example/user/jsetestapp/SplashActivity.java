@@ -264,14 +264,15 @@ public class SplashActivity extends AppCompatActivity {
                         test.time = LocalTime.parse(new StringBuilder(c.getString(TAG_TIME)).insert(c.getString(TAG_TIME).length() - 2, ":").toString());
                         test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
                         test.deadlineTime = LocalTime.parse(new StringBuilder(c.getString(TAG_CLOSING_TIME)).insert(c.getString(TAG_CLOSING_TIME).length() - 2, ":").toString());
+                        test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[(test.getDeadlineDate().getDayOfWeek() - 1)].toString());
                         test.setGender(Integer.parseInt(c.getString(TAG_GENDER)));
-                        //TODO check gender
+                        //TODO comment out this code once login activity is done
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("gender", "2");
+                        editor.putString("gender", "1");
                         editor.commit();
 
-                        if (sharedPreferences.getString("gender","3").equals(getGender(test)))
-                        //||(getGender(test).equals("3"))
+                        if ((getGender(test)==(3)) ||
+                                Integer.parseInt(sharedPreferences.getString("gender","3"))==(getGender(test)))
                         testsArrayList.add(test);
                     }
                 } catch (JSONException e) {
@@ -483,6 +484,7 @@ public class SplashActivity extends AppCompatActivity {
             b.putSerializable("alertsArrayList", alertsArrayList);
             intent.putExtras(b);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -519,9 +521,9 @@ public class SplashActivity extends AppCompatActivity {
 
 
     public int getGender(Test test){
-        if (test.getGender().equals("MALE"))
+        if (test.getGender().name().equals("MALE"))
             return 1;
-        else if(test.getGender().equals("FEMALE"))
+        else if(test.getGender().name().equals("FEMALE"))
             return 2;
         else return 3;
     }

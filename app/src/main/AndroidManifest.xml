@@ -28,14 +28,16 @@
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            >
 
         </activity>
 
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

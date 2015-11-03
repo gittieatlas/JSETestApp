@@ -11,8 +11,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment{
 
     //Controls
     View rootView;
@@ -56,8 +57,20 @@ public class SearchFragment extends Fragment {
     private String getOpenRegistrationDates() {
 
         //TODO run sql query to get fromDate and toDate
-        String fromDate = "first date";
-        String toDate = "second date";
+       // mainActivity.helperMethods.getOpenRegistrationDateRange();
+//        Collections.sort(mainActivity.testsArrayList, new Comparable<Test>(){
+//
+//
+//                    public int compare(Test t1, Test t2) {
+//                        return t1.getDate().compareTo(t2.getDate());
+//
+//                    }
+//                }
+//        );
+        Collections.sort(mainActivity.testsArrayList);
+
+        String fromDate = mainActivity.testsArrayList.get(0).getDate().toString("MMMM dd yyyy");
+        String toDate = mainActivity.testsArrayList.get(mainActivity.testsArrayList.size()-1).getDate().toString("MMMM dd yyyy");
         String openRegistrationString = String.format(getResources().getString(R.string.registration_date_range),
                 fromDate, toDate);
         return openRegistrationString;
