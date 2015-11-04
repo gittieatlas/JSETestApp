@@ -29,42 +29,51 @@ public class SplashActivity extends AppCompatActivity {
 
 
     //Activities HelperClasses Classes;
-
-
-    //Fragments
     MainActivity mainActivity;
 
+    //Fragments
+
     //Variables
-    Boolean isInternetPresent = false;
-    ConnectionDetector cd;  // Connection detector class
-    Boolean gotLocations = false;
-    Boolean gotTests = false;
-    Boolean gotHours = false;
-    Boolean gotBranches = false;
-    Boolean gotAlerts = false;
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Branch> branchesArrayList;
     ArrayList<Alerts> alertsArrayList;
+
+    Boolean gotLocations = false;
+    Boolean gotTests = false;
+    Boolean gotHours = false;
+    Boolean gotBranches = false;
+    Boolean gotAlerts = false;
+    Boolean isInternetPresent = false;
+
+    ConnectionDetector cd;
     SharedPreferences sharedPreferences;
+    ServiceHandler sh = new ServiceHandler();
+
+    // branchesArrayListJsonArray JSONArray
+    JSONArray branchesJsonArray = null;
+    // locationsJsonArray JSONArray
+    JSONArray locationsJsonArray = null;
+    // testsJsonArray JSONArray
+    JSONArray testsJsonArray = null;
+    // hoursJsonArray JSONArray
+    JSONArray hoursJsonArray = null;
+    // alertsArrayList JSONArray
+    JSONArray alertsJsonArray = null;
+
     // URL to get locationsJsonArray JSON
     private static String branches_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
-
     // URL to get locationsJsonArray JSON
     private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
-
     // URL to get testsJsonArray JSON
     private static String tests_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php";
-
     // URL to get hoursJsonArray JSON
     private static String hours_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php";
-
     // URL to get alertsJsonArray JSON
     private static String alerts_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php";
 
-
-    // JSON Node names - locations
+    // JSON Node names - branches
     private static final String TAG_BRANCHES = "branches";
     private static final String TAG_ID = "id";
 
@@ -101,29 +110,19 @@ public class SplashActivity extends AppCompatActivity {
     private static final String TAG_ALERT_TEXT = "alertText";
     private static final String TAG_TIME_STAMP = "timeStamp";
 
-    // locationsJsonArray JSONArray
-    JSONArray locationsJsonArray = null;
-    // testsJsonArray JSONArray
-    JSONArray testsJsonArray = null;
-    // hoursJsonArray JSONArray
-    JSONArray hoursJsonArray = null;
-    // branchesArrayListJsonArray JSONArray
-    JSONArray branchesJsonArray = null;
-    // alertsArrayList JSONArray
-    JSONArray alertsJsonArray = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
+
         locationsArrayList = new ArrayList<Location>();
         testsArrayList = new ArrayList<Test>();
         hoursArrayList = new ArrayList<Hours>();
         branchesArrayList = new ArrayList<Branch>();
         alertsArrayList = new ArrayList<Alerts>();
-        checkInternetConnection();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        checkInternetConnection();
     }
 
     private void checkInternetConnection() {
@@ -162,13 +161,9 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
 
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(locations_url, ServiceHandler.GET);
-
-            Log.d("Response Location: ", "> " + jsonStr);
 
             if (jsonStr != null) {
                 try {
@@ -235,13 +230,9 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
 
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(tests_url, ServiceHandler.GET);
-
-            Log.d("Response Tests: ", "> " + jsonStr);
 
             if (jsonStr != null) {
                 try {
@@ -305,13 +296,9 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
 
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(hours_url, ServiceHandler.GET);
-
-            Log.d("Response Hours: ", "> " + jsonStr);
 
             if (jsonStr != null) {
                 try {
@@ -365,13 +352,9 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
 
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(branches_url, ServiceHandler.GET);
-
-            Log.d("Response Branches: ", "> " + jsonStr);
 
             if (jsonStr != null) {
                 try {
@@ -420,13 +403,9 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
 
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(alerts_url, ServiceHandler.GET);
-
-            Log.d("Response Alerts: ", "> " + jsonStr);
 
             if (jsonStr != null) {
                 try {

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by gatlas on 10/22/2015.
@@ -55,38 +57,26 @@ public class IntentMethods extends Activity {
         this.mainActivity = mainActivity;
     }
 
-    public void calendarIntent(String title, String eventLocation, String description, String testDate, String testTime) {
-
-        //TODO work on startTime and endTime and date
-        //TODO check if any params are null
-        //TODO set Alarm
-        //TODO for location - show address?
-
-        // long startTime = System.currentTimeMillis() + 1000 * 60 * 60;
-        // long endTime = System.currentTimeMillis() + 1000 * 60 * 60 * 2;
-
-        //String startDate = testDate;
-
-        Date date = null;
-        long starttime, endtime;
-
-        //try {
-        //Date testdate = new SimpleDateFormat("MMMMMMMMM dd yyyy").parse("10 28 2015");
-        //startTime=date.getTime();
-        // date = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:Ss z").parse(tit1);
-        //}
-        //catch(Exception e){ }
-
-        Calendar cal = Calendar.getInstance();
+    public void calendarIntent(String title, String eventLocation, String description, LocalDate testDate, LocalTime testTime) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
-        intent.putExtra("beginTime", "12 28 2016");
+        //TODO check if any params are null
+        if (title != null){
+            intent.putExtra("title", title);
+        }
+        if (eventLocation!=null){
+            intent.putExtra("eventLocation", eventLocation);
+        }
+        if (description!=null){
+            intent.putExtra("description", description);
+        }
+        if (testDate!=null && testTime!=null){
+            Calendar startTime = Calendar.getInstance();
+            startTime.set(testDate.getYear(), testDate.getMonthOfYear() - 1, testDate.getDayOfMonth(), testTime.getHourOfDay(),testTime.getMinuteOfHour());
+            intent.putExtra("beginTime", startTime.getTimeInMillis());
+        }
         intent.putExtra("allDay", false);
         intent.putExtra("rrule", "FREQ=YEARLY");
-        intent.putExtra("endTime", "12 28 2016");
-        intent.putExtra("title", title);
-        intent.putExtra("description", description);
-        intent.putExtra("eventLocation", eventLocation);
         intent.putExtra("hasAlarm", 1);
 
         if (intent.resolveActivity(mainActivity.getApplicationContext().getPackageManager()) != null) {

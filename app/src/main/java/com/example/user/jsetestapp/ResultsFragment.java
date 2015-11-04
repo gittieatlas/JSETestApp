@@ -118,8 +118,17 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     public void onImageItemClick(View view, int position) {
         Test test = mainActivity.testsArrayList.get(position);
         //ToDo get event address (get location address where location = test.name)
-        mainActivity.intentMethods.calendarIntent("JSE Test at " + test.getLocation(), "Event Address",
-                "Test", test.getDate().toString(), test.getTime().toString());
+        mainActivity.intentMethods.calendarIntent("JSE Test at " + test.getLocation(), getTestAddress(test),
+                null, test.getDate(), test.getTime());
+    }
+
+    private String getTestAddress(Test test){
+        String address="";
+        for (Location location: mainActivity.locationsArrayList) {
+            if (test.getLocation().equals(location.getName()))
+                address = location.getAddress();
+        }
+        return address;
     }
 
     private ArrayList<DataObject> getDataSet() {
