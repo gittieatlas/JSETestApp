@@ -5,8 +5,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class MyDialogFragment extends android.app.DialogFragment {
-    MainActivity mainActivity;
+public class LoginActivityDialogFragment extends android.app.DialogFragment {
+    LoginActivity loginActivity;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MyDialogFragment extends android.app.DialogFragment {
             builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((MainActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                    ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
                 }
 
             });
@@ -51,7 +51,7 @@ public class MyDialogFragment extends android.app.DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // dismiss();
-                    ((MainActivity) getActivity()).dialogListeners.negativeButtonOnClickListener(TAG_LISTENER);
+                    ((LoginActivity) getActivity()).dialogListeners.negativeButtonOnClickListener(TAG_LISTENER);
                 }
             });
         }
@@ -60,7 +60,7 @@ public class MyDialogFragment extends android.app.DialogFragment {
         builder.setNeutralButton(neutralButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ((MainActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                ((LoginActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
             }
         });
         }
@@ -68,9 +68,9 @@ public class MyDialogFragment extends android.app.DialogFragment {
         return builder.create();
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
+    public void setLoginActivity(LoginActivity loginActivity) {
 
-        this.mainActivity = mainActivity;
+        this.loginActivity = loginActivity;
     }
 
 }

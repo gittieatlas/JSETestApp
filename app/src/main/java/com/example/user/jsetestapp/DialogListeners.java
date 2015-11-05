@@ -11,6 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 public class DialogListeners extends Activity {
 
     MainActivity mainActivity;
+    LoginActivity loginActivity;
 
     public void positiveButtonOnClickListener(String TAG_LISTENER) {
         switch (TAG_LISTENER) {
@@ -51,7 +52,9 @@ public class DialogListeners extends Activity {
                 mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment, mainActivity.getResources().getString(R.string.toolbar_title_search));
                 mainActivity.tabLayout.getTabAt(1).select();
             }
-
+            case "from_login_activity":{
+                break;
+            }
         }
     }
 
@@ -75,4 +78,8 @@ public class DialogListeners extends Activity {
         this.mainActivity = mainActivity;
     }
 
+    public void setLoginActivity(LoginActivity loginActivity) {
+
+        this.loginActivity = loginActivity;
+    }
 }

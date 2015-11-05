@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     Register2Fragment register2Fragment;
     UpdateProfileFragment updateProfileFragment;
     DashboardFragment dashboardFragment;
+    LoginActivityDialogFragment loginActivityDialogFragment;
+    DialogListeners dialogListeners;
 
     //Variables
     String firstName, lastName, email, password, ssn, defaultLocation, gender;
@@ -136,6 +138,10 @@ public class LoginActivity extends AppCompatActivity {
         helperMethods.setLoginActivity(this);
         queryMethods= new QueryMethods();
         queryMethods.setLoginActivity(this);
+        loginActivityDialogFragment = new LoginActivityDialogFragment();
+        loginActivityDialogFragment.setLoginActivity(this);
+        dialogListeners = new DialogListeners();
+        dialogListeners.setLoginActivity(this);
     }
 
     private void setupToolbar() {
@@ -201,5 +207,36 @@ public class LoginActivity extends AppCompatActivity {
         return LoginActivity.this;
     }
 
+    /**
+     * Function to create an instance of MainActivityDialogFragment
+     *
+     * @param title          - alert dialog title
+     * @param message        - alert message
+     * @param positiveButton - text for positive button
+     * @param negativeButton - text for negative button
+     * @param neutralButton  - text for neutral button
+     * @param icon           - drawable for icon
+     * @param tagListener    - tag to pass through to listener method
+     */
+    public void showDialog(String title, String message, String positiveButton, String negativeButton, String neutralButton, int icon, String tagListener) {
+
+        android.app.FragmentManager fm = this.getFragmentManager();
+
+        LoginActivityDialogFragment dialogFragment = new LoginActivityDialogFragment();
+
+        Bundle bundle = new Bundle();
+
+        bundle.putString("title", title);
+        bundle.putString("message", message);
+        bundle.putString("positiveButton", positiveButton);
+        bundle.putString("negativeButton", negativeButton);
+        bundle.putString("neutralButton", neutralButton);
+        bundle.putInt("icon", icon);
+        bundle.putString("tagListener", tagListener);
+
+        dialogFragment.setArguments(bundle);
+
+        dialogFragment.show(fm, tagListener);
+    }
 
 }

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
-    MyDialogFragment myDialogFragment;
+    MainActivityDialogFragment mainActivityDialogFragment;
 
 
     //Variables
@@ -141,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.setMainActivity(this);
         queryMethods = new QueryMethods();
         queryMethods.setMainActivity(this);
-        myDialogFragment = new MyDialogFragment();
-        myDialogFragment.setMainActivity(this);
+        mainActivityDialogFragment = new MainActivityDialogFragment();
+        mainActivityDialogFragment.setMainActivity(this);
         dialogListeners = new DialogListeners();
         dialogListeners.setMainActivity(this);
         intentMethods = new IntentMethods();
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Function to create an instance of MyDialogFragment
+     * Function to create an instance of MainActivityDialogFragment
      *
      * @param title          - alert dialog title
      * @param message        - alert message
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
 
         android.app.FragmentManager fm = this.getFragmentManager();
 
-        MyDialogFragment dialogFragment = new MyDialogFragment();
+        MainActivityDialogFragment dialogFragment = new MainActivityDialogFragment();
 
         Bundle bundle = new Bundle();
 

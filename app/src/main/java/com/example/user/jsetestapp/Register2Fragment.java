@@ -117,7 +117,7 @@ public class Register2Fragment extends Fragment {
         @Override
         public void onClick(View v) {
             //call validateForm();
-
+            loginActivity.showDialog("JSE Office", null, "CALL", "CANCEL", null, R.drawable.ic_calendar_clock_grey600_24dp, "from_login_activity");
         }
     };
 
