@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
         user.setDefaultLocation(sharedPreferences.getString("default_location", "COPE"));
         //  user.setDob(sharedPreferences.getString("dob", "COPE")); covert back to DateTime
         user.setGender(sharedPreferences.getString("gender", "3"));
+
+        // ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
+        // checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
 
         for (Location location : locationsArrayList) {

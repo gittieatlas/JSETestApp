@@ -180,23 +180,27 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (id == R.id.dashboard) {
-            Intent intent = new Intent(this, MainActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("locationsArrayList", locationsArrayList);
-            b.putSerializable("testsArrayList", testsArrayList);
-            b.putSerializable("hoursArrayList", hoursArrayList);
-            b.putSerializable("branchesArrayList", branchesArrayList);
-            b.putSerializable("alertsArrayList", alertsArrayList);
-            intent.putExtras(b);
-           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            //intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-
-            finish();
+            switchToMainActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void switchToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("locationsArrayList", locationsArrayList);
+        b.putSerializable("testsArrayList", testsArrayList);
+        b.putSerializable("hoursArrayList", hoursArrayList);
+        b.putSerializable("branchesArrayList", branchesArrayList);
+        b.putSerializable("alertsArrayList", alertsArrayList);
+        intent.putExtras(b);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+
+        finish();
     }
 
     public void setToolbarTitle(int toolbarTitle) {

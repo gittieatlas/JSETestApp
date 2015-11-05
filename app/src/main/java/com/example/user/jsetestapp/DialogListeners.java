@@ -55,6 +55,12 @@ public class DialogListeners extends Activity {
             case "from_login_activity":{
                 break;
             }
+            case "login_failed_email_not_exist":
+                loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register1Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register1), loginActivity);
+                break;
+            case "forgot_password":{
+                //ToDo validate email address and get password from LDB that matches to emailEditText and send email to emailEditText. Close dialog
+            }
         }
     }
 
@@ -66,11 +72,15 @@ public class DialogListeners extends Activity {
     }
 
     public void negativeButtonOnClickListener(String TAG_LISTENER) {
+        switch (TAG_LISTENER) {
 
+        }
     }
 
     public void neutralButtonOnClickListener(String TAG_LISTENER) {
+        switch (TAG_LISTENER) {
 
+        }
     }
 
     public void setMainActivity(MainActivity mainActivity) {

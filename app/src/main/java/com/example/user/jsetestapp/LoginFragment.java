@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginFragment extends Fragment {
 
@@ -31,10 +30,10 @@ public class LoginFragment extends Fragment {
 
 
     //Variables
-    boolean userEnteredEmailAndPassword = false;
-    String sharedPrefEmail = "";
-    boolean emailAndSPEmailMatch = false;
-    boolean emailPasswordMatch = false;
+    boolean isEmailPasswordEntered = false;
+    boolean isEmailSaved = false;
+    boolean isEmailEqualSavedEmail = false;
+    boolean isEmailPasswordEqualSavedEmailPassword = false;
 
 
     @Override
@@ -46,7 +45,6 @@ public class LoginFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-        //buttonRight.setEnabled(false);
         loginActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         return rootView;
@@ -85,26 +83,18 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
-                    !loginActivity.helperMethods.isEmpty(passwordEditText)) {
-                userEnteredEmailAndPassword = true;
-                Toast.makeText(loginActivity.getApplicationContext(),
-                        "userEnteredEmailAndPassword = true", Toast.LENGTH_LONG).show();
-            }
+            isEmailPasswordEntered();
         }
     };
 
-    OnClickListener forgotPasswordEditTextOnClickListener = new OnClickListener() {
+    OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            // ToDo show Dialog Fragment
-            // Title: Send me my password
-            // Content: 'Email' label and EditText inputType=textEmailAddress
-            // Positive Action: 'SEND' will be disabled (gray) onTextChanged()
-            //      when emailEditText has valid email address, button will be enabled (teal)
-            //      onClick = get password from LDB that matches to emailEditText and send email to emailEditText. Close dialog
-            // Negative Action: 'CANCEL' onClick: close dialog
+            if (!isEmailPasswordEntered) {
+                loginActivity.showDialog("Login Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_values");
+            } else {
+                validateForm();
+            }
         }
     };
 
@@ -116,45 +106,60 @@ public class LoginFragment extends Fragment {
         }
     };
 
-    OnClickListener buttonRightOnClickListener = new OnClickListener() {
+    OnClickListener forgotPasswordEditTextOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!userEnteredEmailAndPassword) {
-                // ToDo show Dialog Fragment
-                // Title: ????
-                // Content: '"All fields require values"
-                // Neutral Action: 'OK' will cancel dialog
-            } else {
-                Toast.makeText(loginActivity.getApplicationContext(), "validating form", Toast.LENGTH_LONG).show();
-                validateForm();
-            }
+
+            loginActivity.showDialog("Send me my password", "'Email' label and EditText inputType=textEmailAddress",
+                    "SEND", "CANCEL", "OK", R.drawable.ic_check_grey600_24dp, "forgot_password");
+            //ToDo custom xml layout
         }
     };
 
+    private boolean isEmailPasswordEntered() {
+        if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
+                !loginActivity.helperMethods.isEmpty(passwordEditText)) {
+            isEmailPasswordEntered = true;
+        }
+        return isEmailPasswordEntered;
+    }
+
+    private boolean isEmailSaved() {
+        if (loginActivity.sharedPreferences.getString("email", null) != null) {
+            isEmailSaved = true;
+        }
+        return isEmailSaved;
+    }
+
+    private boolean isEmailEqualSavedEmail() {
+        if (loginActivity.sharedPreferences.getString("email", null).equals(emailEditText.getText().toString())) {
+            isEmailEqualSavedEmail = true;
+        }
+        return isEmailEqualSavedEmail;
+    }
+
+
+    private boolean isEmailPasswordEqualSavedEmailPassword() {
+        if (loginActivity.sharedPreferences.getString("email", null).equals(emailEditText.getText().toString()) &&
+                loginActivity.sharedPreferences.getString("password", null).equals(passwordEditText.getText().toString())) {
+            isEmailPasswordEqualSavedEmailPassword = true;
+        }
+        return isEmailPasswordEqualSavedEmailPassword;
+    }
 
     private void validateForm() {
-        if (loginActivity.sharedPreferences.getString("email", null) == null) {
-            // ToDo show Dialog Fragment
-            // Title: Login Failed
-            // Content: "Email Address / Username Doesn't Exits. Please create an account."
-            // Neutral Action: 'OK' will close dialog
+        if (!isEmailSaved()) {
+            loginActivity.showDialog("Login Failed", "An Email Address / Username Doesn't Exits. Please create an account.",
+                    "CREATE ACCOUNT", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "login_failed_email_not_exist");
         } else {
-            Toast.makeText(loginActivity.getApplicationContext(), "sharedPrefEmail is null", Toast.LENGTH_LONG).show();
-            if (!emailAndSPEmailMatch) {
-                // ToDo show Dialog Fragment
-                // Title: Login Failed
-                // Content: "You entered an email address that is not on file. Please try another email address."
-                // Positive Action: 'Create Account' will go to Create Account Screen
-                // Negative Action: 'CANCEL' will close dialog
+            if (!isEmailEqualSavedEmail()) {
+                loginActivity.showDialog("Login Failed", "You entered an email address that is not on file. Please try another email address.",
+                        null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_email_not_match");
             } else {
-                Toast.makeText(loginActivity.getApplicationContext(), "emailAnsSPEmailMatch is true", Toast.LENGTH_LONG).show();
-                if (!emailPasswordMatch) {
-                    // ToDo show Dialog Fragment
-                    // Title: Login Failed
-                    // Content: "Email address and password don't match. Please try again."
-                    // Neutral Action: 'OK' will close dialog
+                if (!isEmailPasswordEqualSavedEmailPassword()) {
+                    loginActivity.showDialog("Login Failed", "Email address and password don't match. Please try again.",
+                            null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_email_password_not_match");
                 } else {
-                    Toast.makeText(loginActivity.getApplicationContext(), "emailPassworMatch is true", Toast.LENGTH_LONG).show();
                     login();
                 }
             }
@@ -162,10 +167,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
-        // ToDo saveSharedPreferences
-        // ToDo go to MainActivity.Dashboard
-        // ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
-        // checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
+        loginActivity.switchToMainActivity();
     }
 
     public void setMainActivity(MainActivity mainActivity) {
