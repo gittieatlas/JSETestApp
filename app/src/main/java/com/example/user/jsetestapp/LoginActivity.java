@@ -109,8 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         helperMethods.savePreferences("gender", gender, sharedPreferences);
         helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
 
-        // ToDo This code crashes
-        // queryMethods.setUpLocationsNameArrayList2();
+        queryMethods.setUpLocationsNameArrayList2();
     }
 
     private void initializeViews() {
