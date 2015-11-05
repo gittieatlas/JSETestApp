@@ -1,5 +1,6 @@
 package com.example.user.jsetestapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //Activities HelperClasses Classes;
     HelperMethods helperMethods;
+    QueryMethods queryMethods;
 
     //Fragments
     LoginFragment loginFragment;
@@ -41,8 +43,10 @@ public class LoginActivity extends AppCompatActivity {
     String firstName, lastName, email, password, ssn, defaultLocation, gender;
     DateTime dob;
     boolean isJseMember;
+    SharedPreferences sharedPreferences;
 
     ArrayList<Location> locationsArrayList;
+    ArrayList<String> locationsNameArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Branch> branchesArrayList;
@@ -58,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         setupToolbar();
 
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
       //  loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
 
@@ -93,30 +99,18 @@ public class LoginActivity extends AppCompatActivity {
         gender = "1";
         isJseMember = false;
 
-        savePreferences("first_name", firstName);
-        savePreferences("last_name", lastName);
-        savePreferences("email", email);
-        savePreferences("password", password);
-        savePreferences("ssn", ssn);
-        savePreferences("default_location", defaultLocation);
-        savePreferences("dob", dob.toString());
-        savePreferences("gender", gender);
-        savePreferences("is_jse_member", isJseMember);
+        helperMethods.savePreferences("first_name", firstName, sharedPreferences);
+        helperMethods.savePreferences("last_name", lastName, sharedPreferences);
+        helperMethods.savePreferences("email", email, sharedPreferences);
+        helperMethods.savePreferences("password", password, sharedPreferences);
+        helperMethods.savePreferences("ssn", ssn, sharedPreferences);
+        helperMethods.savePreferences("default_location", defaultLocation, sharedPreferences);
+        helperMethods.savePreferences("dob", dob.toString(), sharedPreferences);
+        helperMethods.savePreferences("gender", gender, sharedPreferences);
+        helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
 
-    }
-
-    private void savePreferences(String key, boolean value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, value);
-        editor.commit();
-    }
-
-    private void savePreferences(String key, String value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.commit();
+        // ToDo This code crashes
+        // queryMethods.setUpLocationsNameArrayList2();
     }
 
     private void initializeViews() {
@@ -139,7 +133,10 @@ public class LoginActivity extends AppCompatActivity {
         updateProfileFragment.setLoginActivity(this);
         dashboardFragment = new DashboardFragment();
         dashboardFragment.setLoginActivity(this);
-
+        helperMethods = new HelperMethods();
+        helperMethods.setLoginActivity(this);
+        queryMethods= new QueryMethods();
+        queryMethods.setLoginActivity(this);
     }
 
     private void setupToolbar() {
@@ -199,6 +196,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void setToolbarTitle(int toolbarTitle) {
         toolbar.setTitle(toolbarTitle);
+    }
+
+    public Context getContext() {
+        return LoginActivity.this;
     }
 
 

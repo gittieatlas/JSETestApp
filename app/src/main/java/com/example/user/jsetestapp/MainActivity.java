@@ -107,16 +107,11 @@ public class MainActivity extends AppCompatActivity {
         user.setGender(sharedPreferences.getString("gender", "3"));
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
 
-        // Toast.makeText(getApplicationContext(), user.getDefaultLocation() + " " + user.getGender().toString() + " isJseMember " + user.isJseMember, Toast.LENGTH_LONG).show();
-
-        // location.setName(sharedPreferences.getString("default_location", "COPE"));
-
         for (Location location : locationsArrayList) {
             if (location.getName().equals(sharedPreferences.getString("default_location", "COPE"))) {
                 defaultLocation = location;
             }
         }
-        //  Toast.makeText(getApplicationContext(), defaultLocation.getAddress(), Toast.LENGTH_LONG).show();
 
     }
 

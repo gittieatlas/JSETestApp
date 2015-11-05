@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class QueryMethods extends Activity {
 
     MainActivity mainActivity;
-
+    LoginActivity loginActivity;
     public QueryMethods() {
 
     }
@@ -101,6 +101,25 @@ public class QueryMethods extends Activity {
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+    }
+
+    public void setLoginActivity(LoginActivity loginActivity) {
+        this.loginActivity = loginActivity;
+    }
+
+
+
+
+
+
+
+    //for login activity
+    public void setUpLocationsNameArrayList2() {
+        loginActivity.locationsNameArrayList = new ArrayList<String>();
+        loginActivity.locationsNameArrayList.add("Location");
+        for (Location location : loginActivity.locationsArrayList) {
+            loginActivity.locationsNameArrayList.add(location.getName());
+        }
     }
 }
 

@@ -15,98 +15,90 @@
         android:paddingBottom="72dp"
         android:orientation="vertical"
         android:paddingLeft="@dimen/default_margin">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/email"
-                    style="@style/App_TextView_Colored_Label" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            style="@style/App_TextView_Colored_Label" />
 
-                <EditText
-                    android:id="@+id/editTextEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/App_EditText"
-                    android:inputType="textEmailAddress" />
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/App_EditText"
+            android:inputType="textEmailAddress" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:text="@string/password"
-                    style="@style/App_TextView_Colored_Label"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/password"
+            style="@style/App_TextView_Colored_Label"/>
 
-                <EditText
-                    android:id="@+id/editTextPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/App_EditText"
-                    android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/App_EditText"
+            android:inputType="textPassword" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:text="@string/confirm_password"
-                    style="@style/App_TextView_Colored_Label" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/confirm_password"
+            style="@style/App_TextView_Colored_Label" />
 
-                <EditText
-                    android:id="@+id/editTextConfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/App_EditText"
-                    android:inputType="textPassword" />
-            </LinearLayout>
+        <EditText
+            android:id="@+id/confirmPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/App_EditText"
+            android:inputType="textPassword" />
+    </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/buttonBarLayout"
-                android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/buttonBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:divider="?android:dividerHorizontal"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dip" />
+
+        <LinearLayout
+            style="?android:buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:dividerHorizontal"
+            android:dividerPadding="10dp"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <Button
+                android:id="@+id/buttonLeft"
+                style="?android:buttonBarButtonStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:divider="?android:dividerHorizontal"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:layout_weight="1"
+                android:text="@string/register_1_left"
+                android:textColor="@color/primary_text" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dip" />
-
-                <LinearLayout
-                    style="?android:buttonBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="?android:dividerHorizontal"
-                    android:dividerPadding="10dp"
-                    android:orientation="horizontal"
-                    android:showDividers="middle">
-
-                    <Button
-                        android:id="@+id/buttonLeft"
-                        style="?android:buttonBarButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/register_1_left"
-                        android:textColor="@color/primary_text" />
-
-                    <Button
-                        android:id="@+id/buttonRight"
-                        style="?android:buttonBarButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:clickable="false"
-                        android:text="@string/register_1_right"
-                        android:textColor="@color/primary" />
-                </LinearLayout>
-            </LinearLayout>
+            <Button
+                android:id="@+id/buttonRight"
+                style="?android:buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:text="@string/register_1_right"
+                android:textColor="@color/primary" />
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
-
-
-
-
-
-
-
-

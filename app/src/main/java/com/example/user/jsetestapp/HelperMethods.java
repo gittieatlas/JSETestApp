@@ -2,10 +2,12 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -16,21 +18,40 @@ import java.util.Collections;
 public class HelperMethods extends Activity {
 
     MainActivity mainActivity;
+    LoginActivity loginActivity;
 
     public HelperMethods() {
 
     }
 
-
-    public void replaceFragment(int container, Fragment fragment, String tag) {
+    public void replaceFragment(int container, Fragment fragment, String tag){
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
         mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
-
     }
 
     public void addFragment(int container, Fragment fragment, String tag) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
         mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
+    }
+
+    public void replaceFragment(int container, Fragment fragment, String tag, MainActivity mainActivity){
+        mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
+        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
+    }
+
+    public void addFragment(int container, Fragment fragment, String tag, MainActivity mainActivity) {
+        mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
+        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
+    }
+
+    public void replaceFragment(int container, Fragment fragment, String tag, LoginActivity loginActivity){
+        loginActivity.scrollView.scrollTo(0, 0); // Scroll to top
+        loginActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
+    }
+
+    public void addFragment(int container, Fragment fragment, String tag, LoginActivity loginActivity) {
+        loginActivity.scrollView.scrollTo(0, 0); // Scroll to top
+        loginActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
     }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
@@ -43,6 +64,19 @@ public class HelperMethods extends Activity {
 
         if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
         else spinner.setSelection(0);
+    }
+    //for register2 page locationSpinner
+    //TODO add the activity as a param so you can use the smae method coming from both activities
+    public void addDataToSpinner2(ArrayList<String> arrayList, Spinner spinner) {
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(loginActivity.getApplicationContext(),
+                R.layout.spinner_dropdown_item, arrayList);
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
+        spinner.setAdapter(adapter);
+
+        //if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
+        spinner.setSelection(0);
     }
 
     public void scheduleTest(){
@@ -192,10 +226,29 @@ public class HelperMethods extends Activity {
         }
     }
 
+
     private void clearTestsFilteredArrayList(){
         if (mainActivity.getTestsFilteredArrayList()!= null)
             mainActivity.getTestsFilteredArrayList().clear();
     }
 
+    public void setLoginActivity(LoginActivity loginActivity) {
+        this.loginActivity = loginActivity;
+    }
 
+    public boolean isEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
+    }
+
+    public void savePreferences(String key, boolean value, SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public void savePreferences(String key, String value, SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
 }
