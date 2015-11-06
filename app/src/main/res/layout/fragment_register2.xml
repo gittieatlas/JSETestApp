@@ -67,25 +67,25 @@
                 android:maxLength="2"/>
 
 
-                <EditText
-                    android:id="@+id/dobDayEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/App_EditText"
-                    android:layout_marginRight="7dp"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    />
+            <EditText
+                android:id="@+id/dobDayEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/App_EditText"
+                android:layout_marginRight="7dp"
+                android:inputType="number"
+                android:maxLength="2"
+                />
 
-                <EditText
-                    android:id="@+id/dobYearEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/App_EditText"
-                    android:inputType="number"
-                    android:maxLength="4"/>
+            <EditText
+                android:id="@+id/dobYearEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/App_EditText"
+                android:inputType="number"
+                android:maxLength="4"/>
 
 
         </LinearLayout>
@@ -183,19 +183,4 @@
     </LinearLayout>
 
 </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -48,7 +48,7 @@ public class Register2Fragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-       //checkIfHasValue();
+        //checkIfHasValue();
         return rootView;
     }
 
@@ -64,7 +64,7 @@ public class Register2Fragment extends Fragment {
         locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
         rightButton = (Button) rootView.findViewById(R.id.rightButton);
         leftButton = (Button) rootView.findViewById(R.id.leftButton);
-        bindSpinnerData();
+        //bindSpinnerData();
     }
 
     private void bindSpinnerData() {
@@ -114,9 +114,9 @@ public class Register2Fragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(ssnEditText)&&
                 locationsSpinnersHasValue &&genderSpinnersHasValue)
-                 {
+        {
             valuesEntered = true;
-             } else{
+        } else{
             valuesEntered = false;
         }
         return valuesEntered;
@@ -185,15 +185,15 @@ public class Register2Fragment extends Fragment {
             loginActivity.showDialog("Create Account Failed", "Please Enter Correct Date of Birth.",
                     "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_birthday_incorrect");
 
-            } else if(!isSsn()){
+        } else if(!isSsn()){
 
-                Toast.makeText(loginActivity.getApplicationContext(),"enter ssn", Toast.LENGTH_LONG).show();
-                loginActivity.showDialog("Create Account Failed", "Please Enter Last 4 digits of SSN.",
-                        "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_ssn_incorrect");
-                ssnEditText.setText("");
-             }
+            Toast.makeText(loginActivity.getApplicationContext(),"enter ssn", Toast.LENGTH_LONG).show();
+            loginActivity.showDialog("Create Account Failed", "Please Enter Last 4 digits of SSN.",
+                    "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_ssn_incorrect");
+            ssnEditText.setText("");
+        }
 
-            else{
+        else{
             //save information in sharedPrefernce
             //loadUserInformationToSharedPreferences();
             loginActivity.switchToMainActivity();
@@ -202,18 +202,18 @@ public class Register2Fragment extends Fragment {
     }
 
     private Boolean isBirthdayCorrect(){
-       //todo
+        //todo
         LocalDate currentDate = LocalDate.now();
 
         if (Integer.parseInt(dobDayEditText.getText().toString())>31 ||
                 Integer.parseInt(dobMonthEditText.getText().toString())>12){
-           // Integer.parseInt(dobYearEditText.getText().toString())>(currentDate.getYear()-100))
+            // Integer.parseInt(dobYearEditText.getText().toString())>(currentDate.getYear()-100))
             isBirthdayCorrect=false;
         }
         else{
             isBirthdayCorrect=true;
         }
-       return isBirthdayCorrect;
+        return isBirthdayCorrect;
     }
 
     private Boolean isSsn(){
@@ -231,9 +231,9 @@ public class Register2Fragment extends Fragment {
         //loginActivity.helperMethods.savePreferences("email", email, sharedPreferences);
         //loginActivity.helperMethods.savePreferences("password", password, sharedPreferences);
         //loginActivity.helperMethods.savePreferences("ssn", ssnEditText.getText().toString(), sharedPreferences);
-       // loginActivity.helperMethods.savePreferences("default_location", locationsSpinner.getSelectedItem(), sharedPreferences);
+        // loginActivity.helperMethods.savePreferences("default_location", locationsSpinner.getSelectedItem(), sharedPreferences);
         //loginActivity.helperMethods.savePreferences("dob", dob.toString(), sharedPreferences);
-       /// loginActivity.helperMethods.savePreferences("gender", gender, sharedPreferences);
+        /// loginActivity.helperMethods.savePreferences("gender", gender, sharedPreferences);
         //loginActivity.helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
 
     }

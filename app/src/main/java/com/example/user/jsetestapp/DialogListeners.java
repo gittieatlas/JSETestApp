@@ -95,3 +95,4 @@ public class DialogListeners extends Activity {
         this.loginActivity = loginActivity;
     }
 }
+
