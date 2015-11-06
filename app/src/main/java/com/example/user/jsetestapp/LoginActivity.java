@@ -95,10 +95,10 @@ public class LoginActivity extends AppCompatActivity {
         email = "chanicohen@gmail.com";
         password = "1234";
         ssn = "XXX-XX-1234";
-        defaultLocation = "BKLYN - BY 18th Ave. (M)";
+        defaultLocation = "BKLYN - BY 18th Ave";
         dob = DateTime.now();
         // TODO filter testArrayList according to gender
-        gender = "1";
+        gender = "2";
         isJseMember = false;
 
         helperMethods.savePreferences("first_name", firstName, sharedPreferences);
@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         helperMethods.savePreferences("gender", gender, sharedPreferences);
         helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
 
-        queryMethods.setUpLocationsNameArrayList2();
+        //queryMethods.setUpLocationsNameArrayList(this);
     }
 
     private void initializeViews() {
@@ -188,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void switchToMainActivity() {
+
         Intent intent = new Intent(this, MainActivity.class);
         Bundle b = new Bundle();
         b.putSerializable("locationsArrayList", locationsArrayList);
@@ -196,11 +197,7 @@ public class LoginActivity extends AppCompatActivity {
         b.putSerializable("branchesArrayList", branchesArrayList);
         b.putSerializable("alertsArrayList", alertsArrayList);
         intent.putExtras(b);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        //intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
-
-        finish();
     }
 
     public void setToolbarTitle(int toolbarTitle) {

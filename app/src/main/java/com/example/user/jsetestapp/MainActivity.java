@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.addFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
 
         queryMethods.setUpLocationsArrayList();
-        queryMethods.setUpLocationsNameArrayList();
+        queryMethods.setUpLocationsNameArrayList(this);
         queryMethods.setUpBranchesArrayList();
         queryMethods.setUpBranchesNameArrayList();
         queryMethods.setUpTestsArrayList();
@@ -272,7 +272,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.update_profile) {
+
             Intent intent = new Intent(this, LoginActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("locationsArrayList", locationsArrayList);
+            b.putSerializable("testsArrayList", testsArrayList);
+            b.putSerializable("hoursArrayList", hoursArrayList);
+            b.putSerializable("branchesArrayList", branchesArrayList);
+            b.putSerializable("alertsArrayList", alertsArrayList);
+            intent.putExtras(b);
             intent.putExtra("fragment", "update_profile");
             startActivity(intent);
             return true;

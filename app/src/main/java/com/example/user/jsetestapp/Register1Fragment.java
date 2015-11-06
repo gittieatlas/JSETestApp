@@ -25,8 +25,9 @@ public class Register1Fragment extends Fragment {
 
 
     //Variables
-    boolean userEnteredEmailAndPasswordAndConfirmPassword = false;
-    boolean passwordConfirmPasswordMatch = false;
+    boolean isValuesEntered = false;
+    boolean isEmailValid = false;
+    boolean passwordEqualsConfirmPassword = false;
 
 
     @Override
@@ -39,7 +40,6 @@ public class Register1Fragment extends Fragment {
         initializeViews(rootView);
         registerListeners();
         loginActivity.setToolbarTitle(R.string.toolbar_title_register1);
-        //buttonRight.setEnabled(false);
 
         return rootView;
     }
@@ -77,12 +77,7 @@ public class Register1Fragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
-                    !loginActivity.helperMethods.isEmpty(passwordEditText) &&
-                    !loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {
-                userEnteredEmailAndPasswordAndConfirmPassword = true;
-            }
-
+            isValuesEntered();
         }
     };
 
@@ -97,11 +92,8 @@ public class Register1Fragment extends Fragment {
     OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!userEnteredEmailAndPasswordAndConfirmPassword) {
-                // ToDo show Dialog Fragment
-                // Title: ????
-                // Content: "All fields require values"
-                // Neutral Action: 'OK' will cancel dialog
+            if (!isValuesEntered) {
+                loginActivity.showDialog("Create Account Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "create_account_failed_values");
             } else {
                 validateForm();
             }
@@ -110,18 +102,46 @@ public class Register1Fragment extends Fragment {
 
     private void validateForm() {
         // check if email exists- cant do now as not doing db on server
-        if (!passwordConfirmPasswordMatch) {
-            // ToDo show Dialog Fragment
-            // Title: Create Account Failed
-            // Content: "Password and Confirm Password don't match. Please try again."
-            // Neutral Action: 'OK' will clear passwordEditText and confirmPasswordEditText and close dialog
+        if (!isEmailValid()){
+            loginActivity.showDialog("Create Account Failed", "You need to enter a valid email address.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "create_account_failed_email");
         } else {
-            // ToDo save entered email and password to SP
-            // ToDo go to 'SIGN UP 2' screen
+            if (!passwordEqualsConfirmPassword()) {
+                loginActivity.showDialog("Create Account Failed", "Password and Confirm Password values don't match. Please try again.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "create_account_failed_values_match");
+                passwordEditText.setText("");
+                confirmPasswordEditText.setText("");
+            } else {
+                // ToDo loginActivity.register2Fragment.setEmailPasswordValues(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register2Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register2), loginActivity);
+            }
         }
 
     }
 
+    private boolean isValuesEntered() {
+        if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
+                !loginActivity.helperMethods.isEmpty(passwordEditText) &&
+                !loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {
+            isValuesEntered = true;
+        } else
+            isValuesEntered = false;
+        return isValuesEntered;
+    }
+
+    private boolean isEmailValid() {
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText()).matches()) {
+            isEmailValid = true;
+        } else
+            isEmailValid = false;
+        return isEmailValid;
+    }
+
+    private boolean passwordEqualsConfirmPassword() {
+        if (passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
+            passwordEqualsConfirmPassword = true;
+        } else
+            passwordEqualsConfirmPassword = false;
+        return passwordEqualsConfirmPassword;
+    }
 
     public void setLoginActivity(LoginActivity loginActivity) {
 
