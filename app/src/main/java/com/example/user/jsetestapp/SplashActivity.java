@@ -259,7 +259,7 @@ public class SplashActivity extends AppCompatActivity {
                         test.setGender(Integer.parseInt(c.getString(TAG_GENDER)));
                         //TODO comment out this code once login activity is done
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("gender", "1");
+                        editor.putString("gender", "2");
                         editor.commit();
 
                         if ((getGender(test)==(3)) ||

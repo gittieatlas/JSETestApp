@@ -22,11 +22,21 @@ public class QueryMethods extends Activity {
 
     }
 
-    public void setUpLocationsNameArrayList() {
+    public void setUpLocationsNameArrayList(MainActivity mainActivity) {
         mainActivity.locationsNameArrayList = new ArrayList<String>();
         mainActivity.locationsNameArrayList.add("Location");
         for (Location location : mainActivity.locationsArrayList) {
             mainActivity.locationsNameArrayList.add(location.getName());
+        }
+    }
+
+
+    //for login activity
+    public void setUpLocationsNameArrayList(LoginActivity loginActivity) {
+        loginActivity.locationsNameArrayList = new ArrayList<String>();
+        loginActivity.locationsNameArrayList.add("Location");
+        for (Location location : loginActivity.locationsArrayList) {
+            loginActivity.locationsNameArrayList.add(location.getName());
         }
     }
 
@@ -113,14 +123,6 @@ public class QueryMethods extends Activity {
 
 
 
-    //for login activity
-    public void setUpLocationsNameArrayList2() {
-        loginActivity.locationsNameArrayList = new ArrayList<String>();
-        loginActivity.locationsNameArrayList.add("Location");
-        for (Location location : loginActivity.locationsArrayList) {
-            loginActivity.locationsNameArrayList.add(location.getName());
-        }
-    }
 }
 
 

@@ -30,7 +30,7 @@ public class LoginFragment extends Fragment {
 
 
     //Variables
-    boolean isEmailPasswordEntered = false;
+    boolean isValuesEntered = false;
     boolean isEmailSaved = false;
     boolean isEmailEqualSavedEmail = false;
     boolean isEmailPasswordEqualSavedEmailPassword = false;
@@ -83,14 +83,14 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            isEmailPasswordEntered();
+            isValuesEntered();
         }
     };
 
     OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!isEmailPasswordEntered) {
+            if (!isValuesEntered) {
                 loginActivity.showDialog("Login Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_values");
             } else {
                 validateForm();
@@ -116,25 +116,28 @@ public class LoginFragment extends Fragment {
         }
     };
 
-    private boolean isEmailPasswordEntered() {
+    private boolean isValuesEntered() {
         if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
                 !loginActivity.helperMethods.isEmpty(passwordEditText)) {
-            isEmailPasswordEntered = true;
-        }
-        return isEmailPasswordEntered;
+            isValuesEntered = true;
+        } else
+            isValuesEntered = false;
+        return isValuesEntered;
     }
 
     private boolean isEmailSaved() {
         if (loginActivity.sharedPreferences.getString("email", null) != null) {
             isEmailSaved = true;
-        }
+        } else
+            isEmailSaved = false;
         return isEmailSaved;
     }
 
     private boolean isEmailEqualSavedEmail() {
         if (loginActivity.sharedPreferences.getString("email", null).equals(emailEditText.getText().toString())) {
             isEmailEqualSavedEmail = true;
-        }
+        } else
+            isEmailEqualSavedEmail = false;
         return isEmailEqualSavedEmail;
     }
 
@@ -143,7 +146,8 @@ public class LoginFragment extends Fragment {
         if (loginActivity.sharedPreferences.getString("email", null).equals(emailEditText.getText().toString()) &&
                 loginActivity.sharedPreferences.getString("password", null).equals(passwordEditText.getText().toString())) {
             isEmailPasswordEqualSavedEmailPassword = true;
-        }
+        } else
+            isEmailPasswordEqualSavedEmailPassword = false;
         return isEmailPasswordEqualSavedEmailPassword;
     }
 
