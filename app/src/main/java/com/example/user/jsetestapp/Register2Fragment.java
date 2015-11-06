@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import org.joda.time.LocalDate;
 
 public class Register2Fragment extends Fragment {
 
@@ -29,11 +32,13 @@ public class Register2Fragment extends Fragment {
 
 
     //Variables
-    Boolean textViewsNotEmpty = false;
-    Boolean genderSpinnersNotEmpty = false;
-    Boolean locationsSpinnersNotEmpty = false;
-
-
+    Boolean valuesEntered = false;
+    Boolean textViewsHaveValues = false;
+    Boolean genderSpinnersHasValue = false;
+    Boolean locationsSpinnersHasValue = false;
+    Boolean isBirthdayCorrect = false;
+    Boolean isSsn = false;
+    SharedPreferences sharedPreferences;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class Register2Fragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-        checkIfHasValue();
+        //checkIfHasValue();
         return rootView;
     }
 
@@ -59,7 +64,7 @@ public class Register2Fragment extends Fragment {
         locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
         rightButton = (Button) rootView.findViewById(R.id.rightButton);
         leftButton = (Button) rootView.findViewById(R.id.leftButton);
-        bindSpinnerData();
+        //bindSpinnerData();
     }
 
     private void bindSpinnerData() {
@@ -77,9 +82,6 @@ public class Register2Fragment extends Fragment {
         locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
-    }
-
-    private void checkIfHasValue(){
         firstNameEditText.addTextChangedListener(textWatcher);
         lastNameEditText.addTextChangedListener(textWatcher);
         dobDayEditText.addTextChangedListener(textWatcher);
@@ -97,27 +99,43 @@ public class Register2Fragment extends Fragment {
         }
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!loginActivity.helperMethods.isEmpty(firstNameEditText) &&
-                    !loginActivity.helperMethods.isEmpty(lastNameEditText) &&
-                    !loginActivity.helperMethods.isEmpty(dobDayEditText) &&
-                    !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
-                    !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
-                    !loginActivity.helperMethods.isEmpty(ssnEditText) &&
-                    genderSpinnersNotEmpty && locationsSpinnersNotEmpty) {
-                textViewsNotEmpty = true;
-            }
 
-            Toast.makeText(loginActivity.getApplicationContext(), textViewsNotEmpty.toString(), Toast.LENGTH_LONG).show();
+            controlsHaveValues();
+            Toast.makeText(loginActivity.getApplicationContext(), valuesEntered.toString(), Toast.LENGTH_LONG).show();
         }
 
     };
 
-    OnClickListener rightButtonListener = new View.OnClickListener() {
+    private Boolean controlsHaveValues(){
+        if (!loginActivity.helperMethods.isEmpty(firstNameEditText) &&
+                !loginActivity.helperMethods.isEmpty(lastNameEditText) &&
+                !loginActivity.helperMethods.isEmpty(dobDayEditText) &&
+                !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
+                !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
+                !loginActivity.helperMethods.isEmpty(ssnEditText)&&
+                locationsSpinnersHasValue &&genderSpinnersHasValue)
+        {
+            valuesEntered = true;
+        } else{
+            valuesEntered = false;
+        }
+        return valuesEntered;
+    }
+
+    OnClickListener rightButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            //call validateForm();
-            loginActivity.showDialog("JSE Office", null, "CALL", "CANCEL", null, R.drawable.ic_calendar_clock_grey600_24dp, "from_login_activity");
+            if (!valuesEntered) {
+                // ToDo show Dialog Fragment
+                // Title: ????
+                // Content: "All fields require values"
+                // Neutral Action: 'OK' will cancel dialog
+                loginActivity.showDialog("Create Account Failed", "All fields require a value.",
+                        "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_missing_fields");
+            } else {
+                validateForm();
+            }
         }
     };
 
@@ -134,8 +152,7 @@ public class Register2Fragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position != 0)
-               // Toast.makeText(loginActivity.getApplicationContext(), "Selected", Toast.LENGTH_LONG).show();
-                genderSpinnersNotEmpty=true;
+                genderSpinnersHasValue =true;
         }
 
         @Override
@@ -151,7 +168,7 @@ public class Register2Fragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position != 0)
 
-                locationsSpinnersNotEmpty=true;
+                locationsSpinnersHasValue =true;
         }
 
         @Override
@@ -160,6 +177,66 @@ public class Register2Fragment extends Fragment {
         }
 
     };
+
+    private void validateForm() {
+        // check if birthday is correct
+        if (!isBirthdayCorrect()) {
+
+            loginActivity.showDialog("Create Account Failed", "Please Enter Correct Date of Birth.",
+                    "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_birthday_incorrect");
+
+        } else if(!isSsn()){
+
+            Toast.makeText(loginActivity.getApplicationContext(),"enter ssn", Toast.LENGTH_LONG).show();
+            loginActivity.showDialog("Create Account Failed", "Please Enter Last 4 digits of SSN.",
+                    "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_ssn_incorrect");
+            ssnEditText.setText("");
+        }
+
+        else{
+            //save information in sharedPrefernce
+            //loadUserInformationToSharedPreferences();
+            loginActivity.switchToMainActivity();
+        }
+
+    }
+
+    private Boolean isBirthdayCorrect(){
+        //todo
+        LocalDate currentDate = LocalDate.now();
+
+        if (Integer.parseInt(dobDayEditText.getText().toString())>31 ||
+                Integer.parseInt(dobMonthEditText.getText().toString())>12){
+            // Integer.parseInt(dobYearEditText.getText().toString())>(currentDate.getYear()-100))
+            isBirthdayCorrect=false;
+        }
+        else{
+            isBirthdayCorrect=true;
+        }
+        return isBirthdayCorrect;
+    }
+
+    private Boolean isSsn(){
+        if (ssnEditText.getText().toString().length()<4){
+            isSsn = false;
+        }else{
+            isSsn = true;
+        }
+        return isSsn;
+    }
+
+    private void loadUserInformationToSharedPreferences(){
+        loginActivity.helperMethods.savePreferences("first_name", firstNameEditText.getText().toString(), sharedPreferences);
+        //loginActivity.helperMethods.savePreferences("last_name", lastNameEditText.getText().toString(), sharedPreferences);
+        //loginActivity.helperMethods.savePreferences("email", email, sharedPreferences);
+        //loginActivity.helperMethods.savePreferences("password", password, sharedPreferences);
+        //loginActivity.helperMethods.savePreferences("ssn", ssnEditText.getText().toString(), sharedPreferences);
+        // loginActivity.helperMethods.savePreferences("default_location", locationsSpinner.getSelectedItem(), sharedPreferences);
+        //loginActivity.helperMethods.savePreferences("dob", dob.toString(), sharedPreferences);
+        /// loginActivity.helperMethods.savePreferences("gender", gender, sharedPreferences);
+        //loginActivity.helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
+
+    }
 
     public void setLoginActivity(LoginActivity loginActivity) {
 

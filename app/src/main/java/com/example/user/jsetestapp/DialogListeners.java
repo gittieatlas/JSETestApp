@@ -52,7 +52,7 @@ public class DialogListeners extends Activity {
                 mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment, mainActivity.getResources().getString(R.string.toolbar_title_search));
                 mainActivity.tabLayout.getTabAt(1).select();
             }
-            case "from_login_activity":{
+            case "login_activity":{
                 break;
             }
             case "login_failed_email_not_exist":
@@ -61,6 +61,8 @@ public class DialogListeners extends Activity {
             case "forgot_password":{
                 //ToDo validate email address and get password from LDB that matches to emailEditText and send email to emailEditText. Close dialog
             }
+            case "registration_failed_missing_fields":
+                break;
         }
     }
 
@@ -93,3 +95,4 @@ public class DialogListeners extends Activity {
         this.loginActivity = loginActivity;
     }
 }
+
