@@ -190,11 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        if (id == R.id.dashboard) {
-            switchToMainActivity();
-            return true;
-        }
-
+      
         return super.onOptionsItemSelected(item);
     }
 
