@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-        loginActivity.setToolbarTitle(R.string.toolbar_title_login);
+     //   loginActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         return rootView;
     }
@@ -110,9 +110,9 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            loginActivity.showDialog("Send me my password", "'Email' label and EditText inputType=textEmailAddress",
-                    "SEND", "CANCEL", "OK", R.drawable.ic_check_grey600_24dp, "forgot_password");
-            //ToDo custom xml layout
+            loginActivity.showDialog("Send me my password", "Enter your email address",
+                    "SEND", null, null, R.drawable.ic_check_grey600_24dp, "forgot_password");
+
         }
     };
 

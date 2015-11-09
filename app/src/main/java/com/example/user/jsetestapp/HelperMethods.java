@@ -67,7 +67,7 @@ public class HelperMethods extends Activity {
     }
     //for register2 page locationSpinner
     //TODO add the activity as a param so you can use the smae method coming from both activities
-    public void addDataToSpinner2(ArrayList<String> arrayList, Spinner spinner) {
+    public void addDataToSpinnerFromLoginActivity(ArrayList<String> arrayList, Spinner spinner) {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(loginActivity.getApplicationContext(),
                 R.layout.spinner_dropdown_item, arrayList);
@@ -250,5 +250,16 @@ public class HelperMethods extends Activity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.commit();
+    }
+
+    public void sendPassword(String email){
+        String subject = "JSE App - Password";
+        String message = "The password we have n file for this email address is " + "1234 test password." ;
+        // ToDo get password from user. password
+        //String message = "The password we have n file for this email address is " + loginActivity.user.getPassword();
+       // if (email.equals(loginActivity.user.getEmail())) {
+        if (email.equals("gittieatlas@gmail.com")) {
+            loginActivity.sendEmail.sendMail(email, subject, message);
+        }
     }
 }

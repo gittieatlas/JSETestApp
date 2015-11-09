@@ -1,13 +1,13 @@
 package com.example.user.jsetestapp;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 public class User {
 
     public static enum Gender {MALE, FEMALE}
 
     String firstName, lastName, email, password, ssn, defaultLocation;
-    DateTime dob;
+    LocalDate dob;
     Gender gender;
     boolean isJseMember;
 
@@ -65,11 +65,11 @@ public class User {
         this.defaultLocation = defaultLocation;
     }
 
-    public DateTime getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(DateTime dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

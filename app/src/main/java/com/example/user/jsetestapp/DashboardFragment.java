@@ -15,10 +15,11 @@ import android.widget.TextView;
 public class DashboardFragment extends Fragment {
 
 
-       //Controls
+    //Controls
     View rootView;
     TextView locationTextView, alertsTitleTextView, alertsDayTextView,
-            alertsDateTextView, alertsTimeTextView, alertsMessageTextView;;
+            alertsDateTextView, alertsTimeTextView, alertsMessageTextView;
+    ;
     CardView findTestButton;
 
     //Activities
@@ -73,12 +74,12 @@ public class DashboardFragment extends Fragment {
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
 
-        alertsTitleTextView = (TextView)rootView.findViewById(R.id.alertsTitleTextView);
+        alertsTitleTextView = (TextView) rootView.findViewById(R.id.alertsTitleTextView);
 
-        alertsDayTextView = (TextView)rootView.findViewById(R.id.alertsDayTextView);
-        alertsDateTextView = (TextView)rootView.findViewById(R.id.alertsDateTextView);
-        alertsTimeTextView = (TextView)rootView.findViewById(R.id.alertsTimeTextView);
-        alertsMessageTextView = (TextView)rootView.findViewById(R.id.AlertsMessageTextView);
+        alertsDayTextView = (TextView) rootView.findViewById(R.id.alertsDayTextView);
+        alertsDateTextView = (TextView) rootView.findViewById(R.id.alertsDateTextView);
+        alertsTimeTextView = (TextView) rootView.findViewById(R.id.alertsTimeTextView);
+        alertsMessageTextView = (TextView) rootView.findViewById(R.id.AlertsMessageTextView);
     }
 
     private void registerListeners() {
@@ -86,16 +87,18 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    public void setUpAlerts(){
-        for (Alerts alerts : mainActivity.alertsArrayList){
-            if (alerts.locationName.equals(mainActivity.defaultLocation.getName())){
+    public void setUpAlerts() {
+        for (Alerts alerts : mainActivity.alertsArrayList) {
+            if (alerts.locationName.equals(mainActivity.defaultLocation.getName())) {
                 alertsMessageTextView.setText(alerts.alertText);
                 alertsDayTextView.setText(mainActivity.helperMethods.firstLetterCaps(alerts.getDayOfWeek().toString()));
                 alertsDateTextView.setText(alerts.getDate().toString("MMMM dd yyyy"));
                 alertsTimeTextView.setText(alerts.getTime().toString("hh:mm a"));
             }
         }
-
+        if (alertsMessageTextView.getText()== null){
+            alertsMessageTextView.setText("There are no alerts for this location");
+        }
     }
 
     OnClickListener findTestButtonListener = new OnClickListener() {

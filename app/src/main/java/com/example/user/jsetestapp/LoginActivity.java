@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,10 +38,12 @@ public class LoginActivity extends AppCompatActivity {
     DashboardFragment dashboardFragment;
     LoginActivityDialogFragment loginActivityDialogFragment;
     DialogListeners dialogListeners;
+    SendEmail sendEmail;
 
     //Variables
     String firstName, lastName, email, password, ssn, defaultLocation, gender;
-    DateTime dob;
+    //LocalDate dob;
+    String dobDay, dobMonth, dobYear;
     boolean isJseMember;
     SharedPreferences sharedPreferences;
 
@@ -67,17 +67,17 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-      //  loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
+        //  loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
 
         locationsArrayList = new ArrayList<Location>();
 
         Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
-        locationsArrayList = (ArrayList<Location>)bundle.getSerializable("locationsArrayList");
-        branchesArrayList = (ArrayList<Branch>)bundle.getSerializable("branchesArrayList");
-        testsArrayList = (ArrayList<Test>)bundle.getSerializable("testsArrayList");
-        hoursArrayList = (ArrayList<Hours>)bundle.getSerializable("hoursArrayList");
-        alertsArrayList = (ArrayList<Alerts>)bundle.getSerializable("alertsArrayList");
+        locationsArrayList = (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
+        branchesArrayList = (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
+        testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
+        hoursArrayList = (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
+        alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
         try {
             Intent intent = getIntent();
 
@@ -90,15 +90,21 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        firstName = "Chani";
-        lastName = "Cohen";
-        email = "chanicohen@gmail.com";
-        password = "1234";
-        ssn = "XXX-XX-1234";
-        defaultLocation = "BKLYN - BY 18th Ave";
-        dob = DateTime.now();
+        setPreferences("", "", "", "", "", "", "", "", "", "");
+    }
+
+    public void setPreferences(String user_firstname, String user_lastName, String user_email, String user_password, String user_ssn, String user_dob_day, String user_dob_month, String user_dob_year, String user_gender, String user_defaultLocation) {
+        firstName = user_firstname;
+        lastName = user_lastName;
+        email = user_email;
+        password = user_password;
+        ssn = user_ssn;
+        dobDay = user_dob_day;
+        dobMonth = user_dob_month;
+        dobYear = user_dob_year;
         // TODO filter testArrayList according to gender
-        gender = "2";
+        gender = user_gender;
+        defaultLocation = user_defaultLocation;
         isJseMember = false;
 
         helperMethods.savePreferences("first_name", firstName, sharedPreferences);
@@ -107,11 +113,14 @@ public class LoginActivity extends AppCompatActivity {
         helperMethods.savePreferences("password", password, sharedPreferences);
         helperMethods.savePreferences("ssn", ssn, sharedPreferences);
         helperMethods.savePreferences("default_location", defaultLocation, sharedPreferences);
-        helperMethods.savePreferences("dob", dob.toString(), sharedPreferences);
+        helperMethods.savePreferences("dob_day", dobDay, sharedPreferences);
+        helperMethods.savePreferences("dob_month", dobMonth, sharedPreferences);
+        helperMethods.savePreferences("dob_year", dobYear, sharedPreferences);
         helperMethods.savePreferences("gender", gender, sharedPreferences);
         helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
 
-        //queryMethods.setUpLocationsNameArrayList(this);
+        queryMethods.setUpLocationsNameArrayList(this);
+
     }
 
     private void initializeViews() {
@@ -136,12 +145,14 @@ public class LoginActivity extends AppCompatActivity {
         dashboardFragment.setLoginActivity(this);
         helperMethods = new HelperMethods();
         helperMethods.setLoginActivity(this);
-        queryMethods= new QueryMethods();
+        queryMethods = new QueryMethods();
         queryMethods.setLoginActivity(this);
         loginActivityDialogFragment = new LoginActivityDialogFragment();
         loginActivityDialogFragment.setLoginActivity(this);
         dialogListeners = new DialogListeners();
         dialogListeners.setLoginActivity(this);
+        sendEmail = new SendEmail();
+        sendEmail.setLoginActivity(this);
     }
 
     private void setupToolbar() {

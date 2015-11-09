@@ -21,6 +21,9 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.1@aar') {
         transitive = true;
     }
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+    compile files('libs/mail.jar')
 }
 
 
@@ -42,6 +45,9 @@ android {
         }
 
         useLibrary 'org.apache.http.legacy'
+    }
+    packagingOptions{
+        exclude 'META-INF/LICENSE.txt'
     }
 
     dependencies {

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class LoginActivityDialogFragment extends android.app.DialogFragment {
     LoginActivity loginActivity;
@@ -20,7 +22,17 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
         Integer icon = getArguments().getInt("icon");
         final String TAG_LISTENER = getArguments().getString("tagListener");
 
+        final EditText input = new EditText(getActivity());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        if (TAG_LISTENER != null && TAG_LISTENER.equals("forgot_password")) {
+            //input = new EditText(getActivity());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setLayoutParams(lp);
+            builder.setView(input);
+        }
 
         // Setting Dialog Title
         if (title != null)
@@ -39,7 +51,14 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
             builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+
+                    if (TAG_LISTENER != null && TAG_LISTENER.equals("forgot_password")) {
+                        String email = input.getText().toString();
+                        ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER, email);
+                    } else {
+
+                        ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                    }
                 }
 
             });
@@ -56,13 +75,14 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
             });
         }
 
+        // Setting Neutral Button
         if (neutralButton != null) {
-        builder.setNeutralButton(neutralButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ((LoginActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
-            }
-        });
+            builder.setNeutralButton(neutralButton, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((LoginActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                }
+            });
         }
 
         return builder.create();

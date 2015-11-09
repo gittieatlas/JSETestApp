@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -100,19 +99,20 @@ public class MainActivity extends AppCompatActivity {
     private void loadSavedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
-        // providing the key for the value you want, and optionally a default value to return if the key isn't present.
+//To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
+// providing the key for the value you want, and optionally a default value to return if the key isn't present.
+        //helperMethods.loadSavedPreferences(sharedPreferences);
         user.setFirstName(sharedPreferences.getString("first_name", null));
         user.setLastName(sharedPreferences.getString("last_name", null));
         user.setEmail(sharedPreferences.getString("email", null));
         user.setPassword(sharedPreferences.getString("password", null));
         user.setSsn(sharedPreferences.getString("ssn", null));
-        user.setDefaultLocation(sharedPreferences.getString("default_location", "COPE"));
-        //  user.setDob(sharedPreferences.getString("dob", "COPE")); covert back to DateTime
+        user.setDob(convertDob());
+        user.setDefaultLocation(sharedPreferences.getString("default_location", null));
         user.setGender(sharedPreferences.getString("gender", "3"));
 
-        // ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
-        // checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
+// ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
+// checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
         user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
 
         for (Location location : locationsArrayList) {
@@ -122,7 +122,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    private LocalDate convertDob(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String dobString = (sharedPreferences.getString("dob_month", null)+ "-" + sharedPreferences.getString("dob_day", null) + "-" + sharedPreferences.getString("dob_year", null));
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM-dd-yyyy");
+        LocalDate dob = dtf.parseLocalDate(dobString);
+        return dob;
+    }
     private void initializeViews() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
