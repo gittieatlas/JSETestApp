@@ -79,6 +79,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // JSON Node names - locations
     private static final String TAG_LOCATIONS = "locations";
+    private static final String TAG__LOCATION_ID = "id";
     private static final String TAG_NAME = "name";
     private static final String TAG_ADDRESS = "address";
     private static final String TAG_CITY = "city";
@@ -178,6 +179,7 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject c = locationsJsonArray.getJSONObject(i);
 
                         String name = c.getString(TAG_NAME);
+                        int id = Integer.parseInt(c.getString(TAG__LOCATION_ID));
                         String address = c.getString(TAG_ADDRESS);
                         String city = c.getString(TAG_CITY);
                         String state = c.getString(TAG_STATE);
@@ -193,6 +195,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (!country.equals("null")) fullAddress.append(country);
 
                         Location location = new Location();
+                        location.setId(id);
                         location.setName(name);
                         location.setAddress(fullAddress.toString());
                         location.setPhone(phone);

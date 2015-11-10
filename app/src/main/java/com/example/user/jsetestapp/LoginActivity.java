@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     LoginActivityDialogFragment loginActivityDialogFragment;
     DialogListeners dialogListeners;
     SendEmail sendEmail;
+    User user;
 
     //Variables
     String firstName, lastName, email, password, ssn, defaultLocation, gender;
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         initializeViews();
         createFragmentsActivitiesClasses();
         setupToolbar();
-
+        user = new User();
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -153,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         dialogListeners.setLoginActivity(this);
         sendEmail = new SendEmail();
         sendEmail.setLoginActivity(this);
+
     }
 
     private void setupToolbar() {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Location implements Serializable {
 
-    //long id;
+    int id;
     String name, address, phone;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Alerts> alertsArrayList;
@@ -13,6 +13,15 @@ public class Location implements Serializable {
     public Location() {
 
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
