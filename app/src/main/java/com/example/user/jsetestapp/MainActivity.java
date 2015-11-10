@@ -126,8 +126,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String dobString = (sharedPreferences.getString("dob_month", null)+ "-" + sharedPreferences.getString("dob_day", null) + "-" + sharedPreferences.getString("dob_year", null));
         DateTimeFormatter dtf = DateTimeFormat.forPattern("MM-dd-yyyy");
-        LocalDate dob = dtf.parseLocalDate(dobString);
-        return dob;
+//        LocalDate dob = dtf.parseLocalDate(dobString);
+      //  return dob; ToDo // FIXME: 11/9/2015
+        return LocalDate.now();
     }
     private void initializeViews() {
 

@@ -188,6 +188,10 @@ public class LoginActivity extends AppCompatActivity {
             getFragmentManager().beginTransaction().replace(R.id.container, register2Fragment).commit();
             return true;
         }
+        if (id == R.id.dashboard) {
+            switchToMainActivity();
+            return true;
+        }
 
 
       

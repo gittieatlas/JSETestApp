@@ -45,7 +45,8 @@ public class LoginFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-     //   loginActivity.setToolbarTitle(R.string.toolbar_title_login);
+     //  ToDo fix this error
+     // loginActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         return rootView;
     }

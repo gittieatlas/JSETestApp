@@ -2,20 +2,11 @@ package com.example.user.jsetestapp;
 
 
 import android.app.Activity;
-import android.widget.Toast;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 public class DialogListeners extends Activity {
 
@@ -83,62 +74,10 @@ public class DialogListeners extends Activity {
         switch (TAG_LISTENER) {
 
             case "forgot_password": {
-                //loginActivity.helperMethods.sendPassword(email);
-                //sendEmail(email, "Forgot Password", "Person Name", "The password on file for thid email is" + "test");
-
-
-//                Properties props = new Properties();
-//                Session session = Session.getDefaultInstance(props, null);
-//
-//                String msgBody = "...";
-//
-//                try {
-//                    Message msg = new MimeMessage(session);
-//                    msg.setFrom(new InternetAddress("admin@example.com", "Example.com Admin"));
-//                    msg.addRecipient(Message.RecipientType.TO,
-//                            new InternetAddress("gittieatlas@gmail.com", "Mr. User"));
-//                    msg.setSubject("Your Example.com account has been activated");
-//                    msg.setText(msgBody);
-//                    Transport.send(msg);
-//
-//                } catch (AddressException e) {
-//                    // ...
-//                } catch (MessagingException e) {
-//                    // ...
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
-
-
+                // ToDo send email with password
                 break;
             }
-
         }
-    }
-
-    private void sendEmail(String recipientAddress, String recipientName, String subject, String message) {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        try {
-            Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("gittieatlas@gmail.com", "JSE Email Address"));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientAddress, recipientName));
-            msg.setSubject(subject);
-            msg.setText(message);
-            Transport.send(msg);
-            //logger.info("Sent email to "+recipientAddress);
-            Toast.makeText(loginActivity.getApplicationContext(), "email sent", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            //logger.error("Failed to send email",e);
-        }
-    }
-
-
-    public void setReminderToCallJse(String hours) {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
-        LocalTime localTime;
-        localTime = fmt.parseLocalTime(hours);
-        mainActivity.intentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(1), localTime);
     }
 
     public void negativeButtonOnClickListener(String TAG_LISTENER) {
@@ -162,12 +101,19 @@ public class DialogListeners extends Activity {
 
         this.loginActivity = loginActivity;
     }
-    public void setReminderToCallJse(String hours, int days){
+
+    public void setReminderToCallJse(String hours, int days) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
         LocalTime localTime;
         localTime = fmt.parseLocalTime(hours);
         mainActivity.intentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
     }
 
+    public void setReminderToCallJse(String hours) {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
+        LocalTime localTime;
+        localTime = fmt.parseLocalTime(hours);
+        mainActivity.intentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(1), localTime);
+    }
 }
 
