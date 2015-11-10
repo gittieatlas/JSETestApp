@@ -1,149 +1,118 @@
 package com.example.user.jsetestapp;
 
 import android.os.AsyncTask;
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseOperations {
 
-    //Controls
+    // url to create new product
+    private static String url_create_product = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user.php";
 
-    //Activities
-    MainActivity mainActivity;
+    // JSON Node names
+    private static final String TAG_SUCCESS = "success";
 
-    //Fragments
+    public static void newUser(User user) {
 
-    //Variables
-    public static String url;
-    public static String username;
-    public static String password;
-    public static String result;
+        new CreateNewUser(user.firstName, user.lastName, "2").execute();
 
-    public DatabaseOperations() {
     }
 
-    public void Connect() {
-        Connect task = new Connect();
-        task.execute();
-    }
+    /**
+     * Background Async Task to Create new product
+     */
+    static class CreateNewUser extends AsyncTask<String, String, String> {
 
-    // The types specified here are the input data type, the progress type, and the result type
-    private class Connect extends AsyncTask<String, String, String> {
+        String firstName, lastName, gender;
+
+        CreateNewUser(String firstName, String lastName, String gender){
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.gender = gender;
+        }
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
         protected void onPreExecute() {
-            // Runs on the UI thread before doInBackground
-            // Good for toggling visibility of a progress indicator
-            //progressBar.setVisibility(ProgressBar.VISIBLE);
+            super.onPreExecute();
+//            pDialog = new ProgressDialog(LoginActivity.this);
+//            pDialog.setMessage("Creating Product..");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(true);
+//            pDialog.show();
         }
 
-        protected String doInBackground(String... strings) {
-            // Some long-running task like downloading an image.
-            String result = "";
+        /**
+         * Creating product
+         */
+        protected String doInBackground(String... args) {
+//            String firstName = "Rivky";
+//            String lastName = "Cohen";
+//            String gender = "2";
+            String email = "rivkycohen15@gmail.com";
+            String password = "1234";
+            String ssn = "xxx-xx-9865";
+            String dob = "2016-05-26";
+            String locationId = "4346";
 
-            //declare DB url, username, and password
-            url = "jdbc:mysql://127.0.0.1:3306/test";
-            username = "testUser";
-            password = "testPassword";
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("firstName", firstName));
+            params.add(new BasicNameValuePair("lastName", lastName));
+            params.add(new BasicNameValuePair("gender", gender));
+            params.add(new BasicNameValuePair("dob", dob));
+            params.add(new BasicNameValuePair("ssn", ssn));
+            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("locationId", locationId));
 
-            //declare connection, statement and resultset objects
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet resultSet = null;
+            // getting JSON Object
+            // Note that create user url accepts POST method
+            JSONParser jsonParser = new JSONParser();
+            JSONObject json = jsonParser.makeHttpRequest(url_create_product,
+                    "POST", params);
 
-            //load jdbc driver for mysql database
+            // check log cat fro response
+            Log.d("Create User", json.toString());
+
+            // check for success tag
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                int success = json.getInt(TAG_SUCCESS);
 
-                publishProgress("Able to load driver");
-            } catch (Exception e) {
-                publishProgress("Unable to load driver " + e.toString());
-            }
-
-            //Establish connection using DriverManager
-            try {
-                //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test","root","");
-                connection = DriverManager.getConnection(url, username, password);
-                publishProgress("Able to connect to database");
-            } catch (SQLException e) {
-                publishProgress("Unable to connect to database " + e.toString());
-            }
-
-            //if connection is successfully established, create statement
-            if (connection != null) {
-                try {
-                    statement = connection.createStatement();
-                    publishProgress("Able to create statement");
-                } catch (SQLException e) {
-                    publishProgress("Unable to create statement");
+                if (success == 1) {
+                    // successfully created product
+//                    Intent i = new Intent(getApplicationContext(), AllProductsActivity.class);
+//                    startActivity(i);
+//
+//                    // closing this screen
+//                    finish();
+                } else {
+                    // failed to create product
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            //if statement is created successfully, execute query and get results
-            if (statement != null) {
-                try {
-                    resultSet = statement.executeQuery("SELECT name FROM branches");
-                    publishProgress("Able to execute query and get results");
-                } catch (SQLException e) {
-                    publishProgress("Unable to execute query and get results");
-                }
-            }
-
-            //if resultset is received and is not empty,
-            // iterate over resultset to get values
-            if (resultSet != null) {
-                try {
-                    while (resultSet.next()) {
-                        publishProgress("Value in 1st column " + resultSet.getString(1));
-                    }
-                } catch (SQLException e) {
-                    publishProgress("Unable to iterate over resultset");
-                }
-            }
-
-//            try {
-//                resultSet.close();
-//                statement.close();
-//                connection.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//                publishProgress("Error closing connections");
-//            }
-
-            return result;
+            return null;
         }
 
-        protected void onProgressUpdate(String... values) {
-            // Executes whenever publishProgress is called from doInBackground
-            // Used to update the progress indicator
-            if (values != null) {
-                for (String value : values) {
-                    // shows a toast for every value we get
-                    Toast.makeText(mainActivity.getApplicationContext(), value, Toast.LENGTH_SHORT).show();
-                }
-            }
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            // pDialog.dismiss();
         }
 
-        protected void onPostExecute(String result) {
-            // This method is executed in the UIThread
-            // with access to the result of the long running task
-        }
-    }
-
-
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
     }
 
 }

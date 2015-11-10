@@ -201,6 +201,7 @@ public class Register2Fragment extends Fragment {
             Toast.makeText(loginActivity.getApplicationContext(), loginActivity.user.firstName + loginActivity.user.lastName + loginActivity.user.dob + loginActivity.user.ssn + loginActivity.user.email + loginActivity.user.password + loginActivity.user.gender +loginActivity.user.defaultLocation, Toast.LENGTH_SHORT).show();
             //loadUserInformationToSharedPreferences();
             loginActivity.switchToMainActivity();
+            DatabaseOperations.newUser(loginActivity.user);
         }
 
     }
