@@ -84,8 +84,8 @@ public class User {
     public void setGender(String gender) {
         try {
             this.gender = Gender.valueOf(gender);
-        } catch (Exception ex) {
-            this.gender = Gender.FEMALE;
+       } catch (Exception ex) {
+           this.gender = Gender.FEMALE;
         }
     }
 
