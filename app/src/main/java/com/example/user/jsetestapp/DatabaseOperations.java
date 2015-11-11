@@ -14,15 +14,16 @@ import java.util.List;
 public class DatabaseOperations {
 
     // url to create new product
-    private static String url_create_product = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user.php";
+    private static String url_create_product = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_insert.php";
 
     // JSON Node names
-    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_RESULT = "result";
+
+    private static String result = "";
 
     public static void newUser(User user) {
 
         new CreateNewUser(user.firstName, user.lastName, "2").execute();
-
     }
 
     /**
@@ -32,7 +33,7 @@ public class DatabaseOperations {
 
         String firstName, lastName, gender;
 
-        CreateNewUser(String firstName, String lastName, String gender){
+        CreateNewUser(String firstName, String lastName, String gender) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.gender = gender;
@@ -58,7 +59,7 @@ public class DatabaseOperations {
 //            String firstName = "Rivky";
 //            String lastName = "Cohen";
 //            String gender = "2";
-            String email = "rivkycohen15@gmail.com";
+            String email = "rivkycohen27@gmail.com";
             String password = "1234";
             String ssn = "xxx-xx-9865";
             String dob = "2016-05-26";
@@ -84,33 +85,24 @@ public class DatabaseOperations {
             // check log cat fro response
             Log.d("Create User", json.toString());
 
-            // check for success tag
-            try {
-                int success = json.getInt(TAG_SUCCESS);
 
-                if (success == 1) {
-                    // successfully created product
-//                    Intent i = new Intent(getApplicationContext(), AllProductsActivity.class);
-//                    startActivity(i);
-//
-//                    // closing this screen
-//                    finish();
-                } else {
-                    // failed to create product
-                }
+            try {
+                result = json.getString(TAG_RESULT);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return result;
         }
 
         /**
          * After completing background task Dismiss the progress dialog
          **/
-        protected void onPostExecute(String file_url) {
+        protected void onPostExecute(String result) {
             // dismiss the dialog once done
             // pDialog.dismiss();
+            HelperMethods hm = new HelperMethods();
+            hm.createUser(result);
         }
 
     }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -262,4 +263,19 @@ public class HelperMethods extends Activity {
             loginActivity.sendEmail.sendMail(email, subject, message);
         }
     }
+
+
+
+    public void createUser(String result){
+        if (result.equals("true")){
+            Toast.makeText(loginActivity.getContext(), "Account Created", Toast.LENGTH_LONG).show();
+                    loginActivity.switchToMainActivity();
+        } else {
+            //ToDo showDialog();
+            Toast.makeText(loginActivity.getContext(), "Account Not Created. Username exists", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+
 }

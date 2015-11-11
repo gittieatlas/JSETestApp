@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -198,10 +197,8 @@ public class Register2Fragment extends Fragment {
             ssnEditText.setText("");
         } else {
             saveUser();
-            Toast.makeText(loginActivity.getApplicationContext(), loginActivity.user.firstName + loginActivity.user.lastName + loginActivity.user.dob + loginActivity.user.ssn + loginActivity.user.email + loginActivity.user.password + loginActivity.user.gender +loginActivity.user.defaultLocation, Toast.LENGTH_SHORT).show();
-            //loadUserInformationToSharedPreferences();
-            loginActivity.switchToMainActivity();
             DatabaseOperations.newUser(loginActivity.user);
+
         }
 
     }
