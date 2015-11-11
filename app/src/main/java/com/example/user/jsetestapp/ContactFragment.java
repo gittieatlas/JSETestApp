@@ -72,10 +72,10 @@ public class ContactFragment extends Fragment {
 
 // TODO change icon to phone grey 24; add string to strings.xml
 // TODO show number in message?
-                mainActivity.showDialog("JSE Office", null, "CALL", "CANCEL", null, R.drawable.ic_calendar_clock_grey600_24dp, "call_jse_during_office_hours");
+                mainActivity.showDialog("JSE Office", null, "CALL", "CANCEL", null, R.drawable.ic_phone_grey600_24dp, "call_jse_during_office_hours");
             } else {
 
-// TODO change icon?; add string to strings.xml
+// TODO add string to strings.xml
                 String message = "The JSE office is currently closed. Would you like to set a reminder on your phone to call during office hours?";
                 mainActivity.showDialog("JSE Office", message, "YES", "NO", null, R.drawable.ic_calendar_clock_grey600_24dp, "call_jse_during_non_office_hours");
             }
