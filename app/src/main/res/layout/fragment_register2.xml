@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/App_EditText"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/App_EditText"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -64,7 +66,8 @@
                 style="@style/App_EditText"
                 android:layout_marginRight="7dp"
                 android:inputType="number"
-                android:maxLength="2"/>
+                android:maxLength="2"
+                android:imeOptions="actionNext"/>
 
 
             <EditText
@@ -76,7 +79,7 @@
                 android:layout_marginRight="7dp"
                 android:inputType="number"
                 android:maxLength="2"
-                />
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:id="@+id/dobYearEditText"
@@ -85,7 +88,8 @@
                 android:layout_weight="1"
                 style="@style/App_EditText"
                 android:inputType="number"
-                android:maxLength="4"/>
+                android:maxLength="4"
+                android:imeOptions="actionNext"/>
 
 
         </LinearLayout>
@@ -119,7 +123,7 @@
             style="@style/App_EditText"
             android:inputType="numberPassword"
             android:maxLength="4"
-            />
+            android:imeOptions="actionNext"/>
 
         <TextView
             android:layout_width="match_parent"
