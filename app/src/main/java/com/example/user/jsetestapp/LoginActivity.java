@@ -55,8 +55,10 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Branch> branchesArrayList;
     ArrayList<Alerts> alertsArrayList;
 
+    private static Context sContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sContext = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -209,6 +211,7 @@ public class LoginActivity extends AppCompatActivity {
         b.putSerializable("hoursArrayList", hoursArrayList);
         b.putSerializable("branchesArrayList", branchesArrayList);
         b.putSerializable("alertsArrayList", alertsArrayList);
+        b.putSerializable("user", user);
         intent.putExtras(b);
         startActivity(intent);
     }
@@ -217,9 +220,9 @@ public class LoginActivity extends AppCompatActivity {
         toolbar.setTitle(toolbarTitle);
     }
 
-    public Context getContext() {
-        return LoginActivity.this;
-    }
+//    public Context getContext() {
+//        return LoginActivity.this;
+//    }
 
     /**
      * Function to create an instance of MainActivityDialogFragment
@@ -251,6 +254,10 @@ public class LoginActivity extends AppCompatActivity {
         dialogFragment.setArguments(bundle);
 
         dialogFragment.show(fm, tagListener);
+    }
+
+    public static Context getContext() {
+        return sContext;
     }
 
 }

@@ -101,7 +101,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
             String title = "Tests";
             String message = "No results found. Try again?";
             String positiveButton = "OK";
-            int icon = R.drawable.ic_clipboard_text_white_24dp; // TODO Change icon test grey 24
+            int icon = R.drawable.ic_clipboard_text_grey600_24dp;
             String tagListener = "results_no_tests";
             mainActivity.showDialog(title, message, positiveButton, null, null, icon, tagListener);
 

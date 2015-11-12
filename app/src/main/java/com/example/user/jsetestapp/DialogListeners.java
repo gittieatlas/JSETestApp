@@ -55,6 +55,7 @@ public class DialogListeners extends Activity {
             case "results_no_tests": {
                 mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment, mainActivity.getResources().getString(R.string.toolbar_title_search));
                 mainActivity.tabLayout.getTabAt(1).select();
+                getFragmentManager().popBackStack(); // activity has been destroyed
             }
             case "login_activity": {
                 break;

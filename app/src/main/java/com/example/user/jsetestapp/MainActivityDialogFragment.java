@@ -2,10 +2,11 @@ package com.example.user.jsetestapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class MainActivityDialogFragment extends android.app.DialogFragment {
+public class MainActivityDialogFragment extends DialogFragment {
     MainActivity mainActivity;
 
     @Override

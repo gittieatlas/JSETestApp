@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.addFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
 
         queryMethods.setUpLocationsArrayList();
+        queryMethods.setUpUser();
         queryMethods.setUpLocationsNameArrayList(this);
         queryMethods.setUpBranchesArrayList();
         queryMethods.setUpBranchesNameArrayList();
@@ -93,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
         //queryMethods.setUpHoursFilteredArrayList();
         loadSavedPreferences();
+        Toast.makeText(this, user.firstName, Toast.LENGTH_LONG).show();
+
 
     }
 

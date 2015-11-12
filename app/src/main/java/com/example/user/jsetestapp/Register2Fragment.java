@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -140,7 +139,7 @@ public class Register2Fragment extends Fragment {
         public void onClick(View v) {
             if (!valuesEntered || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
                 loginActivity.showDialog("Create Account Failed", "All fields require a value.",
-                       "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_missing_fields");
+                       "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_missing_fields");
             } else {
             validateForm();
             }
@@ -190,17 +189,16 @@ public class Register2Fragment extends Fragment {
     private void validateForm() {
         if (!isBirthdayCorrect()) {
             loginActivity.showDialog("Create Account Failed", "Enter Date of birth in MM/DD/YYYY format.",
-                    "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_birthday_incorrect");
+                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_birthday_incorrect");
 
         } else if (!isSsn()) {
             loginActivity.showDialog("Create Account Failed", "Enter Last 4 digits of SSN.",
-                    "OK", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "registration_failed_ssn_incorrect");
+                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_ssn_incorrect");
             ssnEditText.setText("");
         } else {
             saveUser();
-            Toast.makeText(loginActivity.getApplicationContext(), loginActivity.user.firstName + loginActivity.user.lastName + loginActivity.user.dob + loginActivity.user.ssn + loginActivity.user.email + loginActivity.user.password + loginActivity.user.gender +loginActivity.user.defaultLocation, Toast.LENGTH_SHORT).show();
-            //loadUserInformationToSharedPreferences();
-            loginActivity.switchToMainActivity();
+            DatabaseOperations.newUser(loginActivity.user);
+
         }
 
     }

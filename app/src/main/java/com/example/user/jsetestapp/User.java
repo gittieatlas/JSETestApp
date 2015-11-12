@@ -2,7 +2,9 @@ package com.example.user.jsetestapp;
 
 import org.joda.time.LocalDate;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     public static enum Gender {MALE, FEMALE}
 

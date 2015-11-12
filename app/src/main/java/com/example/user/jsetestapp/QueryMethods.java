@@ -22,6 +22,12 @@ public class QueryMethods extends Activity {
 
     }
 
+    public void setUpUser() {
+        Bundle bundle = mainActivity.getIntent().getExtras();
+        mainActivity.user = (User) bundle.getSerializable("user");
+
+    }
+
     public void setUpLocationsNameArrayList(MainActivity mainActivity) {
         mainActivity.locationsNameArrayList = new ArrayList<String>();
         mainActivity.locationsNameArrayList.add("Location");
@@ -31,7 +37,7 @@ public class QueryMethods extends Activity {
     }
 
 
-    //for login activity
+    //for createUser activity
     public void setUpLocationsNameArrayList(LoginActivity loginActivity) {
         loginActivity.locationsNameArrayList = new ArrayList<String>();
         loginActivity.locationsNameArrayList.add("Location");

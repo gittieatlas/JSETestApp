@@ -93,7 +93,7 @@ public class Register1Fragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!isValuesEntered) {
-                loginActivity.showDialog("Create Account Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "create_account_failed_values");
+                loginActivity.showDialog("Create Account Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_values");
             } else {
                 validateForm();
             }
@@ -103,14 +103,14 @@ public class Register1Fragment extends Fragment {
     private void validateForm() {
         // check if email exists- cant do now as not doing db on server
         if (!isEmailValid()){
-            loginActivity.showDialog("Create Account Failed", "You need to enter a valid email address.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "create_account_failed_email");
+            loginActivity.showDialog("Create Account Failed", "You need to enter a valid email address.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_email");
         } else {
             if (!passwordEqualsConfirmPassword()) {
-                loginActivity.showDialog("Create Account Failed", "Password and Confirm Password values don't match. Please try again.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "create_account_failed_values_match");
+                loginActivity.showDialog("Create Account Failed", "Password and Confirm Password values don't match. Please try again.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_values_match");
                 passwordEditText.setText("");
                 confirmPasswordEditText.setText("");
             } else {
-                loginActivity.register2Fragment.setEmailPasswordValues(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                //loginActivity.register2Fragment.setEmailPasswordValues(emailEditText.getText().toString(), passwordEditText.getText().toString());
                 loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register2Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register2), loginActivity);
             }
         }

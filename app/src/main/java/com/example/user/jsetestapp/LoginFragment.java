@@ -92,7 +92,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!isValuesEntered) {
-                loginActivity.showDialog("Login Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_values");
+                loginActivity.showDialog("Login Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_values");
             } else {
                 validateForm();
             }
@@ -111,8 +111,9 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
+            // TODO is icon ok?
             loginActivity.showDialog("Send me my password", "Enter your email address",
-                    "SEND", null, null, R.drawable.ic_check_grey600_24dp, "forgot_password");
+                    "SEND", null, null, R.drawable.ic_alert_grey600_24dp, "forgot_password");
 
         }
     };
@@ -155,15 +156,15 @@ public class LoginFragment extends Fragment {
     private void validateForm() {
         if (!isEmailSaved()) {
             loginActivity.showDialog("Login Failed", "An Email Address / Username Doesn't Exits. Please create an account.",
-                    "CREATE ACCOUNT", "CANCEL", null, R.drawable.ic_check_grey600_24dp, "login_failed_email_not_exist");
+                    "CREATE ACCOUNT", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_exist");
         } else {
             if (!isEmailEqualSavedEmail()) {
                 loginActivity.showDialog("Login Failed", "You entered an email address that is not on file. Please try another email address.",
-                        null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_email_not_match");
+                        null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_match");
             } else {
                 if (!isEmailPasswordEqualSavedEmailPassword()) {
                     loginActivity.showDialog("Login Failed", "Email address and password don't match. Please try again.",
-                            null, null, "OK", R.drawable.ic_check_grey600_24dp, "login_failed_email_password_not_match");
+                            null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_email_password_not_match");
                 } else {
                     login();
                 }
