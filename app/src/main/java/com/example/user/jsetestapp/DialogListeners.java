@@ -93,6 +93,7 @@ public class DialogListeners extends Activity {
                 loginActivity.getFragmentManager().popBackStack();
                 break;
             }
+
         }
     }
 

@@ -14,11 +14,5 @@
         android:title="Register 2"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/dashboard"
-        android:orderInCategory="300"
-        android:title="Dashboard"
-        app:showAsAction="never" />
-
 
 </menu>

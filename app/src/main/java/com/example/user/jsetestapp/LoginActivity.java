@@ -198,17 +198,14 @@ public class LoginActivity extends AppCompatActivity {
             getFragmentManager().beginTransaction().replace(R.id.container, register2Fragment).commit();
             return true;
         }
-        if (id == R.id.dashboard) {
-            switchToMainActivity();
-            return true;
-        }
+
 
 
       
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchToMainActivity() {
+    public void switchToMainActivity(String tag) {
 
         queryMethods.filterTestsArrayListByGender();
 
@@ -220,6 +217,7 @@ public class LoginActivity extends AppCompatActivity {
         b.putSerializable("branchesArrayList", branchesArrayList);
         b.putSerializable("alertsArrayList", alertsArrayList);
         b.putSerializable("user", user);
+        b.putString("tag", tag);
         intent.putExtras(b);
         startActivity(intent);
     }

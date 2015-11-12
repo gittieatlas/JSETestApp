@@ -3,6 +3,7 @@ package com.example.user.jsetestapp;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -268,18 +269,53 @@ public class HelperMethods extends Activity {
 
     public void createUser(String result) {
         if (result.equals("true")) {
-            //Toast.makeText(loginActivity.getContext(), "Account Created", Toast.LENGTH_LONG).show();
-
-            loginActivity.switchToMainActivity(); // Todo // FIXME: 11/11/2015
+            loginActivity.switchToMainActivity("create_account");
         } else {
-
-           // Toast.makeText(loginActivity.getContext(), "Account Not Created. Username exists", Toast.LENGTH_LONG).show();
-            // Todo // FIXME: 11/11/2015
             loginActivity.showDialog("Create Account Failed",
                     "Please enter a different email address. This one is already taken.",
                     null, null, "OK", R.drawable.ic_alert_grey600_24dp,
                     "create_account_failed_email_duplicate");
         }
+    }
+
+    public void getUser(String result) {
+        if (result.equals("0")) {
+           // Not logged in
+            loginActivity.showDialog("Login Failed",
+                    "This username and password did not match. Please try again.",
+                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
+                    "login_failed_not_match");
+        } else {
+            //login successful
+           // Toast.makeText(loginActivity.getContext(), "Logged In", Toast.LENGTH_LONG).show();
+           // Toast.makeText(loginActivity.getContext(),loginActivity.user.firstName,Toast.LENGTH_LONG).show();
+            loginActivity.switchToMainActivity("login");
+
+        }
+    }
+
+    public void showSnackBar(){
+        String message = "";
+        switch (mainActivity.queryMethods.getTag()){
+
+            case "create_account":{
+                message = "Account created";
+                break;
+            }
+            case "login":{
+                message = "Logged in";
+                break;
+            }
+            case "update_profile":{
+               message = "Profile updated";
+                break;
+            }
+        }
+
+        Snackbar snackbar = Snackbar
+                .make(mainActivity.container, message, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
     }
 
 

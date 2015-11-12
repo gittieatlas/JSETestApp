@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -76,16 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
         initializeViews();
 
-        if (savedInstanceState == null) {
-            Snackbar snackbar = Snackbar
-                    .make(container, "Account Created.", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
-        }
 
 
 
         createFragmentsActivitiesClasses();
+
+        helperMethods.showSnackBar();
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();

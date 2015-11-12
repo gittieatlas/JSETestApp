@@ -154,26 +154,32 @@ public class LoginFragment extends Fragment {
     }
 
     private void validateForm() {
-        if (!isEmailSaved()) {
-            loginActivity.showDialog("Login Failed", "An Email Address / Username Doesn't Exits. Please create an account.",
-                    "CREATE ACCOUNT", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_exist");
-        } else {
-            if (!isEmailEqualSavedEmail()) {
-                loginActivity.showDialog("Login Failed", "You entered an email address that is not on file. Please try another email address.",
-                        null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_match");
-            } else {
-                if (!isEmailPasswordEqualSavedEmailPassword()) {
-                    loginActivity.showDialog("Login Failed", "Email address and password don't match. Please try again.",
-                            null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_email_password_not_match");
-                } else {
-                    login();
-                }
-            }
-        }
+//        if (!isEmailSaved()) {
+//            loginActivity.showDialog("Login Failed", "An Email Address / Username Doesn't Exits. Please create an account.",
+//                    "CREATE ACCOUNT", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_exist");
+//        } else {
+//            if (!isEmailEqualSavedEmail()) {
+//                loginActivity.showDialog("Login Failed", "You entered an email address that is not on file. Please try another email address.",
+//                        null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_match");
+//            } else {
+//                if (!isEmailPasswordEqualSavedEmailPassword()) {
+//                    loginActivity.showDialog("Login Failed", "Email address and password don't match. Please try again.",
+//                            null, null, "OK", R.drawable.ic_alert_grey600_24dp, "login_failed_email_password_not_match");
+//                } else {
+//                    login();
+//                }
+//            }
+//        }
+        login();
     }
 
     private void login() {
-        loginActivity.switchToMainActivity();
+loginActivity.user.setEmail(emailEditText.getText().toString());
+loginActivity.user.setPassword(passwordEditText.getText().toString());
+
+        loginActivity.databaseOperations.getUser(loginActivity.user);
+
+
     }
 
     public void setMainActivity(MainActivity mainActivity) {

@@ -16,6 +16,11 @@ public class QueryMethods extends Activity {
 
     }
 
+    public String getTag() {
+        Bundle bundle = mainActivity.getIntent().getExtras();
+        return  bundle.getString("tag");
+
+    }
     public void setUpLocationsArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
         mainActivity.locationsArrayList = (ArrayList<Location>) bundle.getSerializable("locationsArrayList");

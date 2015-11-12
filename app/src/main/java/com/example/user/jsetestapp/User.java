@@ -78,6 +78,11 @@ public class User implements Serializable {
         this.dob = dob;
     }
 
+    public void setDob(String dob) {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
+        this.dob = dtf.parseLocalDate(dob);
+    }
+
 
     public void setDob(String year, String month, String day) {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -122,6 +127,14 @@ public class User implements Serializable {
         this.isJseMember = isJseMember;
     }
 
+    public void setIsJseMember(String isJseMember) {
+        if (isJseMember != null){
+            this.isJseMember = true;
+        }
+
+    }
+
+
 //    public int getLocationId(ArrayList<Location> locationArrayList, User user) {
 //        int locationId = 0;
 //        for (Location location : locationArrayList){
@@ -146,6 +159,10 @@ public class User implements Serializable {
         this.locationId = locationId;
     }
 
+    public void setLocationId(String locationId) {
+        if (locationId != null)
+            this.locationId = Integer.parseInt(locationId);
+    }
 
     public void setLocationId(ArrayList<Location> locationArrayList, User user) {
         for (Location location : locationArrayList){
