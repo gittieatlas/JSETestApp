@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,16 +15,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 public class Register2Fragment extends Fragment {
-
+//Todo when spinners come to focus remove keyboard
     //Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
     EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText, dobYearEditText, ssnEditText;
     Button rightButton, leftButton;
+
     //Activities
     LoginActivity loginActivity;
 
@@ -38,22 +36,7 @@ public class Register2Fragment extends Fragment {
     Boolean locationsSpinnersHasValue = false;
     Boolean isBirthdayCorrect = false;
     Boolean isSsn = false;
-    SharedPreferences sharedPreferences;
-    String email, password;
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setEmailPasswordValues(String email, String password){
-        this.password = password;
-        this.email = email;
-    }
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -139,9 +122,9 @@ public class Register2Fragment extends Fragment {
         public void onClick(View v) {
             if (!valuesEntered || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
                 loginActivity.showDialog("Create Account Failed", "All fields require a value.",
-                       "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_missing_fields");
+                        "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_missing_fields");
             } else {
-            validateForm();
+                validateForm();
             }
         }
     };
@@ -197,7 +180,7 @@ public class Register2Fragment extends Fragment {
             ssnEditText.setText("");
         } else {
             saveUser();
-            DatabaseOperations.newUser(loginActivity.user);
+            loginActivity.databaseOperations.newUser(loginActivity.user);
 
         }
 
@@ -208,6 +191,7 @@ public class Register2Fragment extends Fragment {
         LocalDate currentDate = LocalDate.now();
 
         if (Integer.parseInt(dobDayEditText.getText().toString()) > 31 ||
+                Integer.parseInt(dobMonthEditText.getText().toString()) > 12 ||
                 Integer.parseInt(dobMonthEditText.getText().toString()) > 12 ||
                 Integer.parseInt(dobYearEditText.getText().toString()) < (currentDate.getYear() - 100) ||
                 Integer.parseInt(dobYearEditText.getText().toString()) > (currentDate.getYear())) {
@@ -228,25 +212,15 @@ public class Register2Fragment extends Fragment {
         return isSsn;
     }
 
-    private void saveUser(){
-        loginActivity.user.firstName = firstNameEditText.getText().toString();
-        loginActivity.user.lastName = lastNameEditText.getText().toString();
-        loginActivity.user.email = getEmail();
-        loginActivity.user.password = getPassword();
-        loginActivity.user.ssn = "xxx-xx-" + ssnEditText.getText().toString();
+    private void saveUser() {
+        loginActivity.user.setFirstName(firstNameEditText.getText().toString());
+        loginActivity.user.setLastName(lastNameEditText.getText().toString());
+        loginActivity.user.setSsn("xxx-xx-" + ssnEditText.getText().toString());
         loginActivity.user.setGender(genderSpinner.getSelectedItem().toString());
         loginActivity.user.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
-        LocalDate dob = dtf.parseLocalDate(dobYearEditText.getText().toString() + "-" + dobMonthEditText.getText().toString() + "-" + dobDayEditText.getText().toString());
-        loginActivity.user.dob = dob;
+        loginActivity.user.setDob(dobYearEditText.getText().toString(), dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
+        loginActivity.user.setLocationId(loginActivity.locationsArrayList, loginActivity.user);
     }
-
-
-//    private void loadUserInformationToSharedPreferences() {
-//        loginActivity.setPreferences(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), email, password, ssnEditText.getText().toString(),
-//                dobDayEditText.getText().toString(), dobMonthEditText.getText().toString(), dobYearEditText.getText().toString(), genderSpinnerValue, locationsSpinnerValue);
-//
-//    }
 
     public void setLoginActivity(LoginActivity loginActivity) {
 

@@ -1,8 +1,11 @@
 package com.example.user.jsetestapp;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
 
@@ -12,7 +15,7 @@ public class User implements Serializable {
     LocalDate dob;
     Gender gender;
     boolean isJseMember;
-
+    int locationId;
 
     public User() {
 
@@ -75,8 +78,17 @@ public class User implements Serializable {
         this.dob = dob;
     }
 
+
+    public void setDob(String year, String month, String day) {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
+        this.dob = dtf.parseLocalDate(year + "-" + month + "-" + day);
+    }
+
     public Gender getGender() {
         return gender;
+    }
+    public int getGender(User user) {
+        return Gender.valueOf(user.getGender().name()).ordinal();
     }
 
     public void setGender(Gender gender) {
@@ -85,11 +97,22 @@ public class User implements Serializable {
 
     public void setGender(String gender) {
         try {
-            this.gender = Gender.valueOf(gender);
-       } catch (Exception ex) {
-           this.gender = Gender.FEMALE;
+            this.gender = Gender.valueOf(gender.toUpperCase());
+        } catch (Exception ex) {
+            this.gender = Gender.FEMALE;
         }
     }
+
+
+//    public String getGender(Gender gender) {
+//        String stringGender;
+//        try {
+//            stringGender = gender.toString();
+//        } catch (Exception ex) {
+//            stringGender = Gender.values()[1].toString();
+//        }
+//        return stringGender;
+//    }
 
     public boolean isJseMember() {
         return isJseMember;
@@ -97,6 +120,40 @@ public class User implements Serializable {
 
     public void setIsJseMember(boolean isJseMember) {
         this.isJseMember = isJseMember;
+    }
+
+//    public int getLocationId(ArrayList<Location> locationArrayList, User user) {
+//        int locationId = 0;
+//        for (Location location : locationArrayList){
+//            if (user.getDefaultLocation().equals(location.getName())){
+//                locationId = location.getId() ;
+//            }
+//        }
+//        return locationId;
+//    }
+
+
+    public int getLocationId() {
+        return locationId;
+    }
+//    public String getLocationIdString() {
+//        return Integer.toString(locationId);
+//    }
+
+
+    public void setLocationId(int locationId) {
+
+        this.locationId = locationId;
+    }
+
+
+    public void setLocationId(ArrayList<Location> locationArrayList, User user) {
+        for (Location location : locationArrayList){
+            if (user.getDefaultLocation().equals(location.getName())){
+                this.locationId = location.getId() ;
+            }
+        }
+        //this.locationId = locationId;
     }
 
 

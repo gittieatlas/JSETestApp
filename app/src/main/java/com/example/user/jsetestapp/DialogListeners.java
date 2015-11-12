@@ -55,7 +55,7 @@ public class DialogListeners extends Activity {
             case "results_no_tests": {
                 mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment, mainActivity.getResources().getString(R.string.toolbar_title_search));
                 mainActivity.tabLayout.getTabAt(1).select();
-                getFragmentManager().popBackStack(); // activity has been destroyed
+              //  getFragmentManager().popBackStack(); // activity has been destroyed
             }
             case "login_activity": {
                 break;
@@ -89,7 +89,10 @@ public class DialogListeners extends Activity {
 
     public void neutralButtonOnClickListener(String TAG_LISTENER) {
         switch (TAG_LISTENER) {
-
+            case "create_account_failed_email_duplicate": {
+                loginActivity.getFragmentManager().popBackStack();
+                break;
+            }
         }
     }
 

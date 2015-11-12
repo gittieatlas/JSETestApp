@@ -65,7 +65,18 @@ public class QueryMethods extends Activity {
     public void setUpTestsArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
         mainActivity.testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
+
     }
+
+    public void filterTestsArrayListByGender(){
+        for (int i = 0; i < loginActivity.testsArrayList.size(); i++){
+            if (!loginActivity.testsArrayList.get(i).gender.name().equals(loginActivity.user.gender.name())){
+                loginActivity.testsArrayList.remove(i);
+                i--;
+            }
+        }
+    }
+
 
     public void setUpTestsFilteredArrayList() {
 
@@ -113,6 +124,16 @@ public class QueryMethods extends Activity {
                 mainActivity.hoursFilteredArrayList.add(obj);
             }
         }
+    }
+
+    public Location setUpDefaultLocation(){
+        Location location = new Location();
+        for (Location l : mainActivity.locationsArrayList) {
+            if (l.getName().equals(mainActivity.user.getDefaultLocation())) {
+                location = l;
+            }
+        }
+        return location;
     }
 
     public void setMainActivity(MainActivity mainActivity) {

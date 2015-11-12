@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<HoursDataObject> hoursFilteredArrayList;
     ArrayList<Alerts> alertsArrayList;
     User user = new User();
-    Location defaultLocation = new Location();
+    Location defaultLocation;
 
     // boolean isJseMember = false;
 
@@ -73,8 +74,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         initializeViews();
+
+        if (savedInstanceState == null) {
+            Snackbar snackbar = Snackbar
+                    .make(container, "Account Created.", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+        }
+
+
+
         createFragmentsActivitiesClasses();
         setupToolbar();
         setupTablayout();
@@ -90,41 +100,32 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();
         queryMethods.setUpAlertsArrayList();
+        defaultLocation = queryMethods.setUpDefaultLocation();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
-
-        //queryMethods.setUpHoursFilteredArrayList();
-        loadSavedPreferences();
-        Toast.makeText(this, user.firstName, Toast.LENGTH_LONG).show();
-
-
     }
 
-    private void loadSavedPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-//To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
-// providing the key for the value you want, and optionally a default value to return if the key isn't present.
-        //helperMethods.loadSavedPreferences(sharedPreferences);
-        user.setFirstName(sharedPreferences.getString("first_name", null));
-        user.setLastName(sharedPreferences.getString("last_name", null));
-        user.setEmail(sharedPreferences.getString("email", null));
-        user.setPassword(sharedPreferences.getString("password", null));
-        user.setSsn(sharedPreferences.getString("ssn", null));
-        user.setDob(convertDob());
-        user.setDefaultLocation(sharedPreferences.getString("default_location", null));
-        user.setGender(sharedPreferences.getString("gender", "3"));
-
-// ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
-// checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
-        user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
-
-        for (Location location : locationsArrayList) {
-            if (location.getName().equals(sharedPreferences.getString("default_location", "COPE"))) {
-                defaultLocation = location;
-            }
-        }
-
-    }
+//    private void loadSavedPreferences() {
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//
+////To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
+//// providing the key for the value you want, and optionally a default value to return if the key isn't present.
+//        //helperMethods.loadSavedPreferences(sharedPreferences);
+//        user.setFirstName(sharedPreferences.getString("first_name", null));
+//        user.setLastName(sharedPreferences.getString("last_name", null));
+//        user.setEmail(sharedPreferences.getString("email", null));
+//        user.setPassword(sharedPreferences.getString("password", null));
+//        user.setSsn(sharedPreferences.getString("ssn", null));
+//        user.setDob(convertDob());
+//        user.setDefaultLocation(sharedPreferences.getString("default_location", null));
+//        user.setGender(sharedPreferences.getString("gender", "3"));
+//
+//// ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
+//// checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
+//        user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
+//
+//
+//
+//    }
     private LocalDate convertDob(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String dobString = (sharedPreferences.getString("dob_month", null)+ "-" + sharedPreferences.getString("dob_day", null) + "-" + sharedPreferences.getString("dob_year", null));

@@ -44,6 +44,13 @@ public class Register1Fragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        emailEditText.requestFocus();
+    }
+
     private void initializeViews(View rootView) {
 
         emailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
@@ -54,7 +61,6 @@ public class Register1Fragment extends Fragment {
     }
 
     private void registerListeners() {
-
 
         emailEditText.addTextChangedListener(editTextTextWatcher);
         passwordEditText.addTextChangedListener(editTextTextWatcher);
@@ -111,6 +117,8 @@ public class Register1Fragment extends Fragment {
                 confirmPasswordEditText.setText("");
             } else {
                 //loginActivity.register2Fragment.setEmailPasswordValues(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                loginActivity.user.setEmail(emailEditText.getText().toString());
+                loginActivity.user.setPassword(passwordEditText.getText().toString());
                 loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register2Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register2), loginActivity);
             }
         }

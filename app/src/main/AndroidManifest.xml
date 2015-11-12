@@ -20,23 +20,21 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing">
+            android:screenOrientation="portrait"
+            >
 
         </activity>
 
         <activity
             android:name=".LoginActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait"
             >
 
         </activity>
 
         <activity
             android:name=".SplashActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait"
             >
 
             <intent-filter>

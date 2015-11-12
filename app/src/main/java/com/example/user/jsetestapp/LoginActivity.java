@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     DialogListeners dialogListeners;
     SendEmail sendEmail;
     User user;
+    DatabaseOperations databaseOperations;
 
     //Variables
     String firstName, lastName, email, password, ssn, defaultLocation, gender;
@@ -68,15 +68,19 @@ public class LoginActivity extends AppCompatActivity {
         user = new User();
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+     //  sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //  loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
 
         locationsArrayList = new ArrayList<Location>();
+
+      //loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
+
+
 
         Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
         locationsArrayList = (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
+        queryMethods.setUpLocationsNameArrayList(this);
         branchesArrayList = (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
         testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
         hoursArrayList = (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
@@ -93,38 +97,38 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        setPreferences("", "", "", "", "", "", "", "", "", "");
+       // setPreferences("", "", "", "", "", "", "", "", "", "");
     }
 
-    public void setPreferences(String user_firstname, String user_lastName, String user_email, String user_password, String user_ssn, String user_dob_day, String user_dob_month, String user_dob_year, String user_gender, String user_defaultLocation) {
-        firstName = user_firstname;
-        lastName = user_lastName;
-        email = user_email;
-        password = user_password;
-        ssn = user_ssn;
-        dobDay = user_dob_day;
-        dobMonth = user_dob_month;
-        dobYear = user_dob_year;
-        // TODO filter testArrayList according to gender
-        gender = user_gender;
-        defaultLocation = user_defaultLocation;
-        isJseMember = false;
-
-        helperMethods.savePreferences("first_name", firstName, sharedPreferences);
-        helperMethods.savePreferences("last_name", lastName, sharedPreferences);
-        helperMethods.savePreferences("email", email, sharedPreferences);
-        helperMethods.savePreferences("password", password, sharedPreferences);
-        helperMethods.savePreferences("ssn", ssn, sharedPreferences);
-        helperMethods.savePreferences("default_location", defaultLocation, sharedPreferences);
-        helperMethods.savePreferences("dob_day", dobDay, sharedPreferences);
-        helperMethods.savePreferences("dob_month", dobMonth, sharedPreferences);
-        helperMethods.savePreferences("dob_year", dobYear, sharedPreferences);
-        helperMethods.savePreferences("gender", gender, sharedPreferences);
-        helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
-
-        queryMethods.setUpLocationsNameArrayList(this);
-
-    }
+//    public void setPreferences(String user_firstname, String user_lastName, String user_email, String user_password, String user_ssn, String user_dob_day, String user_dob_month, String user_dob_year, String user_gender, String user_defaultLocation) {
+//        firstName = user_firstname;
+//        lastName = user_lastName;
+//        email = user_email;
+//        password = user_password;
+//        ssn = user_ssn;
+//        dobDay = user_dob_day;
+//        dobMonth = user_dob_month;
+//        dobYear = user_dob_year;
+//        // TODO filter testArrayList according to gender
+//        gender = user_gender;
+//        defaultLocation = user_defaultLocation;
+//        isJseMember = false;
+//
+//        helperMethods.savePreferences("first_name", firstName, sharedPreferences);
+//        helperMethods.savePreferences("last_name", lastName, sharedPreferences);
+//        helperMethods.savePreferences("email", email, sharedPreferences);
+//        helperMethods.savePreferences("password", password, sharedPreferences);
+//        helperMethods.savePreferences("ssn", ssn, sharedPreferences);
+//        helperMethods.savePreferences("default_location", defaultLocation, sharedPreferences);
+//        helperMethods.savePreferences("dob_day", dobDay, sharedPreferences);
+//        helperMethods.savePreferences("dob_month", dobMonth, sharedPreferences);
+//        helperMethods.savePreferences("dob_year", dobYear, sharedPreferences);
+//        helperMethods.savePreferences("gender", gender, sharedPreferences);
+//        helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
+//
+//        queryMethods.setUpLocationsNameArrayList(this);
+//
+//    }
 
     private void initializeViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -156,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
         dialogListeners.setLoginActivity(this);
         sendEmail = new SendEmail();
         sendEmail.setLoginActivity(this);
+        databaseOperations = new DatabaseOperations();
+        databaseOperations.setLoginActivity(this);
 
     }
 
@@ -203,6 +209,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void switchToMainActivity() {
+
+        queryMethods.filterTestsArrayListByGender();
 
         Intent intent = new Intent(this, MainActivity.class);
         Bundle b = new Bundle();

@@ -260,13 +260,13 @@ public class SplashActivity extends AppCompatActivity {
                         test.deadlineTime = LocalTime.parse(new StringBuilder(c.getString(TAG_CLOSING_TIME)).insert(c.getString(TAG_CLOSING_TIME).length() - 2, ":").toString());
                         test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[(test.getDeadlineDate().getDayOfWeek() - 1)].toString());
                         test.setGender(Integer.parseInt(c.getString(TAG_GENDER)));
-                        //TODO comment out this code once createUser activity is done
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("gender", "2");
-                        editor.commit();
+//                        //TODO comment out this code once createUser activity is done
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("gender", "2");
+//                        editor.commit();
 
-                        if ((getGender(test)==(3)) ||
-                                Integer.parseInt(sharedPreferences.getString("gender","3"))==(getGender(test)))
+//                        if ((getGender(test)==(3)) ||
+//                                Integer.parseInt(sharedPreferences.getString("gender","3"))==(getGender(test)))
                         testsArrayList.add(test);
                     }
                 } catch (JSONException e) {

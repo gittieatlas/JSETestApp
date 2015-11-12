@@ -2,7 +2,6 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +23,7 @@ public class HelperMethods extends Activity {
 
     }
 
-    public void replaceFragment(int container, Fragment fragment, String tag){
+    public void replaceFragment(int container, Fragment fragment, String tag) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
         mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
     }
@@ -35,7 +33,7 @@ public class HelperMethods extends Activity {
         mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
     }
 
-    public void replaceFragment(int container, Fragment fragment, String tag, MainActivity mainActivity){
+    public void replaceFragment(int container, Fragment fragment, String tag, MainActivity mainActivity) {
         mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
         mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
     }
@@ -45,7 +43,7 @@ public class HelperMethods extends Activity {
         mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
     }
 
-    public void replaceFragment(int container, Fragment fragment, String tag, LoginActivity loginActivity){
+    public void replaceFragment(int container, Fragment fragment, String tag, LoginActivity loginActivity) {
         loginActivity.scrollView.scrollTo(0, 0); // Scroll to top
         loginActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
     }
@@ -66,6 +64,7 @@ public class HelperMethods extends Activity {
         if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
         else spinner.setSelection(0);
     }
+
     //for register2 page locationSpinner
     //TODO add the activity as a param so you can use the smae method coming from both activities
     public void addDataToSpinnerFromLoginActivity(ArrayList<String> arrayList, Spinner spinner) {
@@ -80,11 +79,11 @@ public class HelperMethods extends Activity {
         spinner.setSelection(0);
     }
 
-    public void scheduleTest(){
+    public void scheduleTest() {
         if (mainActivity.user.isJseMember) {
             mainActivity.showDialog("Schedule a Test", null, "CALL", "CANCEL", null, R.drawable.ic_clipboard_text_grey600_24dp, "schedule_test");
         } else {
-            String message ="To schedule a test you need to be a JSE member. Please call the JSE office to register.";
+            String message = "To schedule a test you need to be a JSE member. Please call the JSE office to register.";
             mainActivity.showDialog("Become a JSE Member", message, "CALL", "CANCEL", null, R.drawable.ic_clipboard_text_grey600_24dp, "become_jse_member");
         }
 
@@ -93,9 +92,8 @@ public class HelperMethods extends Activity {
     /**
      * Function to make the first letter caps and the rest lowercase.
      *
-     * @param data          - capitalize this
+     * @param data - capitalize this
      * @return String       - alert message?
-     *
      */
     static public String firstLetterCaps(String data) {
         String firstLetter = data.substring(0, 1).toUpperCase();
@@ -147,89 +145,92 @@ public class HelperMethods extends Activity {
 
     }
 
-    public Bundle passLocationToLocationInfoFragment(Location location){
+    public Bundle passLocationToLocationInfoFragment(Location location) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("location", location);
         return bundle;
     }
 
     //for dashboard and library search
-    public void findTests(Location location){
-            clearTestsFilteredArrayList();
-            filterTests(location);
-        }
+    public void findTests(Location location) {
+        clearTestsFilteredArrayList();
+        filterTests(location);
+    }
 
     //for search page
-    public void findTests(Branch branch, int dayOfWeek){
+    public void findTests(Branch branch, int dayOfWeek) {
         clearTestsFilteredArrayList();
         Collections.sort(mainActivity.testsArrayList, new LocationDateComparator());
         //Collections.sort(mainActivity.testsArrayList);
-        if (branch.equals("branch")&& dayOfWeek == 0)
+        if (branch.equals("branch") && dayOfWeek == 0)
             filterTests();
-        else if (!branch.equals("branch")&& dayOfWeek == 0)
+        else if (!branch.equals("branch") && dayOfWeek == 0)
             filterTests(branch);
-        else if (branch.equals("branch")&& dayOfWeek != 0)
+        else if (branch.equals("branch") && dayOfWeek != 0)
             filterTests(dayOfWeek);
-        else if (!branch.equals("branch")&& dayOfWeek != 0)
-            filterTests(branch,dayOfWeek);
+        else if (!branch.equals("branch") && dayOfWeek != 0)
+            filterTests(branch, dayOfWeek);
 
         replaceFragment(R.id.container, mainActivity.resultsFragment, mainActivity.getResources().getString(R.string.toolbar_title_results));
     }
 
-    private void filterTests(Location location){
-        for (Test test : mainActivity.testsArrayList){
-            if (test.getLocation().equals(location.name)){
-               addTestToArrayList(test);
+    private void filterTests(Location location) {
+        for (Test test : mainActivity.testsArrayList) {
+            if (test.getLocation().equals(location.name)) {
+                addTestToArrayList(test);
             }
         }
         replaceFragment(R.id.container, mainActivity.resultsFragment, mainActivity.getResources().getString(R.string.toolbar_title_results));
     }
 
-    private void addTestToArrayList(Test test){
-        String day =mainActivity.helperMethods.firstLetterCaps(test.getDeadlineDayOfWeek().toString());
+    private void addTestToArrayList(Test test) {
+        String day = mainActivity.helperMethods.firstLetterCaps(test.getDeadlineDayOfWeek().toString());
         DataObject obj = new DataObject(test.getLocation(),
                 mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
                 test.getTime().toString("hh:mm a"),
                 test.getDate().toString("MMMM dd yyyy"),
                 "Registration Deadline: ",
-                 day + " " + test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
+                day + " " + test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
         mainActivity.testsFilteredArrayList.add(obj);
     }
 
     // none
-    private void filterTests(){
+    private void filterTests() {
         for (Test test : mainActivity.testsArrayList) {
-                addTestToArrayList(test);
+            addTestToArrayList(test);
         }
     }
+
     //for branches only
-    private void filterTests(Branch branch){
+    private void filterTests(Branch branch) {
         for (Test test : mainActivity.testsArrayList) {
-            if (test.getBranchId()==(branch.id)) {
+            if (test.getBranchId() == (branch.id)) {
                 addTestToArrayList(test);
             }
         }
     }
+
     //for dayOfWeek only
-    private void filterTests(int dayOfWeek){
+    private void filterTests(int dayOfWeek) {
         for (Test test : mainActivity.testsArrayList) {
-            if (test.getDayOfWeek().ordinal()+1==(dayOfWeek)) {
+            if (test.getDayOfWeek().ordinal() + 1 == (dayOfWeek)) {
                 addTestToArrayList(test);
             }
         }
     }
-    //for brnach and dayOfWeek
-    private void filterTests(Branch branch, int dayOfWeek){
+
+    //for branch and dayOfWeek
+    private void filterTests(Branch branch, int dayOfWeek) {
         for (Test test : mainActivity.testsArrayList) {
-            if (test.getBranchId()==(branch.id)&& (test.getDayOfWeek().ordinal()+1 ==(dayOfWeek))){
+            if (test.getBranchId() == (branch.id) && (test.getDayOfWeek().ordinal() + 1 == (dayOfWeek))) {
                 addTestToArrayList(test);
             }
         }
     }
 
 
-    private void clearTestsFilteredArrayList(){
-        if (mainActivity.getTestsFilteredArrayList()!= null)
+    private void clearTestsFilteredArrayList() {
+        if (mainActivity.getTestsFilteredArrayList() != null)
             mainActivity.getTestsFilteredArrayList().clear();
     }
 
@@ -240,40 +241,44 @@ public class HelperMethods extends Activity {
     public boolean isEmpty(EditText editText) {
         return editText.getText().toString().trim().length() == 0;
     }
+//
+//    public void savePreferences(String key, boolean value, SharedPreferences sharedPreferences) {
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean(key, value);
+//        editor.commit();
+//    }
+//
+//    public void savePreferences(String key, String value, SharedPreferences sharedPreferences) {
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(key, value);
+//        editor.commit();
+//    }
+//
+//    public void sendPassword(String email){
+//        String subject = "JSE App - Password";
+//        String message = "The password we have n file for this email address is " + "1234 test password." ;
+//        // ToDo get password from user. password
+//        //String message = "The password we have n file for this email address is " + loginActivity.user.getPassword();
+//       // if (email.equals(loginActivity.user.getEmail())) {
+//        if (email.equals("gittieatlas@gmail.com")) {
+//            loginActivity.sendEmail.sendMail(email, subject, message);
+//        }
+//    }
 
-    public void savePreferences(String key, boolean value, SharedPreferences sharedPreferences) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, value);
-        editor.commit();
-    }
 
-    public void savePreferences(String key, String value, SharedPreferences sharedPreferences) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.commit();
-    }
+    public void createUser(String result) {
+        if (result.equals("true")) {
+            //Toast.makeText(loginActivity.getContext(), "Account Created", Toast.LENGTH_LONG).show();
 
-    public void sendPassword(String email){
-        String subject = "JSE App - Password";
-        String message = "The password we have n file for this email address is " + "1234 test password." ;
-        // ToDo get password from user. password
-        //String message = "The password we have n file for this email address is " + loginActivity.user.getPassword();
-       // if (email.equals(loginActivity.user.getEmail())) {
-        if (email.equals("gittieatlas@gmail.com")) {
-            loginActivity.sendEmail.sendMail(email, subject, message);
-        }
-    }
-
-
-
-    public void createUser(String result){
-        if (result.equals("true")){
-            Toast.makeText(loginActivity.getContext(), "Account Created", Toast.LENGTH_LONG).show();
-                    loginActivity.switchToMainActivity();
+            loginActivity.switchToMainActivity(); // Todo // FIXME: 11/11/2015
         } else {
-            //ToDo showDialog();
-            Toast.makeText(loginActivity.getContext(), "Account Not Created. Username exists", Toast.LENGTH_LONG).show();
 
+           // Toast.makeText(loginActivity.getContext(), "Account Not Created. Username exists", Toast.LENGTH_LONG).show();
+            // Todo // FIXME: 11/11/2015
+            loginActivity.showDialog("Create Account Failed",
+                    "Please enter a different email address. This one is already taken.",
+                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
+                    "create_account_failed_email_duplicate");
         }
     }
 
