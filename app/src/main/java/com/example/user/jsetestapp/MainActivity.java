@@ -2,11 +2,9 @@ package com.example.user.jsetestapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,10 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
@@ -41,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     DialogListeners dialogListeners;
     IntentMethods intentMethods;
     SplashActivity splashActivity;
+    DatabaseOperations databaseOperations;
 
     //Fragments
     LoginFragment loginFragment;
@@ -74,18 +69,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initializeViews();
-
-
-
-
         createFragmentsActivitiesClasses();
-
         helperMethods.showSnackBar();
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
         helperMethods.addFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
-
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpUser();
         queryMethods.setUpLocationsNameArrayList(this);
@@ -97,38 +86,9 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpAlertsArrayList();
         defaultLocation = queryMethods.setUpDefaultLocation();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
+        queryMethods.setUpIsJseMember();
     }
 
-//    private void loadSavedPreferences() {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//
-////To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
-//// providing the key for the value you want, and optionally a default value to return if the key isn't present.
-//        //helperMethods.loadSavedPreferences(sharedPreferences);
-//        user.setFirstName(sharedPreferences.getString("first_name", null));
-//        user.setLastName(sharedPreferences.getString("last_name", null));
-//        user.setEmail(sharedPreferences.getString("email", null));
-//        user.setPassword(sharedPreferences.getString("password", null));
-//        user.setSsn(sharedPreferences.getString("ssn", null));
-//        user.setDob(convertDob());
-//        user.setDefaultLocation(sharedPreferences.getString("default_location", null));
-//        user.setGender(sharedPreferences.getString("gender", "3"));
-//
-//// ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
-//// checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
-//        user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
-//
-//
-//
-//    }
-    private LocalDate convertDob(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String dobString = (sharedPreferences.getString("dob_month", null)+ "-" + sharedPreferences.getString("dob_day", null) + "-" + sharedPreferences.getString("dob_year", null));
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM-dd-yyyy");
-//        LocalDate dob = dtf.parseLocalDate(dobString);
-      //  return dob; ToDo // FIXME: 11/9/2015
-        return LocalDate.now();
-    }
     private void initializeViews() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -163,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
         intentMethods.setMainActivity(this);
         splashActivity = new SplashActivity();
         splashActivity.setMainActivity(this);
+        databaseOperations  = new DatabaseOperations();
+        databaseOperations.setMainActivity(this);
 
     }
 
@@ -377,5 +339,40 @@ public class MainActivity extends AppCompatActivity {
         return defaultLocation;
     }
 
+    //    private void loadSavedPreferences() {
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//
+////To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
+//// providing the key for the value you want, and optionally a default value to return if the key isn't present.
+//        //helperMethods.loadSavedPreferences(sharedPreferences);
+//        user.setFirstName(sharedPreferences.getString("first_name", null));
+//        user.setLastName(sharedPreferences.getString("last_name", null));
+//        user.setEmail(sharedPreferences.getString("email", null));
+//        user.setPassword(sharedPreferences.getString("password", null));
+//        user.setSsn(sharedPreferences.getString("ssn", null));
+//        user.setDob(convertDob());
+//        user.setDefaultLocation(sharedPreferences.getString("default_location", null));
+//        user.setGender(sharedPreferences.getString("gender", "3"));
+//
+//// ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
+//// checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
+//        user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
+//
+//
+//
+//    }
+//    private LocalDate convertDob(){
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        String dobString = (sharedPreferences.getString("dob_month", null)+ "-" + sharedPreferences.getString("dob_day", null) + "-" + sharedPreferences.getString("dob_year", null));
+//        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM-dd-yyyy");
+////        LocalDate dob = dtf.parseLocalDate(dobString);
+//      //  return dob; ToDo // FIXME: 11/9/2015
+//        return LocalDate.now();
+//    }
+
+    public void test(){
+
+        Toast.makeText(this, user.getJseStudentId(), Toast.LENGTH_LONG).show();
+    }
 
 }

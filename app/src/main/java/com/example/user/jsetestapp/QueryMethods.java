@@ -12,15 +12,17 @@ public class QueryMethods extends Activity {
 
     MainActivity mainActivity;
     LoginActivity loginActivity;
+
     public QueryMethods() {
 
     }
 
     public String getTag() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        return  bundle.getString("tag");
+        return bundle.getString("tag");
 
     }
+
     public void setUpLocationsArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
         mainActivity.locationsArrayList = (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
@@ -73,9 +75,9 @@ public class QueryMethods extends Activity {
 
     }
 
-    public void filterTestsArrayListByGender(){
-        for (int i = 0; i < loginActivity.testsArrayList.size(); i++){
-            if (!loginActivity.testsArrayList.get(i).gender.name().equals(loginActivity.user.gender.name())){
+    public void filterTestsArrayListByGender() {
+        for (int i = 0; i < loginActivity.testsArrayList.size(); i++) {
+            if (!loginActivity.testsArrayList.get(i).gender.name().equals(loginActivity.user.gender.name())) {
                 loginActivity.testsArrayList.remove(i);
                 i--;
             }
@@ -85,7 +87,7 @@ public class QueryMethods extends Activity {
 
     public void setUpTestsFilteredArrayList() {
 
-       mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
+        mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
     }
 
     public void setUpHoursArrayList() {
@@ -94,7 +96,7 @@ public class QueryMethods extends Activity {
     }
 
 
-    public void updateHoursArrayListView(ListView listView, String name){
+    public void updateHoursArrayListView(ListView listView, String name) {
 
         setUpHoursFilteredArrayList(name);
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
@@ -102,7 +104,7 @@ public class QueryMethods extends Activity {
     }
 
 
-    public void setupListView(ListAdapter adapter, ListView listView,String name) {
+    public void setupListView(ListAdapter adapter, ListView listView, String name) {
         adapter = new MyBaseAdapter(mainActivity.getContext(), mainActivity.hoursFilteredArrayList);
         listView.setAdapter(adapter);
         updateHoursArrayListView(listView, name);
@@ -115,7 +117,7 @@ public class QueryMethods extends Activity {
 
     public void setUpHoursFilteredArrayList(String location) {
 
-        if (mainActivity.getHoursFilteredArrayList()!= null)
+        if (mainActivity.getHoursFilteredArrayList() != null)
             mainActivity.getHoursFilteredArrayList().clear();
         for (Hours hours : mainActivity.hoursArrayList) {
 
@@ -131,7 +133,7 @@ public class QueryMethods extends Activity {
         }
     }
 
-    public Location setUpDefaultLocation(){
+    public Location setUpDefaultLocation() {
         Location location = new Location();
         for (Location l : mainActivity.locationsArrayList) {
             if (l.getName().equals(mainActivity.user.getDefaultLocation())) {
@@ -141,6 +143,15 @@ public class QueryMethods extends Activity {
         return location;
     }
 
+    public void setUpIsJseMember() {
+
+        if (mainActivity.user.jseStudentId == null) {
+            mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
+        } else {
+            mainActivity.test();
+        }
+    }
+
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
@@ -148,11 +159,6 @@ public class QueryMethods extends Activity {
     public void setLoginActivity(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
     }
-
-
-
-
-
 
 
 }

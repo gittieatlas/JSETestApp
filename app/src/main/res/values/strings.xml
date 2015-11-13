@@ -89,4 +89,22 @@
     <string name="tabLayout_tests">Tests</string>
     <string name="tabLayout_libraries">Libraries</string>
     <string name="tabLayout_contact">Contact</string>
+
+    <!-- Dialogs titles -->
+    <string name="d_login_failed">Login Failed</string>
+    <string name="d_create_account_failed">Create Account Failed</string>
+    <string name="d_jse_office">JSE Office</string>
+
+    <!-- Dialogs Buttons -->
+    <string name="d_call">CALL</string>
+    <string name="d_ok">OK</string>
+    <string name="d_cancel">CANCEL</string>
+
+    <!-- Dialogs Listener Tags -->
+    <string name="d_call_during">call_jse_during_office_hours</string>
+
+    <!-- Dialogs Messages -->
+    <string name="d_office_closed_set_msg"> The JSE office is currently closed.
+        Would you like to set a reminder on your phone to call during office hours?</string>
+
 </resources>

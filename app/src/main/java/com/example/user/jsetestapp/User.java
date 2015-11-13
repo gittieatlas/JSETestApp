@@ -11,14 +11,13 @@ public class User implements Serializable {
 
     public static enum Gender {MALE, FEMALE}
 
-    String firstName, lastName, email, password, ssn, defaultLocation;
+    String firstName, lastName, email, password, ssn, defaultLocation, jseStudentId;
     LocalDate dob;
     Gender gender;
     boolean isJseMember;
-    int locationId;
+    int locationId, id;
 
     public User() {
-
     }
 
 
@@ -92,6 +91,7 @@ public class User implements Serializable {
     public Gender getGender() {
         return gender;
     }
+
     public int getGender(User user) {
         return Gender.valueOf(user.getGender().name()).ordinal();
     }
@@ -128,7 +128,7 @@ public class User implements Serializable {
     }
 
     public void setIsJseMember(String isJseMember) {
-        if (isJseMember != null){
+        if (isJseMember != null) {
             this.isJseMember = true;
         }
 
@@ -165,13 +165,36 @@ public class User implements Serializable {
     }
 
     public void setLocationId(ArrayList<Location> locationArrayList, User user) {
-        for (Location location : locationArrayList){
-            if (user.getDefaultLocation().equals(location.getName())){
-                this.locationId = location.getId() ;
+        for (Location location : locationArrayList) {
+            if (user.getDefaultLocation().equals(location.getName())) {
+                this.locationId = location.getId();
             }
         }
         //this.locationId = locationId;
     }
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public String getJseStudentId() {
+        return jseStudentId;
+    }
+
+    public void setJseStudentId(String jseStudentId) {
+        if (!jseStudentId.equals("null"))
+            this.jseStudentId = jseStudentId;
+    }
+//
+//    public void setJseStudentId(String result, String jseStudentId) {
+//        if (!result.equals(0) && !jseStudentId.equals("null"))
+//            this.jseStudentId = jseStudentId;
+//    }
 
 }

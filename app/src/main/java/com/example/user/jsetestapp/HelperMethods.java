@@ -12,6 +12,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import org.joda.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -267,8 +269,9 @@ public class HelperMethods extends Activity {
 //    }
 
 
-    public void createUser(String result) {
+    public void createUser(String result, int id) {
         if (result.equals("true")) {
+            loginActivity.user.setId(id);
             loginActivity.switchToMainActivity("create_account");
         } else {
             loginActivity.showDialog("Create Account Failed",
@@ -294,6 +297,12 @@ public class HelperMethods extends Activity {
         }
     }
 
+
+//    public void setJseStudentId(String result, String id) {
+//        if (!result.equals(0) && !id.equals("null"))
+//            mainActivity.user.setJseStudentId(id);
+//    }
+
     public void showSnackBar(){
         String message = "";
         switch (mainActivity.queryMethods.getTag()){
@@ -318,5 +327,18 @@ public class HelperMethods extends Activity {
         snackbar.show();
     }
 
-
+    /**
+     * Function to check if the current time is a start and end time
+     *
+     * @param start     -   beginning time
+     * @param end       -   finishing time
+     * @param time      -   now
+     * @return boolean  -   if is between, return true; if is not between, return false
+     */
+    public boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
+        if (time.isAfter(start) && time.isBefore(end)) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -16,15 +16,19 @@ import java.util.List;
 public class DatabaseOperations {
 
     LoginActivity loginActivity;
+    MainActivity mainActivity;
 
     // url to create new user
     private static String url_create_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_insert.php";
     // url to get user
     private static String url_get_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/login.php";
+    // url to get jseStudentId
+    private static String url_get_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/get_jse_student_id.php";
 
     // JSON Node names
     private static final String TAG_RESULT = "result";
     private static final String TAG_USERS = "users";
+    private static final String TAG_ID = "id";
     private static final String TAG_FIRST_NAME = "firstName";
     private static final String TAG_LAST_NAME = "lastName";
     private static final String TAG_GENDER = "gender";
@@ -38,8 +42,10 @@ public class DatabaseOperations {
     // testsJsonArray JSONArray
     JSONArray usersJsonArray = null;
     private static String result = "";
+    private static int id = 0;
     private static int loginResult = 0;
-    private static String value = "";
+    //private static int jseStudentIdResult = 0;
+    private static String jseStudentId = "";
 
     public void newUser(User user) {
 
@@ -49,6 +55,11 @@ public class DatabaseOperations {
     public void getUser(User user) {
 
         new GetUser(user).execute();
+    }
+
+    public void getJseStudentId(User user) {
+
+        new GetJseStudentId(user).execute();
     }
 
 
@@ -106,6 +117,7 @@ public class DatabaseOperations {
 
             try {
                 result = json.getString(TAG_RESULT);
+                id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -121,14 +133,13 @@ public class DatabaseOperations {
             // dismiss the dialog once done
             // pDialog.dismiss();
 
-
-          loginActivity.helperMethods.createUser(result);
+            loginActivity.helperMethods.createUser(result, id);
         }
 
     }
 
     /**
-     * Background Async Task to Create new product
+     * Background Async Task to Get User
      */
     class GetUser extends AsyncTask<String, String, String> {
 
@@ -167,14 +178,14 @@ public class DatabaseOperations {
             Log.d("Get User", json.toString());
 
             try {
-               loginResult = json.getInt(TAG_RESULT);
+                loginResult = json.getInt(TAG_RESULT);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             if (json != null && loginResult != 0) {
                 try {
-                  //  JSONObject jsonObj = new JSONObject(json);
+                    //  JSONObject jsonObj = new JSONObject(json);
 
                     // Getting JSON Array node
                     usersJsonArray = json.getJSONArray(TAG_USERS);
@@ -186,18 +197,21 @@ public class DatabaseOperations {
 
                         User user = new User();
                         user.setFirstName(c.getString(TAG_FIRST_NAME));
+                        user.setId(Integer.parseInt(c.getString(TAG_ID)));
                         user.setLastName(c.getString(TAG_LAST_NAME));
                         user.setGender(c.getString(TAG_GENDER));
                         //DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
-                       // user.dob = dtf.parseLocalDate(c.getString(TAG_DOB));
-                      // user.dob =LocalDate.parse(c.getString(TAG_DOB), DateTimeFormat.forPattern("yyyy-MM-dd"));
+                        // user.dob = dtf.parseLocalDate(c.getString(TAG_DOB));
+                        // user.dob =LocalDate.parse(c.getString(TAG_DOB), DateTimeFormat.forPattern("yyyy-MM-dd"));
+                        //Todo get dpb from tag
                         LocalDate date = new LocalDate("2010-05-05");
-                        user.dob=date;
+                        user.dob = date;
                         user.setSsn(c.getString(TAG_SSN));
                         user.setEmail(c.getString(TAG_EMAIL));
                         user.setPassword(c.getString(TAG_PASSWORD));
                         user.setLocationId(c.getString(TAG_LOCATION_ID));
                         user.setIsJseMember(c.getString(TAG_JSE_STUDENT_ID));
+                        user.setJseStudentId(c.getString(TAG_JSE_STUDENT_ID));
 
                         loginActivity.user = user;
 
@@ -227,9 +241,85 @@ public class DatabaseOperations {
     }
 
 
+    /**
+     * Background Async Task to Get User
+     */
+    class GetJseStudentId extends AsyncTask<String, String, String> {
+
+        int id;
+
+        GetJseStudentId(User user) {
+            this.id = user.getId();
+        }
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Getting jseStudentId
+         */
+        protected String doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id", Integer.toString(id)));
+
+            // getting JSON Object
+            // Note that create user url accepts POST method
+            JSONParser jsonParser = new JSONParser();
+            JSONObject json = jsonParser.makeHttpRequest(url_get_jse_student_id,
+                    "POST", params);
+
+            // check log cat for response
+            Log.d("Get JSE Student ID", json.toString());
+
+            try {
+                result = json.getString(TAG_RESULT);
+               // jseStudentId = json.getString(TAG_ID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (json != null && !result.equals("0")) {
+                try {
+                    mainActivity.user.setJseStudentId(json.getString(TAG_ID));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("Get JSE Student Id", "Couldn't get JSE Student Id");
+            }
+
+            return result;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String result) {
+            // dismiss the dialog once done
+            // pDialog.dismiss();
+
+        }
+
+    }
+
+
     public void setLoginActivity(LoginActivity loginActivity) {
 
         this.loginActivity = loginActivity;
+    }
+
+
+    public void setMainActivity(MainActivity mainActivity) {
+
+        this.mainActivity = mainActivity;
     }
 
 }

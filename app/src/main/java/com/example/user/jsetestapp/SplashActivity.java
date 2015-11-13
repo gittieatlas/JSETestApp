@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -27,7 +25,6 @@ public class SplashActivity extends AppCompatActivity {
 
     //Controls
 
-
     //Activities HelperClasses Classes;
     MainActivity mainActivity;
 
@@ -45,48 +42,26 @@ public class SplashActivity extends AppCompatActivity {
     Boolean gotHours = false;
     Boolean gotBranches = false;
     Boolean gotAlerts = false;
-    Boolean isInternetPresent = false;
 
-    ConnectionDetector cd;
-    SharedPreferences sharedPreferences;
     ServiceHandler sh = new ServiceHandler();
 
-    // branchesArrayListJsonArray JSONArray
-    JSONArray branchesJsonArray = null;
-    // locationsJsonArray JSONArray
-    JSONArray locationsJsonArray = null;
-    // testsJsonArray JSONArray
-    JSONArray testsJsonArray = null;
-    // hoursJsonArray JSONArray
-    JSONArray hoursJsonArray = null;
-    // alertsArrayList JSONArray
-    JSONArray alertsJsonArray = null;
-
-    // URL to get locationsJsonArray JSON
-    private static String branches_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
-    // URL to get locationsJsonArray JSON
-    private static String locations_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
+    // URL to get branchesJsonArray JSON
+    private static String branches_url =
+            "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
     // URL to get testsJsonArray JSON
-    private static String tests_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php";
+    private static String tests_url =
+            "http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php";
     // URL to get hoursJsonArray JSON
-    private static String hours_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php";
+    private static String hours_url =
+            "http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php";
     // URL to get alertsJsonArray JSON
-    private static String alerts_url = "http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php";
+    private static String alerts_url =
+            "http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php";
 
     // JSON Node names - branches
     private static final String TAG_BRANCHES = "branches";
     private static final String TAG_ID = "id";
-
-    // JSON Node names - locations
-    private static final String TAG_LOCATIONS = "locations";
-    private static final String TAG__LOCATION_ID = "id";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_ADDRESS = "address";
-    private static final String TAG_CITY = "city";
-    private static final String TAG_STATE = "state";
-    private static final String TAG_ZIP = "zip";
-    private static final String TAG_COUNTRY = "country";
-    private static final String TAG_PHONE = "phoneNumber";
+    final String TAG_NAME = "name";
 
     // JSON Node names - tests
     private static final String TAG_TESTS = "tests";
@@ -114,46 +89,91 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // attaching Crashlytics kit to the app
         Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_splash);
 
-        locationsArrayList = new ArrayList<Location>();
-        testsArrayList = new ArrayList<Test>();
-        hoursArrayList = new ArrayList<Hours>();
-        branchesArrayList = new ArrayList<Branch>();
-        alertsArrayList = new ArrayList<Alerts>();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        checkInternetConnection();
-    }
-
-    private void checkInternetConnection() {
-
-        // creating connection detector class instance
-        cd = new ConnectionDetector(getApplicationContext());
-
-        // get Internet status
-        isInternetPresent = cd.isConnectingToInternet();
-
-        // check for Internet status
-        if (isInternetPresent) {
-
-            new GetLocations().execute();
-            new GetTests().execute();
-            new GetHours().execute();
-            new GetBranches().execute();
-            new getAlerts().execute();
-
+        // check for Internet status and set true/false
+        if (checkInternetConnection()) {
+            getDataFromDatabase();
         } else {
-
-            showAlertDialog(SplashActivity.this, "No Internet Connection",
-                    "You need an internet connection to use this application.\n\nPlease try again.\n", false);
+            displayDialog("no_internet_connection");
         }
     }
+
+    /**
+     * Function to check internet status
+     *
+     * @return boolean  -   true if present/false if not present
+     */
+    private boolean checkInternetConnection() {
+
+        // creating connection detector class instance
+        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+
+        // get Internet status
+        return cd.isConnectingToInternet();
+    }
+
+    private void getDataFromDatabase() {
+
+        setUpLocations();
+        setUpTests();
+        setUpHours();
+        setUpBranches();
+        setUpAlerts();
+
+    }
+
+    public void setUpLocations() {
+        locationsArrayList = new ArrayList<Location>();
+        new GetLocations().execute();
+    }
+    public void setUpTests(){
+        testsArrayList = new ArrayList<Test>();
+        new GetTests().execute();
+
+    }
+    public void setUpHours(){
+        hoursArrayList = new ArrayList<Hours>();
+        new GetHours().execute();
+
+    }
+    public void setUpBranches(){
+        branchesArrayList = new ArrayList<Branch>();
+        new GetBranches().execute();
+
+    }
+    public void setUpAlerts(){
+        alertsArrayList = new ArrayList<Alerts>();
+        new getAlerts().execute();
+
+    }
+
+
+
+    private void displayDialog(String tag) {
+        switch (tag) {
+            case "no_internet_connection":
+                showAlertDialog(SplashActivity.this, "No Internet Connection",
+                        "You need an internet connection to use this application.\n\nPlease try again.\n", false);
+                break;
+        }
+    }
+
 
     /**
      * Async task class to get json by making HTTP call
      */
     private class GetLocations extends AsyncTask<Void, Void, Void> {
+
+        // URL to get locationsJsonArray JSON
+        String locations_url =
+                "http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php";
+        // JSON Node names - locations
+        final String TAG_LOCATIONS = "locations";
 
         @Override
         protected void onPreExecute() {
@@ -171,36 +191,14 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    locationsJsonArray = jsonObj.getJSONArray(TAG_LOCATIONS);
+                    JSONArray locationsJsonArray = jsonObj.getJSONArray(TAG_LOCATIONS);
 
                     // looping through All Locations
                     for (int i = 0; i < locationsJsonArray.length(); i++) {
 
                         JSONObject c = locationsJsonArray.getJSONObject(i);
 
-                        String name = c.getString(TAG_NAME);
-                        int id = Integer.parseInt(c.getString(TAG__LOCATION_ID));
-                        String address = c.getString(TAG_ADDRESS);
-                        String city = c.getString(TAG_CITY);
-                        String state = c.getString(TAG_STATE);
-                        String zip = c.getString(TAG_ZIP);
-                        String country = c.getString(TAG_COUNTRY);
-                        String phone = c.getString(TAG_PHONE);
-
-                        StringBuilder fullAddress = new StringBuilder();
-                        if (!address.equals("null")) fullAddress.append(address + " ");
-                        if (!city.equals("null")) fullAddress.append(city + " ");
-                        if (!state.equals("null")) fullAddress.append(state + " ");
-                        if (!zip.equals("null")) fullAddress.append(zip + " ");
-                        if (!country.equals("null")) fullAddress.append(country);
-
-                        Location location = new Location();
-                        location.setId(id);
-                        location.setName(name);
-                        location.setAddress(fullAddress.toString());
-                        location.setPhone(phone);
-
-                        locationsArrayList.add(location);
+                        locationsArrayList.add(setLocation(c));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -220,6 +218,63 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+
+    public Location setLocation(JSONObject c) {
+
+
+        // JSON Node names - locations
+        final String TAG__LOCATION_ID = "id";
+        final String TAG_NAME = "name";
+        final String TAG_PHONE = "phoneNumber";
+
+        Location location = new Location();
+
+        try {
+
+
+            location.setId(Integer.parseInt(c.getString(TAG__LOCATION_ID)));
+            location.setName(c.getString(TAG_NAME));
+            location.setAddress(getAddress(c));
+            location.setPhone(c.getString(TAG_PHONE));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return location;
+    }
+
+    private String getAddress(JSONObject c) {
+
+        final String TAG_ADDRESS = "address";
+        final String TAG_CITY = "city";
+        final String TAG_STATE = "state";
+        final String TAG_ZIP = "zip";
+        final String TAG_COUNTRY = "country";
+
+        StringBuilder fullAddress = new StringBuilder();
+
+        try {
+
+            String address = c.getString(TAG_ADDRESS);
+            String city = c.getString(TAG_CITY);
+            String state = c.getString(TAG_STATE);
+            String zip = c.getString(TAG_ZIP);
+            String country = c.getString(TAG_COUNTRY);
+
+            if (!address.equals("null")) fullAddress.append(address + " ");
+            if (!city.equals("null")) fullAddress.append(city + " ");
+            if (!state.equals("null")) fullAddress.append(state + " ");
+            if (!zip.equals("null")) fullAddress.append(zip + " ");
+            if (!country.equals("null")) fullAddress.append(country);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return fullAddress.toString();
+    }
 
     /**
      * Async task class to get json by making HTTP call
@@ -242,7 +297,7 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    testsJsonArray = jsonObj.getJSONArray(TAG_TESTS);
+                    JSONArray testsJsonArray = jsonObj.getJSONArray(TAG_TESTS);
 
                     // looping through All Tests
                     for (int i = 0; i < testsJsonArray.length(); i++) {
@@ -308,7 +363,7 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    hoursJsonArray = jsonObj.getJSONArray(TAG_HOURS);
+                    JSONArray hoursJsonArray = jsonObj.getJSONArray(TAG_HOURS);
 
                     // looping through All Tests
                     for (int i = 0; i < hoursJsonArray.length(); i++) {
@@ -364,7 +419,7 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    branchesJsonArray = jsonObj.getJSONArray(TAG_BRANCHES);
+                    JSONArray branchesJsonArray = jsonObj.getJSONArray(TAG_BRANCHES);
 
                     // looping through All Locations
                     for (int i = 0; i < branchesJsonArray.length(); i++) {
@@ -415,7 +470,7 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    alertsJsonArray = jsonObj.getJSONArray(TAG_ALERTS);
+                    JSONArray alertsJsonArray = jsonObj.getJSONArray(TAG_ALERTS);
 
                     // looping through All Locations
                     for (int i = 0; i < alertsJsonArray.length(); i++) {
@@ -424,8 +479,8 @@ public class SplashActivity extends AppCompatActivity {
                         // ToDo handle if any values are null
                         Alerts alert = new Alerts();
                         alert.setLocationName(c.getString(TAG_LOCATION_NAME));
-                        String timeStamp= (c.getString(TAG_TIME_STAMP));
-                        String date=timeStamp.substring(0, 10);
+                        String timeStamp = (c.getString(TAG_TIME_STAMP));
+                        String date = timeStamp.substring(0, 10);
                         alert.date = LocalDate.parse(date);
                         alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate().getDayOfWeek() - 1)]);
                         String time = timeStamp.substring(timeStamp.length() - 8);
@@ -501,11 +556,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-
-    public int getGender(Test test){
+    public int getGender(Test test) {
         if (test.getGender().name().equals("MALE"))
             return 1;
-        else if(test.getGender().name().equals("FEMALE"))
+        else if (test.getGender().name().equals("FEMALE"))
             return 2;
         else return 3;
     }
