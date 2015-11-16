@@ -84,9 +84,10 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();
         queryMethods.setUpAlertsArrayList();
-        defaultLocation = queryMethods.setUpDefaultLocation();
+        queryMethods.setUpDefaultLocation();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
+        Toast.makeText(this, user.firstName + user.defaultLocation, Toast.LENGTH_SHORT).show();
     }
 
     private void initializeViews() {
@@ -253,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
+            b.putSerializable("user", user);
             intent.putExtras(b);
             intent.putExtra("fragment", "update_profile");
             startActivity(intent);

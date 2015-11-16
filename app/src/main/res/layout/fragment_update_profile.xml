@@ -24,7 +24,7 @@ tools:context=".UpdateProfile">
         style="@style/App_TextView_Colored_Label" />
 
     <EditText
-        android:id="@+id/editTextFirstName"
+        android:id="@+id/firstNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/App_EditText"
@@ -38,7 +38,7 @@ tools:context=".UpdateProfile">
         style="@style/App_TextView_Colored_Label" />
 
     <EditText
-        android:id="@+id/editTextLastName"
+        android:id="@+id/lastNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/App_EditText"
@@ -57,7 +57,7 @@ tools:context=".UpdateProfile">
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextDobMonth"
+            android:id="@+id/dobMonthEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/App_EditText"
@@ -72,7 +72,7 @@ tools:context=".UpdateProfile">
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextDobDay"
+                android:id="@+id/dobDayEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/App_EditText"
@@ -81,7 +81,7 @@ tools:context=".UpdateProfile">
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/editTextDobYear"
+                android:id="@+id/dobYearEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/App_EditText"
@@ -113,7 +113,7 @@ tools:context=".UpdateProfile">
         style="@style/App_TextView_Colored_Label"/>
 
     <EditText
-        android:id="@+id/editTextSsn"
+        android:id="@+id/ssnEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/App_EditText"
@@ -141,7 +141,7 @@ tools:context=".UpdateProfile">
         style="@style/App_TextView_Colored_Label"/>
 
     <EditText
-        android:id="@+id/editTextNewPassword"
+        android:id="@+id/newPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/App_EditText"
@@ -155,7 +155,7 @@ tools:context=".UpdateProfile">
         style="@style/App_TextView_Colored_Label"/>
 
     <EditText
-        android:id="@+id/editTextConfirmNewPassword"
+        android:id="@+id/confirmNewPasswordEditText"
         style="@style/App_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -188,7 +188,7 @@ tools:context=".UpdateProfile">
         android:showDividers="middle">
 
         <Button
-            android:id="@+id/buttonLeft"
+            android:id="@+id/leftButton"
             style="?android:buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -197,7 +197,7 @@ tools:context=".UpdateProfile">
             android:textColor="@color/primary_text" />
 
         <Button
-            android:id="@+id/buttonRight"
+            android:id="@+id/rightButton"
             style="?android:buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

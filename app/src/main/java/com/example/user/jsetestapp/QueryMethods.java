@@ -29,11 +29,6 @@ public class QueryMethods extends Activity {
 
     }
 
-    public void setUpUser() {
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.user = (User) bundle.getSerializable("user");
-
-    }
 
     public void setUpLocationsNameArrayList(MainActivity mainActivity) {
         mainActivity.locationsNameArrayList = new ArrayList<String>();
@@ -115,6 +110,11 @@ public class QueryMethods extends Activity {
         mainActivity.alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
     }
 
+    public void setUpUser() {
+        Bundle bundle = mainActivity.getIntent().getExtras();
+        mainActivity.user = (User) bundle.getSerializable("user");
+    }
+
     public void setUpHoursFilteredArrayList(String location) {
 
         if (mainActivity.getHoursFilteredArrayList() != null)
@@ -133,14 +133,15 @@ public class QueryMethods extends Activity {
         }
     }
 
-    public Location setUpDefaultLocation() {
+
+    public void setUpDefaultLocation() {
         Location location = new Location();
         for (Location l : mainActivity.locationsArrayList) {
-            if (l.getName().equals(mainActivity.user.getDefaultLocation())) {
+            if (l.getId() == mainActivity.user.locationId) {
                 location = l;
             }
         }
-        return location;
+        mainActivity.defaultLocation = location;
     }
 
     public void setUpIsJseMember() {
@@ -148,7 +149,7 @@ public class QueryMethods extends Activity {
         if (mainActivity.user.jseStudentId == null) {
             mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
         } else {
-            mainActivity.test();
+           // mainActivity.test();
         }
     }
 

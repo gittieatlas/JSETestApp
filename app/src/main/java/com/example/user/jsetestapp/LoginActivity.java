@@ -222,6 +222,8 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
     public void setToolbarTitle(int toolbarTitle) {
         toolbar.setTitle(toolbarTitle);
     }
