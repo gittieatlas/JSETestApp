@@ -22,8 +22,10 @@ public class DatabaseOperations {
     private static String url_create_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_insert.php";
     // url to get user
     private static String url_get_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/login.php";
-    // url to get jseStudentId
+    // url to get id from student
     private static String url_get_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/get_jse_student_id.php";
+    // url to update jseStudentId
+    private static String url_update_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/update_jse_student_id.php";
 
     // JSON Node names
     private static final String TAG_RESULT = "result";
@@ -42,7 +44,9 @@ public class DatabaseOperations {
     // testsJsonArray JSONArray
     JSONArray usersJsonArray = null;
     private static String result = "";
+    private static String resultUpdate = "";
     private static int id = 0;
+    private static String studentId = "";
     private static int loginResult = 0;
     //private static int jseStudentIdResult = 0;
     private static String jseStudentId = "";
@@ -246,10 +250,13 @@ public class DatabaseOperations {
      */
     class GetJseStudentId extends AsyncTask<String, String, String> {
 
+        String ssn, dob;
         int id;
 
         GetJseStudentId(User user) {
             this.id = user.getId();
+            this.ssn = user.getSsn();
+            this.dob = user.getDob().toString("yyyy-mm-dd");
         }
 
         /**
@@ -267,10 +274,11 @@ public class DatabaseOperations {
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("id", Integer.toString(id)));
+            params.add(new BasicNameValuePair("ssn", ssn));
+            params.add(new BasicNameValuePair("dob", dob));
 
             // getting JSON Object
-            // Note that create user url accepts POST method
+            // Note that get jse student id url accepts POST method
             JSONParser jsonParser = new JSONParser();
             JSONObject json = jsonParser.makeHttpRequest(url_get_jse_student_id,
                     "POST", params);
@@ -280,22 +288,40 @@ public class DatabaseOperations {
 
             try {
                 result = json.getString(TAG_RESULT);
-               // jseStudentId = json.getString(TAG_ID);
+                studentId = json.getString(TAG_ID);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            if (json != null && !result.equals("0")) {
-                try {
-                    mainActivity.user.setJseStudentId(json.getString(TAG_ID));
+            if (json != null && !result.equals("0")){
 
+                // Building Parameters
+                List<NameValuePair> paramsUpdate = new ArrayList<NameValuePair>();
+                paramsUpdate.add(new BasicNameValuePair("id", Integer.toString(id)));
+                paramsUpdate.add(new BasicNameValuePair("studentId", studentId));
+
+                JSONObject jsonUpdate = jsonParser.makeHttpRequest(url_update_jse_student_id,
+                        "POST", paramsUpdate);
+
+                // check log cat for response
+                Log.d("Update JSE Student ID", jsonUpdate.toString());
+
+                try {
+                    resultUpdate = jsonUpdate.getString(TAG_RESULT);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                if (jsonUpdate != null && !resultUpdate.equals("0")){
+                    mainActivity.user.setJseStudentId(studentId);
+                }  else {
+                    Log.e("Update JSE Student Id", "Couldn't update JSE Student Id");
+                }
+
+
             } else {
                 Log.e("Get JSE Student Id", "Couldn't get JSE Student Id");
             }
-
             return result;
         }
 
@@ -305,7 +331,7 @@ public class DatabaseOperations {
         protected void onPostExecute(String result) {
             // dismiss the dialog once done
             // pDialog.dismiss();
-
+           // mainActivity.test();
         }
 
     }

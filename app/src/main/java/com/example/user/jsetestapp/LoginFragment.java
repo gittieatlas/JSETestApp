@@ -154,6 +154,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void validateForm() {
+
+        // Todo update validate method
 //        if (!isEmailSaved()) {
 //            loginActivity.showDialog("Login Failed", "An Email Address / Username Doesn't Exits. Please create an account.",
 //                    "CREATE ACCOUNT", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "login_failed_email_not_exist");
