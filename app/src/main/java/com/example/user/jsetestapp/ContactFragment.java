@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 public class ContactFragment extends Fragment {
 
-// TODO get correct info for contact page; JSE Office, Schedule a Test, Email, Office Hours
-
     //Controls
     View rootView;
     LinearLayout officeNumberTextViews, scheduleTestNumberTextViews, emailAddressTextViews;
@@ -21,10 +19,10 @@ public class ContactFragment extends Fragment {
     //Activities
     MainActivity mainActivity;
 
-//Fragments
+    //Fragments
 
 
-//Variables
+    //Variables
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -44,11 +42,11 @@ public class ContactFragment extends Fragment {
         officeNumberTextViews = (LinearLayout) rootView.findViewById(R.id.officeNumberTextViews);
         scheduleTestNumberTextViews = (LinearLayout) rootView.findViewById(R.id.scheduleTestNumberTextViews);
         emailAddressTextViews = (LinearLayout) rootView.findViewById(R.id.emailAddressTextViews);
-        jseOfficeHoursMonThursTextView = (TextView)rootView.findViewById(R.id.jseOfficeHoursMonThursTextView);
-        jseOfficeHoursFridayTextView = (TextView)rootView.findViewById(R.id.jseOfficeHoursFridayTextView);
+        jseOfficeHoursMonThursTextView = (TextView) rootView.findViewById(R.id.jseOfficeHoursMonThursTextView);
+        jseOfficeHoursFridayTextView = (TextView) rootView.findViewById(R.id.jseOfficeHoursFridayTextView);
     }
 
-    private void setText(){
+    private void setText() {
         jseOfficeHoursMonThursTextView.setText(getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_mon_thurs_hours_end_time));
         jseOfficeHoursFridayTextView.setText(getResources().getString(R.string.jse_office_hours_friday_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_friday_hours_end_time));
     }
@@ -64,22 +62,18 @@ public class ContactFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-
-            // ToDo get value of isDuringOfficeHours
-            boolean isDuringOfficeHours = false;
-
-            if (isDuringOfficeHours) {
-
-                // TODO change icon to phone grey 24; add string to strings.xml
-                // TODO show number in message?
-                mainActivity.showDialog(getString(R.string.d_jse_office), null,
+            if (mainActivity.helperMethods.isDuringOfficeHours()) {
+                mainActivity.showDialog(getString(R.string.d_jse_office),
+                        null,
                         getString(R.string.d_call), getString(R.string.d_cancel), null,
-                        R.drawable.ic_phone_grey600_24dp, getString(R.string.d_call_during));
+                        R.drawable.ic_phone_grey600_24dp,
+                        getString(R.string.d_call_jse_during_hours));
             } else {
-
-                // TODO add string to strings.xml
-                String message = "";
-                mainActivity.showDialog(getString(R.string.d_jse_office), message, "YES", "NO", null, R.drawable.ic_calendar_clock_grey600_24dp, "call_jse_during_non_office_hours");
+                mainActivity.showDialog(getString(R.string.d_jse_office),
+                        getString(R.string.d_office_closed_msg),
+                        getString(R.string.d_yes), getString(R.string.d_no), null,
+                        R.drawable.ic_calendar_clock_grey600_24dp,
+                        getString(R.string.d_call_jse_non_hours));
             }
         }
     };

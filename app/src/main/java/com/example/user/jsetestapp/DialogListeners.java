@@ -28,13 +28,13 @@ public class DialogListeners extends Activity {
 
             case "call_jse_during_non_office_hours": {
 
-                // TODO send JSE office hours and correct parameters
-                // ToDO handle if friday, saturday
                 LocalDate localDate = LocalDate.now();
                 int dayOfWeek = localDate.getDayOfWeek();
+
                 // checking if dayOfWeek is friday, Shabbos, thursday or any other day
                 String hours = mainActivity.getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
                 if (dayOfWeek == 5) {
+                    // friday
                     setReminderToCallJse(hours, 3);
                 } else if (dayOfWeek == 6) {
                     setReminderToCallJse(hours, 2);

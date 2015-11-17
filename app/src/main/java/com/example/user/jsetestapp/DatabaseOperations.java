@@ -30,6 +30,8 @@ public class DatabaseOperations {
     private static String url_get_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/get_jse_student_id.php";
     // url to update jseStudentId
     private static String url_update_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/update_jse_student_id.php";
+    // url to update user
+    private static String url_update_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/update_user.php";
 
     // JSON Node names
     private static final String TAG_RESULT = "result";
@@ -72,6 +74,10 @@ public class DatabaseOperations {
         new GetJseStudentId(user).execute();
     }
 
+    public void updateUser(User user) {
+
+        new UpdateUser(user).execute();
+    }
 
     /**
      * Background Async Task to Create new product
@@ -156,10 +162,12 @@ public class DatabaseOperations {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String result) {
+
+            loginActivity.helperMethods.createUser(result, id);
+
             // dismiss the dialog once done
             pDialog.dismiss();
 
-            loginActivity.helperMethods.createUser(result, id, pDialog);
         }
 
     }
@@ -259,9 +267,11 @@ public class DatabaseOperations {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String result) {
-            loginActivity.helperMethods.getUser(result, pDialog);
+
+            loginActivity.helperMethods.getUser(result);
+
             // dismiss the dialog once done
-            //pDialog.dismiss();
+            pDialog.dismiss();
 
 
         }
@@ -364,6 +374,89 @@ public class DatabaseOperations {
         }
 
     }
+
+
+    /**
+     * Background Async Task to Update User
+     */
+    class UpdateUser extends AsyncTask<String, String, String> {
+        User user = new User();
+        String id, firstName, lastName, gender, dob, ssn, email, password, locationId;
+
+        UpdateUser(User user) {
+            this.user = user;
+            this.id = Integer.toString(user.getId());
+            this.email = user.getEmail();
+            this.password = user.getPassword();
+            this.firstName = user.getFirstName();
+            this.lastName = user.getLastName();
+            this.dob = user.getDob().toString("yyyy-MM-dd");
+            this.gender = Integer.toString(user.getGender(user) + 1);
+            this.ssn = user.getSsn();
+            this.locationId = Integer.toString(user.getLocationId());
+            //TODO look into ssn in db
+
+        }
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Creating product
+         */
+        protected String doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id", id));
+            params.add(new BasicNameValuePair("firstName", firstName));
+            params.add(new BasicNameValuePair("lastName", lastName));
+            params.add(new BasicNameValuePair("gender", gender));
+            params.add(new BasicNameValuePair("dob", dob));
+            params.add(new BasicNameValuePair("ssn", ssn));
+            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("locationId", locationId));
+
+            // getting JSON Object
+            // Note that create user url accepts POST method
+            JSONParser jsonParser = new JSONParser();
+            JSONObject json = jsonParser.makeHttpRequest(url_update_user,
+                    "POST", params);
+
+            // check log cat fro response
+            Log.d("Update User", json.toString());
+
+
+            try {
+                result = json.getString(TAG_RESULT);
+                //id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (json !=null && !result.equals("false")){
+                loginActivity.user = user;
+            }
+            return result;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String result) {
+            // dismiss the dialog once done
+            // pDialog.dismiss();
+            loginActivity.helperMethods.updateUser(result);
+        }
+
+    }
+
 
 
     public void setLoginActivity(LoginActivity loginActivity) {

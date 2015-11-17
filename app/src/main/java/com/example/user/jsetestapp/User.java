@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class User implements Serializable {
 
-    public static enum Gender {MALE, FEMALE}
+    public static enum Gender {MALE , FEMALE}
 
     String firstName, lastName, email, password, ssn, defaultLocation, jseStudentId;
     LocalDate dob;
@@ -19,7 +19,6 @@ public class User implements Serializable {
 
     public User() {
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -82,7 +81,6 @@ public class User implements Serializable {
         this.dob = dtf.parseLocalDate(dob);
     }
 
-
     public void setDob(String year, String month, String day) {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
         this.dob = dtf.parseLocalDate(year + "-" + month + "-" + day);
@@ -108,16 +106,13 @@ public class User implements Serializable {
         }
     }
 
-
-//    public String getGender(Gender gender) {
-//        String stringGender;
-//        try {
-//            stringGender = gender.toString();
-//        } catch (Exception ex) {
-//            stringGender = Gender.values()[1].toString();
-//        }
-//        return stringGender;
-//    }
+    public void setGender(int gender) {
+        try {
+            this.gender = Gender.values()[gender-1];
+        } catch (Exception ex) {
+            this.gender = Gender.FEMALE;
+        }
+    }
 
     public boolean isJseMember() {
         return isJseMember;
@@ -134,25 +129,9 @@ public class User implements Serializable {
 
     }
 
-
-//    public int getLocationId(ArrayList<Location> locationArrayList, User user) {
-//        int locationId = 0;
-//        for (Location location : locationArrayList){
-//            if (user.getDefaultLocation().equals(location.getName())){
-//                locationId = location.getId() ;
-//            }
-//        }
-//        return locationId;
-//    }
-
-
     public int getLocationId() {
         return locationId;
     }
-//    public String getLocationIdString() {
-//        return Integer.toString(locationId);
-//    }
-
 
     public void setLocationId(int locationId) {
 
@@ -170,7 +149,6 @@ public class User implements Serializable {
                 this.locationId = location.getId();
             }
         }
-        //this.locationId = locationId;
     }
 
 
@@ -191,10 +169,5 @@ public class User implements Serializable {
         if (!jseStudentId.equals("null"))
             this.jseStudentId = jseStudentId;
     }
-//
-//    public void setJseStudentId(String result, String jseStudentId) {
-//        if (!result.equals(0) && !jseStudentId.equals("null"))
-//            this.jseStudentId = jseStudentId;
-//    }
 
 }

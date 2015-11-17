@@ -17,11 +17,12 @@ import android.widget.Spinner;
 import org.joda.time.LocalDate;
 
 public class Register2Fragment extends Fragment {
-//Todo when spinners come to focus remove keyboard
+
     //Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
-    EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText, dobYearEditText, ssnEditText;
+    EditText firstNameEditText, lastNameEditText, dobMonthEditText,
+            dobDayEditText, dobYearEditText, ssnEditText;
     Button rightButton, leftButton;
 
     //Activities
@@ -31,7 +32,7 @@ public class Register2Fragment extends Fragment {
 
 
     //Variables
-    Boolean valuesEntered = false;
+    Boolean isValuesEntered = false;
     Boolean genderSpinnersHasValue = false;
     Boolean locationsSpinnersHasValue = false;
     Boolean isBirthdayCorrect = false;
@@ -65,13 +66,18 @@ public class Register2Fragment extends Fragment {
     }
 
     private void bindSpinnerData() {
-        // Create an adapter from the string array resource and use android's inbuilt layout file simple_spinner_item that represents the default spinner in the UI
-        ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.gender_array, R.layout.spinner_dropdown_item);
+        // Create an adapter from the string array resource and use android's inbuilt layout file
+        // simple_spinner_item that represents the default spinner in the UI
+        ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(
+                getActivity().getApplicationContext(),
+                R.array.gender_array,
+                R.layout.spinner_dropdown_item);
         // Set the layout to use for each dropdown item
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         genderSpinner.setAdapter(genderAdapter);
 
-        loginActivity.helperMethods.addDataToSpinnerFromLoginActivity(loginActivity.locationsNameArrayList, locationsSpinner);
+        loginActivity.helperMethods.addDataToSpinnerFromLoginActivity(
+                loginActivity.locationsNameArrayList, locationsSpinner);
     }
 
     private void registerListeners() {
@@ -109,18 +115,18 @@ public class Register2Fragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(ssnEditText)) {
-            valuesEntered = true;
+            isValuesEntered = true;
         } else {
-            valuesEntered = false;
+            isValuesEntered = false;
         }
-        return valuesEntered;
+        return isValuesEntered;
     }
 
     OnClickListener rightButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            if (!valuesEntered || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
+            if (!isValuesEntered || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
                 loginActivity.showDialog("Create Account Failed", "All fields require a value.",
                         "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_missing_fields");
             } else {
@@ -171,12 +177,16 @@ public class Register2Fragment extends Fragment {
 
     private void validateForm() {
         if (!isBirthdayCorrect()) {
-            loginActivity.showDialog("Create Account Failed", "Enter Date of birth in MM/DD/YYYY format.",
-                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_birthday_incorrect");
+            loginActivity.showDialog(getString(R.string.d_create_account_failed),
+                    "Enter Date of birth in MM/DD/YYYY format.",
+                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
+                    "registration_failed_birthday_incorrect");
 
         } else if (!isSsn()) {
-            loginActivity.showDialog("Create Account Failed", "Enter Last 4 digits of SSN.",
-                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_ssn_incorrect");
+            loginActivity.showDialog(getString(R.string.d_create_account_failed),
+                    "Enter Last 4 digits of SSN.",
+                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
+                    "registration_failed_ssn_incorrect");
             ssnEditText.setText("");
         } else {
             saveUser();
@@ -218,7 +228,8 @@ public class Register2Fragment extends Fragment {
         loginActivity.user.setSsn("XXX-XX-" + ssnEditText.getText().toString());
         loginActivity.user.setGender(genderSpinner.getSelectedItem().toString());
         loginActivity.user.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
-        loginActivity.user.setDob(dobYearEditText.getText().toString(), dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
+        loginActivity.user.setDob(dobYearEditText.getText().toString(),
+                dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
         loginActivity.user.setLocationId(loginActivity.locationsArrayList, loginActivity.user);
     }
 

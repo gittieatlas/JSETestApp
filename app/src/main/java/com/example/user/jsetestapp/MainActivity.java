@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpDefaultLocation();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
-        Toast.makeText(this, user.firstName + user.defaultLocation, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, user.firstName + defaultLocation.name, Toast.LENGTH_SHORT).show();
     }
 
     private void initializeViews() {
@@ -246,15 +246,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.update_profile) {
-            //ToDo Rochel- is this code good?
+
+            Bundle bundle = getIntent().getExtras();
+            testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
+
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
-            b.putSerializable("testsArrayList", testsArrayList);
+           b.putSerializable("testsArrayList", testsArrayList);
+
+
+           // b.putSerializable("testsArrayList", (ArrayList<Test>) bundle.getSerializable("testsArrayList"));
+
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
             b.putSerializable("user", user);
+            b.putSerializable("defaultLocation", defaultLocation);
             intent.putExtras(b);
             intent.putExtra("fragment", "update_profile");
             startActivity(intent);

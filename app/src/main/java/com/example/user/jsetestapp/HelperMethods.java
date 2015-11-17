@@ -2,7 +2,6 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,7 +13,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +61,7 @@ public class HelperMethods extends Activity {
     }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
-
+        // ToDO add context as parameter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mainActivity.getApplicationContext(),
                 R.layout.spinner_dropdown_item, arrayList);
 
@@ -97,8 +99,8 @@ public class HelperMethods extends Activity {
     /**
      * Function to make the first letter caps and the rest lowercase.
      *
-     * @param data - capitalize this
-     * @return String       - alert message?
+     * @param data          -   capitalize this
+     * @return String       -   alert message?
      */
     static public String firstLetterCaps(String data) {
         String firstLetter = data.substring(0, 1).toUpperCase();
@@ -114,8 +116,8 @@ public class HelperMethods extends Activity {
     /**
      * Sets ListView height dynamically based on the height of the items.
      *
-     * @param listView to be resized
-     * @return true if the listView is successfully resized, false otherwise
+     * @param listView      -   to be resized
+     * @return true         -   if the listView is successfully resized, false otherwise
      */
     public static boolean setListViewHeightBasedOnItems(ListView listView) {
 
@@ -246,84 +248,67 @@ public class HelperMethods extends Activity {
     public boolean isEmpty(EditText editText) {
         return editText.getText().toString().trim().length() == 0;
     }
-//
-//    public void savePreferences(String key, boolean value, SharedPreferences sharedPreferences) {
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putBoolean(key, value);
-//        editor.commit();
-//    }
-//
-//    public void savePreferences(String key, String value, SharedPreferences sharedPreferences) {
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(key, value);
-//        editor.commit();
-//    }
-//
-//    public void sendPassword(String email){
-//        String subject = "JSE App - Password";
-//        String message = "The password we have n file for this email address is " + "1234 test password." ;
-//        // ToDo get password from user. password
-//        //String message = "The password we have n file for this email address is " + loginActivity.user.getPassword();
-//       // if (email.equals(loginActivity.user.getEmail())) {
-//        if (email.equals("gittieatlas@gmail.com")) {
-//            loginActivity.sendEmail.sendMail(email, subject, message);
-//        }
-//    }
 
-
-    public void createUser(String result, int id, ProgressDialog pDialog) {
-        if (result.equals("") && id == 0){
-            loginActivity.showDialog("Create Account Failed",
-                    "Please enter a different email address. This one is already taken.",
-                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
-                    "create_account_failed_email_duplicate");
+    public void createUser(String result, int id) {
+        if (result.equals("") && id == 0) {
+            loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
+                    loginActivity.getString(R.string.d_account_create_fail_duplicate_email_msg),
+                    null, null, loginActivity.getString(R.string.d_ok),
+                    R.drawable.ic_alert_grey600_24dp,
+                    loginActivity.getString(R.string.d_create_account_failed_duplicate_email));
         } else if (result.equals("true") && id != 0) {
             loginActivity.user.setId(id);
             loginActivity.switchToMainActivity("create_account");
-            pDialog.dismiss();
         } else {
-            loginActivity.showDialog("Create Account Failed",
-                    "Account could not be created at this time. Please try again later.",
-                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
-                    "create_account_failed_insert_failed");
+            loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
+                    loginActivity.getString(R.string.d_account_create_fail_msg),
+                    null, null, loginActivity.getString(R.string.d_ok),
+                    R.drawable.ic_alert_grey600_24dp,
+                    loginActivity.getString(R.string.d_create_account_insert_failed));
         }
     }
 
-    public void getUser(String result, ProgressDialog pDialog) {
+    public void getUser(String result) {
         if (result.equals("0")) {
-           // Not logged in
-            loginActivity.showDialog("Login Failed",
+            // Not logged in
+            loginActivity.showDialog(loginActivity.getString(R.string.d_login_failed),
                     "This username and password did not match. Please try again.",
                     null, null, "OK", R.drawable.ic_alert_grey600_24dp,
                     "login_failed_not_match");
         } else {
             //login successful
             loginActivity.switchToMainActivity("login");
-            pDialog.dismiss();
 
         }
     }
 
+    public void updateUser(String result) {
+        if (result.equals("true")) {
+            // user updated
+            loginActivity.switchToMainActivity("update_profile");
+        } else {
+            //user not updated
+            loginActivity.showDialog("Create Account Failed",
+                    "User not updated.",
+                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
+                    "create_account_failed_email_duplicate");
+        }
+    }
 
-//    public void setJseStudentId(String result, String id) {
-//        if (!result.equals(0) && !id.equals("null"))
-//            mainActivity.user.setJseStudentId(id);
-//    }
-
-    public void showSnackBar(){
+    public void showSnackBar() {
         String message = "";
-        switch (mainActivity.queryMethods.getTag()){
+        switch (mainActivity.queryMethods.getTag()) {
 
-            case "create_account":{
+            case "create_account": {
                 message = "Account created";
                 break;
             }
-            case "login":{
+            case "login": {
                 message = "Logged in";
                 break;
             }
-            case "update_profile":{
-               message = "Profile updated";
+            case "update_profile": {
+                message = "Profile updated";
                 break;
             }
         }
@@ -337,24 +322,25 @@ public class HelperMethods extends Activity {
     /**
      * Function to check if the current time is a start and end time
      *
-     * @param start         -   beginning time
-     * @param end           -   finishing time
-     * @param time          -   now
+     * @param start -   beginning time
+     * @param end   -   finishing time
+     * @param time  -   now
      * @return boolean      -   if is between, return true; if is not between, return false
      */
-    public boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
+    public static boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
         if (time.isAfter(start) && time.isBefore(end)) {
             return true;
         }
         return false;
     }
+
     /**
      * Function to check if a string is a valid email address
      *
-     * @param email         -   string containing the email to be validated
+     * @param email -   string containing the email to be validated
      * @return boolean      -   if valid return true; if not valid return false
      */
-    public boolean isEmailAddressValid(String email){
+    public boolean isEmailAddressValid(String email) {
         if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return true;
         } else
@@ -364,7 +350,7 @@ public class HelperMethods extends Activity {
     /**
      * Function to check internet status
      *
-     * @param context       -   current context
+     * @param context -   current context
      * @return boolean      -   true if present/false if not present
      */
     public static boolean checkInternetConnection(Context context) {
@@ -375,4 +361,62 @@ public class HelperMethods extends Activity {
         // get Internet status
         return cd.isConnectingToInternet();
     }
+
+    /**
+     * Function to check if now is during office hours
+     *
+     * @return boolean
+     */
+    public boolean isDuringOfficeHours() {
+
+        String startTime, endTime;
+        DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
+
+        // get current day of week
+        String dayOfWeek = Integer.toString(LocalDate.now().getDayOfWeek());
+
+        //get start time and end time of today's office hours
+        switch (dayOfWeek) {
+            case "5": {
+                // Friday
+                startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
+                endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
+                break;
+            }
+            case "6": {
+                // Saturday
+                // closed ?
+                return false;
+            }
+            case "7": {
+                // Sunday
+                // closed ?
+                return false;
+            }
+            default: {
+                // Monday - Thursday
+                startTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+                endTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
+                break;
+            }
+        }
+
+        LocalTime start = LocalTime.parse(startTime, parseFormat);
+        LocalTime end = LocalTime.parse(endTime, parseFormat);
+        LocalTime now = LocalTime.now();
+
+        // check if now is between start and end
+        return isWithinInterval(start, end, now);
+    }
+
+    public int setLocationSpinnerSelection() {
+
+        for (Location l : loginActivity.locationsArrayList) {
+            if (loginActivity.defaultLocation.name.equals(l.getName())) {
+                return loginActivity.locationsArrayList.indexOf(l)+1;
+            }
+        }
+        return 0;
+    }
+
 }

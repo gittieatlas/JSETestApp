@@ -3,14 +3,8 @@
 
     <string-array name="gender_array">
         <item> </item>
-        <item>Female</item>
         <item>Male</item>
-    </string-array>
-
-    <string-array name="locations_array">
-        <item>Brooklyn</item>
-        <item>Lakewood</item>
-        <item>Monsey</item>
+        <item>Female</item>
     </string-array>
 
     <string-array name="days_of_week_array">

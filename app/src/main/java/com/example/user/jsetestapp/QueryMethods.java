@@ -67,13 +67,13 @@ public class QueryMethods extends Activity {
     public void setUpTestsArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
         mainActivity.testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-
+        filterTestsArrayListByGender();
     }
 
     public void filterTestsArrayListByGender() {
-        for (int i = 0; i < loginActivity.testsArrayList.size(); i++) {
-            if (!loginActivity.testsArrayList.get(i).gender.name().equals(loginActivity.user.gender.name())) {
-                loginActivity.testsArrayList.remove(i);
+        for (int i = 0; i < mainActivity.testsArrayList.size(); i++) {
+            if (!mainActivity.testsArrayList.get(i).gender.name().equals(mainActivity.user.gender.name())) {
+                mainActivity.testsArrayList.remove(i);
                 i--;
             }
         }

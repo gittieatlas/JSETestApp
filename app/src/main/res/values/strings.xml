@@ -99,14 +99,22 @@
     <string name="d_call">CALL</string>
     <string name="d_ok">OK</string>
     <string name="d_cancel">CANCEL</string>
+    <string name="d_yes">YES</string>
+    <string name="d_no">NO</string>
 
     <!-- Dialogs Listener Tags -->
-    <string name="d_call_during">call_jse_during_office_hours</string>
+    <string name="d_call_jse_during_hours">call_jse_during_office_hours</string>
+    <string name="d_call_jse_non_hours">call_jse_during_office_hours</string>
+    <string name="d_create_account_insert_failed">create_account_failed_insert_failed</string>
+    <string name="d_create_account_failed_duplicate_email">create_account_failed_email_duplicate</string>
 
     <!-- Dialogs Messages -->
-    <string name="d_office_closed_set_msg"> The JSE office is currently closed.
+    <string name="d_office_closed_msg">The JSE office is currently closed.
         Would you like to set a reminder on your phone to call during office hours?</string>
-
+    <string name="d_account_create_fail_duplicate_email_msg">Please enter a different email address.
+        This one is already taken.</string>
+    <string name="d_account_create_fail_msg">Account could not be created at this time.
+        Please try again later.</string>
     <string name="d_fields_require_values_msg">All fields require a value.</string>
     <string name="d_invalid_email_msg">Email address entered is not valid.
         Please correct and try again.</string>

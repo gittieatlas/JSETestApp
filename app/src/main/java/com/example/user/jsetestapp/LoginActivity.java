@@ -39,20 +39,16 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseOperations databaseOperations;
 
     //Variables
-    //String firstName, lastName, email, password, ssn, defaultLocation, gender;
-    //LocalDate dob;
-//    String dobDay, dobMonth, dobYear;
-//    boolean isJseMember;
-//    SharedPreferences sharedPreferences;
-
     ArrayList<Location> locationsArrayList;
     ArrayList<String> locationsNameArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Branch> branchesArrayList;
     ArrayList<Alerts> alertsArrayList;
+    Location defaultLocation;
 
     private static Context sContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sContext = getApplicationContext();
@@ -64,15 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         setupToolbar();
         user = new User();
         getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
-
-     //  sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-
         locationsArrayList = new ArrayList<Location>();
-
-      //loginFragment.locationsArrayList = (ArrayList<Location>) this.getIntent().getSerializableExtra("locationsArrayList");
-
-
 
         Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
@@ -82,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
         hoursArrayList = (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
         alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
+
+
         try {
             Intent intent = getIntent();
 
@@ -89,51 +79,18 @@ public class LoginActivity extends AppCompatActivity {
                 getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
             } else if (intent.getStringExtra("fragment").equals("update_profile")) {
                 getFragmentManager().beginTransaction().replace(R.id.container, updateProfileFragment).commit();
+                user = (User) bundle.getSerializable("user");
+                defaultLocation = (Location) bundle.getSerializable("defaultLocation");
             }
         } catch (Exception e) {
 
         }
-
-       // setPreferences("", "", "", "", "", "", "", "", "", "");
     }
-
-//    public void setPreferences(String user_firstname, String user_lastName, String user_email, String user_password, String user_ssn, String user_dob_day, String user_dob_month, String user_dob_year, String user_gender, String user_defaultLocation) {
-//        firstName = user_firstname;
-//        lastName = user_lastName;
-//        email = user_email;
-//        password = user_password;
-//        ssn = user_ssn;
-//        dobDay = user_dob_day;
-//        dobMonth = user_dob_month;
-//        dobYear = user_dob_year;
-//        // TODO filter testArrayList according to gender
-//        gender = user_gender;
-//        defaultLocation = user_defaultLocation;
-//        isJseMember = false;
-//
-//        helperMethods.savePreferences("first_name", firstName, sharedPreferences);
-//        helperMethods.savePreferences("last_name", lastName, sharedPreferences);
-//        helperMethods.savePreferences("email", email, sharedPreferences);
-//        helperMethods.savePreferences("password", password, sharedPreferences);
-//        helperMethods.savePreferences("ssn", ssn, sharedPreferences);
-//        helperMethods.savePreferences("default_location", defaultLocation, sharedPreferences);
-//        helperMethods.savePreferences("dob_day", dobDay, sharedPreferences);
-//        helperMethods.savePreferences("dob_month", dobMonth, sharedPreferences);
-//        helperMethods.savePreferences("dob_year", dobYear, sharedPreferences);
-//        helperMethods.savePreferences("gender", gender, sharedPreferences);
-//        helperMethods.savePreferences("is_jse_member", isJseMember, sharedPreferences);
-//
-//        queryMethods.setUpLocationsNameArrayList(this);
-//
-//    }
 
     private void initializeViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
-//        tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
-//        tabLayoutLinearLayout.removeAllViews(); //for Login pages
-//        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     }
 
     private void createFragmentsActivitiesClasses() {
@@ -163,48 +120,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        toolbar.inflateMenu(R.menu.menu_login); //Inflate menu
         toolbar.getMenu().clear(); // Clear toolbar icons
         toolbar.setTitle(R.string.app_name);// Set title
         toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
-// Set navigation icon
+        // Set navigation icon
         toolbar.setNavigationIcon(
                 new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_login, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.register1) {
-//            getFragmentManager().beginTransaction().replace(R.id.container, register1Fragment).commit();
-//            return true;
-//        }
-//        if (id == R.id.register2) {
-//            getFragmentManager().beginTransaction().replace(R.id.container, register2Fragment).commit();
-//            return true;
-//        }
-//
-//
-//
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     public void switchToMainActivity(String tag) {
-
-        queryMethods.filterTestsArrayListByGender();
 
         Intent intent = new Intent(this, MainActivity.class);
         Bundle b = new Bundle();
@@ -214,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         b.putSerializable("branchesArrayList", branchesArrayList);
         b.putSerializable("alertsArrayList", alertsArrayList);
         b.putSerializable("user", user);
+        b.putSerializable("defaultLocation", defaultLocation);
         b.putString("tag", tag);
         intent.putExtras(b);
         startActivity(intent);

@@ -103,7 +103,9 @@
             style="@style/App_EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberPassword" />
+            android:inputType="numberPassword"
+            android:maxLength="4"
+            />
 
         <TextView
             style="@style/App_TextView_Colored_Label"
