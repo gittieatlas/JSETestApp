@@ -1,11 +1,11 @@
 package com.example.user.jsetestapp;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,8 +18,12 @@ public class DatabaseOperations {
     LoginActivity loginActivity;
     MainActivity mainActivity;
 
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+
     // url to create new user
-    private static String url_create_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_insert.php";
+    private static String url_create_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_check_email_insert.php";
     // url to get user
     private static String url_get_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/login.php";
     // url to get id from student
@@ -29,6 +33,8 @@ public class DatabaseOperations {
 
     // JSON Node names
     private static final String TAG_RESULT = "result";
+    private static final String TAG_INSERT_RESULT = "insertResult";
+    private static final String TAG_CHECK_EMAIL_RESULT = "checkEmailResult";
     private static final String TAG_USERS = "users";
     private static final String TAG_ID = "id";
     private static final String TAG_FIRST_NAME = "firstName";
@@ -44,12 +50,12 @@ public class DatabaseOperations {
     // testsJsonArray JSONArray
     JSONArray usersJsonArray = null;
     private static String result = "";
+    private static String insertResult = "";
+    private static String checkEmailResult = "";
     private static String resultUpdate = "";
     private static int id = 0;
     private static String studentId = "";
     private static int loginResult = 0;
-    //private static int jseStudentIdResult = 0;
-    private static String jseStudentId = "";
 
     public void newUser(User user) {
 
@@ -91,13 +97,20 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog = new ProgressDialog(loginActivity);
+            pDialog.setMessage("Creating account. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         /**
          * Creating product
          */
         protected String doInBackground(String... args) {
-
+            result = "";
+            insertResult = "";
+            id = 0;
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("firstName", firstName));
@@ -120,11 +133,20 @@ public class DatabaseOperations {
 
 
             try {
-                result = json.getString(TAG_RESULT);
-                id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
-
+                checkEmailResult = json.getString(TAG_CHECK_EMAIL_RESULT);
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+
+            if (checkEmailResult.equals("0")) {
+                // if email does not exist, see if insert was completed successfully
+                try {
+                    insertResult = json.getString(TAG_INSERT_RESULT);
+                    id = Integer.parseInt(json.getString(TAG_ID));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return insertResult;
             }
 
             return result;
@@ -135,9 +157,9 @@ public class DatabaseOperations {
          **/
         protected void onPostExecute(String result) {
             // dismiss the dialog once done
-            // pDialog.dismiss();
+            pDialog.dismiss();
 
-            loginActivity.helperMethods.createUser(result, id);
+            loginActivity.helperMethods.createUser(result, id, pDialog);
         }
 
     }
@@ -160,6 +182,11 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog = new ProgressDialog(loginActivity);
+            pDialog.setMessage("Logging in. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         /**
@@ -204,12 +231,9 @@ public class DatabaseOperations {
                         user.setId(Integer.parseInt(c.getString(TAG_ID)));
                         user.setLastName(c.getString(TAG_LAST_NAME));
                         user.setGender(c.getString(TAG_GENDER));
-                        //DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
+                        //  DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
                         // user.dob = dtf.parseLocalDate(c.getString(TAG_DOB));
-                        // user.dob =LocalDate.parse(c.getString(TAG_DOB), DateTimeFormat.forPattern("yyyy-MM-dd"));
-                        //Todo get dpb from tag
-                        LocalDate date = new LocalDate("2010-05-05");
-                        user.dob = date;
+                        user.setDob(c.getString(TAG_DOB));
                         user.setSsn(c.getString(TAG_SSN));
                         user.setEmail(c.getString(TAG_EMAIL));
                         user.setPassword(c.getString(TAG_PASSWORD));
@@ -235,11 +259,11 @@ public class DatabaseOperations {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String result) {
+            loginActivity.helperMethods.getUser(result, pDialog);
             // dismiss the dialog once done
-            // pDialog.dismiss();
+            //pDialog.dismiss();
 
 
-            loginActivity.helperMethods.getUser(result);
         }
 
     }
@@ -256,7 +280,7 @@ public class DatabaseOperations {
         GetJseStudentId(User user) {
             this.id = user.getId();
             this.ssn = user.getSsn();
-            this.dob = user.getDob().toString("yyyy-mm-dd");
+            this.dob = user.getDob().toString("yyyy-MM-dd");
         }
 
         /**
@@ -265,6 +289,7 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
         }
 
         /**
@@ -280,25 +305,31 @@ public class DatabaseOperations {
             // getting JSON Object
             // Note that get jse student id url accepts POST method
             JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(url_get_jse_student_id,
+            JSONObject jsonGet = jsonParser.makeHttpRequest(url_get_jse_student_id,
                     "POST", params);
 
             // check log cat for response
-            Log.d("Get JSE Student ID", json.toString());
+            Log.d("Get JSE Student ID", jsonGet.toString());
 
             try {
-                result = json.getString(TAG_RESULT);
-                studentId = json.getString(TAG_ID);
+                result = jsonGet.getString(TAG_RESULT);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            if (json != null && !result.equals("0")){
+            if (jsonGet != null && !result.equals("0")) {
+
+                try {
+
+                    studentId = jsonGet.getString(TAG_JSE_STUDENT_ID);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 // Building Parameters
                 List<NameValuePair> paramsUpdate = new ArrayList<NameValuePair>();
                 paramsUpdate.add(new BasicNameValuePair("id", Integer.toString(id)));
-                paramsUpdate.add(new BasicNameValuePair("studentId", studentId));
+                paramsUpdate.add(new BasicNameValuePair("jseStudentId", studentId));
 
                 JSONObject jsonUpdate = jsonParser.makeHttpRequest(url_update_jse_student_id,
                         "POST", paramsUpdate);
@@ -312,9 +343,9 @@ public class DatabaseOperations {
                     e.printStackTrace();
                 }
 
-                if (jsonUpdate != null && !resultUpdate.equals("0")){
+                if (jsonUpdate != null && !resultUpdate.equals("0")) {
                     mainActivity.user.setJseStudentId(studentId);
-                }  else {
+                } else {
                     Log.e("Update JSE Student Id", "Couldn't update JSE Student Id");
                 }
 
@@ -329,9 +360,7 @@ public class DatabaseOperations {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String result) {
-            // dismiss the dialog once done
-            // pDialog.dismiss();
-           // mainActivity.test();
+            //  mainActivity.test();
         }
 
     }

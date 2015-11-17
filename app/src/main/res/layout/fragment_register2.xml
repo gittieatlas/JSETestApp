@@ -98,21 +98,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
-            android:text="@string/gender"
-            style="@style/App_TextView_Colored_Label" />
-
-        <Spinner
-            android:id="@+id/spinnerGender"
-            style="@style/App_Spinner"  />
-
-
-        <View
-            style="@style/App_Divider_Spinner"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
             android:text="@string/ssn"
             style="@style/App_TextView_Colored_Label" />
 
@@ -124,6 +109,21 @@
             android:inputType="numberPassword"
             android:maxLength="4"
             android:imeOptions="actionNext"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/gender"
+            style="@style/App_TextView_Colored_Label" />
+
+        <Spinner
+            android:id="@+id/spinnerGender"
+            style="@style/App_Spinner"  />
+
+
+        <View
+            style="@style/App_Divider_Spinner"/>
 
         <TextView
             android:layout_width="match_parent"

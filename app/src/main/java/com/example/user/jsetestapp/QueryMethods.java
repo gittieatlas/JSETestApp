@@ -149,7 +149,7 @@ public class QueryMethods extends Activity {
         if (mainActivity.user.jseStudentId == null) {
             mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
         } else {
-           // mainActivity.test();
+          mainActivity.test();
         }
     }
 

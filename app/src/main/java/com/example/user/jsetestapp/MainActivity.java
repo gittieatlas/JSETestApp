@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         intentMethods.setMainActivity(this);
         splashActivity = new SplashActivity();
         splashActivity.setMainActivity(this);
-        databaseOperations  = new DatabaseOperations();
+        databaseOperations = new DatabaseOperations();
         databaseOperations.setMainActivity(this);
 
     }
@@ -234,19 +234,19 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.log_out) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("fragment", "log_out");
-            startActivity(intent);
+            //ToDo fix onCreate of LoginAcitivyt to handle this intent
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            intent.putExtra("fragment", "log_out");
+//            startActivity(intent);
 
-            Toast.makeText(this, "You've been logged out!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You've been logged out!- this feature does not work yet", Toast.LENGTH_LONG).show();
             return true;
 
         }
 
         if (id == R.id.update_profile) {
-
+            //ToDo Rochel- is this code good?
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
@@ -372,9 +372,9 @@ public class MainActivity extends AppCompatActivity {
 //        return LocalDate.now();
 //    }
 
-    public void test(){
+    public void test() {
 
-        Toast.makeText(this, user.getJseStudentId(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "JSE Student Id is " + user.getJseStudentId(), Toast.LENGTH_LONG).show();
     }
 
 }

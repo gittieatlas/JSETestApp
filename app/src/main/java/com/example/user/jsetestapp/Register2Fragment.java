@@ -215,7 +215,7 @@ public class Register2Fragment extends Fragment {
     private void saveUser() {
         loginActivity.user.setFirstName(firstNameEditText.getText().toString());
         loginActivity.user.setLastName(lastNameEditText.getText().toString());
-        loginActivity.user.setSsn("xxx-xx-" + ssnEditText.getText().toString());
+        loginActivity.user.setSsn("XXX-XX-" + ssnEditText.getText().toString());
         loginActivity.user.setGender(genderSpinner.getSelectedItem().toString());
         loginActivity.user.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
         loginActivity.user.setDob(dobYearEditText.getText().toString(), dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());

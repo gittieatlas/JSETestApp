@@ -107,4 +107,9 @@
     <string name="d_office_closed_set_msg"> The JSE office is currently closed.
         Would you like to set a reminder on your phone to call during office hours?</string>
 
+    <string name="d_fields_require_values_msg">All fields require a value.</string>
+    <string name="d_invalid_email_msg">Email address entered is not valid.
+        Please correct and try again.</string>
+
+
 </resources>

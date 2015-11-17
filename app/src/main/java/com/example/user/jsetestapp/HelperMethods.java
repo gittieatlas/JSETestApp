@@ -2,6 +2,8 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -269,19 +271,25 @@ public class HelperMethods extends Activity {
 //    }
 
 
-    public void createUser(String result, int id) {
-        if (result.equals("true")) {
-            loginActivity.user.setId(id);
-            loginActivity.switchToMainActivity("create_account");
-        } else {
+    public void createUser(String result, int id, ProgressDialog pDialog) {
+        if (result.equals("") && id == 0){
             loginActivity.showDialog("Create Account Failed",
                     "Please enter a different email address. This one is already taken.",
                     null, null, "OK", R.drawable.ic_alert_grey600_24dp,
                     "create_account_failed_email_duplicate");
+        } else if (result.equals("true") && id != 0) {
+            loginActivity.user.setId(id);
+            loginActivity.switchToMainActivity("create_account");
+            pDialog.dismiss();
+        } else {
+            loginActivity.showDialog("Create Account Failed",
+                    "Account could not be created at this time. Please try again later.",
+                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
+                    "create_account_failed_insert_failed");
         }
     }
 
-    public void getUser(String result) {
+    public void getUser(String result, ProgressDialog pDialog) {
         if (result.equals("0")) {
            // Not logged in
             loginActivity.showDialog("Login Failed",
@@ -290,9 +298,8 @@ public class HelperMethods extends Activity {
                     "login_failed_not_match");
         } else {
             //login successful
-           // Toast.makeText(loginActivity.getContext(), "Logged In", Toast.LENGTH_LONG).show();
-           // Toast.makeText(loginActivity.getContext(),loginActivity.user.firstName,Toast.LENGTH_LONG).show();
             loginActivity.switchToMainActivity("login");
+            pDialog.dismiss();
 
         }
     }
@@ -330,15 +337,42 @@ public class HelperMethods extends Activity {
     /**
      * Function to check if the current time is a start and end time
      *
-     * @param start     -   beginning time
-     * @param end       -   finishing time
-     * @param time      -   now
-     * @return boolean  -   if is between, return true; if is not between, return false
+     * @param start         -   beginning time
+     * @param end           -   finishing time
+     * @param time          -   now
+     * @return boolean      -   if is between, return true; if is not between, return false
      */
     public boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
         if (time.isAfter(start) && time.isBefore(end)) {
             return true;
         }
         return false;
+    }
+    /**
+     * Function to check if a string is a valid email address
+     *
+     * @param email         -   string containing the email to be validated
+     * @return boolean      -   if valid return true; if not valid return false
+     */
+    public boolean isEmailAddressValid(String email){
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return true;
+        } else
+            return false;
+    }
+
+    /**
+     * Function to check internet status
+     *
+     * @param context       -   current context
+     * @return boolean      -   true if present/false if not present
+     */
+    public static boolean checkInternetConnection(Context context) {
+
+        // creating connection detector class instance
+        ConnectionDetector cd = new ConnectionDetector(context);
+
+        // get Internet status
+        return cd.isConnectingToInternet();
     }
 }

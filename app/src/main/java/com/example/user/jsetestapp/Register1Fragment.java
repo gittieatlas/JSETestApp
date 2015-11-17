@@ -136,10 +136,7 @@ public class Register1Fragment extends Fragment {
     }
 
     private boolean isEmailValid() {
-        if (android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText()).matches()) {
-            isEmailValid = true;
-        } else
-            isEmailValid = false;
+        isEmailValid = loginActivity.helperMethods.isEmailAddressValid(emailEditText.getText().toString());
         return isEmailValid;
     }
 

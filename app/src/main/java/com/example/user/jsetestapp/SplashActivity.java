@@ -43,78 +43,22 @@ public class SplashActivity extends AppCompatActivity {
     Boolean gotBranches = false;
     Boolean gotAlerts = false;
 
-    ServiceHandler sh = new ServiceHandler();
-
-    // URL to get branchesJsonArray JSON
-    private static String branches_url =
-            "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
-    // URL to get testsJsonArray JSON
-    private static String tests_url =
-            "http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php";
-    // URL to get hoursJsonArray JSON
-    private static String hours_url =
-            "http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php";
-    // URL to get alertsJsonArray JSON
-    private static String alerts_url =
-            "http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php";
-
-    // JSON Node names - branches
-    private static final String TAG_BRANCHES = "branches";
-    private static final String TAG_ID = "id";
-    final String TAG_NAME = "name";
-
-    // JSON Node names - tests
-    private static final String TAG_TESTS = "tests";
-    private static final String TAG_BRANCH_ID = "branchId";
-    private static final String TAG_LOCATION = "NAME";
-    private static final String TAG_DATE = "date";
-    private static final String TAG_TIME = "time";
-    private static final String TAG_CLOSING_DATE = "closingDate";
-    private static final String TAG_CLOSING_TIME = "closingTime";
-    private static final String TAG_GENDER = "gender";
-
-    // JSON Node names - hours
-    private static final String TAG_HOURS = "hours";
-    private static final String TAG_LIBRARY_LOCATION = "name";
-    private static final String TAG_DAY_OF_WEEK = "dayOfWeek";
-    private static final String TAG_OPENING_TIME = "openingTime";
-    private static final String TAG_DURATION = "duration";
-
-    //JSON Nodes names - alerts
-    private static final String TAG_ALERTS = "alerts";
-    private static final String TAG_LOCATION_NAME = "NAME";
-    private static final String TAG_ALERT_TEXT = "alertText";
-    private static final String TAG_TIME_STAMP = "timeStamp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // attaching Crashlytics kit to the app
+        // Entry point to initialize Fabric and contained Kits
         Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.activity_splash);
 
         // check for Internet status and set true/false
-        if (checkInternetConnection()) {
+        if (HelperMethods.checkInternetConnection(getApplicationContext())) {
             getDataFromDatabase();
         } else {
             displayDialog("no_internet_connection");
         }
-    }
-
-    /**
-     * Function to check internet status
-     *
-     * @return boolean  -   true if present/false if not present
-     */
-    private boolean checkInternetConnection() {
-
-        // creating connection detector class instance
-        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
-
-        // get Internet status
-        return cd.isConnectingToInternet();
     }
 
     private void getDataFromDatabase() {
@@ -131,27 +75,30 @@ public class SplashActivity extends AppCompatActivity {
         locationsArrayList = new ArrayList<Location>();
         new GetLocations().execute();
     }
-    public void setUpTests(){
+
+    public void setUpTests() {
         testsArrayList = new ArrayList<Test>();
         new GetTests().execute();
 
     }
-    public void setUpHours(){
+
+    public void setUpHours() {
         hoursArrayList = new ArrayList<Hours>();
         new GetHours().execute();
 
     }
-    public void setUpBranches(){
+
+    public void setUpBranches() {
         branchesArrayList = new ArrayList<Branch>();
         new GetBranches().execute();
 
     }
-    public void setUpAlerts(){
+
+    public void setUpAlerts() {
         alertsArrayList = new ArrayList<Alerts>();
         new getAlerts().execute();
 
     }
-
 
 
     private void displayDialog(String tag) {
@@ -182,7 +129,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-
+            ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(locations_url, ServiceHandler.GET);
 
@@ -281,6 +228,20 @@ public class SplashActivity extends AppCompatActivity {
      */
     private class GetTests extends AsyncTask<Void, Void, Void> {
 
+        // URL to get testsJsonArray JSON
+        private String tests_url =
+                "http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php";
+
+        // JSON Node names - tests
+        private static final String TAG_TESTS = "tests";
+        private static final String TAG_BRANCH_ID = "branchId";
+        private static final String TAG_LOCATION = "NAME";
+        private static final String TAG_DATE = "date";
+        private static final String TAG_TIME = "time";
+        private static final String TAG_CLOSING_DATE = "closingDate";
+        private static final String TAG_CLOSING_TIME = "closingTime";
+        private static final String TAG_GENDER = "gender";
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -288,7 +249,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-
+            ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(tests_url, ServiceHandler.GET);
 
@@ -347,6 +308,17 @@ public class SplashActivity extends AppCompatActivity {
      */
     private class GetHours extends AsyncTask<Void, Void, Void> {
 
+        // URL to get hoursJsonArray JSON
+        private String hours_url =
+                "http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php";
+
+        // JSON Node names - hours
+        private static final String TAG_HOURS = "hours";
+        private static final String TAG_LIBRARY_LOCATION = "name";
+        private static final String TAG_DAY_OF_WEEK = "dayOfWeek";
+        private static final String TAG_OPENING_TIME = "openingTime";
+        private static final String TAG_DURATION = "duration";
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -354,7 +326,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-
+            ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(hours_url, ServiceHandler.GET);
 
@@ -403,6 +375,16 @@ public class SplashActivity extends AppCompatActivity {
      */
     private class GetBranches extends AsyncTask<Void, Void, Void> {
 
+        // URL to get branchesJsonArray JSON
+        private String branches_url =
+                "http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php";
+
+        // JSON Node names - branches
+        private static final String TAG_BRANCHES = "branches";
+        private static final String TAG_ID = "id";
+        final String TAG_NAME = "name";
+
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -410,7 +392,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-
+            ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(branches_url, ServiceHandler.GET);
 
@@ -454,6 +436,16 @@ public class SplashActivity extends AppCompatActivity {
      */
     private class getAlerts extends AsyncTask<Void, Void, Void> {
 
+        // URL to get alertsJsonArray JSON
+        private static final String alerts_url =
+                "http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php";
+
+        //JSON Nodes names - alerts
+        private static final String TAG_ALERTS = "alerts";
+        private static final String TAG_LOCATION_NAME = "NAME";
+        private static final String TAG_ALERT_TEXT = "alertText";
+        private static final String TAG_TIME_STAMP = "timeStamp";
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -461,7 +453,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-
+            ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(alerts_url, ServiceHandler.GET);
 

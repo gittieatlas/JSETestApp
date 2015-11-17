@@ -46,18 +46,20 @@ android {
 
         useLibrary 'org.apache.http.legacy'
     }
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/LICENSE.txt'
     }
 
     dependencies {
         compile fileTree(include: ['*.jar'], dir: 'libs')
-        compile 'joda-time:joda-time:2.8.2'
         // for joda
-        compile 'com.android.support:appcompat-v7:23.0.1'
-        compile 'com.android.support:design:23.0.1'
-        compile 'com.android.support:recyclerview-v7:23.0.+'
+        compile 'joda-time:joda-time:2.8.2'
+        // Support Libraries
+        compile 'com.android.support:appcompat-v7:23.0.0'
         compile 'com.android.support:cardview-v7:23.0.0'
+        compile 'com.android.support:design:23.0.0'
+        compile 'com.android.support:recyclerview-v7:23.0.0'
+
         provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     }
 }
