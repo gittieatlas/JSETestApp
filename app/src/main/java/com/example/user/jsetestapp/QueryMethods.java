@@ -59,7 +59,11 @@ public class QueryMethods extends Activity {
         mainActivity.branchesNameArrayList.add("Branch");
 
         for (Branch branch : mainActivity.branchesArrayList) {
-            mainActivity.branchesNameArrayList.add(branch.getName());
+            if (branch.getId() == (mainActivity.defaultLocation.brachId)) {
+                mainActivity.branchesNameArrayList.add(branch.getName() + " (Default Branch)");
+            } else {
+                mainActivity.branchesNameArrayList.add(branch.getName());
+            }
         }
 
     }

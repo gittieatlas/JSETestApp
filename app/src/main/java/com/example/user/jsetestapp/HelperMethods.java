@@ -5,8 +5,10 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -68,8 +70,8 @@ public class HelperMethods extends Activity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         spinner.setAdapter(adapter);
 
-        if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
-        else spinner.setSelection(0);
+        //if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
+        //else spinner.setSelection(0);
     }
 
     //for register2 page locationSpinner
@@ -295,30 +297,38 @@ public class HelperMethods extends Activity {
         }
     }
 
-    public void showSnackBar() {
-        String message = "";
+    public void checkTag() {
         switch (mainActivity.queryMethods.getTag()) {
 
             case "create_account": {
-                message = "Account created";
+                showSnackBar("Account created");
                 break;
             }
             case "login": {
-                message = "Logged in";
+                showSnackBar("Logged in");
                 break;
             }
             case "update_profile": {
-                message = "Profile updated";
+                showSnackBar("Profile updated");
+                break;
+            }
+            case "update_profile_cancel": {
+                showSnackBar("Profile not updated");
                 break;
             }
         }
-
-        Snackbar snackbar = Snackbar
-                .make(mainActivity.container, message, Snackbar.LENGTH_LONG);
-
-        snackbar.show();
     }
 
+    /**
+     * Function to show a snack bar in MainActivity - dashboard
+     *
+     * @param message - snack bar message
+     */
+    public void showSnackBar(String message){
+        Snackbar snackbar = Snackbar
+                .make(mainActivity.container, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
     /**
      * Function to check if the current time is a start and end time
      *
@@ -377,28 +387,28 @@ public class HelperMethods extends Activity {
 
         //get start time and end time of today's office hours
         switch (dayOfWeek) {
-            case "5": {
-                // Friday
-                startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
-                endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
-                break;
-            }
-            case "6": {
-                // Saturday
-                // closed ?
-                return false;
-            }
-            case "7": {
-                // Sunday
-                // closed ?
-                return false;
-            }
-            default: {
-                // Monday - Thursday
-                startTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-                endTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
-                break;
-            }
+                case "5": {
+                    // Friday
+                    startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
+                    endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
+                    break;
+                }
+                case "6": {
+                    // Saturday
+                    // closed ?
+                    return false;
+                }
+                case "7": {
+                    // Sunday
+                    // closed ?
+                    return false;
+                }
+                default: {
+                    // Monday - Thursday
+                    startTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+                    endTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
+                    break;
+                }
         }
 
         LocalTime start = LocalTime.parse(startTime, parseFormat);
@@ -417,6 +427,53 @@ public class HelperMethods extends Activity {
             }
         }
         return 0;
+    }
+
+    public int setBranchSpinnerSelection() {
+
+        for (String s : mainActivity.branchesNameArrayList) {
+//            if (mainActivity.defaultLocation.name.equals(s)) {
+//                return mainActivity.branchesNameArrayList.indexOf(s)+1;
+//            }
+            String d = " (Default Branch)";
+            if (s.contains(d)){
+               return mainActivity.branchesNameArrayList.indexOf(s);
+            }
+        }
+        return 0;
+    }
+
+    public void setupUI(View view) {
+
+        //Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+
+            view.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(loginActivity);
+                    return false;
+                }
+
+            });
+        }
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+                View innerView = ((ViewGroup) view).getChildAt(i);
+
+                setupUI(innerView);
+            }
+        }
+    }
+
+
+
+    public static void hideSoftKeyboard(Activity loginActivity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0);
     }
 
 }

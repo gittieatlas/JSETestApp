@@ -30,22 +30,31 @@ public class DialogListeners extends Activity {
 
                 LocalDate localDate = LocalDate.now();
                 int dayOfWeek = localDate.getDayOfWeek();
-
-                // checking if dayOfWeek is friday, Shabbos, thursday or any other day
                 String hours = mainActivity.getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-                if (dayOfWeek == 5) {
-                    // friday
-                    setReminderToCallJse(hours, 3);
-                } else if (dayOfWeek == 6) {
-                    setReminderToCallJse(hours, 2);
-                } else if (dayOfWeek == 4) {
-                    String fridayHours = mainActivity.getResources().getString(R.string.jse_office_hours_friday_hours_end_time);
-                    setReminderToCallJse(fridayHours, 1);
-                } else {
-                    setReminderToCallJse(hours, 1);
+                switch (dayOfWeek) {
+                    case 4: {
+                        // Thursday
+                        String fridayHours = mainActivity.getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
+                        setReminderToCallJse(fridayHours, 1);
+                    }
+                    case 5: {
+                        // Friday
+                        setReminderToCallJse(hours, 3);
+                    }
+                    case 6: {
+                        // Saturday
+                        // closed ?
+                        setReminderToCallJse(hours, 2);
+                    }
+                    default: {
+                        // Sunday - Thursday
+                        setReminderToCallJse(hours, 1);
+                    }
                 }
                 break;
             }
+
+
 
             case "call_jse_during_office_hours": {
                 mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
@@ -53,9 +62,7 @@ public class DialogListeners extends Activity {
             }
 
             case "results_no_tests": {
-                mainActivity.helperMethods.replaceFragment(R.id.container, mainActivity.searchFragment, mainActivity.getResources().getString(R.string.toolbar_title_search));
-                mainActivity.tabLayout.getTabAt(1).select();
-              //  getFragmentManager().popBackStack(); // activity has been destroyed
+                mainActivity.getFragmentManager().popBackStack();
             }
             case "login_activity": {
                 break;

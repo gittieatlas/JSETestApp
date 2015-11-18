@@ -104,7 +104,7 @@
 
     <!-- Dialogs Listener Tags -->
     <string name="d_call_jse_during_hours">call_jse_during_office_hours</string>
-    <string name="d_call_jse_non_hours">call_jse_during_office_hours</string>
+    <string name="d_call_jse_non_hours">call_jse_during_non_office_hours</string>
     <string name="d_create_account_insert_failed">create_account_failed_insert_failed</string>
     <string name="d_create_account_failed_duplicate_email">create_account_failed_email_duplicate</string>
 

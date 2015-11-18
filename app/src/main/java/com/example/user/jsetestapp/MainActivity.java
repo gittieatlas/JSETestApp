@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         initializeViews();
         createFragmentsActivitiesClasses();
-        helperMethods.showSnackBar();
+        helperMethods.checkTag();
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
@@ -78,13 +78,14 @@ public class MainActivity extends AppCompatActivity {
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpUser();
         queryMethods.setUpLocationsNameArrayList(this);
+        queryMethods.setUpDefaultLocation();
         queryMethods.setUpBranchesArrayList();
         queryMethods.setUpBranchesNameArrayList();
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpTestsFilteredArrayList();
         queryMethods.setUpHoursArrayList();
         queryMethods.setUpAlertsArrayList();
-        queryMethods.setUpDefaultLocation();
+
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
       //  Toast.makeText(this, user.firstName + defaultLocation.name, Toast.LENGTH_SHORT).show();
@@ -152,20 +153,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        ResultsFragment resultsFragment = new ResultsFragment();
-        try {
-            resultsFragment = (ResultsFragment) getFragmentManager().findFragmentById(R.id.container);
-        } catch (Exception ex) {
-
-        }
-
-        if (resultsFragment != null && resultsFragment.isVisible()) {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStack();
-        }
-        // ToDo add else for if coming from dashboard- show dialog to exit
-        else {
-            tabLayout.getTabAt(0).select();
-            getFragmentManager().popBackStack(getResources().getString(R.string.toolbar_title_dashboard), 0);
         }
     }
 
@@ -229,18 +218,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+// Handle action bar item clicks here. The action bar will
+// automatically handle clicks on the Home/Up button, so long
+// as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.log_out) {
-            //ToDo fix onCreate of LoginAcitivyt to handle this intent
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            intent.putExtra("fragment", "log_out");
-//            startActivity(intent);
+            Bundle bundle = getIntent().getExtras();
+            testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
 
-            Toast.makeText(this, "You've been logged out!- this feature does not work yet", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("locationsArrayList", locationsArrayList);
+            b.putSerializable("testsArrayList", testsArrayList);
+
+
+// b.putSerializable("testsArrayList", (ArrayList<Test>) bundle.getSerializable("testsArrayList"));
+
+            b.putSerializable("hoursArrayList", hoursArrayList);
+            b.putSerializable("branchesArrayList", branchesArrayList);
+            b.putSerializable("alertsArrayList", alertsArrayList);
+//b.putSerializable("user", user);
+            b.putSerializable("defaultLocation", defaultLocation);
+            intent.putExtras(b);
+            intent.putExtra("fragment", "log_out");
+            startActivity(intent);
+
+            Toast.makeText(this, "You've been logged out", Toast.LENGTH_LONG).show();
             return true;
 
         }
@@ -253,10 +257,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
-           b.putSerializable("testsArrayList", testsArrayList);
+            b.putSerializable("testsArrayList", testsArrayList);
 
 
-           // b.putSerializable("testsArrayList", (ArrayList<Test>) bundle.getSerializable("testsArrayList"));
+// b.putSerializable("testsArrayList", (ArrayList<Test>) bundle.getSerializable("testsArrayList"));
 
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
@@ -348,37 +352,6 @@ public class MainActivity extends AppCompatActivity {
     public Location getDefaultLocation() {
         return defaultLocation;
     }
-
-    //    private void loadSavedPreferences() {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//
-////To retrieve values from a shared preferences file, call methods such as getInt() and getString(),
-//// providing the key for the value you want, and optionally a default value to return if the key isn't present.
-//        //helperMethods.loadSavedPreferences(sharedPreferences);
-//        user.setFirstName(sharedPreferences.getString("first_name", null));
-//        user.setLastName(sharedPreferences.getString("last_name", null));
-//        user.setEmail(sharedPreferences.getString("email", null));
-//        user.setPassword(sharedPreferences.getString("password", null));
-//        user.setSsn(sharedPreferences.getString("ssn", null));
-//        user.setDob(convertDob());
-//        user.setDefaultLocation(sharedPreferences.getString("default_location", null));
-//        user.setGender(sharedPreferences.getString("gender", "3"));
-//
-//// ToDo Check if jseMember: if JSEMember x exist is SP or sp.JSEMember = false, checkIfJSEMember() from JSE database
-//// checkIfJseMember() getDOB() and getSocial(), compare to JDB, if member = true -> update SP to JSEMember = true
-//        user.setIsJseMember(sharedPreferences.getBoolean("is_jse_member", false));
-//
-//
-//
-//    }
-//    private LocalDate convertDob(){
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        String dobString = (sharedPreferences.getString("dob_month", null)+ "-" + sharedPreferences.getString("dob_day", null) + "-" + sharedPreferences.getString("dob_year", null));
-//        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM-dd-yyyy");
-////        LocalDate dob = dtf.parseLocalDate(dobString);
-//      //  return dob; ToDo // FIXME: 11/9/2015
-//        return LocalDate.now();
-//    }
 
     public void test() {
 

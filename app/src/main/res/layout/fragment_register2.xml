@@ -108,7 +108,7 @@
             style="@style/App_EditText"
             android:inputType="numberPassword"
             android:maxLength="4"
-            android:imeOptions="actionNext"/>
+            android:imeOptions="actionDone"/>
 
         <TextView
             android:layout_width="match_parent"

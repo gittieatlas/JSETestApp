@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -87,6 +91,24 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+        UpdateProfileFragment updateProfileFragment = new UpdateProfileFragment();
+        try {
+            updateProfileFragment = (UpdateProfileFragment) getFragmentManager().findFragmentById(R.id.container);
+        } catch (Exception ex) {
+
+        }
+
+        if (updateProfileFragment != null && updateProfileFragment.isVisible()) {
+            switchToMainActivity("update_profile_cancel");
+        } else if (getFragmentManager().getBackStackEntryCount() >= 1) {
+            getFragmentManager().popBackStack();
+        }
+    }
+
     private void initializeViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         container = (FrameLayout) findViewById(R.id.container);
@@ -142,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
         b.putString("tag", tag);
         intent.putExtras(b);
         startActivity(intent);
+        finish();
     }
 
 
@@ -185,6 +208,12 @@ public class LoginActivity extends AppCompatActivity {
 
         dialogFragment.show(fm, tagListener);
     }
+
+
+
+
+
+
 
     public static Context getContext() {
         return sContext;

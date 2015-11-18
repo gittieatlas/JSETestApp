@@ -2,6 +2,8 @@ package com.example.user.jsetestapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +49,7 @@ public class UpdateProfileFragment extends Fragment {
                 container, false);
 
         initializeViews(rootView);
+        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         loadUserInformation();
         registerListeners();
         return rootView;
@@ -89,9 +92,9 @@ public class UpdateProfileFragment extends Fragment {
         firstNameEditText.setText(loginActivity.user.firstName);
         lastNameEditText.setText(loginActivity.user.lastName);
         int month = loginActivity.user.dob.getMonthOfYear();
-        dobMonthEditText.setText(month + "");
+        setDayAndMonthEditTexts(month, dobMonthEditText);
         int day = loginActivity.user.dob.getDayOfMonth();
-        dobDayEditText.setText(day + "");
+        setDayAndMonthEditTexts(day, dobDayEditText);
         int year = loginActivity.user.dob.getYear();
         dobYearEditText.setText(year + "");
         String ssn = loginActivity.user.ssn;
@@ -105,35 +108,57 @@ public class UpdateProfileFragment extends Fragment {
         confirmNewPasswordEditText.setText(loginActivity.user.password);
     }
 
+    public void setDayAndMonthEditTexts(int value, EditText editText){
+    if (value<10)
+       editText.setText("0"+value);
+        else
+        editText.setText(value+"");
+    }
+
     private void registerListeners() {
         genderSpinner.setOnItemSelectedListener(genderSpinnerOnItemSelectedListener);
         locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
-//        firstNameEditText.addTextChangedListener(textWatcher);
-//        lastNameEditText.addTextChangedListener(textWatcher);
-//        dobDayEditText.addTextChangedListener(textWatcher);
-//        dobMonthEditText.addTextChangedListener(textWatcher);
-//        dobYearEditText.addTextChangedListener(textWatcher);
-//        ssnEditText.addTextChangedListener(textWatcher);
-        //newPasswordEditText.addTextChangedListener(textWatcher);
-        //confirmNewPasswordEditText.addTextChangedListener(textWatcher);
+        dobDayEditText.addTextChangedListener(textWatcher);
+        dobMonthEditText.addTextChangedListener(textWatcher);
+        dobYearEditText.addTextChangedListener(textWatcher);
+        ssnEditText.addTextChangedListener(textWatcher);
     }
 
-//    private TextWatcher textWatcher = new TextWatcher() {
-//
-//        public void afterTextChanged(Editable s) {
-//        }
-//
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//        }
-//
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            controlsHaveValues();
-//        }
-//
-//    };
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        public void afterTextChanged(Editable s) {
+            if (s==dobMonthEditText.getEditableText()){
+                if (dobMonthEditText.getText().toString().length() == 2)
+                    dobDayEditText.requestFocus();
+            }
+            if (s==dobDayEditText.getEditableText()){
+                if (dobDayEditText.getText().toString().length() == 2)
+                    dobYearEditText.requestFocus();
+            }
+            if (s==dobYearEditText.getEditableText()){
+                if (dobYearEditText.getText().toString().length() == 4)
+                    ssnEditText.requestFocus();
+            }
+            if (s== ssnEditText.getEditableText()) {
+                if (ssnEditText.getText().toString().length() == 4)
+                    loginActivity.helperMethods.hideSoftKeyboard(loginActivity);
+            }
+
+
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            //controlsHaveValues();
+
+        }
+
+    };
 
     private Boolean controlsHaveValues() {
         if (!loginActivity.helperMethods.isEmpty(firstNameEditText) &&
@@ -178,9 +203,10 @@ public class UpdateProfileFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            loginActivity.helperMethods.replaceFragment(R.id.container,
-                    loginActivity.register1Fragment, loginActivity.getResources()
-                            .getString(R.string.toolbar_title_register1), loginActivity);
+//            loginActivity.helperMethods.replaceFragment(R.id.container,
+//                    loginActivity.register1Fragment, loginActivity.getResources()
+//                            .getString(R.string.toolbar_title_register1), loginActivity);
+//this listener will be gone
         }
     };
 
@@ -291,6 +317,7 @@ public class UpdateProfileFragment extends Fragment {
         }
         return isSsn;
     }
+
 
 
     public void setLoginActivity(LoginActivity loginActivity) {

@@ -40,6 +40,7 @@ public class LoginFragment extends Fragment {
                 container, false);
 
         initializeViews(rootView);
+        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
         //  ToDo fix this error
         // loginActivity.setToolbarTitle(R.string.toolbar_title_login);

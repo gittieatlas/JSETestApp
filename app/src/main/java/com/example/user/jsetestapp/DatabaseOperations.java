@@ -394,7 +394,7 @@ public class DatabaseOperations {
             this.gender = Integer.toString(user.getGender(user) + 1);
             this.ssn = user.getSsn();
             this.locationId = Integer.toString(user.getLocationId());
-            //TODO look into ssn in db
+
 
         }
 
@@ -404,10 +404,15 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog = new ProgressDialog(loginActivity);
+            pDialog.setMessage("Updating account. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         /**
-         * Creating product
+         * Updating User
          */
         protected String doInBackground(String... args) {
 
@@ -451,7 +456,7 @@ public class DatabaseOperations {
          **/
         protected void onPostExecute(String result) {
             // dismiss the dialog once done
-            // pDialog.dismiss();
+             pDialog.dismiss();
             loginActivity.helperMethods.updateUser(result);
         }
 

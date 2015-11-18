@@ -58,38 +58,40 @@
 
             <EditText
                 android:id="@+id/dobMonthEditText"
-                style="@style/App_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/App_EditText"
                 android:layout_marginRight="7dp"
-                android:layout_weight="1"
-                android:inputType="text" />
+                android:inputType="number"
+                android:maxLength="2"
+                android:imeOptions="actionNext"/>
 
-            <LinearLayout
+
+            <EditText
+                android:id="@+id/dobDayEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                style="@style/App_EditText"
+                android:layout_marginRight="7dp"
+                android:inputType="number"
+                android:maxLength="2"
+                android:imeOptions="actionNext"/>
 
-                <EditText
-                    android:id="@+id/dobDayEditText"
-                    style="@style/App_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="7dp"
-                    android:layout_weight="1"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/dobYearEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/App_EditText"
+                android:inputType="number"
+                android:maxLength="4"
+                android:imeOptions="actionNext"/>
 
-                <EditText
-                    android:id="@+id/dobYearEditText"
-                    style="@style/App_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="number" />
-            </LinearLayout>
 
         </LinearLayout>
+
 
         <TextView
             style="@style/App_TextView_Colored_Label"

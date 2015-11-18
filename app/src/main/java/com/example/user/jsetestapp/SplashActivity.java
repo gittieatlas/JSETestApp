@@ -171,6 +171,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // JSON Node names - locations
         final String TAG__LOCATION_ID = "id";
+        final String TAG__BRANCH_ID = "branchId";
         final String TAG_NAME = "name";
         final String TAG_PHONE = "phoneNumber";
 
@@ -180,6 +181,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
             location.setId(Integer.parseInt(c.getString(TAG__LOCATION_ID)));
+            location.setBrachId(Integer.parseInt(c.getString(TAG__BRANCH_ID)));
             location.setName(c.getString(TAG_NAME));
             location.setAddress(getAddress(c));
             location.setPhone(c.getString(TAG_PHONE));

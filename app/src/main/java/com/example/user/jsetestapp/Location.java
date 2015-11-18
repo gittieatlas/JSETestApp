@@ -5,10 +5,18 @@ import java.util.ArrayList;
 
 public class Location implements Serializable {
 
-    int id;
+    int id, brachId;
     String name, address, phone;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Alerts> alertsArrayList;
+
+    public int getBrachId() {
+        return brachId;
+    }
+
+    public void setBrachId(int brachId) {
+        this.brachId = brachId;
+    }
 
     public Location() {
 

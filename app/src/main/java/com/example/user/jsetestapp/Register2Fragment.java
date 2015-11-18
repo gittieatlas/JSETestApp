@@ -1,13 +1,17 @@
 package com.example.user.jsetestapp;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,7 +21,7 @@ import android.widget.Spinner;
 import org.joda.time.LocalDate;
 
 public class Register2Fragment extends Fragment {
-
+    //ToDo remove location from arrayList
     //Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
@@ -35,7 +39,7 @@ public class Register2Fragment extends Fragment {
     Boolean isValuesEntered = false;
     Boolean genderSpinnersHasValue = false;
     Boolean locationsSpinnersHasValue = false;
-    Boolean isBirthdayCorrect = false;
+  //  Boolean isBirthdayCorrect = false;
     Boolean isSsn = false;
 
     @Override
@@ -46,6 +50,7 @@ public class Register2Fragment extends Fragment {
                 container, false);
 
         initializeViews(rootView);
+        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
         return rootView;
     }
@@ -78,6 +83,7 @@ public class Register2Fragment extends Fragment {
 
         loginActivity.helperMethods.addDataToSpinnerFromLoginActivity(
                 loginActivity.locationsNameArrayList, locationsSpinner);
+
     }
 
     private void registerListeners() {
@@ -85,8 +91,6 @@ public class Register2Fragment extends Fragment {
         locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
-        firstNameEditText.addTextChangedListener(textWatcher);
-        lastNameEditText.addTextChangedListener(textWatcher);
         dobDayEditText.addTextChangedListener(textWatcher);
         dobMonthEditText.addTextChangedListener(textWatcher);
         dobYearEditText.addTextChangedListener(textWatcher);
@@ -96,16 +100,34 @@ public class Register2Fragment extends Fragment {
     private TextWatcher textWatcher = new TextWatcher() {
 
         public void afterTextChanged(Editable s) {
-        }
+            if (s==dobMonthEditText.getEditableText()){
+                if (dobMonthEditText.getText().toString().length() == 2)
+                    dobDayEditText.requestFocus();
+            }
+            if (s==dobDayEditText.getEditableText()){
+                if (dobDayEditText.getText().toString().length() == 2)
+                    dobYearEditText.requestFocus();
+            }
+            if (s==dobYearEditText.getEditableText()){
+                if (dobYearEditText.getText().toString().length() == 4)
+                    ssnEditText.requestFocus();
+            }
+            if (s== ssnEditText.getEditableText()) {
+                if (ssnEditText.getText().toString().length() == 4)
+                    loginActivity.helperMethods.hideSoftKeyboard(loginActivity);
+                }
+
+
+            }
+
 
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            controlsHaveValues();
+            //controlsHaveValues();
         }
-
     };
 
     private Boolean controlsHaveValues() {
@@ -115,18 +137,16 @@ public class Register2Fragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(ssnEditText)) {
-            isValuesEntered = true;
-        } else {
-            isValuesEntered = false;
-        }
-        return isValuesEntered;
+            return true;
+        } else
+        return false;
     }
 
     OnClickListener rightButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            if (!isValuesEntered || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
+            if (!controlsHaveValues() || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
                 loginActivity.showDialog("Create Account Failed", "All fields require a value.",
                         "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_missing_fields");
             } else {
@@ -139,8 +159,9 @@ public class Register2Fragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register1Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register1), loginActivity);
-        }
+
+            loginActivity.getFragmentManager().popBackStack();
+                    }
     };
 
     AdapterView.OnItemSelectedListener genderSpinnerOnItemSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -198,19 +219,17 @@ public class Register2Fragment extends Fragment {
 
     private Boolean isBirthdayCorrect() {
 
-        LocalDate currentDate = LocalDate.now();
+       // LocalDate currentDate = LocalDate.now();
+        User user = new User();
+        try {
+            user.setDob(dobYearEditText.getText().toString(),
+                    dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
+                return true;
 
-        if (Integer.parseInt(dobDayEditText.getText().toString()) > 31 ||
-                Integer.parseInt(dobMonthEditText.getText().toString()) > 12 ||
-                Integer.parseInt(dobMonthEditText.getText().toString()) > 12 ||
-                Integer.parseInt(dobYearEditText.getText().toString()) < (currentDate.getYear() - 100) ||
-                Integer.parseInt(dobYearEditText.getText().toString()) > (currentDate.getYear())) {
-
-            isBirthdayCorrect = false;
-        } else {
-            isBirthdayCorrect = true;
+        }catch (Exception ex) {
+            return false;
         }
-        return isBirthdayCorrect;
+
     }
 
     private Boolean isSsn() {
@@ -232,6 +251,7 @@ public class Register2Fragment extends Fragment {
                 dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
         loginActivity.user.setLocationId(loginActivity.locationsArrayList, loginActivity.user);
     }
+
 
     public void setLoginActivity(LoginActivity loginActivity) {
 
