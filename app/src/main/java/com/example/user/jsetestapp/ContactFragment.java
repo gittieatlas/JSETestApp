@@ -36,6 +36,13 @@ public class ContactFragment extends Fragment {
         setText();
         return rootView;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+         mainActivity.tabLayout.getTabAt(3).select();
+
+    }
 
     private void initializeViews(View rootView) {
 

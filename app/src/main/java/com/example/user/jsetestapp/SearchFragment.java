@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SearchFragment extends Fragment{
+public class SearchFragment extends Fragment {
 
     //Controls
     View rootView;
@@ -48,30 +48,25 @@ public class SearchFragment extends Fragment{
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        locationsSpinner.setSelection(2); // ToDo set to default location
+
+        locationsSpinner.setSelection(mainActivity.helperMethods
+                .setBranchSpinnerSelection());
         daysOfWeekSpinner.setSelection(0);
+
+        mainActivity.tabLayout.getTabAt(1).select();
     }
 
     private String getOpenRegistrationDates() {
 
-        //TODO run sql query to get fromDate and toDate
-       // mainActivity.helperMethods.getOpenRegistrationDateRange();
-//        Collections.sort(mainActivity.testsArrayList, new Comparable<Test>(){
-//
-//
-//                    public int compare(Test t1, Test t2) {
-//                        return t1.getDate().compareTo(t2.getDate());
-//
-//                    }
-//                }
-//        );
         Collections.sort(mainActivity.testsArrayList);
 
         String fromDate = mainActivity.testsArrayList.get(0).getDate().toString("MMMM dd yyyy");
-        String toDate = mainActivity.testsArrayList.get(mainActivity.testsArrayList.size()-1).getDate().toString("MMMM dd yyyy");
-        String openRegistrationString = String.format(getResources().getString(R.string.registration_date_range),
+        String toDate = mainActivity.testsArrayList.get(
+                mainActivity.testsArrayList.size() - 1).getDate().toString("MMMM dd yyyy");
+        String openRegistrationString =
+                String.format(getResources().getString(R.string.registration_date_range),
                 fromDate, toDate);
         return openRegistrationString;
     }
@@ -104,15 +99,15 @@ public class SearchFragment extends Fragment{
         @Override
         public void onClick(View v) {
             //TODO pass to method that will query and then update array and then notify data set changed
-            Branch searchCriteriaBranch=new Branch();
-            for (Branch branch: mainActivity.branchesArrayList){
+            Branch searchCriteriaBranch = new Branch();
+            for (Branch branch : mainActivity.branchesArrayList) {
                 if (locationsSpinner.getSelectedItem().toString().equals(branch.getName()))
-                     searchCriteriaBranch =branch;
+                    searchCriteriaBranch = branch;
             }
 
-            int  searchCriteriaDayOfWeek= daysOfWeekSpinner.getSelectedItemPosition();
-            mainActivity.helperMethods.findTests(searchCriteriaBranch,searchCriteriaDayOfWeek);
-    }
+            int searchCriteriaDayOfWeek = daysOfWeekSpinner.getSelectedItemPosition();
+            mainActivity.helperMethods.findTests(searchCriteriaBranch, searchCriteriaDayOfWeek);
+        }
     };
 
     public void setMainActivity(MainActivity mainActivity) {

@@ -38,6 +38,7 @@ public class Register1Fragment extends Fragment {
                 container, false);
 
         initializeViews(rootView);
+        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
         loginActivity.setToolbarTitle(R.string.toolbar_title_register1);
 
@@ -91,7 +92,8 @@ public class Register1Fragment extends Fragment {
         @Override
         public void onClick(View v) {
             // this will be the "already have an account? Sign in" button
-            loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.loginFragment, loginActivity.getResources().getString(R.string.toolbar_title_login), loginActivity);
+           // loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.loginFragment, loginActivity.getResources().getString(R.string.toolbar_title_login), loginActivity);
+            loginActivity.getFragmentManager().popBackStack();
         }
     };
 

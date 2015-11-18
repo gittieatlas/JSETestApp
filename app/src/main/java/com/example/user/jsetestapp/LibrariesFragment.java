@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 public class LibrariesFragment extends Fragment {
@@ -65,6 +64,7 @@ public class LibrariesFragment extends Fragment {
 
         locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
 
+        mainActivity.tabLayout.getTabAt(2).select();
     }
 
     private Location getSelectedLocation() {

@@ -58,6 +58,8 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
                 new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
+
+
     private void initializeViews(View rootView) {
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);

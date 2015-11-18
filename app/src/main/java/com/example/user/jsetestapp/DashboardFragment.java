@@ -19,7 +19,6 @@ public class DashboardFragment extends Fragment {
     View rootView;
     TextView locationTextView, alertsTitleTextView, alertsDayTextView,
             alertsDateTextView, alertsTimeTextView, alertsMessageTextView;
-    ;
     CardView findTestButton;
 
     //Activities
@@ -62,6 +61,8 @@ public class DashboardFragment extends Fragment {
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
 
         locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
+
+        mainActivity.tabLayout.getTabAt(0).select();
 
     }
 
