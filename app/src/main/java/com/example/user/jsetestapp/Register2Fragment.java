@@ -34,12 +34,9 @@ public class Register2Fragment extends Fragment {
 
     //Fragments
 
-
     //Variables
-    Boolean isValuesEntered = false;
     Boolean genderSpinnersHasValue = false;
     Boolean locationsSpinnersHasValue = false;
-  //  Boolean isBirthdayCorrect = false;
     Boolean isSsn = false;
 
     @Override
@@ -100,25 +97,24 @@ public class Register2Fragment extends Fragment {
     private TextWatcher textWatcher = new TextWatcher() {
 
         public void afterTextChanged(Editable s) {
-            if (s==dobMonthEditText.getEditableText()){
+            if (s == dobMonthEditText.getEditableText()) {
                 if (dobMonthEditText.getText().toString().length() == 2)
                     dobDayEditText.requestFocus();
             }
-            if (s==dobDayEditText.getEditableText()){
+            if (s == dobDayEditText.getEditableText()) {
                 if (dobDayEditText.getText().toString().length() == 2)
                     dobYearEditText.requestFocus();
             }
-            if (s==dobYearEditText.getEditableText()){
+            if (s == dobYearEditText.getEditableText()) {
                 if (dobYearEditText.getText().toString().length() == 4)
                     ssnEditText.requestFocus();
             }
-            if (s== ssnEditText.getEditableText()) {
+            if (s == ssnEditText.getEditableText()) {
                 if (ssnEditText.getText().toString().length() == 4)
                     loginActivity.helperMethods.hideSoftKeyboard(loginActivity);
-                }
-
-
             }
+
+        }
 
 
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,7 +122,6 @@ public class Register2Fragment extends Fragment {
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            //controlsHaveValues();
         }
     };
 
@@ -139,7 +134,7 @@ public class Register2Fragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(ssnEditText)) {
             return true;
         } else
-        return false;
+            return false;
     }
 
     OnClickListener rightButtonListener = new OnClickListener() {
@@ -148,7 +143,8 @@ public class Register2Fragment extends Fragment {
         public void onClick(View v) {
             if (!controlsHaveValues() || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
                 loginActivity.showDialog("Create Account Failed", "All fields require a value.",
-                        "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp, "registration_failed_missing_fields");
+                        "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
+                        "registration_failed_missing_fields");
             } else {
                 validateForm();
             }
@@ -161,16 +157,16 @@ public class Register2Fragment extends Fragment {
         public void onClick(View v) {
 
             loginActivity.getFragmentManager().popBackStack();
-                    }
+        }
     };
 
-    AdapterView.OnItemSelectedListener genderSpinnerOnItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener genderSpinnerOnItemSelectedListener =
+            new AdapterView.OnItemSelectedListener() {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position != 0)
                 genderSpinnersHasValue = true;
-
         }
 
         @Override
@@ -180,7 +176,8 @@ public class Register2Fragment extends Fragment {
 
     };
 
-    AdapterView.OnItemSelectedListener locationsSpinnerOnItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener locationsSpinnerOnItemSelectedListener =
+            new AdapterView.OnItemSelectedListener() {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -217,21 +214,22 @@ public class Register2Fragment extends Fragment {
 
     }
 
+    //checking if DOB is valid
     private Boolean isBirthdayCorrect() {
 
-       // LocalDate currentDate = LocalDate.now();
         User user = new User();
         try {
             user.setDob(dobYearEditText.getText().toString(),
                     dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
-                return true;
+            return true;
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
 
     }
 
+    //checking if ssnEditText contains 4 numbers
     private Boolean isSsn() {
         if (ssnEditText.getText().toString().length() < 4) {
             isSsn = false;
