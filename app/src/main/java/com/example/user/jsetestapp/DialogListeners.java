@@ -73,20 +73,10 @@ public class DialogListeners extends Activity {
                         loginActivity, loginActivity.scrollView);
                 break;
             case "forgot_password": {
-                //ToDo validate email address and get password from LDB that matches to emailEditText and send email to emailEditText. Close dialog
+                // ToDo send email with password
             }
             case "registration_failed_missing_fields":
                 break;
-        }
-    }
-
-    public void positiveButtonOnClickListener(String TAG_LISTENER, String email) {
-        switch (TAG_LISTENER) {
-
-            case "forgot_password": {
-                // ToDo send email with password
-                break;
-            }
         }
     }
 

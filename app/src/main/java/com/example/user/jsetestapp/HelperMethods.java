@@ -40,7 +40,7 @@ public class HelperMethods extends Activity {
         // Scroll to top
         scrollView.scrollTo(0, 0);
 
-        // ToDo combine addFragment and replaceFragment by checking if container has a child
+        // ToDo combine addFragment and replaceFragment check if container has fragment inflated
 
         // replace fragment in container
         activity.getFragmentManager().beginTransaction().replace(R.id.container,
@@ -58,31 +58,16 @@ public class HelperMethods extends Activity {
                 fragment).addToBackStack(tag).commit();
     }
 
-    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
-        // ToDO add context as parameter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mainActivity.getApplicationContext(),
+    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner,
+                                 String tag, Context context) {
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
                 R.layout.spinner_dropdown_item, arrayList);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         spinner.setAdapter(adapter);
 
-        //if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
-        //else spinner.setSelection(0);
-    }
-
-    //for register2 page locationSpinner
-    //TODO add the activity as a param so you can use the smae method coming from both activities
-    public void addDataToSpinnerFromLoginActivity(ArrayList<String> arrayList, Spinner spinner) {
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(loginActivity.getApplicationContext(),
-                R.layout.spinner_dropdown_item, arrayList);
-
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-        spinner.setAdapter(adapter);
-
-        //if (tag.equals("location")) spinner.setSelection(2);
-        // ToDo set position to defaultLocation
-        spinner.setSelection(0);
+        //if (tag.equals("location"))
     }
 
     public void scheduleTest() {
@@ -479,6 +464,12 @@ public class HelperMethods extends Activity {
     public static void hideSoftKeyboard(Activity loginActivity) {
         InputMethodManager inputMethodManager = (InputMethodManager) loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public ArrayList<String> editLocationsNameArrayList(){
+        ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
+        arrayList.set(0, "");
+        return arrayList;
     }
 
 }

@@ -86,22 +86,28 @@ public class SearchFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        mainActivity.helperMethods.addDataToSpinner(mainActivity.branchesNameArrayList, locationsSpinner, "location");
+        mainActivity.helperMethods.addDataToSpinner(mainActivity.branchesNameArrayList,
+                locationsSpinner, "location", mainActivity.getContext());
 
         String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
         ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();
         for (String s : daysOfWeek) daysOfWeekArrayList.add(s);
-        mainActivity.helperMethods.addDataToSpinner(daysOfWeekArrayList, daysOfWeekSpinner, "dayOfWeek");
+        mainActivity.helperMethods.addDataToSpinner(daysOfWeekArrayList,
+                daysOfWeekSpinner, "dayOfWeek", mainActivity.getContext());
     }
 
     OnClickListener searchButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            //TODO pass to method that will query and then update array and then notify data set changed
+
+            String location = locationsSpinner.getSelectedItem().toString();
+            if (location.contains(" (Default Branch)")){
+                location = location.replace(" (Default Branch)", "").trim();
+            }
             Branch searchCriteriaBranch = new Branch();
             for (Branch branch : mainActivity.branchesArrayList) {
-                if (locationsSpinner.getSelectedItem().toString().equals(branch.getName()))
+                if (location.equals(branch.getName()))
                     searchCriteriaBranch = branch;
             }
 

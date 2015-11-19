@@ -51,14 +51,7 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
             builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    if (TAG_LISTENER != null && TAG_LISTENER.equals("forgot_password")) {
-                        String email = input.getText().toString();
-                        ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER, email);
-                    } else {
-
                         ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
-                    }
                 }
 
             });

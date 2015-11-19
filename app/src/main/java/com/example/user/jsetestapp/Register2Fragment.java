@@ -1,24 +1,17 @@
 package com.example.user.jsetestapp;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import org.joda.time.LocalDate;
 
 public class Register2Fragment extends Fragment {
     //ToDo remove location from arrayList
@@ -35,8 +28,6 @@ public class Register2Fragment extends Fragment {
     //Fragments
 
     //Variables
-    Boolean genderSpinnersHasValue = false;
-    Boolean locationsSpinnersHasValue = false;
     Boolean isSsn = false;
 
     @Override
@@ -78,14 +69,13 @@ public class Register2Fragment extends Fragment {
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         genderSpinner.setAdapter(genderAdapter);
 
-        loginActivity.helperMethods.addDataToSpinnerFromLoginActivity(
-                loginActivity.locationsNameArrayList, locationsSpinner);
+        loginActivity.helperMethods.addDataToSpinner(
+                loginActivity.helperMethods.editLocationsNameArrayList(), locationsSpinner,
+                "locationNameArrayList", loginActivity.getContext());
 
     }
 
     private void registerListeners() {
-        genderSpinner.setOnItemSelectedListener(genderSpinnerOnItemSelectedListener);
-        locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
         dobDayEditText.addTextChangedListener(textWatcher);
@@ -131,7 +121,9 @@ public class Register2Fragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(dobDayEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
-                !loginActivity.helperMethods.isEmpty(ssnEditText)) {
+                !loginActivity.helperMethods.isEmpty(ssnEditText) &&
+                genderSpinner.getSelectedItemPosition() != 0 &&
+                locationsSpinner.getSelectedItemPosition() != 0) {
             return true;
         } else
             return false;
@@ -141,7 +133,7 @@ public class Register2Fragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if (!controlsHaveValues() || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
+            if (!controlsHaveValues()) {
                 loginActivity.showDialog("Create Account Failed", "All fields require a value.",
                         "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
                         "registration_failed_missing_fields");
@@ -158,39 +150,6 @@ public class Register2Fragment extends Fragment {
 
             loginActivity.getFragmentManager().popBackStack();
         }
-    };
-
-    AdapterView.OnItemSelectedListener genderSpinnerOnItemSelectedListener =
-            new AdapterView.OnItemSelectedListener() {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (position != 0)
-                genderSpinnersHasValue = true;
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-
-    };
-
-    AdapterView.OnItemSelectedListener locationsSpinnerOnItemSelectedListener =
-            new AdapterView.OnItemSelectedListener() {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (position != 0)
-                locationsSpinnersHasValue = true;
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-
     };
 
     private void validateForm() {

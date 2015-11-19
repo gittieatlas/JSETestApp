@@ -47,11 +47,10 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Alerts> alertsArrayList;
     Location defaultLocation;
 
-    private static Context sContext;
+   // private static Context sContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sContext = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -72,15 +71,19 @@ public class LoginActivity extends AppCompatActivity {
         alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
 
 
+
         try {
             Intent intent = getIntent();
 
-            if (intent.getStringExtra("fragment").equals("log_out")) {
-                //ToDo user helper method? maybe not because it shouldn't be added to back stack
-                getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
-            } else if (intent.getStringExtra("fragment").equals("update_profile")) {
-                //ToDo user helper method? maybe not because it shouldn't be added to back stack
-                getFragmentManager().beginTransaction().replace(R.id.container, updateProfileFragment).commit();
+            if (intent.getStringExtra("fragment").equals("update_profile")) {
+//                getFragmentManager().beginTransaction().replace(R.id.container,
+//                        updateProfileFragment).commit();
+
+                LoginActivity.this.helperMethods.replaceFragment(
+                        LoginActivity.this.updateProfileFragment,
+                        "update_profile",
+                        LoginActivity.this, LoginActivity.this.scrollView);
+
                 user = (User) bundle.getSerializable("user");
                 defaultLocation = (Location) bundle.getSerializable("defaultLocation");
             }
@@ -171,9 +174,10 @@ public class LoginActivity extends AppCompatActivity {
         toolbar.setTitle(toolbarTitle);
     }
 
-//    public Context getContext() {
-//        return LoginActivity.this;
-//    }
+    public Context getContext() {
+        return LoginActivity.this;
+    }
+
 
     /**
      * Function to create an instance of MainActivityDialogFragment
@@ -205,16 +209,6 @@ public class LoginActivity extends AppCompatActivity {
         dialogFragment.setArguments(bundle);
 
         dialogFragment.show(fm, tagListener);
-    }
-
-
-
-
-
-
-
-    public static Context getContext() {
-        return sContext;
     }
 
 }

@@ -123,7 +123,8 @@ public class LibrariesFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList, locationsSpinner, "libraries_location");
+        mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList,
+                locationsSpinner, "libraries_location", mainActivity.getContext());
     }
 
     public void setMainActivity(MainActivity mainActivity) {

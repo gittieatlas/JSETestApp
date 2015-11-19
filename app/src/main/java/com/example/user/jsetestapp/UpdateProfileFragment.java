@@ -7,14 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import org.joda.time.LocalDate;
 
 public class UpdateProfileFragment extends Fragment {
 
@@ -33,10 +29,6 @@ public class UpdateProfileFragment extends Fragment {
     EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText, dobYearEditText,
             ssnEditText, newPasswordEditText, confirmNewPasswordEditText;
     Button rightButton, leftButton;
-    //Boolean valuesEntered = false;
-    Boolean genderSpinnersHasValue = false;
-    Boolean locationsSpinnersHasValue = false;
-    Boolean isBirthdayCorrect = false;
     Boolean isSsn = false;
     Boolean passwordEqualsConfirmPassword = false;
 
@@ -74,6 +66,8 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     private void bindSpinnerData() {
+
+        // Todo remove index 0 from both spinners
         // Create an adapter from the string array resource and use android's
         // inbuilt layout file simple_spinner_item that represents the default spinner in the UI
         ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(getActivity()
@@ -82,8 +76,9 @@ public class UpdateProfileFragment extends Fragment {
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         genderSpinner.setAdapter(genderAdapter);
 
-        loginActivity.helperMethods.addDataToSpinnerFromLoginActivity
-                (loginActivity.locationsNameArrayList, locationsSpinner);
+        loginActivity.helperMethods.addDataToSpinner
+                (loginActivity.helperMethods.editLocationsNameArrayList(),
+                        locationsSpinner, "locationsNameArray", loginActivity.getContext());
     }
 
     //set user information in views
@@ -99,7 +94,6 @@ public class UpdateProfileFragment extends Fragment {
         String ssn = loginActivity.user.ssn;
         ssnEditText.setText(ssn.substring(ssn.length() - 4));
         int gender = loginActivity.user.gender.ordinal() + 1;
-        Toast.makeText(loginActivity.getApplicationContext(), gender + "", Toast.LENGTH_LONG).show();
         genderSpinner.setSelection(gender);
         locationsSpinner.setSelection(loginActivity.helperMethods
                 .setLocationSpinnerSelection());
@@ -115,8 +109,6 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     private void registerListeners() {
-        genderSpinner.setOnItemSelectedListener(genderSpinnerOnItemSelectedListener);
-        locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
         dobDayEditText.addTextChangedListener(textWatcher);
@@ -167,7 +159,9 @@ public class UpdateProfileFragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(newPasswordEditText) &&
                 !loginActivity.helperMethods.isEmpty(confirmNewPasswordEditText) &&
-                !loginActivity.helperMethods.isEmpty(ssnEditText)) {
+                !loginActivity.helperMethods.isEmpty(ssnEditText) &&
+                genderSpinner.getSelectedItemPosition() != 0 &&
+                locationsSpinner.getSelectedItemPosition() != 0) {
             return true;
         } else
             return false;
@@ -186,7 +180,7 @@ public class UpdateProfileFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if (!controlsHaveValues() || !locationsSpinnersHasValue || !genderSpinnersHasValue) {
+            if (!controlsHaveValues()) {
                 //|| passwordEqualsConfirmPassword() ) {
                 loginActivity.showDialog("Account Update Failed", "All fields require a value.",
                         "OK", null, null, R.drawable.ic_alert_grey600_24dp,
@@ -206,40 +200,6 @@ public class UpdateProfileFragment extends Fragment {
             //this listener will be gone
         }
     };
-
-    AdapterView.OnItemSelectedListener genderSpinnerOnItemSelectedListener =
-            new AdapterView.OnItemSelectedListener() {
-
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position != 0)
-                        genderSpinnersHasValue = true;
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-
-            };
-
-    AdapterView.OnItemSelectedListener locationsSpinnerOnItemSelectedListener =
-            new AdapterView.OnItemSelectedListener() {
-
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position != 0)
-                        locationsSpinnersHasValue = true;
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-
-            };
 
     private void validateForm() {
         if (!isBirthdayCorrect()) {
@@ -278,32 +238,30 @@ public class UpdateProfileFragment extends Fragment {
         testUser.email = loginActivity.user.email;
         testUser.setPassword(newPasswordEditText.getText().toString());
         testUser.setLocationId(loginActivity.locationsArrayList, testUser);
-        Toast.makeText(loginActivity.getApplicationContext(), "first name: " + testUser.firstName +
-                        " last name: " + testUser.lastName + " id: " + testUser.id + " email: " +
-                        testUser.email + "password: " + testUser.password + " dob: " + testUser.dob +
-                        " gender: " + testUser.gender + " location id: " + testUser.locationId,
-                Toast.LENGTH_LONG).show();
+//        Toast.makeText(loginActivity.getApplicationContext(), "first name: " + testUser.firstName +
+//                        " last name: " + testUser.lastName + " id: " + testUser.id + " email: " +
+//                        testUser.email + "password: " + testUser.password + " dob: " + testUser.dob +
+//                        " gender: " + testUser.gender + " location id: " + testUser.locationId,
+//                Toast.LENGTH_LONG).show();
         //calling async task and sending testUser
 
         loginActivity.databaseOperations.updateUser(testUser);
     }
 
+
+    //checking if DOB is valid
     private Boolean isBirthdayCorrect() {
 
-        LocalDate currentDate = LocalDate.now();
+        User user = new User();
+        try {
+            user.setDob(dobYearEditText.getText().toString(),
+                    dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
+            return true;
 
-        if (Integer.parseInt(dobDayEditText.getText().toString()) > 31 ||
-                Integer.parseInt(dobMonthEditText.getText().toString()) > 12 ||
-                Integer.parseInt(dobMonthEditText.getText().toString()) > 12 ||
-                Integer.parseInt(dobYearEditText.getText().toString()) <
-                        (currentDate.getYear() - 100) ||
-                Integer.parseInt(dobYearEditText.getText().toString()) > (currentDate.getYear())) {
-
-            isBirthdayCorrect = false;
-        } else {
-            isBirthdayCorrect = true;
+        } catch (Exception ex) {
+            return false;
         }
-        return isBirthdayCorrect;
+
     }
 
     private Boolean isSsn() {
