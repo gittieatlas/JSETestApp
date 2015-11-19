@@ -506,7 +506,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void changeActivities() {
         if (gotLocations && gotTests && gotHours && gotBranches && gotAlerts) {
-            // TODO check if loggedIn == true then go to MainActivity
+
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);

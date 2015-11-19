@@ -108,7 +108,6 @@ public class LoginFragment extends Fragment {
     };
 
 
-    // Todo debug this
     private boolean isValuesEntered() {
         if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
                 !loginActivity.helperMethods.isEmpty(passwordEditText)) {

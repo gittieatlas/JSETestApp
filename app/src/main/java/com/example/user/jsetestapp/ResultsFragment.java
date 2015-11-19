@@ -119,7 +119,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     @Override
     public void onImageItemClick(View view, int position) {
         Test test = mainActivity.testsArrayList.get(position);
-        //ToDo get event address (get location address where location = test.name)
+
         mainActivity.intentMethods.calendarIntent("JSE Test at " + test.getLocation(), getTestAddress(test),
                 null, test.getDate(), test.getTime());
     }

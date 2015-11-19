@@ -60,7 +60,7 @@ public class IntentMethods extends Activity {
     public void calendarIntent(String title, String eventLocation, String description, LocalDate testDate, LocalTime testTime) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
-        //TODO check if any params are null
+
         if (title != null){
             intent.putExtra("title", title);
         }
