@@ -36,7 +36,7 @@
     <string name="jse_office_hours_mon_thurs">Monday - Thursday</string>
     <string name="jse_office_hours_friday">Friday</string>
     <string name="jse_office_hours_mon_thurs_hours_start_time">09:00 AM</string>
-    <string name="jse_office_hours_mon_thurs_hours_end_time">05:00 PM</string>
+    <string name="jse_office_hours_mon_thurs_hours_end_time">02:00 PM</string>
     <string name="jse_office_hours_friday_hours_start_time">09:00 AM</string>
     <string name="jse_office_hours_friday_hours_end_time">02:00 PM</string>
     <string name="jse_office_email_subject">Contact JSE Android App</string>
