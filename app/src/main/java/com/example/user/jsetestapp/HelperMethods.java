@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -79,16 +80,20 @@ public class HelperMethods extends Activity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         spinner.setAdapter(adapter);
 
-        //if (tag.equals("location")) spinner.setSelection(2); // ToDo set posotion to defaultLocation
+        //if (tag.equals("location")) spinner.setSelection(2);
+        // ToDo set position to defaultLocation
         spinner.setSelection(0);
     }
 
     public void scheduleTest() {
         if (mainActivity.user.isJseMember) {
-            mainActivity.showDialog("Schedule a Test", null, "CALL", "CANCEL", null, R.drawable.ic_clipboard_text_grey600_24dp, "schedule_test");
+            mainActivity.showDialog("Schedule a Test", null, "CALL", "CANCEL",
+                    null, R.drawable.ic_clipboard_text_grey600_24dp, "schedule_test");
         } else {
-            String message = "To schedule a test you need to be a JSE member. Please call the JSE office to register.";
-            mainActivity.showDialog("Become a JSE Member", message, "CALL", "CANCEL", null, R.drawable.ic_clipboard_text_grey600_24dp, "become_jse_member");
+            String message = "To schedule a test you need to be a JSE member. " +
+                    "Please call the JSE office to register.";
+            mainActivity.showDialog("Become a JSE Member", message, "CALL", "CANCEL",
+                    null, R.drawable.ic_clipboard_text_grey600_24dp, "become_jse_member");
         }
 
     }
@@ -192,13 +197,15 @@ public class HelperMethods extends Activity {
     }
 
     private void addTestToArrayList(Test test) {
-        String day = mainActivity.helperMethods.firstLetterCaps(test.getDeadlineDayOfWeek().toString());
+        String day = mainActivity.helperMethods.firstLetterCaps(test.getDeadlineDayOfWeek()
+                .toString());
         DataObject obj = new DataObject(test.getLocation(),
                 mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
                 test.getTime().toString("hh:mm a"),
                 test.getDate().toString("MMMM dd yyyy"),
                 "Registration Deadline: ",
-                day + " " + test.getDeadlineDate().toString("MMMM dd yyyy") + " " + test.getDeadlineTime().toString("hh:mm a"));
+                day + " " + test.getDeadlineDate().toString("MMMM dd yyyy") + " " +
+                        test.getDeadlineTime().toString("hh:mm a"));
         mainActivity.testsFilteredArrayList.add(obj);
     }
 
@@ -300,19 +307,19 @@ public class HelperMethods extends Activity {
         switch (mainActivity.queryMethods.getTag()) {
 
             case "create_account": {
-                showSnackBar("Account created");
+                showSnackBar("Account created", mainActivity.coordinatorLayout);
                 break;
             }
             case "login": {
-                showSnackBar("Logged in");
+                showSnackBar("Logged in", mainActivity.coordinatorLayout);
                 break;
             }
             case "update_profile": {
-                showSnackBar("Profile updated");
+                showSnackBar("Profile updated", mainActivity.coordinatorLayout);
                 break;
             }
             case "update_profile_cancel": {
-                showSnackBar("Profile not updated");
+                showSnackBar("Profile not updated", mainActivity.coordinatorLayout);
                 break;
             }
         }
@@ -321,12 +328,11 @@ public class HelperMethods extends Activity {
     /**
      * Function to show a snack bar in MainActivity - dashboard
      *
-     * @param message - snack bar message
+     * @param message           -   snack bar message
+     * @param coordinatorLayout -   parent view for snackBar
      */
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar
-                .make(mainActivity.container, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+    public void showSnackBar(String message, CoordinatorLayout coordinatorLayout) {
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     /**

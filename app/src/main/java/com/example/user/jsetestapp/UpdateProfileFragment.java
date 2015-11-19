@@ -17,7 +17,6 @@ import android.widget.Toast;
 import org.joda.time.LocalDate;
 
 public class UpdateProfileFragment extends Fragment {
-//TODO remove textwatches from password and confirm password, look into ssn, load genderSpinner, locationid doesnt set in db
 
     //Controls
     View rootView;
@@ -99,8 +98,8 @@ public class UpdateProfileFragment extends Fragment {
         dobYearEditText.setText(year + "");
         String ssn = loginActivity.user.ssn;
         ssnEditText.setText(ssn.substring(ssn.length() - 4));
-        int gender = loginActivity.user.gender.ordinal()+1;
-        Toast.makeText(loginActivity.getApplicationContext(),gender+"",Toast.LENGTH_LONG).show();
+        int gender = loginActivity.user.gender.ordinal() + 1;
+        Toast.makeText(loginActivity.getApplicationContext(), gender + "", Toast.LENGTH_LONG).show();
         genderSpinner.setSelection(gender);
         locationsSpinner.setSelection(loginActivity.helperMethods
                 .setLocationSpinnerSelection());
@@ -108,11 +107,11 @@ public class UpdateProfileFragment extends Fragment {
         confirmNewPasswordEditText.setText(loginActivity.user.password);
     }
 
-    public void setDayAndMonthEditTexts(int value, EditText editText){
-    if (value<10)
-       editText.setText("0"+value);
+    public void setDayAndMonthEditTexts(int value, EditText editText) {
+        if (value < 10)
+            editText.setText("0" + value);
         else
-        editText.setText(value+"");
+            editText.setText(value + "");
     }
 
     private void registerListeners() {
@@ -129,19 +128,19 @@ public class UpdateProfileFragment extends Fragment {
     private TextWatcher textWatcher = new TextWatcher() {
 
         public void afterTextChanged(Editable s) {
-            if (s==dobMonthEditText.getEditableText()){
+            if (s == dobMonthEditText.getEditableText()) {
                 if (dobMonthEditText.getText().toString().length() == 2)
                     dobDayEditText.requestFocus();
             }
-            if (s==dobDayEditText.getEditableText()){
+            if (s == dobDayEditText.getEditableText()) {
                 if (dobDayEditText.getText().toString().length() == 2)
                     dobYearEditText.requestFocus();
             }
-            if (s==dobYearEditText.getEditableText()){
+            if (s == dobYearEditText.getEditableText()) {
                 if (dobYearEditText.getText().toString().length() == 4)
                     ssnEditText.requestFocus();
             }
-            if (s== ssnEditText.getEditableText()) {
+            if (s == ssnEditText.getEditableText()) {
                 if (ssnEditText.getText().toString().length() == 4)
                     loginActivity.helperMethods.hideSoftKeyboard(loginActivity);
             }
@@ -203,10 +202,8 @@ public class UpdateProfileFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-//            loginActivity.helperMethods.replaceFragment(R.id.container,
-//                    loginActivity.register1Fragment, loginActivity.getResources()
-//                            .getString(R.string.toolbar_title_register1), loginActivity);
-//this listener will be gone
+
+            //this listener will be gone
         }
     };
 
@@ -317,7 +314,6 @@ public class UpdateProfileFragment extends Fragment {
         }
         return isSsn;
     }
-
 
 
     public void setLoginActivity(LoginActivity loginActivity) {

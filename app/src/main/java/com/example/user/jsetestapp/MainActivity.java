@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ScrollView scrollView;
     LinearLayout tabLayoutLinearLayout;
     FrameLayout container;
+    CoordinatorLayout coordinatorLayout;
 
     //Activities HelperClasses Classes;
     HelperMethods helperMethods;
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
     }
 
     private void createFragmentsActivitiesClasses() {
