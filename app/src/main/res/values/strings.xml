@@ -94,6 +94,7 @@
     <string name="d_login_failed">Login Failed</string>
     <string name="d_create_account_failed">Create Account Failed</string>
     <string name="d_jse_office">JSE Office</string>
+    <string name="d_no_connection">No Internet Connection</string>
 
     <!-- Dialogs Buttons -->
     <string name="d_call">CALL</string>
@@ -118,6 +119,8 @@
     <string name="d_fields_require_values_msg">All fields require a value.</string>
     <string name="d_invalid_email_msg">Email address entered is not valid.
         Please correct and try again.</string>
+    <string name="d_no_connection_msg">You need an internet connection to use this application.
+        Please try again.</string>
 
 
 </resources>

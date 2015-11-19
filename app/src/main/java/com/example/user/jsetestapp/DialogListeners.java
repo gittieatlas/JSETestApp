@@ -68,7 +68,9 @@ public class DialogListeners extends Activity {
                 break;
             }
             case "login_failed_email_not_exist":
-                loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register1Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register1), loginActivity);
+                loginActivity.helperMethods.replaceFragment(loginActivity.register1Fragment,
+                        loginActivity.getResources().getString(R.string.toolbar_title_register1),
+                        loginActivity, loginActivity.scrollView);
                 break;
             case "forgot_password": {
                 //ToDo validate email address and get password from LDB that matches to emailEditText and send email to emailEditText. Close dialog

@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
-        helperMethods.addFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
+        helperMethods.addFragment(dashboardFragment,
+                getResources().getString(R.string.toolbar_title_dashboard),
+                MainActivity.this, scrollView);
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpUser();
         queryMethods.setUpLocationsNameArrayList(this);
@@ -182,16 +184,24 @@ public class MainActivity extends AppCompatActivity {
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    helperMethods.replaceFragment(R.id.container, dashboardFragment, getResources().getString(R.string.toolbar_title_dashboard));
+                    helperMethods.replaceFragment(dashboardFragment,
+                            getResources().getString(R.string.toolbar_title_dashboard),
+                            MainActivity.this, scrollView);
                     break;
                 case 1:
-                    helperMethods.replaceFragment(R.id.container, searchFragment, getResources().getString(R.string.toolbar_title_search));
+                    helperMethods.replaceFragment(searchFragment,
+                            getResources().getString(R.string.toolbar_title_search),
+                            MainActivity.this, scrollView);
                     break;
                 case 2:
-                    helperMethods.replaceFragment(R.id.container, librariesFragment, getResources().getString(R.string.toolbar_title_libraries));
+                    helperMethods.replaceFragment(librariesFragment,
+                            getResources().getString(R.string.toolbar_title_libraries),
+                            MainActivity.this, scrollView);
                     break;
                 case 3:
-                    helperMethods.replaceFragment(R.id.container, contactFragment, getResources().getString(R.string.toolbar_title_contact));
+                    helperMethods.replaceFragment(contactFragment,
+                            getResources().getString(R.string.toolbar_title_contact),
+                            MainActivity.this, scrollView);
                     break;
                 default:
                     break;

@@ -104,8 +104,8 @@ public class SplashActivity extends AppCompatActivity {
     private void displayDialog(String tag) {
         switch (tag) {
             case "no_internet_connection":
-                showAlertDialog(SplashActivity.this, "No Internet Connection",
-                        "You need an internet connection to use this application.\n\nPlease try again.\n", false);
+                showAlertDialog(SplashActivity.this, getString(R.string.d_no_connection),
+                        getString(R.string.d_no_connection_msg), false);
                 break;
         }
     }
@@ -272,19 +272,18 @@ public class SplashActivity extends AppCompatActivity {
                         test.branchId = Integer.parseInt(c.getString(TAG_BRANCH_ID));
                         test.location = c.getString(TAG_LOCATION);
                         test.date = LocalDate.parse(c.getString(TAG_DATE));
-                        test.setDayOfWeek(Test.DayOfWeek.values()[(test.getDate().getDayOfWeek() - 1)].toString());
-                        test.time = LocalTime.parse(new StringBuilder(c.getString(TAG_TIME)).insert(c.getString(TAG_TIME).length() - 2, ":").toString());
+                        test.setDayOfWeek(Test.DayOfWeek.values()[
+                                (test.getDate().getDayOfWeek() - 1)].toString());
+                        test.time = LocalTime.parse(new StringBuilder(
+                                c.getString(TAG_TIME)).insert(
+                                c.getString(TAG_TIME).length() - 2, ":").toString());
                         test.deadlineDate = LocalDate.parse(c.getString(TAG_CLOSING_DATE));
-                        test.deadlineTime = LocalTime.parse(new StringBuilder(c.getString(TAG_CLOSING_TIME)).insert(c.getString(TAG_CLOSING_TIME).length() - 2, ":").toString());
-                        test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[(test.getDeadlineDate().getDayOfWeek() - 1)].toString());
+                        test.deadlineTime = LocalTime.parse(new StringBuilder(
+                                c.getString(TAG_CLOSING_TIME)).insert(
+                                c.getString(TAG_CLOSING_TIME).length() - 2, ":").toString());
+                        test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[
+                                (test.getDeadlineDate().getDayOfWeek() - 1)].toString());
                         test.setGender(Integer.parseInt(c.getString(TAG_GENDER)));
-//                        //TODO comment out this code once createUser activity is done
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("gender", "2");
-//                        editor.commit();
-
-//                        if ((getGender(test)==(3)) ||
-//                                Integer.parseInt(sharedPreferences.getString("gender","3"))==(getGender(test)))
                         testsArrayList.add(test);
                     }
                 } catch (JSONException e) {
@@ -350,7 +349,8 @@ public class SplashActivity extends AppCompatActivity {
                         hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
                         hours.startTime = LocalTime.parse(c.getString(TAG_OPENING_TIME));
                         LocalTime duration = LocalTime.parse(c.getString(TAG_DURATION));
-                        hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay()).plusMinutes(duration.getMinuteOfHour());
+                        hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay())
+                                .plusMinutes(duration.getMinuteOfHour());
 
                         hoursArrayList.add(hours);
                     }
@@ -476,7 +476,8 @@ public class SplashActivity extends AppCompatActivity {
                         String timeStamp = (c.getString(TAG_TIME_STAMP));
                         String date = timeStamp.substring(0, 10);
                         alert.date = LocalDate.parse(date);
-                        alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate().getDayOfWeek() - 1)]);
+                        alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate()
+                                .getDayOfWeek() - 1)]);
                         String time = timeStamp.substring(timeStamp.length() - 8);
                         alert.setTime(LocalTime.parse(time));
                         alert.setAlertText(c.getString(TAG_ALERT_TEXT));
@@ -537,7 +538,10 @@ public class SplashActivity extends AppCompatActivity {
         alertDialog.setMessage(message);
 
         // Setting alert dialog icon
-        alertDialog.setIcon((status) ? R.drawable.ic_check_grey600_24dp : R.drawable.ic_exclamation_grey600_24dp);
+        if (status)
+            alertDialog.setIcon(R.drawable.ic_check_grey600_24dp);
+        else
+            alertDialog.setIcon(R.drawable.ic_exclamation_grey600_24dp);
 
         // Setting OK Button
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {

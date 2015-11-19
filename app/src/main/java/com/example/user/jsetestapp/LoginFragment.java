@@ -91,7 +91,9 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register1Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register1), loginActivity);
+            loginActivity.helperMethods.replaceFragment(loginActivity.register1Fragment,
+                    loginActivity.getResources().getString(R.string.toolbar_title_register1),
+                    loginActivity, loginActivity.scrollView);
         }
     };
 

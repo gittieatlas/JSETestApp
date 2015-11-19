@@ -7,10 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -80,8 +76,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = getIntent();
 
             if (intent.getStringExtra("fragment").equals("log_out")) {
+                //ToDo user helper method? maybe not because it shouldn't be added to back stack
                 getFragmentManager().beginTransaction().replace(R.id.container, loginFragment).commit();
             } else if (intent.getStringExtra("fragment").equals("update_profile")) {
+                //ToDo user helper method? maybe not because it shouldn't be added to back stack
                 getFragmentManager().beginTransaction().replace(R.id.container, updateProfileFragment).commit();
                 user = (User) bundle.getSerializable("user");
                 defaultLocation = (Location) bundle.getSerializable("defaultLocation");

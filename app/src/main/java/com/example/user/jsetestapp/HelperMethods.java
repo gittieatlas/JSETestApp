@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import org.joda.time.LocalDate;
@@ -32,34 +33,28 @@ public class HelperMethods extends Activity {
 
     }
 
-    public void replaceFragment(int container, Fragment fragment, String tag) {
-        mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
+    public void replaceFragment(Fragment fragment, String tag,
+                                Activity activity, ScrollView scrollView) {
+
+        // Scroll to top
+        scrollView.scrollTo(0, 0);
+
+        // ToDo combine addFragment and replaceFragment by checking if container has a child
+
+        // replace fragment in container
+        activity.getFragmentManager().beginTransaction().replace(R.id.container,
+                fragment).addToBackStack(tag).commit();
     }
 
-    public void addFragment(int container, Fragment fragment, String tag) {
-        mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
-    }
+    public void addFragment(Fragment fragment, String tag,
+                            Activity activity, ScrollView scrollView) {
 
-    public void replaceFragment(int container, Fragment fragment, String tag, MainActivity mainActivity) {
-        mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
-    }
+        // Scroll to top
+        scrollView.scrollTo(0, 0);
 
-    public void addFragment(int container, Fragment fragment, String tag, MainActivity mainActivity) {
-        mainActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        mainActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
-    }
-
-    public void replaceFragment(int container, Fragment fragment, String tag, LoginActivity loginActivity) {
-        loginActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        loginActivity.getFragmentManager().beginTransaction().replace(container, fragment).addToBackStack(tag).commit();
-    }
-
-    public void addFragment(int container, Fragment fragment, String tag, LoginActivity loginActivity) {
-        loginActivity.scrollView.scrollTo(0, 0); // Scroll to top
-        loginActivity.getFragmentManager().beginTransaction().add(container, fragment).addToBackStack(tag).commit();
+        // add fragment to container
+        activity.getFragmentManager().beginTransaction().add(R.id.container,
+                fragment).addToBackStack(tag).commit();
     }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner, String tag) {
@@ -101,7 +96,7 @@ public class HelperMethods extends Activity {
     /**
      * Function to make the first letter caps and the rest lowercase.
      *
-     * @param data          -   capitalize this
+     * @param data -   capitalize this
      * @return String       -   alert message?
      */
     static public String firstLetterCaps(String data) {
@@ -118,7 +113,7 @@ public class HelperMethods extends Activity {
     /**
      * Sets ListView height dynamically based on the height of the items.
      *
-     * @param listView      -   to be resized
+     * @param listView -   to be resized
      * @return true         -   if the listView is successfully resized, false otherwise
      */
     public static boolean setListViewHeightBasedOnItems(ListView listView) {
@@ -180,7 +175,9 @@ public class HelperMethods extends Activity {
         else if (!branch.equals("branch") && dayOfWeek != 0)
             filterTests(branch, dayOfWeek);
 
-        replaceFragment(R.id.container, mainActivity.resultsFragment, mainActivity.getResources().getString(R.string.toolbar_title_results));
+        replaceFragment(mainActivity.resultsFragment,
+                mainActivity.getResources().getString(R.string.toolbar_title_results),
+                mainActivity, mainActivity.scrollView);
     }
 
     private void filterTests(Location location) {
@@ -189,7 +186,9 @@ public class HelperMethods extends Activity {
                 addTestToArrayList(test);
             }
         }
-        replaceFragment(R.id.container, mainActivity.resultsFragment, mainActivity.getResources().getString(R.string.toolbar_title_results));
+        replaceFragment(mainActivity.resultsFragment,
+                mainActivity.getResources().getString(R.string.toolbar_title_results),
+                mainActivity, mainActivity.scrollView);
     }
 
     private void addTestToArrayList(Test test) {
@@ -324,11 +323,12 @@ public class HelperMethods extends Activity {
      *
      * @param message - snack bar message
      */
-    public void showSnackBar(String message){
+    public void showSnackBar(String message) {
         Snackbar snackbar = Snackbar
                 .make(mainActivity.container, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
+
     /**
      * Function to check if the current time is a start and end time
      *
@@ -387,28 +387,28 @@ public class HelperMethods extends Activity {
 
         //get start time and end time of today's office hours
         switch (dayOfWeek) {
-                case "5": {
-                    // Friday
-                    startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
-                    endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
-                    break;
-                }
-                case "6": {
-                    // Saturday
-                    // closed ?
-                    return false;
-                }
-                case "7": {
-                    // Sunday
-                    // closed ?
-                    return false;
-                }
-                default: {
-                    // Monday - Thursday
-                    startTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-                    endTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
-                    break;
-                }
+            case "5": {
+                // Friday
+                startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
+                endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
+                break;
+            }
+            case "6": {
+                // Saturday
+                // closed ?
+                return false;
+            }
+            case "7": {
+                // Sunday
+                // closed ?
+                return false;
+            }
+            default: {
+                // Monday - Thursday
+                startTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+                endTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
+                break;
+            }
         }
 
         LocalTime start = LocalTime.parse(startTime, parseFormat);
@@ -423,7 +423,7 @@ public class HelperMethods extends Activity {
 
         for (Location l : loginActivity.locationsArrayList) {
             if (loginActivity.defaultLocation.name.equals(l.getName())) {
-                return loginActivity.locationsArrayList.indexOf(l)+1;
+                return loginActivity.locationsArrayList.indexOf(l) + 1;
             }
         }
         return 0;
@@ -436,8 +436,8 @@ public class HelperMethods extends Activity {
 //                return mainActivity.branchesNameArrayList.indexOf(s)+1;
 //            }
             String d = " (Default Branch)";
-            if (s.contains(d)){
-               return mainActivity.branchesNameArrayList.indexOf(s);
+            if (s.contains(d)) {
+                return mainActivity.branchesNameArrayList.indexOf(s);
             }
         }
         return 0;
@@ -470,9 +470,8 @@ public class HelperMethods extends Activity {
     }
 
 
-
     public static void hideSoftKeyboard(Activity loginActivity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0);
     }
 

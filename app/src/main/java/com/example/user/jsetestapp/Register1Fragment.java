@@ -118,10 +118,11 @@ public class Register1Fragment extends Fragment {
                 passwordEditText.setText("");
                 confirmPasswordEditText.setText("");
             } else {
-                //loginActivity.register2Fragment.setEmailPasswordValues(emailEditText.getText().toString(), passwordEditText.getText().toString());
                 loginActivity.user.setEmail(emailEditText.getText().toString());
                 loginActivity.user.setPassword(passwordEditText.getText().toString());
-                loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.register2Fragment, loginActivity.getResources().getString(R.string.toolbar_title_register2), loginActivity);
+                loginActivity.helperMethods.replaceFragment(loginActivity.register2Fragment,
+                        loginActivity.getResources().getString(R.string.toolbar_title_register2),
+                        loginActivity, loginActivity.scrollView);
             }
         }
 
