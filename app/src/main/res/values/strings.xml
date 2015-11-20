@@ -3,6 +3,64 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- activity splash -->
+
+    <!-- URL to get locationsJsonArray JSON -->
+    <string name="locations_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/locations.php</string>
+
+    <!-- JSON Node names - locations -->
+    <string name="TAG_LOCATIONS">locations</string>
+    <string name="TAG__LOCATION_ID">id</string>
+    <string name="TAG__BRANCH_ID">branchId</string>
+    <string name="TAG_NAME">name</string>
+    <string name="TAG_PHONE">phoneNumber</string>
+    <string name="TAG_ADDRESS">address</string>
+    <string name="TAG_CITY">city</string>
+    <string name="TAG_STATE">state</string>
+    <string name="TAG_ZIP">zip</string>
+    <string name="TAG_COUNTRY">country</string>
+
+    <!-- URL to get testsJsonArray JSON -->
+    <string name="tests_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/tests.php</string>
+
+    <!-- JSON Node names - tests -->
+    <string name="TAG_TESTS">tests</string>
+    <string name="TAG_BRANCH_ID">branchId</string>
+    <string name="TAG_LOCATION">NAME</string>
+    <string name="TAG_DATE">date</string>
+    <string name="TAG_TIME">time</string>
+    <string name="TAG_CLOSING_DATE">closingDate</string>
+    <string name="TAG_CLOSING_TIME">closingTime</string>
+    <string name="TAG_GENDER">gender</string>
+
+    <!-- URL to get hoursJsonArray JSON -->
+    <string name="hours_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php</string>
+
+    <!-- Node names - hours -->
+    <string name="TAG_HOURS">hours</string>
+    <string name="TAG_LIBRARY_LOCATION">name</string>
+    <string name="TAG_DAY_OF_WEEK">dayOfWeek</string>
+    <string name="TAG_OPENING_TIME">openingTime</string>
+    <string name="TAG_DURATION">duration</string>
+
+    <!-- URL to get branchesJsonArray JSON -->
+    <string name="branches_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/branches.php</string>
+
+    <!-- JSON Node names - branches -->
+    <string name="TAG_BRANCHES">branches</string>
+    <string name="TAG_ID">id</string>
+    <string name="TAG_BRANCH_NAME">name</string>
+
+
+    <!-- URL to get alertsJsonArray JSON -->
+    <string name="alerts_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php</string>
+
+    <!-- JSON Nodes names - alerts -->
+    <string name="TAG_ALERTS">alerts</string>
+    <string name="TAG_LOCATION_NAME">NAME</string>
+    <string name="TAG_ALERT_TEXT">alertText</string>
+    <string name="TAG_TIME_STAMP">timeStamp</string>
+
     <!-- fragment_login, fragment_register1, fragment_register2, fragment_update_profile -->
     <string name="email">Email Address</string>
     <string name="password">Password</string>
