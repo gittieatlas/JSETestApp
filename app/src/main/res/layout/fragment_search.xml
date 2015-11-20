@@ -29,9 +29,7 @@
     <Spinner
         android:id="@+id/locationSpinner"
         style="@style/App_Spinner"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:spinnerMode="dialog"
-        android:prompt="@string/location_spinner_title"/>
+        android:layout_marginLeft="@dimen/default_margin"/>
 
     <View
         style="@style/App_Divider"

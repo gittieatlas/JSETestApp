@@ -250,6 +250,7 @@ public class UpdateProfileFragment extends Fragment {
 
 
     //checking if DOB is valid
+    //test comment
     private Boolean isBirthdayCorrect() {
 
         User user = new User();

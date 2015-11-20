@@ -7,6 +7,11 @@
         <item>Female</item>
     </string-array>
 
+    <string-array name="update_profile_gender_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
     <string-array name="days_of_week_array">
         <item>Day of Week</item>
         <item>Monday</item>

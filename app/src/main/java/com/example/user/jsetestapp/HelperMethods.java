@@ -472,4 +472,11 @@ public class HelperMethods extends Activity {
         return arrayList;
     }
 
+
+    public ArrayList<String> editUpdateProfileLocationsNameArrayList(){
+        ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
+        arrayList.remove(0);
+        return arrayList;
+    }
+
 }
