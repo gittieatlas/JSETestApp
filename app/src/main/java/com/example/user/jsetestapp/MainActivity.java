@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
-        helperMethods.addFragment(dashboardFragment,
+        helperMethods.replaceFragment(dashboardFragment,
                 getResources().getString(R.string.toolbar_title_dashboard),
                 MainActivity.this, scrollView);
         queryMethods.setUpLocationsArrayList();
@@ -93,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
-      //  Toast.makeText(this, user.firstName + defaultLocation.name, Toast.LENGTH_SHORT).show();
+        Util.setContext(this);
+        Util.setActivity(this);
     }
 
     private void initializeViews() {
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupToolbar() {
         toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
         toolbar.getMenu().clear(); // Clear toolbar icons
-        toolbar.setTitle(R.string.app_name);// Set title
+        setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
         // Set navigation icon
         toolbar.setNavigationIcon(
@@ -291,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setToolbarTitle(int toolbarTitle) {
-        toolbar.setTitle(toolbarTitle);
+        getSupportActionBar().setTitle(toolbarTitle);
     }
 
     private void setScrollViewMinHeight() {

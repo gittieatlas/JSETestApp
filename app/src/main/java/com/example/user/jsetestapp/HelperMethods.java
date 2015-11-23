@@ -12,11 +12,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -40,23 +43,11 @@ public class HelperMethods extends Activity {
         // Scroll to top
         scrollView.scrollTo(0, 0);
 
-        // ToDo combine addFragment and replaceFragment check if container has fragment inflated
-
         // replace fragment in container
         activity.getFragmentManager().beginTransaction().replace(R.id.container,
                 fragment).addToBackStack(tag).commit();
     }
 
-    public void addFragment(Fragment fragment, String tag,
-                            Activity activity, ScrollView scrollView) {
-
-        // Scroll to top
-        scrollView.scrollTo(0, 0);
-
-        // add fragment to container
-        activity.getFragmentManager().beginTransaction().add(R.id.container,
-                fragment).addToBackStack(tag).commit();
-    }
 
     public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner,
                                  String tag, Context context) {
@@ -81,18 +72,6 @@ public class HelperMethods extends Activity {
                     null, R.drawable.ic_clipboard_text_grey600_24dp, "become_jse_member");
         }
 
-    }
-
-    /**
-     * Function to make the first letter caps and the rest lowercase.
-     *
-     * @param data -   capitalize this
-     * @return String       -   alert message?
-     */
-    static public String firstLetterCaps(String data) {
-        String firstLetter = data.substring(0, 1).toUpperCase();
-        String restLetters = data.substring(1).toLowerCase();
-        return firstLetter + restLetters;
     }
 
     public void setMainActivity(MainActivity mainActivity) {
@@ -182,10 +161,10 @@ public class HelperMethods extends Activity {
     }
 
     private void addTestToArrayList(Test test) {
-        String day = mainActivity.helperMethods.firstLetterCaps(test.getDeadlineDayOfWeek()
+        String day = Util.firstLetterCaps(test.getDeadlineDayOfWeek()
                 .toString());
         DataObject obj = new DataObject(test.getLocation(),
-                mainActivity.helperMethods.firstLetterCaps(test.getDayOfWeek().toString()),
+                Util.firstLetterCaps(test.getDayOfWeek().toString()),
                 test.getTime().toString("hh:mm a"),
                 test.getDate().toString("MMMM dd yyyy"),
                 "Registration Deadline: ",
@@ -335,18 +314,6 @@ public class HelperMethods extends Activity {
         return false;
     }
 
-    /**
-     * Function to check if a string is a valid email address
-     *
-     * @param email -   string containing the email to be validated
-     * @return boolean      -   if valid return true; if not valid return false
-     */
-    public boolean isEmailAddressValid(String email) {
-        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return true;
-        } else
-            return false;
-    }
 
     /**
      * Function to check internet status
@@ -404,7 +371,13 @@ public class HelperMethods extends Activity {
 
         LocalTime start = LocalTime.parse(startTime, parseFormat);
         LocalTime end = LocalTime.parse(endTime, parseFormat);
-        LocalTime now = LocalTime.now();
+
+        // get current moment in default time zone
+        DateTime nowDefault = new org.joda.time.DateTime();
+        // translate to New York local time
+        DateTime nowNY = nowDefault.toDateTime(DateTimeZone.forID("America/New_York"));
+        // parse to LocalTime
+        LocalTime now = nowNY.toLocalTime();
 
         // check if now is between start and end
         return isWithinInterval(start, end, now);

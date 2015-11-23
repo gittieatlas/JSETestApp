@@ -65,7 +65,7 @@ public class LocationInfoFragment extends Fragment {
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO set navigation intent
+            Util.navigationIntent(mainActivity.defaultLocation.getAddress());
         }
     };
 

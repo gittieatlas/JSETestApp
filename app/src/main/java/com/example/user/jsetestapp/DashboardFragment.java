@@ -92,7 +92,7 @@ public class DashboardFragment extends Fragment {
         for (Alerts alerts : mainActivity.alertsArrayList) {
             if (alerts.locationName.equals(mainActivity.defaultLocation.getName())) {
                 alertsMessageTextView.setText(alerts.alertText);
-                alertsDayTextView.setText(mainActivity.helperMethods.firstLetterCaps(alerts.getDayOfWeek().toString()));
+                alertsDayTextView.setText(Util.firstLetterCaps(alerts.getDayOfWeek().toString()));
                 alertsDateTextView.setText(alerts.getDate().toString("MMMM dd yyyy"));
                 alertsTimeTextView.setText(alerts.getTime().toString("hh:mm a"));
             }

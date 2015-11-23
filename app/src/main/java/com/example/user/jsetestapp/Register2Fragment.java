@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 public class Register2Fragment extends Fragment {
-    //ToDo remove location from arrayList
+
     //Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
@@ -28,7 +28,6 @@ public class Register2Fragment extends Fragment {
     //Fragments
 
     //Variables
-    Boolean isSsn = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -159,43 +158,40 @@ public class Register2Fragment extends Fragment {
                     "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
                     "registration_failed_birthday_incorrect");
 
-        } else if (!isSsn()) {
+        }
+        else if (!isSsn()) {
             loginActivity.showDialog(getString(R.string.d_create_account_failed),
                     "Enter Last 4 digits of SSN.",
                     "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
                     "registration_failed_ssn_incorrect");
             ssnEditText.setText("");
-        } else {
+        }
+
+        else {
             saveUser();
-            loginActivity.databaseOperations.newUser(loginActivity.user);
+
+            // check for Internet status and set true/false
+            if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
+                loginActivity.databaseOperations.newUser(loginActivity.user);
+            } else {
+                loginActivity.showDialog(getString(R.string.d_no_connection),
+                        getString(R.string.d_no_connection_msg),
+                        null, null, getString(R.string.d_ok),
+                        R.drawable.ic_exclamation_grey600_24dp,
+                        "no_internet_connection");
+            }
 
         }
 
     }
 
-    //checking if DOB is valid
-    private Boolean isBirthdayCorrect() {
-
-        User user = new User();
-        try {
-            user.setDob(dobYearEditText.getText().toString(),
-                    dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
-            return true;
-
-        } catch (Exception ex) {
-            return false;
-        }
-
+    public Boolean isBirthdayCorrect(){
+        return Util.isBirthdayCorrect(dobYearEditText.getText().toString(),
+                dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
     }
 
-    //checking if ssnEditText contains 4 numbers
-    private Boolean isSsn() {
-        if (ssnEditText.getText().toString().length() < 4) {
-            isSsn = false;
-        } else {
-            isSsn = true;
-        }
-        return isSsn;
+    public Boolean isSsn(){
+        return Util.isSsn(ssnEditText.getText().toString());
     }
 
     private void saveUser() {
@@ -214,5 +210,7 @@ public class Register2Fragment extends Fragment {
 
         this.loginActivity = loginActivity;
     }
+
+
 
 }

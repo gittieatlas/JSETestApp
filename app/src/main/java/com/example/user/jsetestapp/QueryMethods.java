@@ -127,7 +127,7 @@ public class QueryMethods extends Activity {
 
             if (hours.getName().equals(location)) {
 
-                HoursDataObject obj = new HoursDataObject(mainActivity.helperMethods.firstLetterCaps(hours.getDayOfWeek().toString()),
+                HoursDataObject obj = new HoursDataObject(Util.firstLetterCaps(hours.getDayOfWeek().toString()),
 
                         hours.getStartTime().toString("hh:mm a"),
                         hours.getEndTime().toString("hh:mm a"));
@@ -151,9 +151,11 @@ public class QueryMethods extends Activity {
     public void setUpIsJseMember() {
 
         if (mainActivity.user.jseStudentId == null) {
-            mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
-        } else {
-          mainActivity.test();
+
+            // if internet connection status is true getJseStudentId
+            if (HelperMethods.checkInternetConnection(mainActivity.getApplicationContext())) {
+                mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
+            }
         }
     }
 

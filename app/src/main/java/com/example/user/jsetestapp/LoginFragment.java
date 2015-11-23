@@ -42,8 +42,8 @@ public class LoginFragment extends Fragment {
         initializeViews(rootView);
         loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
-        //  ToDo fix this error
-        // loginActivity.setToolbarTitle(R.string.toolbar_title_login);
+
+         loginActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         return rootView;
     }
@@ -107,7 +107,6 @@ public class LoginFragment extends Fragment {
         }
     };
 
-
     private boolean isValuesEntered() {
         if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
                 !loginActivity.helperMethods.isEmpty(passwordEditText)) {
@@ -117,7 +116,7 @@ public class LoginFragment extends Fragment {
     }
 
     private boolean isEmailValid() {
-        isEmailValid = loginActivity.helperMethods.isEmailAddressValid(emailEditText.getText().toString());
+        isEmailValid = Util.isEmailAddressValid(emailEditText.getText().toString());
         return isEmailValid;
     }
 
@@ -125,8 +124,16 @@ public class LoginFragment extends Fragment {
         loginActivity.user.setEmail(emailEditText.getText().toString());
         loginActivity.user.setPassword(passwordEditText.getText().toString());
 
-        loginActivity.databaseOperations.getUser(loginActivity.user);
-
+        // check for Internet status and set true/false
+        if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
+            loginActivity.databaseOperations.getUser(loginActivity.user);
+        } else {
+            loginActivity.showDialog(getString(R.string.d_no_connection),
+                    getString(R.string.d_no_connection_msg),
+                    null, null, getString(R.string.d_ok),
+                    R.drawable.ic_exclamation_grey600_24dp,
+                    "no_internet_connection");
+        }
 
     }
 

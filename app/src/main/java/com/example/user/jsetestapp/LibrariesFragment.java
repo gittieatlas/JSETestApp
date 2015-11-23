@@ -44,9 +44,7 @@ public class LibrariesFragment extends Fragment {
 
         initializeViews(rootView);
 
-        locationInfoFragment = new LocationInfoFragment();
-        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
-        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
+
 
         registerListeners();
         mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
@@ -60,6 +58,12 @@ public class LibrariesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        locationInfoFragment = new LocationInfoFragment();
+        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
+        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
+        
+
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, locationsSpinner.getSelectedItem().toString());
 
         locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));

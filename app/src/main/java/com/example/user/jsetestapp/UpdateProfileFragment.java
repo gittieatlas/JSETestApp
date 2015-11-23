@@ -29,8 +29,6 @@ public class UpdateProfileFragment extends Fragment {
     EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText, dobYearEditText,
             ssnEditText, newPasswordEditText, confirmNewPasswordEditText;
     Button rightButton, leftButton;
-    Boolean isSsn = false;
-    Boolean passwordEqualsConfirmPassword = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -67,17 +65,18 @@ public class UpdateProfileFragment extends Fragment {
 
     private void bindSpinnerData() {
 
-        // Todo remove index 0 from both spinners
+
         // Create an adapter from the string array resource and use android's
         // inbuilt layout file simple_spinner_item that represents the default spinner in the UI
         ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(getActivity()
-                .getApplicationContext(), R.array.gender_array, R.layout.spinner_dropdown_item);
+                .getApplicationContext(), R.array.update_profile_gender_array, R.layout.spinner_dropdown_item);
         // Set the layout to use for each dropdown item
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         genderSpinner.setAdapter(genderAdapter);
 
+
         loginActivity.helperMethods.addDataToSpinner
-                (loginActivity.helperMethods.editLocationsNameArrayList(),
+                (loginActivity.helperMethods.editUpdateProfileLocationsNameArrayList(),
                         locationsSpinner, "locationsNameArray", loginActivity.getContext());
     }
 
@@ -93,10 +92,10 @@ public class UpdateProfileFragment extends Fragment {
         dobYearEditText.setText(year + "");
         String ssn = loginActivity.user.ssn;
         ssnEditText.setText(ssn.substring(ssn.length() - 4));
-        int gender = loginActivity.user.gender.ordinal() + 1;
+        int gender = loginActivity.user.gender.ordinal() ;
         genderSpinner.setSelection(gender);
         locationsSpinner.setSelection(loginActivity.helperMethods
-                .setLocationSpinnerSelection());
+                .setLocationSpinnerSelection()-1);
         newPasswordEditText.setText(loginActivity.user.password);
         confirmNewPasswordEditText.setText(loginActivity.user.password);
     }
@@ -159,22 +158,13 @@ public class UpdateProfileFragment extends Fragment {
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(newPasswordEditText) &&
                 !loginActivity.helperMethods.isEmpty(confirmNewPasswordEditText) &&
-                !loginActivity.helperMethods.isEmpty(ssnEditText) &&
-                genderSpinner.getSelectedItemPosition() != 0 &&
-                locationsSpinner.getSelectedItemPosition() != 0) {
+                !loginActivity.helperMethods.isEmpty(ssnEditText)) {
             return true;
         } else
             return false;
     }
 
-    private boolean passwordEqualsConfirmPassword() {
-        if (newPasswordEditText.getText().toString()
-                .equals(confirmNewPasswordEditText.getText().toString())) {
-            passwordEqualsConfirmPassword = true;
-        } else
-            passwordEqualsConfirmPassword = false;
-        return passwordEqualsConfirmPassword;
-    }
+
 
     View.OnClickListener rightButtonListener = new View.OnClickListener() {
 
@@ -224,6 +214,20 @@ public class UpdateProfileFragment extends Fragment {
         }
     }
 
+    public Boolean isBirthdayCorrect(){
+        return Util.isBirthdayCorrect(dobYearEditText.getText().toString(),
+                dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
+    }
+
+    public Boolean isSsn(){
+        return Util.isSsn(ssnEditText.getText().toString());
+    }
+
+    public Boolean passwordEqualsConfirmPassword(){
+        return Util.passwordEqualsConfirmPassword(newPasswordEditText.getText().toString(),
+                confirmNewPasswordEditText.getText().toString());
+    }
+
     public void saveTestUser() {
         User testUser = new User();
         testUser.id = loginActivity.user.id;
@@ -234,49 +238,28 @@ public class UpdateProfileFragment extends Fragment {
         testUser.setDob(dobYearEditText.getText().toString(), dobMonthEditText.getText().toString(),
                 dobDayEditText.getText().toString());
         testUser.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
-        //testUser.setLocationId(loginActivity.locationsArrayList, testUser);
         testUser.email = loginActivity.user.email;
         testUser.setPassword(newPasswordEditText.getText().toString());
         testUser.setLocationId(loginActivity.locationsArrayList, testUser);
-//        Toast.makeText(loginActivity.getApplicationContext(), "first name: " + testUser.firstName +
-//                        " last name: " + testUser.lastName + " id: " + testUser.id + " email: " +
-//                        testUser.email + "password: " + testUser.password + " dob: " + testUser.dob +
-//                        " gender: " + testUser.gender + " location id: " + testUser.locationId,
-//                Toast.LENGTH_LONG).show();
+
         //calling async task and sending testUser
 
-        loginActivity.databaseOperations.updateUser(testUser);
-    }
-
-
-    //checking if DOB is valid
-    //test comment
-    private Boolean isBirthdayCorrect() {
-
-        User user = new User();
-        try {
-            user.setDob(dobYearEditText.getText().toString(),
-                    dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
-            return true;
-
-        } catch (Exception ex) {
-            return false;
-        }
-
-    }
-
-    private Boolean isSsn() {
-        if (ssnEditText.getText().toString().length() < 4) {
-            isSsn = false;
+        // check for Internet status and set true/false
+        if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
+            loginActivity.databaseOperations.updateUser(testUser);
         } else {
-            isSsn = true;
+            loginActivity.showDialog(getString(R.string.d_no_connection),
+                    getString(R.string.d_no_connection_msg),
+                    null, null, getString(R.string.d_ok),
+                    R.drawable.ic_exclamation_grey600_24dp,
+                    "no_internet_connection");
         }
-        return isSsn;
-    }
 
+    }
 
     public void setLoginActivity(LoginActivity loginActivity) {
 
         this.loginActivity = loginActivity;
     }
+
 }

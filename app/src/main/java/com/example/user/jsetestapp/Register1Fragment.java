@@ -23,12 +23,8 @@ public class Register1Fragment extends Fragment {
 
     //Fragments
 
-
     //Variables
     boolean isValuesEntered = false;
-    boolean isEmailValid = false;
-    boolean passwordEqualsConfirmPassword = false;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -110,7 +106,7 @@ public class Register1Fragment extends Fragment {
 
     private void validateForm() {
         // check if email exists- cant do now as not doing db on server
-        if (!isEmailValid()){
+        if (!isEmailAddressValid()){
             loginActivity.showDialog("Create Account Failed", "You need to enter a valid email address.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_email");
         } else {
             if (!passwordEqualsConfirmPassword()) {
@@ -128,6 +124,14 @@ public class Register1Fragment extends Fragment {
 
     }
 
+    public Boolean isEmailAddressValid() {
+       return Util.isEmailAddressValid(emailEditText.getText().toString());
+    }
+
+    public Boolean passwordEqualsConfirmPassword(){
+        return Util.passwordEqualsConfirmPassword(passwordEditText.getText().toString(), confirmPasswordEditText.getText().toString());
+    }
+
     private boolean isValuesEntered() {
         if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
                 !loginActivity.helperMethods.isEmpty(passwordEditText) &&
@@ -136,19 +140,6 @@ public class Register1Fragment extends Fragment {
         } else
             isValuesEntered = false;
         return isValuesEntered;
-    }
-
-    private boolean isEmailValid() {
-        isEmailValid = loginActivity.helperMethods.isEmailAddressValid(emailEditText.getText().toString());
-        return isEmailValid;
-    }
-
-    private boolean passwordEqualsConfirmPassword() {
-        if (passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
-            passwordEqualsConfirmPassword = true;
-        } else
-            passwordEqualsConfirmPassword = false;
-        return passwordEqualsConfirmPassword;
     }
 
     public void setLoginActivity(LoginActivity loginActivity) {

@@ -61,6 +61,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         Util.setContext(this);
+        Util.setActivity(this);
     }
 
     private void getDataFromDatabase() {
@@ -74,7 +75,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void setUpLocations() {
+        //initialize locationArrayList
         locationsArrayList = new ArrayList<Location>();
+        //execute GetLocations asyncTask
         new GetLocations().execute();
     }
 
@@ -117,11 +120,6 @@ public class SplashActivity extends AppCompatActivity {
      * Async task class to get json by making HTTP call
      */
     private class GetLocations extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected Void doInBackground(Void... arg0) {
@@ -212,11 +210,6 @@ public class SplashActivity extends AppCompatActivity {
     private class GetTests extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected Void doInBackground(Void... arg0) {
             ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
@@ -290,11 +283,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected Void doInBackground(Void... arg0) {
             ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
@@ -361,13 +349,6 @@ public class SplashActivity extends AppCompatActivity {
      */
     private class GetBranches extends AsyncTask<Void, Void, Void> {
 
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
         @Override
         protected Void doInBackground(Void... arg0) {
             ServiceHandler sh = new ServiceHandler();
@@ -427,13 +408,6 @@ public class SplashActivity extends AppCompatActivity {
      * Async task class to get json by making HTTP call
      */
     private class getAlerts extends AsyncTask<Void, Void, Void> {
-
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected Void doInBackground(Void... arg0) {

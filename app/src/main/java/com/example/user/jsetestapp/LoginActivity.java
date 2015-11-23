@@ -55,10 +55,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         initializeViews();
+        Util.setContext(this);
+        Util.setActivity(this);
         createFragmentsActivitiesClasses();
         setupToolbar();
         user = new User();
-        getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
+        //getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
+
+
+        helperMethods.replaceFragment(loginFragment,
+                getResources().getString(R.string.toolbar_title_login),
+                LoginActivity.this, scrollView);
+
+
         locationsArrayList = new ArrayList<Location>();
 
         Bundle bundle = new Bundle();
@@ -144,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         toolbar.getMenu().clear(); // Clear toolbar icons
-        toolbar.setTitle(R.string.app_name);// Set title
+       //toolbar.setTitle(R.string.app_name);// Set title
         toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
         // Set navigation icon
         toolbar.setNavigationIcon(
