@@ -114,8 +114,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (updateProfileFragment != null && updateProfileFragment.isVisible()) {
             switchToMainActivity("update_profile_cancel");
-        } else if (getFragmentManager().getBackStackEntryCount() >= 1) {
+        } else if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStack();
+        }else{
+            super.onBackPressed();
         }
     }
 

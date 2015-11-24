@@ -77,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
-        helperMethods.replaceFragment(dashboardFragment,
-                getResources().getString(R.string.toolbar_title_dashboard),
-                MainActivity.this, scrollView);
+//        helperMethods.replaceFragment(dashboardFragment,
+//                getResources().getString(R.string.toolbar_title_dashboard),
+//                MainActivity.this, scrollView);
+        getFragmentManager().beginTransaction().add(R.id.container, dashboardFragment).addToBackStack(getResources().getString(R.string.toolbar_title_dashboard)).commit();
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpUser();
         queryMethods.setUpLocationsNameArrayList(this);
@@ -93,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
+       // Util.setContext(this);
+      //  Toast.makeText(this, user.firstName + defaultLocation.name, Toast.LENGTH_SHORT).show();
         Util.setContext(this);
         Util.setActivity(this);
     }
@@ -162,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStack();
+        }else {
+            super.onBackPressed();
         }
     }
 

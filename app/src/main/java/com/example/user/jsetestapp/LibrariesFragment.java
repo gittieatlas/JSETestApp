@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 public class LibrariesFragment extends Fragment {
@@ -22,7 +23,7 @@ public class LibrariesFragment extends Fragment {
     Spinner locationsSpinner;
     CardView findTestButton;
     LinearLayout libraryInfoLinearLayout;
-
+    TextView locationAddress, locationPhoneNumber;
 
     //Activities
     MainActivity mainActivity;
@@ -44,13 +45,14 @@ public class LibrariesFragment extends Fragment {
 
         initializeViews(rootView);
 
-
-
         registerListeners();
         mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
         libraryInfoLinearLayout.setVisibility(View.GONE);
 
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
+
+
+
 
         return rootView;
     }
@@ -59,14 +61,10 @@ public class LibrariesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        locationInfoFragment = new LocationInfoFragment();
-        locationInfoFragment.setArguments(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
-        getFragmentManager().beginTransaction().add(R.id.librariesContainer, locationInfoFragment).commit();
-        
 
+//ToDo changeaddress and phone number
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, locationsSpinner.getSelectedItem().toString());
 
-        locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(getSelectedLocation()));
 
         mainActivity.tabLayout.getTabAt(2).select();
     }
@@ -82,6 +80,8 @@ public class LibrariesFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
+        locationAddress = (TextView) rootView.findViewById(R.id.locationAddress);
+        locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         bindSpinnerData();
@@ -92,7 +92,22 @@ public class LibrariesFragment extends Fragment {
     private void registerListeners() {
         findTestButton.setOnClickListener(findTestButtonListener);
         locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
+        locationAddress.setOnClickListener(locationAddressOnClickListener);
+        locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
     }
+    OnClickListener locationAddressOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Util.navigationIntent(mainActivity.defaultLocation.getAddress());
+        }
+    };
+
+    OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mainActivity.intentMethods.callIntent(locationPhoneNumber.getText().toString());
+        }
+    };
 
     OnItemSelectedListener locationsSpinnerOnItemSelectedListener = new OnItemSelectedListener() {
 
@@ -106,7 +121,9 @@ public class LibrariesFragment extends Fragment {
 
             mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
 
-            locationInfoFragment.setUpScreen(getSelectedLocation());
+            //locationInfoFragment.setUpScreen(getSelectedLocation());
+            locationAddress.setText(mainActivity.defaultLocation.getAddress());
+            locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
         }
 
         @Override

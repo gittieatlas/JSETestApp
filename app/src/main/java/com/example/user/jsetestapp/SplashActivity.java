@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.services.concurrency.Task;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -42,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
     Boolean gotHours = false;
     Boolean gotBranches = false;
     Boolean gotAlerts = false;
-
+    AsyncTask taskGetLocations, taskGetTests, taskGetHours, taskGetBranches, taskGetAlerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class SplashActivity extends AppCompatActivity {
         Util.setActivity(this);
     }
 
+
+
     private void getDataFromDatabase() {
 
         setUpLocations();
@@ -78,31 +82,43 @@ public class SplashActivity extends AppCompatActivity {
         //initialize locationArrayList
         locationsArrayList = new ArrayList<Location>();
         //execute GetLocations asyncTask
-        new GetLocations().execute();
+        taskGetLocations = new GetLocations().execute();
+
+    }
+
+    public void onPause(){
+        super.onPause();
+
+        taskGetLocations.cancel(true);
+        taskGetTests.cancel(true);
+        taskGetHours.cancel(true);
+        taskGetBranches.cancel(true);
+        taskGetAlerts.cancel(true);
+
     }
 
     public void setUpTests() {
         testsArrayList = new ArrayList<Test>();
-        new GetTests().execute();
-
+        //new GetTests().execute();
+        taskGetTests = new GetTests().execute();
     }
 
     public void setUpHours() {
         hoursArrayList = new ArrayList<Hours>();
-        new GetHours().execute();
-
+        //new GetHours().execute();
+        taskGetHours = new GetHours().execute();
     }
 
     public void setUpBranches() {
         branchesArrayList = new ArrayList<Branch>();
-        new GetBranches().execute();
-
+        //new GetBranches().execute();
+        taskGetBranches = new GetBranches().execute();
     }
 
     public void setUpAlerts() {
         alertsArrayList = new ArrayList<Alerts>();
-        new getAlerts().execute();
-
+        //new getAlerts().execute();
+        taskGetAlerts = new getAlerts().execute();
     }
 
 
@@ -140,6 +156,8 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject location = locationsJsonArray.getJSONObject(i);
 
                         locationsArrayList.add(setLocation(location));
+                        if (isCancelled())
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,6 +173,7 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             gotLocations = true;
+
             changeActivities();
         }
     }
@@ -518,6 +537,7 @@ public class SplashActivity extends AppCompatActivity {
         // Showing Alerts Message
         alertDialog.show();
     }
+
 
 
     public int getGender(Test test) {
