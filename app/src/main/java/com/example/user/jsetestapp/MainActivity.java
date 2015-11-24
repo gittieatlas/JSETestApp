@@ -6,7 +6,6 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -194,24 +193,74 @@ public class MainActivity extends AppCompatActivity {
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-                    helperMethods.replaceFragment(dashboardFragment,
-                            getResources().getString(R.string.toolbar_title_dashboard),
-                            MainActivity.this, scrollView);
+
+                    DashboardFragment dashboardFragment = new DashboardFragment();
+                    try {
+                        dashboardFragment = (DashboardFragment) getFragmentManager().findFragmentById(R.id.container);
+                    } catch (Exception ex) {
+
+                    }
+
+                    if (dashboardFragment == null && !dashboardFragment.isVisible()) {
+                        helperMethods.replaceFragment(dashboardFragment,
+                                getResources().getString(R.string.toolbar_title_dashboard),
+                                MainActivity.this, scrollView);
+                    }
+
+
                     break;
                 case 1:
-                    helperMethods.replaceFragment(searchFragment,
-                            getResources().getString(R.string.toolbar_title_search),
-                            MainActivity.this, scrollView);
+
+                    SearchFragment searchFragment = new SearchFragment();
+                    try {
+                        searchFragment = (SearchFragment) getFragmentManager().findFragmentById(R.id.container);
+                    } catch (Exception ex) {
+
+                    }
+
+                    if (searchFragment == null && !searchFragment.isVisible()) {
+                        helperMethods.replaceFragment(searchFragment,
+                                getResources().getString(R.string.toolbar_title_search),
+                                MainActivity.this, scrollView);
+                    }
+
+
                     break;
                 case 2:
-                    helperMethods.replaceFragment(librariesFragment,
-                            getResources().getString(R.string.toolbar_title_libraries),
-                            MainActivity.this, scrollView);
+
+                    LibrariesFragment librariesFragment = new LibrariesFragment();
+                    try {
+                        librariesFragment = (LibrariesFragment) getFragmentManager().findFragmentById(R.id.container);
+                    } catch (Exception ex) {
+
+                    }
+
+                    if (librariesFragment == null && !librariesFragment.isVisible()) {
+
+                        helperMethods.replaceFragment(librariesFragment,
+                                getResources().getString(R.string.toolbar_title_libraries),
+                                MainActivity.this, scrollView);
+                    }
+
+
+
                     break;
                 case 3:
-                    helperMethods.replaceFragment(contactFragment,
-                            getResources().getString(R.string.toolbar_title_contact),
-                            MainActivity.this, scrollView);
+
+                    ContactFragment contactFragment = new ContactFragment();
+                    try {
+                        contactFragment = (ContactFragment) getFragmentManager().findFragmentById(R.id.container);
+                    } catch (Exception ex) {
+
+                    }
+
+                    if (contactFragment == null && !contactFragment.isVisible()) {
+
+                        helperMethods.replaceFragment(contactFragment,
+                                getResources().getString(R.string.toolbar_title_contact),
+                                MainActivity.this, scrollView);
+                    }
+
                     break;
                 default:
                     break;
@@ -258,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
-//b.putSerializable("user", user);
+            //b.putSerializable("user", user);
             b.putSerializable("defaultLocation", defaultLocation);
             intent.putExtras(b);
             intent.putExtra("fragment", "log_out");
@@ -290,6 +339,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtras(b);
             intent.putExtra("fragment", "update_profile");
             startActivity(intent);
+
+            finish();
             return true;
         }
 
