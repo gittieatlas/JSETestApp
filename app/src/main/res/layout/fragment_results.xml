@@ -8,6 +8,15 @@
     android:paddingBottom="62dp"
     tools:context=".Results">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/messageTextView"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="@string/msg_no_results" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"

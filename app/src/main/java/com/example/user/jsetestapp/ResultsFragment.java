@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     FloatingActionButton fab;
     View rootView;
     private RecyclerView recyclerView;
+    private TextView messageTextView;
 
     //Fragments
 
@@ -59,9 +61,9 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     }
 
 
-
     private void initializeViews(View rootView) {
 
+        messageTextView = (TextView) rootView.findViewById(R.id.messageTextView);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
     }
@@ -98,16 +100,11 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
         recyclerViewAdapter.setOnItemImageClickListener(this);
     }
 
-    private void checkIfNoResults(){
-        if (mainActivity.getTestsFilteredArrayList().size() == 0) {
-            String title = "Tests";
-            String message = "No results found. Try again?";
-            String positiveButton = "OK";
-            int icon = R.drawable.ic_clipboard_text_grey600_24dp;
-            String tagListener = "results_no_tests";
-            mainActivity.showDialog(title, message, positiveButton, null, null, icon, tagListener);
-
-            }
+    private void checkIfNoResults() {
+        if (mainActivity.getTestsFilteredArrayList().size() == 0)
+            messageTextView.setVisibility(View.VISIBLE);
+        else
+            messageTextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -124,9 +121,9 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
                 null, test.getDate(), test.getTime());
     }
 
-    private String getTestAddress(Test test){
-        String address="";
-        for (Location location: mainActivity.locationsArrayList) {
+    private String getTestAddress(Test test) {
+        String address = "";
+        for (Location location : mainActivity.locationsArrayList) {
             if (test.getLocation().equals(location.getName()))
                 address = location.getAddress();
         }

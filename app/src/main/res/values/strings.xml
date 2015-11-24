@@ -180,5 +180,8 @@
     <string name="d_no_connection_msg">You need an internet connection to use this application.
         Please try again.</string>
 
+    <!-- Messages -->
+    <string name="msg_no_results">No results found</string>
+
 
 </resources>
