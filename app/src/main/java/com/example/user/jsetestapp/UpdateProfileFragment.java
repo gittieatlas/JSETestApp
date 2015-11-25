@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ public class UpdateProfileFragment extends Fragment {
     //Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
+    AsyncTask taskUpdateUser;
 
     //Activities
     MainActivity mainActivity;
@@ -39,9 +41,14 @@ public class UpdateProfileFragment extends Fragment {
 
         initializeViews(rootView);
         loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
-        loadUserInformation();
         registerListeners();
         return rootView;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadUserInformation();
     }
 
     private void initializeViews(View rootView) {
@@ -246,7 +253,7 @@ public class UpdateProfileFragment extends Fragment {
 
         // check for Internet status and set true/false
         if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
-            loginActivity.databaseOperations.updateUser(testUser);
+            taskUpdateUser = loginActivity.databaseOperations.updateUser(testUser);
         } else {
             loginActivity.showDialog(getString(R.string.d_no_connection),
                     getString(R.string.d_no_connection_msg),

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -222,48 +221,66 @@ public class HelperMethods extends Activity {
     }
 
     public void createUser(String result, int id) {
-        if (result.equals("") && id == 0) {
-            loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
-                    loginActivity.getString(R.string.d_account_create_fail_duplicate_email_msg),
-                    null, null, loginActivity.getString(R.string.d_ok),
-                    R.drawable.ic_alert_grey600_24dp,
-                    loginActivity.getString(R.string.d_create_account_failed_duplicate_email));
-        } else if (result.equals("true") && id != 0) {
-            loginActivity.user.setId(id);
-            loginActivity.switchToMainActivity("create_account");
+        if (loginActivity.register2Fragment.isVisible()) {
+            if (result.equals("") && id == 0) {
+                loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
+                        loginActivity.getString(R.string.d_account_create_fail_duplicate_email_msg),
+                        null, null, loginActivity.getString(R.string.d_ok),
+                        R.drawable.ic_alert_grey600_24dp,
+                        loginActivity.getString(R.string.d_create_account_failed_duplicate_email));
+            } else if (result.equals("true") && id != 0) {
+                loginActivity.user.setId(id);
+                loginActivity.switchToMainActivity("create_account");
+            } else {
+                loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
+                        loginActivity.getString(R.string.d_account_create_fail_msg),
+                        null, null, loginActivity.getString(R.string.d_ok),
+                        R.drawable.ic_alert_grey600_24dp,
+                        loginActivity.getString(R.string.d_create_account_insert_failed));
+            }
         } else {
-            loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
-                    loginActivity.getString(R.string.d_account_create_fail_msg),
-                    null, null, loginActivity.getString(R.string.d_ok),
-                    R.drawable.ic_alert_grey600_24dp,
-                    loginActivity.getString(R.string.d_create_account_insert_failed));
+            if (result.equals("") && id == 0) {
+
+            } else if (result.equals("true") && id != 0) {
+                loginActivity.user.setId(id);
+                //loginActivity.switchToMainActivity("create_account");
+            } else {
+
+            }
         }
+
     }
 
     public void getUser(String result) {
-        if (result.equals("0")) {
-            // Not logged in
-            loginActivity.showDialog(loginActivity.getString(R.string.d_login_failed),
-                    "This username and password did not match. Please try again.",
-                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
-                    "login_failed_not_match");
-        } else {
-            //login successful
-            loginActivity.switchToMainActivity("login");
 
+        if (loginActivity.loginFragment.isVisible()) {
+            if (result.equals("0")) {
+                // Not logged in
+                loginActivity.showDialog(loginActivity.getString(R.string.d_login_failed),
+                        "This username and password did not match. Please try again.",
+                        null, null, "OK", R.drawable.ic_alert_grey600_24dp,
+                        "login_failed_not_match");
+            } else {
+                //login successful
+                loginActivity.switchToMainActivity("login");
+
+            }
         }
     }
 
     public void updateUser(String result) {
-        if (result.equals("true")) {
-            // user updated
-            loginActivity.switchToMainActivity("update_profile");
-        } else {
-            //user not updated
-            loginActivity.showDialog("Create Account Failed",
-                    "User not updated.",
-                    null, null, "OK", R.drawable.ic_alert_grey600_24dp,
-                    "create_account_failed_email_duplicate");
+
+        if (loginActivity.updateProfileFragment.isVisible()) {
+            if (result.equals("true")) {
+                // user updated
+                loginActivity.switchToMainActivity("update_profile");
+            } else {
+                //user not updated
+                loginActivity.showDialog("Create Account Failed",
+                        "User not updated.",
+                        null, null, "OK", R.drawable.ic_alert_grey600_24dp,
+                        "create_account_failed_email_duplicate");
+            }
         }
     }
 
@@ -290,7 +307,7 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to show a snack bar in MainActivity - dashboard
+     * Function to show a snack bar in Coordinator Layout
      *
      * @param message           -   snack bar message
      * @param coordinatorLayout -   parent view for snackBar
@@ -436,17 +453,17 @@ public class HelperMethods extends Activity {
 
     public static void hideSoftKeyboard(Activity loginActivity) {
         InputMethodManager inputMethodManager = (InputMethodManager) loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
     }
 
-    public ArrayList<String> editLocationsNameArrayList(){
+    public ArrayList<String> editLocationsNameArrayList() {
         ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
         arrayList.set(0, "");
         return arrayList;
     }
 
 
-    public ArrayList<String> editUpdateProfileLocationsNameArrayList(){
+    public ArrayList<String> editUpdateProfileLocationsNameArrayList() {
         ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
         arrayList.remove(0);
         return arrayList;

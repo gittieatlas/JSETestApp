@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class LoginFragment extends Fragment {
     //Activities
     MainActivity mainActivity;
     LoginActivity loginActivity;
+    AsyncTask taskGetUser;
 
     //Fragments
 
@@ -46,6 +48,14 @@ public class LoginFragment extends Fragment {
          loginActivity.setToolbarTitle(R.string.toolbar_title_login);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (loginActivity.user.getId()  != 0){
+            loginActivity.switchToMainActivity("login");
+        }
     }
 
     private void initializeViews(View rootView) {
@@ -126,7 +136,7 @@ public class LoginFragment extends Fragment {
 
         // check for Internet status and set true/false
         if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
-            loginActivity.databaseOperations.getUser(loginActivity.user);
+            taskGetUser =  loginActivity.databaseOperations.getUser(loginActivity.user);
         } else {
             loginActivity.showDialog(getString(R.string.d_no_connection),
                     getString(R.string.d_no_connection_msg),

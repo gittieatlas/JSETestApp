@@ -3,6 +3,7 @@ package com.example.user.jsetestapp;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -59,14 +60,13 @@ public class DatabaseOperations {
     private static String studentId = "";
     private static int loginResult = 0;
 
-    public void newUser(User user) {
+    public AsyncTask newUser(User user) {
 
-        new CreateNewUser(user).execute();
+        return new CreateNewUser(user).execute();
     }
 
-    public void getUser(User user) {
-
-        new GetUser(user).execute();
+    public AsyncTask getUser(User user) {
+        return new GetUser(user).execute();
     }
 
     public void getJseStudentId(User user) {
@@ -74,9 +74,9 @@ public class DatabaseOperations {
         new GetJseStudentId(user).execute();
     }
 
-    public void updateUser(User user) {
+    public AsyncTask updateUser(User user) {
 
-        new UpdateUser(user).execute();
+        return new UpdateUser(user).execute();
     }
 
     /**
@@ -170,6 +170,14 @@ public class DatabaseOperations {
 
         }
 
+
+        protected void onCancelled(String result){
+
+            //Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
+            if (id != 0) loginActivity.user.setId(id);
+            pDialog.dismiss();
+        }
+
     }
 
     /**
@@ -251,6 +259,8 @@ public class DatabaseOperations {
 
                         loginActivity.user = user;
 
+                        if (isCancelled()) break;
+
 
                     }
                 } catch (JSONException e) {
@@ -275,6 +285,8 @@ public class DatabaseOperations {
 
 
         }
+
+
 
     }
 
@@ -445,7 +457,7 @@ public class DatabaseOperations {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (json !=null && !result.equals("false")){
+            if (json !=null && !result.equals("false") && !isCancelled()){
                 loginActivity.user = user;
             }
             return result;
@@ -456,8 +468,18 @@ public class DatabaseOperations {
          **/
         protected void onPostExecute(String result) {
             // dismiss the dialog once done
-             pDialog.dismiss();
+
             loginActivity.helperMethods.updateUser(result);
+            pDialog.dismiss();
+        }
+
+
+        protected void onCancelled(String result){
+
+            Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
+
+            //loginActivity.helperMethods.updateUser(result);
+            pDialog.dismiss();
         }
 
     }

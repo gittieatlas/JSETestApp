@@ -52,8 +52,6 @@ public class LibrariesFragment extends Fragment {
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
 
 
-
-
         return rootView;
     }
 
@@ -61,21 +59,19 @@ public class LibrariesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
-//ToDo changeaddress and phone number
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, locationsSpinner.getSelectedItem().toString());
-
+        setUpScreen(getSelectedLocation());
 
         mainActivity.tabLayout.getTabAt(2).select();
     }
 
     private Location getSelectedLocation() {
         Location locationToPass = new Location();
-        for (Location location : mainActivity.locationsArrayList){
+        for (Location location : mainActivity.locationsArrayList) {
             if (location.getName().equals(locationsSpinner.getSelectedItem().toString()))
                 locationToPass = location;
         }
-        if (locationToPass == null)locationToPass = mainActivity.defaultLocation;
+        if (locationToPass == null) locationToPass = mainActivity.defaultLocation;
         return locationToPass;
     }
 
@@ -95,6 +91,7 @@ public class LibrariesFragment extends Fragment {
         locationAddress.setOnClickListener(locationAddressOnClickListener);
         locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
     }
+
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -122,8 +119,10 @@ public class LibrariesFragment extends Fragment {
             mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
 
             //locationInfoFragment.setUpScreen(getSelectedLocation());
-            locationAddress.setText(mainActivity.defaultLocation.getAddress());
-            locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
+
+            setUpScreen(getSelectedLocation());
+
+
         }
 
         @Override
@@ -131,6 +130,8 @@ public class LibrariesFragment extends Fragment {
 
         }
     };
+
+
     OnClickListener findTestButtonListener = new OnClickListener() {
 
         @Override
@@ -141,6 +142,11 @@ public class LibrariesFragment extends Fragment {
         }
     };
 
+
+    public void setUpScreen(Location location) {
+        locationAddress.setText(mainActivity.defaultLocation.getAddress());
+        locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
+    }
 
     private void bindSpinnerData() {
 

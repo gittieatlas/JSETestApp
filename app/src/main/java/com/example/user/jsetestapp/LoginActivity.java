@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
@@ -16,11 +15,10 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity {
 
     //Controls
-    TabLayout tabLayout;
     Toolbar toolbar;
     ScrollView scrollView;
-    LinearLayout tabLayoutLinearLayout;
     FrameLayout container;
+    CoordinatorLayout coordinatorLayout;
 
     //Activities HelperClasses Classes;
     HelperMethods helperMethods;
@@ -47,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Alerts> alertsArrayList;
     Location defaultLocation;
 
-   // private static Context sContext;
+    // private static Context sContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +56,13 @@ public class LoginActivity extends AppCompatActivity {
         Util.setContext(this);
         Util.setActivity(this);
         createFragmentsActivitiesClasses();
+
         setupToolbar();
         user = new User();
-        //getFragmentManager().beginTransaction().add(R.id.container, loginFragment).commit();
-
 
         helperMethods.replaceFragment(loginFragment,
                 getResources().getString(R.string.toolbar_title_login),
                 LoginActivity.this, scrollView);
-
 
         locationsArrayList = new ArrayList<Location>();
 
@@ -80,25 +76,34 @@ public class LoginActivity extends AppCompatActivity {
         alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
 
 
-
         try {
             Intent intent = getIntent();
-
             if (intent.getStringExtra("fragment").equals("update_profile")) {
-//                getFragmentManager().beginTransaction().replace(R.id.container,
-//                        updateProfileFragment).commit();
-
-                LoginActivity.this.helperMethods.replaceFragment(
+                helperMethods.replaceFragment(
                         LoginActivity.this.updateProfileFragment,
                         "update_profile",
                         LoginActivity.this, LoginActivity.this.scrollView);
 
                 user = (User) bundle.getSerializable("user");
                 defaultLocation = (Location) bundle.getSerializable("defaultLocation");
+            } else if (intent.getStringExtra("fragment").equals("log_out")) {
+                helperMethods.showSnackBar("You've been logged out", coordinatorLayout);
             }
         } catch (Exception e) {
 
         }
+    }
+
+    public void onPause() {
+        super.onPause();
+
+        if (loginFragment.taskGetUser != null) loginFragment.taskGetUser.cancel(true);
+        if (register2Fragment.taskNewUser != null) register2Fragment.taskNewUser.cancel(true);
+        if (updateProfileFragment.taskUpdateUser != null) updateProfileFragment.taskUpdateUser.cancel(true);
+
+        // Toast.makeText(this, loginFragment.taskGetUser.isCancelled() + "", Toast.LENGTH_LONG).show();
+
+
     }
 
 
@@ -116,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             switchToMainActivity("update_profile_cancel");
         } else if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStack();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -125,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
     }
 
     private void createFragmentsActivitiesClasses() {
@@ -155,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         toolbar.getMenu().clear(); // Clear toolbar icons
-       //toolbar.setTitle(R.string.app_name);// Set title
+        //toolbar.setTitle(R.string.app_name);// Set title
         toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
         // Set navigation icon
         toolbar.setNavigationIcon(
@@ -178,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
 
     public void setToolbarTitle(int toolbarTitle) {

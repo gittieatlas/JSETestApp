@@ -1,6 +1,7 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ public class Register2Fragment extends Fragment {
     EditText firstNameEditText, lastNameEditText, dobMonthEditText,
             dobDayEditText, dobYearEditText, ssnEditText;
     Button rightButton, leftButton;
+    AsyncTask taskNewUser;
 
     //Activities
     LoginActivity loginActivity;
@@ -40,6 +42,14 @@ public class Register2Fragment extends Fragment {
         loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
         return rootView;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (loginActivity.user.getId()  != 0){
+            loginActivity.switchToMainActivity("create_account");
+        }
     }
 
     private void initializeViews(View rootView) {
@@ -172,7 +182,7 @@ public class Register2Fragment extends Fragment {
 
             // check for Internet status and set true/false
             if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
-                loginActivity.databaseOperations.newUser(loginActivity.user);
+                taskNewUser = loginActivity.databaseOperations.newUser(loginActivity.user);
             } else {
                 loginActivity.showDialog(getString(R.string.d_no_connection),
                         getString(R.string.d_no_connection_msg),

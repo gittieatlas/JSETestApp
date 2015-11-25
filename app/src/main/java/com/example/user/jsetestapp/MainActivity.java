@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -76,10 +75,9 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
-//        helperMethods.replaceFragment(dashboardFragment,
-//                getResources().getString(R.string.toolbar_title_dashboard),
-//                MainActivity.this, scrollView);
-        getFragmentManager().beginTransaction().add(R.id.container, dashboardFragment).addToBackStack(getResources().getString(R.string.toolbar_title_dashboard)).commit();
+        helperMethods.replaceFragment(dashboardFragment,
+                getResources().getString(R.string.toolbar_title_dashboard),
+                MainActivity.this, scrollView);
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpUser();
         queryMethods.setUpLocationsNameArrayList(this);
@@ -93,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
-       // Util.setContext(this);
-      //  Toast.makeText(this, user.firstName + defaultLocation.name, Toast.LENGTH_SHORT).show();
+
         Util.setContext(this);
         Util.setActivity(this);
     }
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
-        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
     }
 
     private void createFragmentsActivitiesClasses() {
@@ -140,21 +137,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        toolbar.inflateMenu(R.menu.menu_main); //Inflate menu
-        toolbar.getMenu().clear(); // Clear toolbar icons
+        //Inflate menu
+        toolbar.inflateMenu(R.menu.menu_main);
+        // Clear toolbar icons
+        toolbar.getMenu().clear();
+        //
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
+        //Set title color
+        toolbar.setTitleTextColor(getResources().getColor(R.color.icons));
         // Set navigation icon
         toolbar.setNavigationIcon(
                 new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {// Navigation onClickLister
+        // Navigation onClickLister
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toolbar.getTitle().toString().equals(getResources().getString(R.string.toolbar_title_results))) {
-                    getFragmentManager().popBackStack();
 
-                } // else nothing
+                if (resultsFragment.isVisible())
+                    getFragmentManager().popBackStack();
             }
         });
     }
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStack();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -193,74 +193,32 @@ public class MainActivity extends AppCompatActivity {
 
             switch (tabLayout.getSelectedTabPosition()) {
                 case 0:
-
-                    DashboardFragment dashboardFragment = new DashboardFragment();
-                    try {
-                        dashboardFragment = (DashboardFragment) getFragmentManager().findFragmentById(R.id.container);
-                    } catch (Exception ex) {
-
-                    }
-
-                    if (dashboardFragment == null && !dashboardFragment.isVisible()) {
+                    if (!dashboardFragment.isVisible()) {
                         helperMethods.replaceFragment(dashboardFragment,
                                 getResources().getString(R.string.toolbar_title_dashboard),
                                 MainActivity.this, scrollView);
                     }
-
-
                     break;
                 case 1:
-
-                    SearchFragment searchFragment = new SearchFragment();
-                    try {
-                        searchFragment = (SearchFragment) getFragmentManager().findFragmentById(R.id.container);
-                    } catch (Exception ex) {
-
-                    }
-
-                    if (searchFragment == null && !searchFragment.isVisible()) {
+                    if (!searchFragment.isVisible()) {
                         helperMethods.replaceFragment(searchFragment,
                                 getResources().getString(R.string.toolbar_title_search),
                                 MainActivity.this, scrollView);
                     }
-
-
                     break;
                 case 2:
-
-                    LibrariesFragment librariesFragment = new LibrariesFragment();
-                    try {
-                        librariesFragment = (LibrariesFragment) getFragmentManager().findFragmentById(R.id.container);
-                    } catch (Exception ex) {
-
-                    }
-
-                    if (librariesFragment == null && !librariesFragment.isVisible()) {
-
+                    if (!librariesFragment.isVisible()) {
                         helperMethods.replaceFragment(librariesFragment,
                                 getResources().getString(R.string.toolbar_title_libraries),
                                 MainActivity.this, scrollView);
                     }
-
-
-
                     break;
                 case 3:
-
-                    ContactFragment contactFragment = new ContactFragment();
-                    try {
-                        contactFragment = (ContactFragment) getFragmentManager().findFragmentById(R.id.container);
-                    } catch (Exception ex) {
-
-                    }
-
-                    if (contactFragment == null && !contactFragment.isVisible()) {
-
+                    if (!contactFragment.isVisible()) {
                         helperMethods.replaceFragment(contactFragment,
                                 getResources().getString(R.string.toolbar_title_contact),
                                 MainActivity.this, scrollView);
                     }
-
                     break;
                 default:
                     break;
@@ -287,50 +245,37 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-// Handle action bar item clicks here. The action bar will
-// automatically handle clicks on the Home/Up button, so long
-// as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.log_out) {
             Bundle bundle = getIntent().getExtras();
             testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
             b.putSerializable("testsArrayList", testsArrayList);
-
-
-// b.putSerializable("testsArrayList", (ArrayList<Test>) bundle.getSerializable("testsArrayList"));
-
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
-            //b.putSerializable("user", user);
             b.putSerializable("defaultLocation", defaultLocation);
             intent.putExtras(b);
             intent.putExtra("fragment", "log_out");
             startActivity(intent);
-
-            Toast.makeText(this, "You've been logged out", Toast.LENGTH_LONG).show();
+            finish();
             return true;
-
         }
 
         if (id == R.id.update_profile) {
 
             Bundle bundle = getIntent().getExtras();
             testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-
             Intent intent = new Intent(this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putSerializable("locationsArrayList", locationsArrayList);
             b.putSerializable("testsArrayList", testsArrayList);
-
-
-// b.putSerializable("testsArrayList", (ArrayList<Test>) bundle.getSerializable("testsArrayList"));
-
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
@@ -339,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtras(b);
             intent.putExtra("fragment", "update_profile");
             startActivity(intent);
-
             finish();
             return true;
         }
@@ -422,11 +366,6 @@ public class MainActivity extends AppCompatActivity {
 
     public Location getDefaultLocation() {
         return defaultLocation;
-    }
-
-    public void test() {
-
-        Toast.makeText(this, "JSE Student Id is " + user.getJseStudentId(), Toast.LENGTH_LONG).show();
     }
 
 }
