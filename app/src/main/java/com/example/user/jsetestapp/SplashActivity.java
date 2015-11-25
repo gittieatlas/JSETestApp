@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -21,7 +20,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.concurrency.Task;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -67,7 +65,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-
     private void getDataFromDatabase() {
 
         setUpLocations();
@@ -86,15 +83,19 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void onPause(){
+    public void onPause() {
         super.onPause();
 
+        cancelAsyncTasks();
+
+    }
+
+    private void cancelAsyncTasks() {
         taskGetLocations.cancel(true);
         taskGetTests.cancel(true);
         taskGetHours.cancel(true);
         taskGetBranches.cancel(true);
         taskGetAlerts.cancel(true);
-
     }
 
     public void setUpTests() {
@@ -135,10 +136,10 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * Async task class to get json by making HTTP call
      */
-    private class GetLocations extends AsyncTask<Void, Void, Void> {
+    private class GetLocations extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected Boolean doInBackground(Void... arg0) {
             ServiceHandler sh = new ServiceHandler();
             // Making a request to locations_url and getting response
             String jsonStr = sh.makeServiceCall(getString(R.string.locations_url), ServiceHandler.GET);
@@ -156,32 +157,52 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject location = locationsJsonArray.getJSONObject(i);
 
                         locationsArrayList.add(setLocation(location));
+                  
                         if (isCancelled())
-                            break;
+                            return false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
                 Log.e("ServiceHandler", "Couldn't get any data from the locations_url");
+                return false;
             }
 
-            return null;
+            return true;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotLocations = true;
+            gotLocations = result;
+            if (gotLocations)
+                changeActivities();
+            else
+                appInfoNotLoaded();
+        }
 
-            changeActivities();
+        @Override
+        protected void onCancelled(Boolean result) {
+            super.onCancelled(result);
+            gotLocations = result;
+            if (gotLocations)
+                changeActivities();
+            else
+                appInfoNotLoaded();
         }
     }
 
+    private void appInfoNotLoaded(){
+        cancelAsyncTasks();
+        showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
+       // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
+
+    }
 
     public Location setLocation(JSONObject locationObject) {
 
-      Location location = new Location();
+        Location location = new Location();
 
         try {
 
@@ -342,7 +363,6 @@ public class SplashActivity extends AppCompatActivity {
     public Hours setHours(JSONObject hoursObject) {
 
 
-
         Hours hours = new Hours();
 
         try {
@@ -355,7 +375,7 @@ public class SplashActivity extends AppCompatActivity {
             hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay())
                     .plusMinutes(duration.getMinuteOfHour());
 
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -407,8 +427,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    public Branch setBranch(JSONObject branchObject){
-
+    public Branch setBranch(JSONObject branchObject) {
 
 
         Branch branch = new Branch();
@@ -417,12 +436,13 @@ public class SplashActivity extends AppCompatActivity {
             branch.id = Integer.parseInt(branchObject.getString(getString(R.string.TAG_ID)));
             branch.name = branchObject.getString(getString(R.string.TAG_BRANCH_NAME));
 
-        }catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return branch;
     }
+
     /**
      * Async task class to get json by making HTTP call
      */
@@ -482,7 +502,7 @@ public class SplashActivity extends AppCompatActivity {
             String time = timeStamp.substring(timeStamp.length() - 8);
             alert.setTime(LocalTime.parse(time));
             alert.setAlertText(alertObject.getString(getString(R.string.TAG_ALERT_TEXT)));
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -537,7 +557,6 @@ public class SplashActivity extends AppCompatActivity {
         // Showing Alerts Message
         alertDialog.show();
     }
-
 
 
     public int getGender(Test test) {
