@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +35,7 @@ public class HelperMethods extends Activity {
 
     MainActivity mainActivity;
     LoginActivity loginActivity;
+    SplashActivity splashActivity;
 
     public HelperMethods() {
 
@@ -468,5 +473,33 @@ public class HelperMethods extends Activity {
         arrayList.remove(0);
         return arrayList;
     }
+
+    public static JSONArray getJsonArray(String url, String TAG_LOCATIONS) {
+        //instantiating jsonArray
+        JSONArray jsonArray= new JSONArray();
+
+        ServiceHandler sh = new ServiceHandler();
+
+        // Making a request to locations_url and getting response
+        String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
+
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+
+                // Getting JSON Array node
+                jsonArray = jsonObj.getJSONArray(TAG_LOCATIONS);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            Log.e("ServiceHandler", "Couldn't get any data from the locations_url");
+        }
+        return jsonArray;
+
+    }
+
 
 }

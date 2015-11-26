@@ -75,19 +75,12 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void setUpLocations() {
-        //initialize locationArrayList
-        locationsArrayList = new ArrayList<Location>();
-        //execute GetLocations asyncTask
-        taskGetLocations = new GetLocations().execute();
-
-    }
 
     public void onPause() {
         super.onPause();
 
         cancelAsyncTasks();
-
+        //finish();
     }
 
     private void cancelAsyncTasks() {
@@ -96,6 +89,14 @@ public class SplashActivity extends AppCompatActivity {
         taskGetHours.cancel(true);
         taskGetBranches.cancel(true);
         taskGetAlerts.cancel(true);
+    }
+
+    public void setUpLocations() {
+        //initialize locationArrayList
+        locationsArrayList = new ArrayList<Location>();
+        //execute GetLocations asyncTask
+        taskGetLocations = new GetLocations().execute();
+
     }
 
     public void setUpTests() {
@@ -140,36 +141,15 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-            ServiceHandler sh = new ServiceHandler();
-            // Making a request to locations_url and getting response
-            String jsonStr = sh.makeServiceCall(getString(R.string.locations_url), ServiceHandler.GET);
+            JSONArray locationsJsonArray = HelperMethods.getJsonArray
+                    (getString(R.string.locations_url), (getString(R.string.TAG_LOCATIONS)));
 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+            if (locationsJsonArray.length() != 0) {
+                return addLocationToLocationsArrayList(locationsJsonArray);
 
-                    // Getting JSON Array node
-                    JSONArray locationsJsonArray = jsonObj.getJSONArray(getString(R.string.TAG_LOCATIONS));
-
-                    // looping through All Locations
-                    for (int i = 0; i < locationsJsonArray.length(); i++) {
-
-                        JSONObject location = locationsJsonArray.getJSONObject(i);
-
-                        locationsArrayList.add(setLocation(location));
-                  
-                        if (isCancelled())
-                            return false;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the locations_url");
                 return false;
             }
-
-            return true;
         }
 
         @Override
@@ -193,10 +173,35 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void appInfoNotLoaded(){
+    public Boolean addLocationToLocationsArrayList(JSONArray locationsJsonArray) {
+        try {
+            // looping through All Locations
+            for (int i = 0; i < locationsJsonArray.length(); i++) {
+
+                JSONObject location = locationsJsonArray.getJSONObject(i);
+                //adding location to locationsArrayList
+                locationsArrayList.add(setLocation(location));
+
+                if (taskGetLocations.isCancelled()) {
+                    return false;
+                }
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    private void appInfoNotLoaded() {
         cancelAsyncTasks();
         showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
-       // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
+        // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
 
     }
 
@@ -244,47 +249,67 @@ public class SplashActivity extends AppCompatActivity {
         return fullAddress.toString();
     }
 
+
     /**
      * Async task class to get json by making HTTP call
      */
-    private class GetTests extends AsyncTask<Void, Void, Void> {
+    private class GetTests extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler sh = new ServiceHandler();
-            // Making a request to locations_url and getting response
-            String jsonStr = sh.makeServiceCall(getString(R.string.tests_url), ServiceHandler.GET);
+        protected Boolean doInBackground(Void... arg0) {
 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+            JSONArray testsJsonArray = HelperMethods.getJsonArray
+                    (getString(R.string.tests_url), (getString(R.string.TAG_TESTS)));
 
-                    // Getting JSON Array node
-                    JSONArray testsJsonArray = jsonObj.getJSONArray(getString(R.string.TAG_TESTS));
+            if (testsJsonArray.length() != 0) {
 
-                    // looping through All Tests
-                    for (int i = 0; i < testsJsonArray.length(); i++) {
+                return addTestToTestsArrayList(testsJsonArray);
 
-                        JSONObject test = testsJsonArray.getJSONObject(i);
-
-                        testsArrayList.add(setTest(test));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the tests_url");
+                return false;
             }
 
-            return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotTests = true;
-            changeActivities();
+            gotTests = result;
+            if (gotTests)
+                changeActivities();
+            else
+                appInfoNotLoaded();
         }
+
+        @Override
+        protected void onCancelled(Boolean result) {
+            super.onCancelled(result);
+            gotTests = result;
+            if (gotTests)
+                changeActivities();
+            else
+                appInfoNotLoaded();
+        }
+    }
+
+    public Boolean addTestToTestsArrayList(JSONArray testsJsonArray) {
+        try {
+            // looping through All Tests
+            for (int i = 0; i < testsJsonArray.length(); i++) {
+
+                JSONObject test = testsJsonArray.getJSONObject(i);
+
+                testsArrayList.add(setTest(test));
+                //taskGetTests.cancel(true);
+                if (taskGetTests.isCancelled()) {
+                    return false;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public Test setTest(JSONObject testObject) {
@@ -319,46 +344,65 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * Async task class to get json by making HTTP call
      */
-    private class GetHours extends AsyncTask<Void, Void, Void> {
-
+    private class GetHours extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler sh = new ServiceHandler();
-            // Making a request to locations_url and getting response
-            String jsonStr = sh.makeServiceCall(getString(R.string.hours_url), ServiceHandler.GET);
+        protected Boolean doInBackground(Void... arg0) {
 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+            JSONArray hoursJsonArray = HelperMethods.getJsonArray
+                    (getString(R.string.hours_url), (getString(R.string.TAG_HOURS)));
 
-                    // Getting JSON Array node
-                    JSONArray hoursJsonArray = jsonObj.getJSONArray(getString(R.string.TAG_HOURS));
-
-                    // looping through All Tests
-                    for (int i = 0; i < hoursJsonArray.length(); i++) {
-
-                        JSONObject hours = hoursJsonArray.getJSONObject(i);
-
-                        hoursArrayList.add(setHours(hours));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            if (hoursJsonArray.length() != 0) {
+                return addHoursToHoursArrayList(hoursJsonArray);
             } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the hours_url");
+                return false;
             }
 
-            return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotHours = true;
-            changeActivities();
+            gotHours = result;
+            if (gotHours)
+                changeActivities();
+            else
+                appInfoNotLoaded();
+        }
+
+        @Override
+        protected void onCancelled(Boolean result) {
+            super.onCancelled(result);
+            gotTests = result;
+            if (gotHours)
+                changeActivities();
+            else
+                appInfoNotLoaded();
         }
     }
+
+
+    public Boolean addHoursToHoursArrayList(JSONArray hoursJsonArray) {
+        try {
+
+            // looping through All Tests
+            for (int i = 0; i < hoursJsonArray.length(); i++) {
+
+                JSONObject hours = hoursJsonArray.getJSONObject(i);
+
+                hoursArrayList.add(setHours(hours));
+                if (taskGetHours.isCancelled()) {
+                    return false;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
 
     public Hours setHours(JSONObject hoursObject) {
 
@@ -383,52 +427,67 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+
     /**
      * Async task class to get json by making HTTP call
      */
-    private class GetBranches extends AsyncTask<Void, Void, Void> {
+    private class GetBranches extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler sh = new ServiceHandler();
-            // Making a request to locations_url and getting response
-            String jsonStr = sh.makeServiceCall(getString(R.string.branches_url), ServiceHandler.GET);
+        protected Boolean doInBackground(Void... arg0) {
+                JSONArray branchesJsonArray = HelperMethods.getJsonArray
+            (getString(R.string.branches_url), (getString(R.string.TAG_BRANCHES)));
 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+            if (branchesJsonArray.length() != 0) {
+        return addBranchesToBranchesArrayList(branchesJsonArray);
+    } else {
+       return false;
+         }
+    }
 
-                    // Getting JSON Array node
-                    JSONArray branchesJsonArray = jsonObj.getJSONArray(getString(R.string.TAG_BRANCHES));
-
-                    // looping through All Locations
-                    for (int i = 0; i < branchesJsonArray.length(); i++) {
-
-                        JSONObject branch = branchesJsonArray.getJSONObject(i);
-
-
-                        branchesArrayList.add(setBranch(branch));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the branches_url");
-            }
-
-            return null;
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            gotBranches = result;
+            if (gotBranches)
+                changeActivities();
+            else
+                appInfoNotLoaded();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            gotBranches = true;
-            changeActivities();
+        protected void onCancelled(Boolean result) {
+            super.onCancelled(result);
+            gotBranches = result;
+            if (gotBranches)
+                changeActivities();
+            else
+                appInfoNotLoaded();
         }
     }
 
-    public Branch setBranch(JSONObject branchObject) {
+    public Boolean addBranchesToBranchesArrayList(JSONArray branchesJsonArray) {
+        try {
 
+            // looping through All Tests
+            for (int i = 0; i < branchesJsonArray.length(); i++) {
+
+                JSONObject branch = branchesJsonArray.getJSONObject(i);
+
+                branchesArrayList.add(setBranch(branch));
+                if (taskGetBranches.isCancelled()) {
+                    return false;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+    public Branch setBranch(JSONObject branchObject) {
 
         Branch branch = new Branch();
         try {
