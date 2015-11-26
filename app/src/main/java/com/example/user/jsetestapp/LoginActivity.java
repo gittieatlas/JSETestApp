@@ -2,7 +2,6 @@ package com.example.user.jsetestapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,29 +13,27 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
-    //Controls
+    // Declare Controls
     Toolbar toolbar;
     ScrollView scrollView;
     FrameLayout container;
     CoordinatorLayout coordinatorLayout;
 
-    //Activities HelperClasses Classes;
+    // Declare Classes;
     HelperMethods helperMethods;
     QueryMethods queryMethods;
+    DatabaseOperations databaseOperations;
+    DialogListeners dialogListeners;
 
-    //Fragments
+    // Declare Fragments
     LoginFragment loginFragment;
     Register1Fragment register1Fragment;
     Register2Fragment register2Fragment;
     UpdateProfileFragment updateProfileFragment;
     DashboardFragment dashboardFragment;
     LoginActivityDialogFragment loginActivityDialogFragment;
-    DialogListeners dialogListeners;
-    SendEmail sendEmail;
-    User user;
-    DatabaseOperations databaseOperations;
 
-    //Variables
+    // Declare Variables
     ArrayList<Location> locationsArrayList;
     ArrayList<String> locationsNameArrayList;
     ArrayList<Test> testsArrayList;
@@ -44,96 +41,80 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Branch> branchesArrayList;
     ArrayList<Alerts> alertsArrayList;
     Location defaultLocation;
-
-    // private static Context sContext;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // call the parent activities onCreate
         super.onCreate(savedInstanceState);
+
+        // attach xml to activity
         setContentView(R.layout.activity_login);
 
+        instantiateClasses();
+        instantiateFragments();
         initializeViews();
-        Util.setContext(this);
-        Util.setActivity(this);
-        createFragmentsActivitiesClasses();
+        initializeVariables();
+        inflateScrollViewWithFragment();
 
-        setupToolbar();
-        user = new User();
-
-        helperMethods.replaceFragment(loginFragment,
-                getResources().getString(R.string.toolbar_title_login),
-                LoginActivity.this, scrollView);
-
-        locationsArrayList = new ArrayList<Location>();
-
-        Bundle bundle = new Bundle();
-        bundle = getIntent().getExtras();
-        locationsArrayList = (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
-        queryMethods.setUpLocationsNameArrayList(this);
-        branchesArrayList = (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
-        testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-        hoursArrayList = (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
-        alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
-
-
-        try {
-            Intent intent = getIntent();
-            if (intent.getStringExtra("fragment").equals("update_profile")) {
-                helperMethods.replaceFragment(
-                        LoginActivity.this.updateProfileFragment,
-                        "update_profile",
-                        LoginActivity.this, LoginActivity.this.scrollView);
-
-                user = (User) bundle.getSerializable("user");
-                defaultLocation = (Location) bundle.getSerializable("defaultLocation");
-            } else if (intent.getStringExtra("fragment").equals("log_out")) {
-                helperMethods.showSnackBar("You've been logged out", coordinatorLayout);
-            }
-        } catch (Exception e) {
-
-        }
+        // send activity reference to Util class
+        Util.setReference(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getInfoFromIntent();
+
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
 
-        if (loginFragment.taskGetUser != null) loginFragment.taskGetUser.cancel(true);
-        if (register2Fragment.taskNewUser != null) register2Fragment.taskNewUser.cancel(true);
-        if (updateProfileFragment.taskUpdateUser != null) updateProfileFragment.taskUpdateUser.cancel(true);
-
-        // Toast.makeText(this, loginFragment.taskGetUser.isCancelled() + "", Toast.LENGTH_LONG).show();
-
-
+        cancelRunningAsyncTasks();
     }
-
 
     @Override
     public void onBackPressed() {
 
-        UpdateProfileFragment updateProfileFragment = new UpdateProfileFragment();
-        try {
-            updateProfileFragment = (UpdateProfileFragment) getFragmentManager().findFragmentById(R.id.container);
-        } catch (Exception ex) {
-
-        }
-
+        // if update profile is visible
         if (updateProfileFragment != null && updateProfileFragment.isVisible()) {
+            // go to main activity with "update_profile_cancel" tag
             switchToMainActivity("update_profile_cancel");
-        } else if (getFragmentManager().getBackStackEntryCount() > 1) {
+        }
+        // if there are fragments in the back stack
+        else if (getFragmentManager().getBackStackEntryCount() > 1) {
+            // undo the last back stack transaction
             getFragmentManager().popBackStack();
-        } else {
+        }
+        // if there are no fragments in the back stack
+        else {
+            // finish this activity
             super.onBackPressed();
         }
     }
 
-    private void initializeViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        container = (FrameLayout) findViewById(R.id.container);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+    /**
+     * Function to instantiate classes
+     */
+    private void instantiateClasses() {
+        helperMethods = new HelperMethods();
+        helperMethods.setLoginActivity(this);
+        queryMethods = new QueryMethods();
+        queryMethods.setLoginActivity(this);
+        dialogListeners = new DialogListeners();
+        dialogListeners.setLoginActivity(this);
+        databaseOperations = new DatabaseOperations();
+        databaseOperations.setLoginActivity(this);
     }
 
-    private void createFragmentsActivitiesClasses() {
+    /**
+     * Function to instantiate fragments
+     */
+    private void instantiateFragments() {
         loginFragment = new LoginFragment();
         loginFragment.setLoginActivity(this);
         register1Fragment = new Register1Fragment();
@@ -144,34 +125,133 @@ public class LoginActivity extends AppCompatActivity {
         updateProfileFragment.setLoginActivity(this);
         dashboardFragment = new DashboardFragment();
         dashboardFragment.setLoginActivity(this);
-        helperMethods = new HelperMethods();
-        helperMethods.setLoginActivity(this);
-        queryMethods = new QueryMethods();
-        queryMethods.setLoginActivity(this);
         loginActivityDialogFragment = new LoginActivityDialogFragment();
         loginActivityDialogFragment.setLoginActivity(this);
-        dialogListeners = new DialogListeners();
-        dialogListeners.setLoginActivity(this);
-        sendEmail = new SendEmail();
-        sendEmail.setLoginActivity(this);
-        databaseOperations = new DatabaseOperations();
-        databaseOperations.setLoginActivity(this);
-
     }
 
-    private void setupToolbar() {
-        toolbar.getMenu().clear(); // Clear toolbar icons
-        //toolbar.setTitle(R.string.app_name);// Set title
-        toolbar.setTitleTextColor(getResources().getColor(R.color.icons)); //Set title color
-        // Set navigation icon
-        toolbar.setNavigationIcon(
-                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+    /**
+     * Function to initialize controls
+     */
+    private void initializeViews() {
+
+        // initialize and reference controls
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        container = (FrameLayout) findViewById(R.id.container);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
     }
 
+    /**
+     * Function to initialize variables and assign its values
+     */
+    private void initializeVariables() {
+
+        // initialize user
+        user = new User();
+
+        // assign array list values from intent
+        locationsArrayList = (ArrayList<Location>) getIntent().getExtras().getSerializable("locationsArrayList");
+        branchesArrayList = (ArrayList<Branch>) getIntent().getExtras().getSerializable("branchesArrayList");
+        testsArrayList = (ArrayList<Test>) getIntent().getExtras().getSerializable("testsArrayList");
+        hoursArrayList = (ArrayList<Hours>) getIntent().getExtras().getSerializable("hoursArrayList");
+        alertsArrayList = (ArrayList<Alerts>) getIntent().getExtras().getSerializable("alertsArrayList");
+
+        // assign array list values from locationsArrayList
+        locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
+    }
+
+    /**
+     * Function to get source of intent and inflate scroll view with fragment
+     */
+    private void inflateScrollViewWithFragment() {
+
+        // if getIntentOutcome = "update_profile", inflate update profile  fragment
+        if (getIntentOutcome() != null && getIntentOutcome().equals("update_profile")) {
+
+            // inflate scrollView with UpdateProfileFragment
+            helperMethods.replaceFragment(updateProfileFragment,
+                    getResources().getString(R.string.toolbar_title_update_profile),
+                    LoginActivity.this, LoginActivity.this.scrollView);
+        }
+        // else inflate login fragment
+        else {
+
+            // inflate scrollView with LoginFragment
+            helperMethods.replaceFragment(loginFragment,
+                    getResources().getString(R.string.toolbar_title_login),
+                    LoginActivity.this, scrollView);
+        }
+    }
+
+    /**
+     * Function to get "outcome" from intent
+     *
+     * @return String - try to return intent extra with tag "outcome", else return null
+     */
+    public String getIntentOutcome() {
+
+        // if intent exists
+        if (this.getIntent() != null) {
+            // Obtain String with tag "fragment" from Intent
+            return this.getIntent().getExtras().getString("outcome");
+        } else
+            return null;
+    }
+
+    /**
+     * Function to get info from intent extras
+     */
+    private void getInfoFromIntent() {
+
+        // if getIntentOutcome = "log_out", inflate login fragment
+        if (getIntentOutcome() != null && getIntentOutcome().equals("log_out")) {
+
+            //  show snack bar - "log out successful"
+            helperMethods.showSnackBar(getString(R.string.msg_logged_out), coordinatorLayout);
+
+        }
+        // else if getIntentOutcome = "update_profile", get user and default location from intent
+        else if (getIntentOutcome() != null && getIntentOutcome().equals("update_profile")) {
+
+            // get user info from intent extras
+            user = (User) this.getIntent().getExtras().getSerializable("user");
+
+            // get default location info from intent extras
+            defaultLocation =
+                    (Location) this.getIntent().getExtras().getSerializable("defaultLocation");
+        }
+    }
+
+    /**
+     * Function to cancel async tasks that are running
+     */
+    private void cancelRunningAsyncTasks() {
+
+        // if async task GetUser  is not null- cancel the task
+        if (loginFragment.taskGetUser != null)
+            loginFragment.taskGetUser.cancel(true);
+        // if async task NewUser  is not null- cancel the task
+        if (register2Fragment.taskNewUser != null)
+            register2Fragment.taskNewUser.cancel(true);
+        // if async task UpdateUser  is not null- cancel the task
+        if (updateProfileFragment.taskUpdateUser != null)
+            updateProfileFragment.taskUpdateUser.cancel(true);
+    }
+
+    /**
+     * Function to create an Activity intent and go to Main Activity
+     *
+     * @param tag - tag for new activity to pick up
+     */
     public void switchToMainActivity(String tag) {
 
+        // create a new intent from this activity to MainActivity
         Intent intent = new Intent(this, MainActivity.class);
+
+        // create bundle
         Bundle b = new Bundle();
+
+        // put array lists, user, default location, and tag in to bundle
         b.putSerializable("locationsArrayList", locationsArrayList);
         b.putSerializable("testsArrayList", testsArrayList);
         b.putSerializable("hoursArrayList", hoursArrayList);
@@ -180,23 +260,41 @@ public class LoginActivity extends AppCompatActivity {
         b.putSerializable("user", user);
         b.putSerializable("defaultLocation", defaultLocation);
         b.putString("tag", tag);
+
+        // attach bundle to intent
         intent.putExtras(b);
+
+        // start new intent
         startActivity(intent);
+
+        // close this activity
         finish();
     }
 
 
+    /**
+     * Function to create an instance of MainActivityDialogFragment
+     *
+     * @param toolbarTitle - int of resource to add as toolbar title
+     */
     public void setToolbarTitle(int toolbarTitle) {
+
+        // set toolbar title
         toolbar.setTitle(toolbarTitle);
     }
 
+    /**
+     * Function to return reference of current activities context
+     *
+     * @return context
+     */
     public Context getContext() {
         return LoginActivity.this;
     }
 
 
     /**
-     * Function to create an instance of MainActivityDialogFragment
+     * Function to create an instance of LoginActivityDialogFragment
      *
      * @param title          - alert dialog title
      * @param message        - alert message
@@ -226,5 +324,6 @@ public class LoginActivity extends AppCompatActivity {
 
         dialogFragment.show(fm, tagListener);
     }
+
 
 }

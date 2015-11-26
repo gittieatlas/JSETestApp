@@ -182,6 +182,7 @@
 
     <!-- Messages -->
     <string name="msg_no_results">No results found</string>
+    <string name="msg_logged_out">You\'ve been logged out</string>
 
 
 </resources>

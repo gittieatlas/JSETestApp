@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.EditText;
-
-import com.mysql.jdbc.util.ErrorMappingsDocGenerator;
 
 /**
  * Created by Rochel on 11/20/2015.
@@ -101,7 +98,6 @@ public class Util extends Activity {
 
     /**
      * Function to create open Google Maps with address populated
-     *
      * @param address - address that is added to Uri for intent
      */
     public static void navigationIntent(String address){
@@ -126,5 +122,16 @@ public class Util extends Activity {
     public static void setContext(Context context) {
 
         Util.context = context;
+    }
+    /**
+     * Function to call methods that set reference to current activity
+     * @param activity - current activity
+     */
+    public static void setReference(Activity activity) {
+
+        // set context to activity
+        setContext(activity);
+        // set activity to activity
+        setActivity(activity);
     }
 }

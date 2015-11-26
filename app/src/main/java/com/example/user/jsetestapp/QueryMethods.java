@@ -39,13 +39,14 @@ public class QueryMethods extends Activity {
     }
 
 
-    //for createUser activity
-    public void setUpLocationsNameArrayList(LoginActivity loginActivity) {
-        loginActivity.locationsNameArrayList = new ArrayList<String>();
-        loginActivity.locationsNameArrayList.add("Location");
-        for (Location location : loginActivity.locationsArrayList) {
-            loginActivity.locationsNameArrayList.add(location.getName());
+    public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
+
+        ArrayList<String> locationsNameArrayList = new ArrayList<String>();
+        locationsNameArrayList.add("Location");
+        for (Location location : locationsArrayList) {
+            locationsNameArrayList.add(location.getName());
         }
+        return locationsNameArrayList;
     }
 
     public void setUpBranchesArrayList() {

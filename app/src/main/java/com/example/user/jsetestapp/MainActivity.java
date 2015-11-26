@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this, scrollView);
         queryMethods.setUpLocationsArrayList();
         queryMethods.setUpUser();
-        queryMethods.setUpLocationsNameArrayList(this);
+       // queryMethods.setUpLocationsNameArrayList(this);
+        locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
         queryMethods.setUpDefaultLocation();
         queryMethods.setUpBranchesArrayList();
         queryMethods.setUpBranchesNameArrayList();
@@ -92,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
 
-        Util.setContext(this);
-        Util.setActivity(this);
+        // send activity reference to Util class
+        Util.setReference(this);
     }
 
     private void initializeViews() {
@@ -137,14 +138,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        //Inflate menu
-        toolbar.inflateMenu(R.menu.menu_main);
-        // Clear toolbar icons
-        toolbar.getMenu().clear();
-        //
+        // designate toolbar as the action bar for this activity
         setSupportActionBar(toolbar);
-        //Set title color
-        toolbar.setTitleTextColor(getResources().getColor(R.color.icons));
+        // Inflate menu
+        toolbar.inflateMenu(R.menu.menu_main);
         // Set navigation icon
         toolbar.setNavigationIcon(
                 new ColorDrawable(getResources().getColor(android.R.color.transparent)));
@@ -262,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
             b.putSerializable("alertsArrayList", alertsArrayList);
             b.putSerializable("defaultLocation", defaultLocation);
             intent.putExtras(b);
-            intent.putExtra("fragment", "log_out");
+            intent.putExtra("outcome", "log_out");
             startActivity(intent);
             finish();
             return true;
@@ -282,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
             b.putSerializable("user", user);
             b.putSerializable("defaultLocation", defaultLocation);
             intent.putExtras(b);
-            intent.putExtra("fragment", "update_profile");
+            intent.putExtra("outcome", "update_profile");
             startActivity(intent);
             finish();
             return true;

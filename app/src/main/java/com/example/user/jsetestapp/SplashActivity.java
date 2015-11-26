@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -44,6 +43,9 @@ public class SplashActivity extends AppCompatActivity {
     Boolean gotAlerts = false;
     AsyncTask taskGetLocations, taskGetTests, taskGetHours, taskGetBranches, taskGetAlerts;
 
+
+    static boolean active = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +55,8 @@ public class SplashActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
 
-        // check for Internet status and set true/false
-        if (HelperMethods.checkInternetConnection(getApplicationContext())) {
-            getDataFromDatabase();
-        } else {
-            displayDialog("no_internet_connection");
-        }
-
-        Util.setContext(this);
-        Util.setActivity(this);
+        // send activity reference to Util class
+        Util.setReference(this);
     }
 
 
@@ -83,12 +78,42 @@ public class SplashActivity extends AppCompatActivity {
         //finish();
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
+
+    public void onResume() {
+        super.onResume();
+
+        // check for Internet status and set true/false
+        if (HelperMethods.checkInternetConnection(getApplicationContext())) {
+            getDataFromDatabase();
+        } else {
+            displayDialog("no_internet_connection");
+        }
+    }
+
     private void cancelAsyncTasks() {
         taskGetLocations.cancel(true);
+        gotLocations = false;
         taskGetTests.cancel(true);
+        gotTests = false;
         taskGetHours.cancel(true);
+        gotHours = false;
         taskGetBranches.cancel(true);
+        gotBranches = false;
         taskGetAlerts.cancel(true);
+        gotAlerts = false;
     }
 
     public void setUpLocations() {
@@ -141,39 +166,41 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-            JSONArray locationsJsonArray = HelperMethods.getJsonArray
-                    (getString(R.string.locations_url), (getString(R.string.TAG_LOCATIONS)));
 
-            if (locationsJsonArray.length() != 0) {
-                return addLocationToLocationsArrayList(locationsJsonArray);
+            addLocationToLocationsArrayList();
 
-            } else {
+
+            if (locationsArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
+            return true;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotLocations = result;
-            if (gotLocations)
+
+            if (result != null && result && !isCancelled())  {
+                gotLocations = true;
                 changeActivities();
-            else
-                appInfoNotLoaded();
+            } else {
+                gotLocations = false;
+                if (!isCancelled()) appInfoNotLoaded();
+            }
         }
 
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
-            gotLocations = result;
-            if (gotLocations)
-                changeActivities();
-            else
-                appInfoNotLoaded();
+            gotLocations = false;
+            //  appInfoNotLoaded();
         }
     }
 
-    public Boolean addLocationToLocationsArrayList(JSONArray locationsJsonArray) {
+    public void addLocationToLocationsArrayList() {
+
+        JSONArray locationsJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.locations_url), (getString(R.string.TAG_LOCATIONS)));
         try {
             // looping through All Locations
             for (int i = 0; i < locationsJsonArray.length(); i++) {
@@ -183,24 +210,25 @@ public class SplashActivity extends AppCompatActivity {
                 locationsArrayList.add(setLocation(location));
 
                 if (taskGetLocations.isCancelled()) {
-                    return false;
+                    break;
                 }
 
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
-            return false;
+            // return false;
         }
 
-        return true;
+        //return (taskGetLocations.isCancelled()) ? false : true;
 
     }
 
 
     private void appInfoNotLoaded() {
-        cancelAsyncTasks();
-        showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
+        //   cancelAsyncTasks();
+        if (active)
+            showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
         // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
 
     }
@@ -258,41 +286,44 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... arg0) {
 
-            JSONArray testsJsonArray = HelperMethods.getJsonArray
-                    (getString(R.string.tests_url), (getString(R.string.TAG_TESTS)));
+            addTestToTestsArrayList();
 
-            if (testsJsonArray.length() != 0) {
-
-                return addTestToTestsArrayList(testsJsonArray);
-
-            } else {
+            if (testsArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
-
+            return true;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotTests = result;
-            if (gotTests)
+
+            if (result != null && result && !isCancelled())  {
+                gotTests = true;
                 changeActivities();
-            else
-                appInfoNotLoaded();
+            } else {
+                gotTests = false;
+                if (!isCancelled()) appInfoNotLoaded();
+
+            }
         }
 
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
-            gotTests = result;
-            if (gotTests)
-                changeActivities();
-            else
-                appInfoNotLoaded();
+            gotTests = false;
+//            if (gotTests)
+//                changeActivities();
+//            else
+//                appInfoNotLoaded();
         }
     }
 
-    public Boolean addTestToTestsArrayList(JSONArray testsJsonArray) {
+    public void addTestToTestsArrayList() {
+
+        JSONArray testsJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.tests_url), (getString(R.string.TAG_TESTS)));
+
         try {
             // looping through All Tests
             for (int i = 0; i < testsJsonArray.length(); i++) {
@@ -302,14 +333,14 @@ public class SplashActivity extends AppCompatActivity {
                 testsArrayList.add(setTest(test));
                 //taskGetTests.cancel(true);
                 if (taskGetTests.isCancelled()) {
-                    return false;
+                    break;
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return false;
+            //return false;
         }
-        return true;
+        //return (taskGetTests.isCancelled()) ? false : true;
     }
 
     public Test setTest(JSONObject testObject) {
@@ -349,40 +380,47 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... arg0) {
 
-            JSONArray hoursJsonArray = HelperMethods.getJsonArray
-                    (getString(R.string.hours_url), (getString(R.string.TAG_HOURS)));
+            addHoursToHoursArrayList();
 
-            if (hoursJsonArray.length() != 0) {
-                return addHoursToHoursArrayList(hoursJsonArray);
-            } else {
+            if (hoursArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
+            return true;
+
+
 
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotHours = result;
-            if (gotHours)
+
+            if (result != null && result && !isCancelled())  {
+                gotHours = true;
                 changeActivities();
-            else
-                appInfoNotLoaded();
+            } else {
+                gotHours = false;
+                if (!isCancelled()) appInfoNotLoaded();
+            }
         }
 
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
-            gotTests = result;
-            if (gotHours)
-                changeActivities();
-            else
-                appInfoNotLoaded();
+            gotTests = false;
+//            if (gotHours)
+//                changeActivities();
+//            else
+//                appInfoNotLoaded();
         }
     }
 
 
-    public Boolean addHoursToHoursArrayList(JSONArray hoursJsonArray) {
+    public void addHoursToHoursArrayList() {
+
+        JSONArray hoursJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.hours_url), (getString(R.string.TAG_HOURS)));
+
         try {
 
             // looping through All Tests
@@ -392,14 +430,14 @@ public class SplashActivity extends AppCompatActivity {
 
                 hoursArrayList.add(setHours(hours));
                 if (taskGetHours.isCancelled()) {
-                    return false;
+                    break;
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return false;
+           // return false;
         }
-        return true;
+        //return (taskGetHours.isCancelled()) ? false : true;
 
     }
 
@@ -435,38 +473,45 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-                JSONArray branchesJsonArray = HelperMethods.getJsonArray
-            (getString(R.string.branches_url), (getString(R.string.TAG_BRANCHES)));
 
-            if (branchesJsonArray.length() != 0) {
-        return addBranchesToBranchesArrayList(branchesJsonArray);
-    } else {
-       return false;
-         }
-    }
+            addBranchesToBranchesArrayList();
+
+            if (branchesArrayList.size() == 0 || isCancelled()) {
+                return false;
+            }
+            return true;
+
+        }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotBranches = result;
-            if (gotBranches)
+
+            if (result != null && result && !isCancelled())  {
+                gotBranches = true;
                 changeActivities();
-            else
-                appInfoNotLoaded();
+            } else {
+                gotBranches = false;
+                if (!isCancelled()) appInfoNotLoaded();
+            }
         }
 
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
             gotBranches = result;
-            if (gotBranches)
-                changeActivities();
-            else
-                appInfoNotLoaded();
+//            if (gotBranches)
+//                changeActivities();
+//            else
+//                appInfoNotLoaded();
         }
     }
 
-    public Boolean addBranchesToBranchesArrayList(JSONArray branchesJsonArray) {
+    public void addBranchesToBranchesArrayList() {
+
+        JSONArray branchesJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.branches_url), (getString(R.string.TAG_BRANCHES)));
+
         try {
 
             // looping through All Tests
@@ -476,14 +521,14 @@ public class SplashActivity extends AppCompatActivity {
 
                 branchesArrayList.add(setBranch(branch));
                 if (taskGetBranches.isCancelled()) {
-                    return false;
+                    break;
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return false;
+            //return false;
         }
-        return true;
+       // return (taskGetBranches.isCancelled()) ? false : true;
 
     }
 
@@ -505,46 +550,71 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * Async task class to get json by making HTTP call
      */
-    private class getAlerts extends AsyncTask<Void, Void, Void> {
+    private class getAlerts extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... arg0) {
-            ServiceHandler sh = new ServiceHandler();
-            // Making a request to locations_url and getting response
-            String jsonStr = sh.makeServiceCall(getString(R.string.alerts_url), ServiceHandler.GET);
+        protected Boolean doInBackground(Void... arg0) {
 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+            addAlertsToAlertsArrayList();
 
-                    // Getting JSON Array node
-                    JSONArray alertsJsonArray = jsonObj.getJSONArray(getString(R.string.TAG_ALERTS));
-
-                    // looping through All Locations
-                    for (int i = 0; i < alertsJsonArray.length(); i++) {
-
-                        JSONObject alert = alertsJsonArray.getJSONObject(i);
-
-                        alertsArrayList.add(setAlert(alert));
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the alerts_url");
+            if (alertsArrayList.size() == 0 || isCancelled()) {
+                return false;
             }
+            return true;
 
-            return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            gotAlerts = true;
-            changeActivities();
+
+            if (result != null && result && !isCancelled())  {
+                gotAlerts = true;
+                changeActivities();
+            } else {
+                gotAlerts = false;
+                if (!isCancelled()) appInfoNotLoaded();
+            }
+        }
+
+        // @Override
+        protected void onCancelled(Boolean result) {
+            // super.onCancelled(result);
+            gotBranches = false;
+//            if (gotBranches)
+//                changeActivities();
+//            else
+//                appInfoNotLoaded();
         }
     }
+
+    public void addAlertsToAlertsArrayList() {
+
+
+        // Getting JSON Array node
+        JSONArray alertsJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.alerts_url), (getString(R.string.TAG_ALERTS)));
+
+        try {
+
+            // looping through All Tests
+            for (int i = 0; i < alertsJsonArray.length(); i++) {
+
+                JSONObject alert = alertsJsonArray.getJSONObject(i);
+
+                alertsArrayList.add(setAlert(alert));
+                if (taskGetAlerts.isCancelled()) {
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            //return false;
+        }
+        // return (taskGetBranches.isCancelled()) ? false : true;
+
+    }
+
 
     public Alerts setAlert(JSONObject alertObject) {
 // ToDo handle if any values are null
