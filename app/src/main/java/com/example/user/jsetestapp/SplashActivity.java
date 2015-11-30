@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
         // send activity reference to Util class
         Util.setReference(this);
 
-        instantiateFragments();
+        instantiateClasses();
     }
 
     @Override
@@ -88,7 +88,9 @@ public class SplashActivity extends AppCompatActivity {
         if (HelperMethods.checkInternetConnection(getApplicationContext())) {
             getDataFromDatabase();
         } else {
-            displayDialog("no_internet_connection");
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_no_internet_connection)
+            ));
         }
     }
 
@@ -103,10 +105,12 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * Function to instantiate fragments
      */
-    private void instantiateFragments() {
+    private void instantiateClasses() {
 
         dialogListeners = new DialogListeners();
-        //dialogListeners.setSplashActivity(this);
+        dialogListeners.setSplashActivity(this);
+        helperMethods = new HelperMethods();
+        helperMethods.setSplashActivity(this);
     }
     /**
      * AsyncTask class to get json by making HTTP call
@@ -129,10 +133,13 @@ public class SplashActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
+                // setting gotLocation to true
                 gotLocations = true;
                 changeActivities();
             } else {
+                // setting gotLocation to false
                 gotLocations = false;
+                //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
         }
@@ -140,6 +147,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
+            // setting gotLocation to false
             gotLocations = false;
         }
     }
@@ -165,10 +173,13 @@ public class SplashActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
+                // setting gotTests to true
                 gotTests = true;
                 changeActivities();
             } else {
+                // setting gotTests to false
                 gotTests = false;
+                //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
 
             }
@@ -177,6 +188,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
+            // setting gotTests to false
             gotTests = false;
 
         }
@@ -204,10 +216,13 @@ public class SplashActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
+                // setting gotHours to true
                 gotHours = true;
                 changeActivities();
             } else {
+                // setting gotHours to false
                 gotHours = false;
+                //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
         }
@@ -215,7 +230,8 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
-            gotTests = false;
+            // setting gotHours to false
+            gotHours = false;
 
         }
     }
@@ -242,10 +258,13 @@ public class SplashActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
+                // setting gotBranches to true
                 gotBranches = true;
                 changeActivities();
             } else {
+                // setting gotBranches to false
                 gotBranches = false;
+                //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
         }
@@ -253,7 +272,8 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
-            gotBranches = result;
+            // setting gotBranches to false
+            gotBranches = false;
 
         }
     }
@@ -280,10 +300,13 @@ public class SplashActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
+                // setting gotAlerts to true
                 gotAlerts = true;
                 changeActivities();
             } else {
+                // setting gotAlerts to false
                 gotAlerts = false;
+                //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
         }
@@ -291,18 +314,9 @@ public class SplashActivity extends AppCompatActivity {
          @Override
         protected void onCancelled(Boolean result) {
              super.onCancelled(result);
-            gotBranches = false;
+             // setting gotAlerts to false
+             gotAlerts = false;
 
-        }
-    }
-
-
-    private void displayDialog(String tag) {
-        switch (tag) {
-            case "no_internet_connection":
-                showAlertDialog(SplashActivity.this, getString(R.string.d_no_connection),
-                        getString(R.string.d_no_connection_msg), false);
-                break;
         }
     }
 
@@ -345,7 +359,10 @@ public class SplashActivity extends AppCompatActivity {
 
     private void appInfoNotLoaded() {
         if (active)
-            showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_load_info_fail)
+            ));
         // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
     }
 
@@ -508,39 +525,6 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-
-    /**
-     * Function to display simple Alerts Dialog
-     *
-     * @param context - application context
-     * @param title   - alert dialog title
-     * @param message - alert message
-     * @param status  - success/failure (used to set icon)
-     */
-    public void showAlertDialog(Context context, String title, String message, Boolean status) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-
-        // Setting Dialog Title
-        alertDialog.setTitle(title);
-
-        // Setting Dialog Message
-        alertDialog.setMessage(message);
-
-        // Setting alert dialog icon
-        if (status)
-            alertDialog.setIcon(R.drawable.ic_check_grey600_24dp);
-        else
-            alertDialog.setIcon(R.drawable.ic_exclamation_grey600_24dp);
-
-        // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-
-        // Showing Alerts Message
-        alertDialog.show();
-    }
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;

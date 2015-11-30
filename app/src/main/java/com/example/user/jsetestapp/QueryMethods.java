@@ -6,13 +6,13 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class QueryMethods extends Activity {
 
     MainActivity mainActivity;
     LoginActivity loginActivity;
-
     public QueryMethods() {
 
     }
@@ -23,9 +23,10 @@ public class QueryMethods extends Activity {
 
     }
 
-    public void setUpLocationsArrayList() {
+    public ArrayList<Location> setUpLocationsArrayList() {
+
         Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.locationsArrayList = (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
+        return (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
 
     }
 
@@ -49,24 +50,23 @@ public class QueryMethods extends Activity {
         return locationsNameArrayList;
     }
 
-    public void setUpBranchesArrayList() {
+    public ArrayList<Branch> setUpBranchesArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.branchesArrayList = (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
-
+        return  (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
     }
 
-    public void setUpBranchesNameArrayList() {
-        mainActivity.branchesNameArrayList = new ArrayList<String>();
-        mainActivity.branchesNameArrayList.add("Branch");
+    public ArrayList<String> setUpBranchesNameArrayList(ArrayList<Branch> branchesArrayList) {
+        ArrayList<String> branchesNameArrayList = new ArrayList<String>();
+        branchesNameArrayList.add("Branch");
 
-        for (Branch branch : mainActivity.branchesArrayList) {
+        for (Branch branch : branchesArrayList) {
             if (branch.getId() == (mainActivity.defaultLocation.brachId)) {
-                mainActivity.branchesNameArrayList.add(branch.getName() + " (Default Branch)");
+                branchesNameArrayList.add(branch.getName() + " (Default Branch)");
             } else {
-                mainActivity.branchesNameArrayList.add(branch.getName());
+                branchesNameArrayList.add(branch.getName());
             }
         }
-
+        return branchesNameArrayList;
     }
 
     public void setUpTestsArrayList() {
@@ -90,9 +90,10 @@ public class QueryMethods extends Activity {
         mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
     }
 
-    public void setUpHoursArrayList() {
+    public ArrayList<Hours> setUpHoursArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.hoursArrayList = (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
+        return  (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
+
     }
 
 
@@ -110,20 +111,21 @@ public class QueryMethods extends Activity {
         updateHoursArrayListView(listView, name);
     }
 
-    public void setUpAlertsArrayList() {
+    public ArrayList<Alerts> setUpAlertsArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.alertsArrayList = (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
+        return  (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
     }
 
-    public void setUpUser() {
+    public User setUpUser() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.user = (User) bundle.getSerializable("user");
+        return (User) bundle.getSerializable("user");
+
     }
 
     public void setUpHoursFilteredArrayList(String location) {
 
-        if (mainActivity.getHoursFilteredArrayList() != null)
-            mainActivity.getHoursFilteredArrayList().clear();
+        if (mainActivity.hoursFilteredArrayList != null)
+            mainActivity.hoursFilteredArrayList.clear();
         for (Hours hours : mainActivity.hoursArrayList) {
 
             if (hours.getName().equals(location)) {
@@ -139,14 +141,14 @@ public class QueryMethods extends Activity {
     }
 
 
-    public void setUpDefaultLocation() {
+    public Location setUpDefaultLocation() {
         Location location = new Location();
         for (Location l : mainActivity.locationsArrayList) {
             if (l.getId() == mainActivity.user.locationId) {
                 location = l;
             }
         }
-        mainActivity.defaultLocation = location;
+        return location;
     }
 
     public void setUpIsJseMember() {

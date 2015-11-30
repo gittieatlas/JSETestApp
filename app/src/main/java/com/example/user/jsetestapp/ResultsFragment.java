@@ -101,7 +101,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
     }
 
     private void checkIfNoResults() {
-        if (mainActivity.getTestsFilteredArrayList().size() == 0)
+        if (mainActivity.testsFilteredArrayList.size() == 0)
             messageTextView.setVisibility(View.VISIBLE);
         else
             messageTextView.setVisibility(View.GONE);
@@ -132,7 +132,7 @@ public class ResultsFragment extends Fragment implements RecyclerViewItemClickLi
 
     private ArrayList<DataObject> getDataSet() {
 
-        return mainActivity.getTestsFilteredArrayList();
+        return mainActivity.testsFilteredArrayList;
     }
 
     public void setMainActivity(MainActivity mainActivity) {

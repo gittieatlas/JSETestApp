@@ -154,17 +154,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeVariables() {
 
-        queryMethods.setUpLocationsArrayList();
-        queryMethods.setUpUser();
-        // queryMethods.setUpLocationsNameArrayList(this);
+        locationsArrayList = queryMethods.setUpLocationsArrayList();
+        user = queryMethods.setUpUser();
         locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
-        queryMethods.setUpDefaultLocation();
-        queryMethods.setUpBranchesArrayList();
-        queryMethods.setUpBranchesNameArrayList();
+        defaultLocation = queryMethods.setUpDefaultLocation();
+        branchesArrayList = queryMethods.setUpBranchesArrayList();
+        branchesNameArrayList = queryMethods.setUpBranchesNameArrayList(branchesArrayList);
         queryMethods.setUpTestsArrayList();
         queryMethods.setUpTestsFilteredArrayList();
-        queryMethods.setUpHoursArrayList();
-        queryMethods.setUpAlertsArrayList();
+        hoursArrayList = queryMethods.setUpHoursArrayList();
+        alertsArrayList = queryMethods.setUpAlertsArrayList();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
         queryMethods.setUpIsJseMember();
     }
@@ -191,7 +190,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Function to set up tabLayout
+     */
     private void setupTablayout() {
         createTab(R.layout.tab_layout_dashboard, R.id.tab_title_dashboard, getResources().getString(R.string.tabLayout_dashboard));
         createTab(R.layout.tab_layout_tests, R.id.tab_title_tests, getResources().getString(R.string.tabLayout_tests));
@@ -274,25 +275,28 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.log_out) {
-            Bundle bundle = getIntent().getExtras();
-            testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-            Intent intent = new Intent(this, LoginActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("locationsArrayList", locationsArrayList);
-            b.putSerializable("testsArrayList", testsArrayList);
-            b.putSerializable("hoursArrayList", hoursArrayList);
-            b.putSerializable("branchesArrayList", branchesArrayList);
-            b.putSerializable("alertsArrayList", alertsArrayList);
-            b.putSerializable("defaultLocation", defaultLocation);
-            intent.putExtras(b);
-            intent.putExtra("outcome", "log_out");
-            startActivity(intent);
-            finish();
-            return true;
+//            Bundle bundle = getIntent().getExtras();
+//            testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            Bundle b = new Bundle();
+//            b.putSerializable("locationsArrayList", locationsArrayList);
+//            b.putSerializable("testsArrayList", testsArrayList);
+//            b.putSerializable("hoursArrayList", hoursArrayList);
+//            b.putSerializable("branchesArrayList", branchesArrayList);
+//            b.putSerializable("alertsArrayList", alertsArrayList);
+//            b.putSerializable("defaultLocation", defaultLocation);
+//            intent.putExtras(b);
+//            intent.putExtra("outcome", "log_out");
+//            startActivity(intent);
+//            finish();
+//            return true;
+            setBundle("log_out");
+
         }
 
         if (id == R.id.update_profile) {
 
+//            setBundle("update_profile");
             Bundle bundle = getIntent().getExtras();
             testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
             Intent intent = new Intent(this, LoginActivity.class);
@@ -314,6 +318,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public Boolean setBundle(String outcome){
+        Bundle bundle = getIntent().getExtras();
+        testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
+        Intent intent = new Intent(this, LoginActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("locationsArrayList", locationsArrayList);
+        b.putSerializable("testsArrayList", testsArrayList);
+        b.putSerializable("hoursArrayList", hoursArrayList);
+        b.putSerializable("branchesArrayList", branchesArrayList);
+        b.putSerializable("alertsArrayList", alertsArrayList);
+        b.putSerializable("defaultLocation", defaultLocation);
+        intent.putExtras(b);
+        intent.putExtra("outcome", outcome);
+        startActivity(intent);
+        finish();
+        return true;
+    }
+
     public void setToolbarTitle(int toolbarTitle) {
         getSupportActionBar().setTitle(toolbarTitle);
     }
@@ -326,21 +348,6 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setMinimumHeight(height);
     }
 
-    public ArrayList<String> getLocationsNameArrayList() {
-
-        return locationsNameArrayList;
-    }
-
-    public ArrayList<DataObject> getTestsFilteredArrayList() {
-
-        return testsFilteredArrayList;
-    }
-
-    public ArrayList<HoursDataObject> getHoursFilteredArrayList() {
-
-        return hoursFilteredArrayList;
-    }
-
     public void doIntent(Intent intent) {
         startActivity(intent);
     }
@@ -350,45 +357,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Function to create an instance of MainActivityDialogFragment
-     *
-     * @param title          - alert dialog title
-     * @param message        - alert message
-     * @param positiveButton - text for positive button
-     * @param negativeButton - text for negative button
-     * @param neutralButton  - text for neutral button
-     * @param icon           - drawable for icon
-     * @param tagListener    - tag to pass through to listener method
-     */
-    public void showDialog(String title, String message, String positiveButton, String negativeButton, String neutralButton, int icon, String tagListener) {
-
-        android.app.FragmentManager fm = this.getFragmentManager();
-
-        MainActivityDialogFragment dialogFragment = new MainActivityDialogFragment();
-
-        Bundle bundle = new Bundle();
-
-        bundle.putString("title", title);
-        bundle.putString("message", message);
-        bundle.putString("positiveButton", positiveButton);
-        bundle.putString("negativeButton", negativeButton);
-        bundle.putString("neutralButton", neutralButton);
-        bundle.putInt("icon", icon);
-        bundle.putString("tagListener", tagListener);
-
-        dialogFragment.setArguments(bundle);
-
-        dialogFragment.show(fm, tagListener);
-    }
-
     public String getStringFromResources(int number) {
         return getResources().getString(number);
     }
 
-
-    public Location getDefaultLocation() {
-        return defaultLocation;
-    }
 
 }

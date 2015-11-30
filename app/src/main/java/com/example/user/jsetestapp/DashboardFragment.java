@@ -15,20 +15,20 @@ import android.widget.TextView;
 public class DashboardFragment extends Fragment {
 
 
-    //Controls
+    // Declare Controls
     View rootView;
-    TextView locationTextView, locationAddress, locationPhoneNumber, alertsTitleTextView, alertsDayTextView,
-            alertsDateTextView, alertsTimeTextView, alertsMessageTextView;
+    TextView locationTextView, locationAddress, locationPhoneNumber, alertsTitleTextView,
+            alertsDayTextView, alertsDateTextView, alertsTimeTextView, alertsMessageTextView;
     CardView findTestButton;
 
-    //Activities
+    // Declare Classes;
     MainActivity mainActivity;
     LoginActivity loginActivity;
 
-    //Fragments
+    // Declare Fragments
     LocationInfoFragment locationInfoFragment;
 
-    //Variables
+    // Declare Variables
     ListView lvDetail;
     Context context;
     ListAdapter hoursAdapter;
@@ -42,10 +42,9 @@ public class DashboardFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-        setUpText();
-        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
+        loadDefaultLocationInformation();
         setUpAlerts();
-        mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
+        setUpHoursListView();
         mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
 
         return rootView;
@@ -55,33 +54,29 @@ public class DashboardFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
-
         //locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
 
         mainActivity.tabLayout.getTabAt(0).select();
 
     }
 
-    private void setUpText() {
-        locationTextView.setText(mainActivity.defaultLocation.getName());
-        locationAddress.setText(mainActivity.defaultLocation.getAddress());
-        locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
-    }
-
     private void initializeViews(View rootView) {
         locationTextView = (TextView) rootView.findViewById(R.id.locationTextView);
         locationAddress = (TextView) rootView.findViewById(R.id.locationAddress);
         locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
-        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
-        findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
-
         alertsTitleTextView = (TextView) rootView.findViewById(R.id.alertsTitleTextView);
-
         alertsDayTextView = (TextView) rootView.findViewById(R.id.alertsDayTextView);
         alertsDateTextView = (TextView) rootView.findViewById(R.id.alertsDateTextView);
         alertsTimeTextView = (TextView) rootView.findViewById(R.id.alertsTimeTextView);
         alertsMessageTextView = (TextView) rootView.findViewById(R.id.AlertsMessageTextView);
+        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
+        findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
+    }
+
+    private void loadDefaultLocationInformation() {
+        locationTextView.setText(mainActivity.defaultLocation.getName());
+        locationAddress.setText(mainActivity.defaultLocation.getAddress());
+        locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
     }
 
     private void registerListeners() {
@@ -104,6 +99,15 @@ public class DashboardFragment extends Fragment {
         }
     };
 
+    OnClickListener findTestButtonListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            mainActivity.helperMethods.findTests(mainActivity.defaultLocation);
+
+        }
+    };
+
     public void setUpAlerts() {
         for (Alerts alerts : mainActivity.alertsArrayList) {
             if (alerts.locationName.equals(mainActivity.defaultLocation.getName())) {
@@ -118,14 +122,10 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    OnClickListener findTestButtonListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            mainActivity.helperMethods.findTests(mainActivity.defaultLocation);
-
-        }
-    };
+    public void setUpHoursListView(){
+        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
+        mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
+    }
 
     public void setMainActivity(MainActivity mainActivity) {
 
