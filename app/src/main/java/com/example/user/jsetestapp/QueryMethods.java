@@ -6,7 +6,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class QueryMethods extends Activity {
@@ -69,25 +68,18 @@ public class QueryMethods extends Activity {
         return branchesNameArrayList;
     }
 
-    public void setUpTestsArrayList() {
+    public ArrayList<Test> setUpTestsArrayList() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        mainActivity.testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-        filterTestsArrayListByGender();
-    }
+        ArrayList<Test> testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
 
-    public void filterTestsArrayListByGender() {
-        for (int i = 0; i < mainActivity.testsArrayList.size(); i++) {
-            if (!mainActivity.testsArrayList.get(i).gender.name().equals(mainActivity.user.gender.name())) {
-                mainActivity.testsArrayList.remove(i);
+        // filtering by gender
+        for (int i = 0; i < testsArrayList.size(); i++) {
+            if (!testsArrayList.get(i).gender.name().equals(mainActivity.user.gender.name())) {
+                testsArrayList.remove(i);
                 i--;
             }
         }
-    }
-
-
-    public void setUpTestsFilteredArrayList() {
-
-        mainActivity.testsFilteredArrayList = new ArrayList<DataObject>();
+       return testsArrayList;
     }
 
     public ArrayList<Hours> setUpHoursArrayList() {

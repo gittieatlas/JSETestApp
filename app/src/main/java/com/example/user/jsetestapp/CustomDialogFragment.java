@@ -7,8 +7,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class LoginActivityDialogFragment extends android.app.DialogFragment {
-    LoginActivity loginActivity;
+public class CustomDialogFragment extends android.app.DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -51,7 +50,29 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
             builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                        ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                    try {
+                        if (Util.getActivity().equals(((LoginActivity) getActivity()))) {
+                            ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                    try {
+                        if (Util.getActivity().equals(((MainActivity) getActivity()))) {
+                            ((MainActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                    try {
+                        if (Util.getActivity().equals(((SplashActivity) getActivity()))) {
+                            ((SplashActivity) getActivity()).dialogListeners.positiveButtonOnClickListener
+                                    (TAG_LISTENER);
+                        }
+                    } catch (Exception ex) {
+
+                    }
+
                 }
 
             });
@@ -63,7 +84,7 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // dismiss();
-                    ((LoginActivity) getActivity()).dialogListeners.negativeButtonOnClickListener(TAG_LISTENER);
+
                 }
             });
         }
@@ -73,17 +94,32 @@ public class LoginActivityDialogFragment extends android.app.DialogFragment {
             builder.setNeutralButton(neutralButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((LoginActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                    try {
+                        if (Util.getActivity().equals(((LoginActivity) getActivity()))) {
+                            ((LoginActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                    try {
+                        if (Util.getActivity().equals(((MainActivity) getActivity()))) {
+                            ((MainActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                    try {
+                        if (Util.getActivity().equals(((SplashActivity) getActivity()))) {
+                            ((SplashActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                        }
+                    } catch (Exception ex) {
+
+                    }
                 }
             });
         }
 
         return builder.create();
-    }
-
-    public void setLoginActivity(LoginActivity loginActivity) {
-
-        this.loginActivity = loginActivity;
     }
 
 }

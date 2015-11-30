@@ -36,7 +36,9 @@ public class Register1Fragment extends Fragment {
         initializeViews(rootView);
         loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
-        loginActivity.setToolbarTitle(R.string.toolbar_title_register1);
+
+
+        Util.setToolbarTitle(R.string.toolbar_title_register1, loginActivity.toolbar);
 
         return rootView;
     }
@@ -97,7 +99,10 @@ public class Register1Fragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!isValuesEntered) {
-                loginActivity.showDialog("Create Account Failed", "All fields require a value.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_values");
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_create_account_failed_values)));
+
             } else {
                 validateForm();
             }
@@ -107,10 +112,15 @@ public class Register1Fragment extends Fragment {
     private void validateForm() {
         // check if email exists- cant do now as not doing db on server
         if (!isEmailAddressValid()){
-            loginActivity.showDialog("Create Account Failed", "You need to enter a valid email address.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_email");
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_create_account_failed_email)));
         } else {
             if (!passwordEqualsConfirmPassword()) {
-                loginActivity.showDialog("Create Account Failed", "Password and Confirm Password values don't match. Please try again.", null, null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_values_match");
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_create_account_failed_values_not_match)));
+
                 passwordEditText.setText("");
                 confirmPasswordEditText.setText("");
             } else {

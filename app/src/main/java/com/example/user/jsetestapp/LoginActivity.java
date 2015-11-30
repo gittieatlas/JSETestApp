@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     Register2Fragment register2Fragment;
     UpdateProfileFragment updateProfileFragment;
     DashboardFragment dashboardFragment;
-    LoginActivityDialogFragment loginActivityDialogFragment;
 
     // Declare Variables
     ArrayList<Location> locationsArrayList;
@@ -125,8 +124,6 @@ public class LoginActivity extends AppCompatActivity {
         updateProfileFragment.setLoginActivity(this);
         dashboardFragment = new DashboardFragment();
         dashboardFragment.setLoginActivity(this);
-        loginActivityDialogFragment = new LoginActivityDialogFragment();
-        loginActivityDialogFragment.setLoginActivity(this);
     }
 
     /**
@@ -273,17 +270,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /**
-     * Function to create an instance of MainActivityDialogFragment
-     *
-     * @param toolbarTitle - int of resource to add as toolbar title
-     */
-    public void setToolbarTitle(int toolbarTitle) {
-
-        // set toolbar title
-        toolbar.setTitle(toolbarTitle);
-    }
-
-    /**
      * Function to return reference of current activities context
      *
      * @return context
@@ -293,37 +279,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Function to create an instance of LoginActivityDialogFragment
-     *
-     * @param title          - alert dialog title
-     * @param message        - alert message
-     * @param positiveButton - text for positive button
-     * @param negativeButton - text for negative button
-     * @param neutralButton  - text for neutral button
-     * @param icon           - drawable for icon
-     * @param tagListener    - tag to pass through to listener method
-     */
-    public void showDialog(String title, String message, String positiveButton, String negativeButton, String neutralButton, int icon, String tagListener) {
-
-        android.app.FragmentManager fm = this.getFragmentManager();
-
-        LoginActivityDialogFragment dialogFragment = new LoginActivityDialogFragment();
-
-        Bundle bundle = new Bundle();
-
-        bundle.putString("title", title);
-        bundle.putString("message", message);
-        bundle.putString("positiveButton", positiveButton);
-        bundle.putString("negativeButton", negativeButton);
-        bundle.putString("neutralButton", neutralButton);
-        bundle.putInt("icon", icon);
-        bundle.putString("tagListener", tagListener);
-
-        dialogFragment.setArguments(bundle);
-
-        dialogFragment.show(fm, tagListener);
-    }
 
 
 }

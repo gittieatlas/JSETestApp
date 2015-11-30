@@ -151,8 +151,13 @@
     <!-- Dialogs titles -->
     <string name="d_login_failed">Login Failed</string>
     <string name="d_create_account_failed">Create Account Failed</string>
+    <string name="d_update_account_failed">Update Account Failed</string>
     <string name="d_jse_office">JSE Office</string>
     <string name="d_no_connection">No Internet Connection</string>
+    <string name="d_send_password">Send me my password</string>
+    <string name="d_schedule_test_title">Schedule a Test</string>
+    <string name="d_become_jse_member_title">Become a JSE Member</string>
+    <string name="d_load_info_fail_title">Application Information</string>
 
     <!-- Dialogs Buttons -->
     <string name="d_call">CALL</string>
@@ -160,12 +165,33 @@
     <string name="d_cancel">CANCEL</string>
     <string name="d_yes">YES</string>
     <string name="d_no">NO</string>
+    <string name="d_send">SEND</string>
+    <string name="d_try_again">TRY AGAIN</string>
 
     <!-- Dialogs Listener Tags -->
     <string name="d_call_jse_during_hours">call_jse_during_office_hours</string>
     <string name="d_call_jse_non_hours">call_jse_during_non_office_hours</string>
     <string name="d_create_account_insert_failed">create_account_failed_insert_failed</string>
     <string name="d_create_account_failed_duplicate_email">create_account_failed_email_duplicate</string>
+    <string name="d_no_internet_connection">no_internet_connection</string>
+    <string name="d_login_failed_not_match">login_failed_not_match</string>
+    <string name="d_login_failed_values">login_failed_values</string>
+    <string name="d_login_failed_invalid_email">login_failed_invalid_email</string>
+    <string name="d_forgot_password">forgot_password</string>
+    <string name="d_create_account_failed_email_duplicate">create_account_failed_email_duplicate</string>
+    <string name="d_create_account_failed_values_not_match">create_account_failed_values_match</string>
+    <string name="d_create_account_failed_values">create_account_failed_values</string>
+    <string name="d_create_account_failed_email">create_account_failed_email</string>
+    <string name="d_registration_failed_birthday_incorrect">registration_failed_birthday_incorrect</string>
+    <string name="d_registration_failed_ssn_incorrect">registration_failed_ssn_incorrect</string>
+    <string name="d_registration_failed_missing_fields">registration_failed_missing_fields</string>
+    <string name="d_update_account_failed_missing_fields">update_account__failed_missing_fields</string>
+    <string name="d_update_account_failed_birthday_incorrect">update_account_failed_birthday_incorrect</string>
+    <string name="d_update_account_failed_ssn_incorrect">update_account_failed_ssn_incorrect</string>
+    <string name="d_update_account_failed_values_not_match">update_profile_failed_values_not_match</string>
+    <string name="d_schedule_test">schedule_test</string>
+    <string name="d_become_jse_member">become_jse_member</string>
+    <string name="d_load_info_fail">load_info_fail</string>
 
     <!-- Dialogs Messages -->
     <string name="d_office_closed_msg">The JSE office is currently closed.
@@ -179,6 +205,18 @@
         Please correct and try again.</string>
     <string name="d_no_connection_msg">You need an internet connection to use this application.
         Please try again.</string>
+    <string name="d_username_password_not_match_msg">This username and password did not match.
+        Please try again.</string>
+    <string name="d_user_not_updated_msg">User not updated.</string>
+    <string name="d_enter_email_msg">Enter your email address.</string>
+    <string name="d_enter_valid_email_msg">You need to enter a valid email address.</string>
+    <string name="d_enter_valid_dob_msg">Enter Date of birth in MM/DD/YYYY format.</string>
+    <string name="d_enter_last_4_ssn">Enter Last 4 digits of SSN.</string>
+    <string name="d_schedule_test_become_member">To schedule a test you need to be a JSE member.
+        Please call the JSE office to register.</string>
+    <string name="d_passwords_not_match_msg">Password and Confirm Password values don\'t match.
+        Please try again.</string>
+    <string name="d_load_info_fail_msg">Application information can not be loaded right now.</string>
 
     <!-- Messages -->
     <string name="msg_no_results">No results found</string>

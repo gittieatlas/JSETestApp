@@ -52,7 +52,7 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        loginActivity.setToolbarTitle(R.string.toolbar_title_update_profile);
+        Util.setToolbarTitle(R.string.toolbar_title_update_profile, loginActivity.toolbar);
 
         firstNameEditText = (EditText) rootView.findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) rootView.findViewById(R.id.lastNameEditText);
@@ -179,9 +179,10 @@ public class UpdateProfileFragment extends Fragment {
         public void onClick(View v) {
             if (!controlsHaveValues()) {
                 //|| passwordEqualsConfirmPassword() ) {
-                loginActivity.showDialog("Account Update Failed", "All fields require a value.",
-                        "OK", null, null, R.drawable.ic_alert_grey600_24dp,
-                        "registration_failed_missing_fields");
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_update_account_failed_missing_fields)
+                ));
             } else {
                 validateForm();
 
@@ -200,20 +201,23 @@ public class UpdateProfileFragment extends Fragment {
 
     private void validateForm() {
         if (!isBirthdayCorrect()) {
-            loginActivity.showDialog("Create Account Failed",
-                    "Enter Date of birth in MM/DD/YYYY format.",
-                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
-                    "registration_failed_birthday_incorrect");
 
-        } else if (!isSsn()) {
-            loginActivity.showDialog("Create Account Failed", "Enter Last 4 digits of SSN.",
-                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
-                    "registration_failed_ssn_incorrect");
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_update_account_failed_birthday_incorrect)));
+        }
+        else if (!isSsn()) {
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_update_account_failed_ssn_incorrect)));
+
             ssnEditText.setText("");
+
         } else if (!passwordEqualsConfirmPassword()) {
-            loginActivity.showDialog("Create Account Failed",
-                    "Password and Confirm Password values don't match. Please try again.", null,
-                    null, "OK", R.drawable.ic_alert_grey600_24dp, "create_account_failed_values_match");
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_update_account_failed_values_not_match)));
+
+
             newPasswordEditText.setText("");
             confirmNewPasswordEditText.setText("");
         } else {
@@ -255,11 +259,10 @@ public class UpdateProfileFragment extends Fragment {
         if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
             taskUpdateUser = loginActivity.databaseOperations.updateUser(testUser);
         } else {
-            loginActivity.showDialog(getString(R.string.d_no_connection),
-                    getString(R.string.d_no_connection_msg),
-                    null, null, getString(R.string.d_ok),
-                    R.drawable.ic_exclamation_grey600_24dp,
-                    "no_internet_connection");
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_no_internet_connection)));
+
         }
 
     }

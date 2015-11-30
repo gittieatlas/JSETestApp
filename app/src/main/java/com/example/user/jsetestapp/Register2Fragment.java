@@ -53,7 +53,7 @@ public class Register2Fragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        loginActivity.setToolbarTitle(R.string.toolbar_title_register2);
+        Util.setToolbarTitle(R.string.toolbar_title_register2, loginActivity.toolbar);
         firstNameEditText = (EditText) rootView.findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) rootView.findViewById(R.id.lastNameEditText);
         dobMonthEditText = (EditText) rootView.findViewById(R.id.dobMonthEditText);
@@ -143,9 +143,10 @@ public class Register2Fragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!controlsHaveValues()) {
-                loginActivity.showDialog("Create Account Failed", "All fields require a value.",
-                        "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
-                        "registration_failed_missing_fields");
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_registration_failed_missing_fields)));
+
             } else {
                 validateForm();
             }
@@ -163,17 +164,15 @@ public class Register2Fragment extends Fragment {
 
     private void validateForm() {
         if (!isBirthdayCorrect()) {
-            loginActivity.showDialog(getString(R.string.d_create_account_failed),
-                    "Enter Date of birth in MM/DD/YYYY format.",
-                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
-                    "registration_failed_birthday_incorrect");
 
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_registration_failed_birthday_incorrect)));
         }
         else if (!isSsn()) {
-            loginActivity.showDialog(getString(R.string.d_create_account_failed),
-                    "Enter Last 4 digits of SSN.",
-                    "OK", "CANCEL", null, R.drawable.ic_alert_grey600_24dp,
-                    "registration_failed_ssn_incorrect");
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_registration_failed_ssn_incorrect)));
+
             ssnEditText.setText("");
         }
 
@@ -184,11 +183,9 @@ public class Register2Fragment extends Fragment {
             if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
                 taskNewUser = loginActivity.databaseOperations.newUser(loginActivity.user);
             } else {
-                loginActivity.showDialog(getString(R.string.d_no_connection),
-                        getString(R.string.d_no_connection_msg),
-                        null, null, getString(R.string.d_ok),
-                        R.drawable.ic_exclamation_grey600_24dp,
-                        "no_internet_connection");
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_no_internet_connection)));
             }
 
         }

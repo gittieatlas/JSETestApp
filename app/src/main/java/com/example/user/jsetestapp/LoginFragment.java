@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment {
         loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
 
-         loginActivity.setToolbarTitle(R.string.toolbar_title_login);
+         Util.setToolbarTitle(R.string.toolbar_title_login, loginActivity.toolbar);
 
         return rootView;
     }
@@ -78,18 +78,16 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!isValuesEntered()) {
-                loginActivity.showDialog(getString(R.string.d_login_failed),
-                        getString(R.string.d_fields_require_values_msg),
-                        null, null, getString(R.string.d_ok),
-                        R.drawable.ic_alert_grey600_24dp,
-                        "login_failed_values");
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_login_failed_values)
+                ));
+
             } else {
                 if (!isEmailValid()) {
-                    loginActivity.showDialog(getString(R.string.d_login_failed),
-                            getString(R.string.d_invalid_email_msg),
-                            null, null, getString(R.string.d_ok),
-                            R.drawable.ic_alert_grey600_24dp,
-                            "login_failed_invalid_email");
+                    Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                            getString(R.string.d_login_failed_invalid_email)
+                    ));
                 } else {
                     login();
                 }
@@ -111,8 +109,9 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            loginActivity.showDialog("Send me my password", "Enter your email address",
-                    "SEND", null, null, R.drawable.ic_settings_grey600_24dp, "forgot_password");
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_forgot_password)));
+
 
         }
     };
@@ -138,11 +137,10 @@ public class LoginFragment extends Fragment {
         if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
             taskGetUser =  loginActivity.databaseOperations.getUser(loginActivity.user);
         } else {
-            loginActivity.showDialog(getString(R.string.d_no_connection),
-                    getString(R.string.d_no_connection_msg),
-                    null, null, getString(R.string.d_ok),
-                    R.drawable.ic_exclamation_grey600_24dp,
-                    "no_internet_connection");
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_no_internet_connection)
+            ));
+
         }
 
     }

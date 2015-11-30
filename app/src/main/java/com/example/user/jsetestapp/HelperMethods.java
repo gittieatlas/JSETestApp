@@ -36,9 +36,10 @@ public class HelperMethods extends Activity {
     MainActivity mainActivity;
     LoginActivity loginActivity;
     SplashActivity splashActivity;
+    static Activity activity;
 
     public HelperMethods() {
-
+        activity = Util.getActivity();
     }
 
     public void replaceFragment(Fragment fragment, String tag,
@@ -67,13 +68,16 @@ public class HelperMethods extends Activity {
 
     public void scheduleTest() {
         if (mainActivity.user.isJseMember) {
-            mainActivity.showDialog("Schedule a Test", null, "CALL", "CANCEL",
-                    null, R.drawable.ic_clipboard_text_grey600_24dp, "schedule_test");
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    activity.getString(R.string.d_schedule_test)
+            ));
+
         } else {
-            String message = "To schedule a test you need to be a JSE member. " +
-                    "Please call the JSE office to register.";
-            mainActivity.showDialog("Become a JSE Member", message, "CALL", "CANCEL",
-                    null, R.drawable.ic_clipboard_text_grey600_24dp, "become_jse_member");
+
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    activity.getString(R.string.d_become_jse_member)
+            ));
         }
 
     }
@@ -213,8 +217,8 @@ public class HelperMethods extends Activity {
 
 
     private void clearTestsFilteredArrayList() {
-        if (mainActivity.getTestsFilteredArrayList() != null)
-            mainActivity.getTestsFilteredArrayList().clear();
+        if (mainActivity.testsFilteredArrayList != null)
+            mainActivity.testsFilteredArrayList.clear();
     }
 
     public void setLoginActivity(LoginActivity loginActivity) {
@@ -228,20 +232,18 @@ public class HelperMethods extends Activity {
     public void createUser(String result, int id) {
         if (loginActivity.register2Fragment.isVisible()) {
             if (result.equals("") && id == 0) {
-                loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
-                        loginActivity.getString(R.string.d_account_create_fail_duplicate_email_msg),
-                        null, null, loginActivity.getString(R.string.d_ok),
-                        R.drawable.ic_alert_grey600_24dp,
-                        loginActivity.getString(R.string.d_create_account_failed_duplicate_email));
+                Util.showDialog(getDialogFragmentBundle(
+                                activity.getString(
+                                        R.string.d_create_account_failed_duplicate_email)));
             } else if (result.equals("true") && id != 0) {
                 loginActivity.user.setId(id);
                 loginActivity.switchToMainActivity("create_account");
             } else {
-                loginActivity.showDialog(loginActivity.getString(R.string.d_create_account_failed),
-                        loginActivity.getString(R.string.d_account_create_fail_msg),
-                        null, null, loginActivity.getString(R.string.d_ok),
-                        R.drawable.ic_alert_grey600_24dp,
-                        loginActivity.getString(R.string.d_create_account_insert_failed));
+
+                Util.showDialog(getDialogFragmentBundle(
+                        activity.getString(R.string.d_create_account_insert_failed)
+                ));
+
             }
         } else {
             if (result.equals("") && id == 0) {
@@ -261,10 +263,8 @@ public class HelperMethods extends Activity {
         if (loginActivity.loginFragment.isVisible()) {
             if (result.equals("0")) {
                 // Not logged in
-                loginActivity.showDialog(loginActivity.getString(R.string.d_login_failed),
-                        "This username and password did not match. Please try again.",
-                        null, null, "OK", R.drawable.ic_alert_grey600_24dp,
-                        "login_failed_not_match");
+                Util.showDialog(getDialogFragmentBundle(
+                        activity.getString(R.string.d_login_failed_not_match)));
             } else {
                 //login successful
                 loginActivity.switchToMainActivity("login");
@@ -281,10 +281,9 @@ public class HelperMethods extends Activity {
                 loginActivity.switchToMainActivity("update_profile");
             } else {
                 //user not updated
-                loginActivity.showDialog("Create Account Failed",
-                        "User not updated.",
-                        null, null, "OK", R.drawable.ic_alert_grey600_24dp,
-                        "create_account_failed_email_duplicate");
+                Util.showDialog(getDialogFragmentBundle(
+                        activity.getString(R.string.d_create_account_failed_email_duplicate)));
+
             }
         }
     }
@@ -477,13 +476,13 @@ public class HelperMethods extends Activity {
     /**
      * Function to get jsonArray
      *
-     * @param url          - url to get the JSON string from
-     * @param TAG_LOCATIONS        - tag to get locations from
+     * @param url           - url to get the JSON string from
+     * @param TAG_LOCATIONS - tag to get locations from
      * @return jsonArray
      */
     public static JSONArray getJsonArray(String url, String TAG_LOCATIONS) {
         // instantiating jsonArray
-        JSONArray jsonArray= new JSONArray();
+        JSONArray jsonArray = new JSONArray();
         // instantiating ServiceHandler
         ServiceHandler sh = new ServiceHandler();
 
@@ -501,8 +500,8 @@ public class HelperMethods extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        // if jsonStr is null
-        }else{
+            // if jsonStr is null
+        } else {
             Log.e("ServiceHandler", "Couldn't get any data from the locations_url");
         }
         return jsonArray;
@@ -512,7 +511,6 @@ public class HelperMethods extends Activity {
      * Function to set location
      *
      * @param locationObject
-     *
      * @return location
      */
     public static Location setLocation(JSONObject locationObject) {
@@ -538,7 +536,6 @@ public class HelperMethods extends Activity {
      * Function to build address location
      *
      * @param locationObject
-     *
      * @return fullAddress
      */
     public static String getAddress(JSONObject locationObject) {
@@ -570,7 +567,6 @@ public class HelperMethods extends Activity {
      * Function to set test
      *
      * @param testObject
-     *
      * @return test
      */
     public static Test setTest(JSONObject testObject) {
@@ -605,7 +601,6 @@ public class HelperMethods extends Activity {
      * Function to set hours
      *
      * @param hoursObject
-     *
      * @return hours
      */
     public static Hours setHours(JSONObject hoursObject) {
@@ -634,7 +629,6 @@ public class HelperMethods extends Activity {
      * Function to set branch
      *
      * @param branchObject
-     *
      * @return branch
      */
     public static Branch setBranch(JSONObject branchObject) {
@@ -656,7 +650,6 @@ public class HelperMethods extends Activity {
      * Function to set alert
      *
      * @param alertObject
-     *
      * @return alert
      */
     public static Alerts setAlert(JSONObject alertObject) {
@@ -680,6 +673,259 @@ public class HelperMethods extends Activity {
         }
 
         return alert;
+    }
+
+
+    /**
+     * Function to create a bundle for a DialogFragment
+     *
+     * @param tagListener - tag to get data for the bundle
+     */
+    public static Bundle getDialogFragmentBundle(String tagListener) {
+
+        String title, message, positiveButton, negativeButton, neutralButton;
+        int icon;
+
+
+        if (tagListener.equals(
+                activity.getString(R.string.d_create_account_failed_duplicate_email))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_account_create_fail_duplicate_email_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_create_account_insert_failed))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_account_create_fail_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_login_failed_not_match))) {
+
+            title = activity.getString(R.string.d_login_failed);
+            message = activity.getString(R.string.d_username_password_not_match_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_create_account_failed_email_duplicate))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_user_not_updated_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_no_internet_connection))) {
+
+            title = activity.getString(R.string.d_no_connection);
+            message = activity.getString(R.string.d_no_connection_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_exclamation_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_login_failed_values))) {
+
+            title = activity.getString(R.string.d_login_failed);
+            message = activity.getString(R.string.d_fields_require_values_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_login_failed_invalid_email))) {
+
+            title = activity.getString(R.string.d_login_failed);
+            message = activity.getString(R.string.d_invalid_email_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_forgot_password))) {
+
+            title = activity.getString(R.string.d_send_password);
+            message = activity.getString(R.string.d_enter_email_msg);
+            positiveButton = activity.getString(R.string.d_send);
+            negativeButton = null;
+            neutralButton = null;
+            icon = R.drawable.ic_settings_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_create_account_failed_email))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_enter_valid_email_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_create_account_failed_values_not_match))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_passwords_not_match_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_create_account_failed_values))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_fields_require_values_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_registration_failed_birthday_incorrect))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_enter_valid_dob_msg);
+            positiveButton = activity.getString(R.string.d_ok);
+            negativeButton = activity.getString(R.string.d_cancel);
+            neutralButton = null;
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_registration_failed_ssn_incorrect))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_enter_last_4_ssn);
+            positiveButton = activity.getString(R.string.d_ok);
+            negativeButton = activity.getString(R.string.d_cancel);
+            neutralButton = null;
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_registration_failed_missing_fields))) {
+
+            title = activity.getString(R.string.d_create_account_failed);
+            message = activity.getString(R.string.d_fields_require_values_msg);
+            positiveButton = activity.getString(R.string.d_ok);
+            negativeButton = activity.getString(R.string.d_cancel);
+            neutralButton = null;
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_update_account_failed_values_not_match))) {
+
+            title = activity.getString(R.string.d_update_account_failed);
+            message = activity.getString(R.string.d_passwords_not_match_msg);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_update_account_failed_missing_fields))) {
+
+            title = activity.getString(R.string.d_update_account_failed);
+            message = activity.getString(R.string.d_fields_require_values_msg);
+            positiveButton = activity.getString(R.string.d_ok);
+            negativeButton = null;
+            neutralButton = null;
+            icon = R.drawable.ic_alert_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_call_jse_during_hours))) {
+
+            title = activity.getString(R.string.d_jse_office);
+            message = null;
+            positiveButton = activity.getString(R.string.d_call);
+            negativeButton = activity.getString(R.string.d_cancel);
+            neutralButton = null;
+            icon = R.drawable.ic_phone_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_call_jse_non_hours))) {
+
+            title = activity.getString(R.string.d_jse_office);
+            message = activity.getString(R.string.d_office_closed_msg);
+            positiveButton = activity.getString(R.string.d_yes);
+            negativeButton = activity.getString(R.string.d_no);
+            neutralButton = null;
+            icon = R.drawable.ic_calendar_clock_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_schedule_test))) {
+
+            title = activity.getString(R.string.d_schedule_test_title);
+            message = null;
+            positiveButton = activity.getString(R.string.d_call);
+            negativeButton = activity.getString(R.string.d_cancel);
+            neutralButton = null;
+            icon = R.drawable.ic_clipboard_text_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_become_jse_member))) {
+
+            title = activity.getString(R.string.d_become_jse_member_title);
+            message = activity.getString(R.string.d_schedule_test_become_member);
+            positiveButton = activity.getString(R.string.d_call);
+            negativeButton = activity.getString(R.string.d_cancel);
+            neutralButton = null;
+            icon = R.drawable.ic_clipboard_text_grey600_24dp;
+
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_load_info_fail))) {
+
+            title = activity.getString(R.string.d_load_info_fail_title);
+            message = activity.getString(R.string.d_load_info_fail_msg);
+            positiveButton = activity.getString(R.string.d_try_again);
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_clipboard_text_grey600_24dp;
+
+        }
+
+        else {
+            title = "";
+            message = "";
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = null;
+            icon = 0;
+        }
+
+
+        Bundle bundle = new Bundle();
+
+        bundle.putString("title", title);
+        bundle.putString("message", message);
+        bundle.putString("positiveButton", positiveButton);
+        bundle.putString("negativeButton", negativeButton);
+        bundle.putString("neutralButton", neutralButton);
+        bundle.putInt("icon", icon);
+        bundle.putString("tagListener", tagListener);
+
+        return bundle;
+    }
+
+
+    public void setSplashActivity(SplashActivity splashActivity) {
+
+        this.splashActivity = splashActivity;
     }
 
 }

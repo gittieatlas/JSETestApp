@@ -70,17 +70,15 @@ public class ContactFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (mainActivity.helperMethods.isDuringOfficeHours()) {
-                mainActivity.showDialog(getString(R.string.d_jse_office),
-                        null,
-                        getString(R.string.d_call), getString(R.string.d_cancel), null,
-                        R.drawable.ic_phone_grey600_24dp,
-                        getString(R.string.d_call_jse_during_hours));
+
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_call_jse_during_hours)
+                ));
+
             } else {
-                mainActivity.showDialog(getString(R.string.d_jse_office),
-                        getString(R.string.d_office_closed_msg),
-                        getString(R.string.d_yes), getString(R.string.d_no), null,
-                        R.drawable.ic_calendar_clock_grey600_24dp,
-                        getString(R.string.d_call_jse_non_hours));
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_call_jse_non_hours)
+                ));
             }
         }
     };

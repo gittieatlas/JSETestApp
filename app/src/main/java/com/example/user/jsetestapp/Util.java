@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 /**
  * Created by Rochel on 11/20/2015.
@@ -12,7 +14,6 @@ import android.net.Uri;
 public class Util extends Activity {
 
     private static Context context = null;
-
     private static Activity activity = null;
 
     public static String getStringValue(int i) {
@@ -23,6 +24,7 @@ public class Util extends Activity {
     public static void setActivity(Activity activity) {
         Util.activity = activity;
     }
+
 
     /**
      * Function to check if ssnEditText contains 4 numbers
@@ -102,15 +104,15 @@ public class Util extends Activity {
      */
     public static void navigationIntent(String address){
 
-// Create a Uri from an intent string. Use the result to create an Intent.
+        // Create a Uri from an intent string. Use the result to create an Intent.
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + address);
 
-// Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+        // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-// Make the Intent explicit by setting the Google Maps package
+        // Make the Intent explicit by setting the Google Maps package
         mapIntent.setPackage("com.google.android.apps.maps");
 
-// Attempt to start an activity that can handle the Intent
+        // Attempt to start an activity that can handle the Intent
         if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
             activity.startActivity(mapIntent);
 
@@ -134,4 +136,31 @@ public class Util extends Activity {
         // set activity to activity
         setActivity(activity);
     }
+
+    /**
+     * Function to set title of toolbar
+     *
+     * @param toolbarTitle - int of string reference to add as toolbar title
+     * @param toolbar - set title to this toolbar
+     */
+    public static void setToolbarTitle(int toolbarTitle, Toolbar toolbar) {
+
+        // set toolbar title
+        toolbar.setTitle(toolbarTitle);
+    }
+
+ public static void showDialog(Bundle bundle) {
+
+        CustomDialogFragment dialogFragment = new CustomDialogFragment();
+
+        dialogFragment.setArguments(bundle);
+
+        dialogFragment.show(activity.getFragmentManager(), bundle.getString("tagListener"));
+    }
+
+
+    public static Activity getActivity() {
+        return activity;
+    }
+
 }

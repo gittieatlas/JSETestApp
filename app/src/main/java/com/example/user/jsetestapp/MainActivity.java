@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     LibrariesFragment librariesFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
-    MainActivityDialogFragment mainActivityDialogFragment;
 
     // Declare Variables
     ArrayList<Location> locationsArrayList;
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Alerts> alertsArrayList;
     User user = new User();
     Location defaultLocation;
-    // boolean isJseMember = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
         dashboardFragment.setMainActivity(this);
         resultsFragment = new ResultsFragment();
         resultsFragment.setMainActivity(this);
-        mainActivityDialogFragment = new MainActivityDialogFragment();
-        mainActivityDialogFragment.setMainActivity(this);
     }
 
     /**
@@ -154,14 +150,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeVariables() {
 
+      //  Bundle bundle = getIntent().getExtras();
+
         locationsArrayList = queryMethods.setUpLocationsArrayList();
-        user = queryMethods.setUpUser();
+        user = (User) getIntent().getExtras().getSerializable("user");
         locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
         defaultLocation = queryMethods.setUpDefaultLocation();
         branchesArrayList = queryMethods.setUpBranchesArrayList();
         branchesNameArrayList = queryMethods.setUpBranchesNameArrayList(branchesArrayList);
-        queryMethods.setUpTestsArrayList();
-        queryMethods.setUpTestsFilteredArrayList();
+        testsArrayList = queryMethods.setUpTestsArrayList();
+        testsFilteredArrayList = new ArrayList<DataObject>();
         hoursArrayList = queryMethods.setUpHoursArrayList();
         alertsArrayList = queryMethods.setUpAlertsArrayList();
         hoursFilteredArrayList = new ArrayList<HoursDataObject>();
@@ -275,50 +273,20 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.log_out) {
-//            Bundle bundle = getIntent().getExtras();
-//            testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            Bundle b = new Bundle();
-//            b.putSerializable("locationsArrayList", locationsArrayList);
-//            b.putSerializable("testsArrayList", testsArrayList);
-//            b.putSerializable("hoursArrayList", hoursArrayList);
-//            b.putSerializable("branchesArrayList", branchesArrayList);
-//            b.putSerializable("alertsArrayList", alertsArrayList);
-//            b.putSerializable("defaultLocation", defaultLocation);
-//            intent.putExtras(b);
-//            intent.putExtra("outcome", "log_out");
-//            startActivity(intent);
-//            finish();
-//            return true;
-            setBundle("log_out");
-
+            switchToLoginActivity("log_out");
+            return true;
         }
 
         if (id == R.id.update_profile) {
 
-//            setBundle("update_profile");
-            Bundle bundle = getIntent().getExtras();
-            testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
-            Intent intent = new Intent(this, LoginActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("locationsArrayList", locationsArrayList);
-            b.putSerializable("testsArrayList", testsArrayList);
-            b.putSerializable("hoursArrayList", hoursArrayList);
-            b.putSerializable("branchesArrayList", branchesArrayList);
-            b.putSerializable("alertsArrayList", alertsArrayList);
-            b.putSerializable("user", user);
-            b.putSerializable("defaultLocation", defaultLocation);
-            intent.putExtras(b);
-            intent.putExtra("outcome", "update_profile");
-            startActivity(intent);
-            finish();
+            switchToLoginActivity("update_profile");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public Boolean setBundle(String outcome){
+    public void switchToLoginActivity(String outcome){
         Bundle bundle = getIntent().getExtras();
         testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
         Intent intent = new Intent(this, LoginActivity.class);
@@ -329,11 +297,12 @@ public class MainActivity extends AppCompatActivity {
         b.putSerializable("branchesArrayList", branchesArrayList);
         b.putSerializable("alertsArrayList", alertsArrayList);
         b.putSerializable("defaultLocation", defaultLocation);
+        if (outcome.equals("update_profile"))
+            b.putSerializable("user", user);
         intent.putExtras(b);
         intent.putExtra("outcome", outcome);
         startActivity(intent);
         finish();
-        return true;
     }
 
     public void setToolbarTitle(int toolbarTitle) {

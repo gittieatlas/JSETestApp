@@ -12,6 +12,7 @@ public class DialogListeners extends Activity {
 
     MainActivity mainActivity;
     LoginActivity loginActivity;
+    SplashActivity splashActivity;
 
     public void positiveButtonOnClickListener(String TAG_LISTENER) {
         switch (TAG_LISTENER) {
@@ -95,6 +96,12 @@ public class DialogListeners extends Activity {
 
         }
     }
+
+    public void setSplashActivity(SplashActivity splashActivity) {
+
+        this.splashActivity = splashActivity;
+    }
+
 
     public void setMainActivity(MainActivity mainActivity) {
 
