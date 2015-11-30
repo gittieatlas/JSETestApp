@@ -82,11 +82,6 @@ public class HelperMethods extends Activity {
 
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-
-        this.mainActivity = mainActivity;
-    }
-
     /**
      * Sets ListView height dynamically based on the height of the items.
      *
@@ -219,10 +214,6 @@ public class HelperMethods extends Activity {
     private void clearTestsFilteredArrayList() {
         if (mainActivity.testsFilteredArrayList != null)
             mainActivity.testsFilteredArrayList.clear();
-    }
-
-    public void setLoginActivity(LoginActivity loginActivity) {
-        this.loginActivity = loginActivity;
     }
 
     public boolean isEmpty(EditText editText) {
@@ -679,14 +670,16 @@ public class HelperMethods extends Activity {
     /**
      * Function to create a bundle for a DialogFragment
      *
-     * @param tagListener - tag to get data for the bundle
+     * @param tagListener - tag of dialog fragment
+     * return bundle
      */
     public static Bundle getDialogFragmentBundle(String tagListener) {
 
+        // initialize strings and int to pass to bundle
         String title, message, positiveButton, negativeButton, neutralButton;
         int icon;
 
-
+        // check tagListener and assign values for dialog fragment info
         if (tagListener.equals(
                 activity.getString(R.string.d_create_account_failed_duplicate_email))) {
 
@@ -898,7 +891,6 @@ public class HelperMethods extends Activity {
             icon = R.drawable.ic_clipboard_text_grey600_24dp;
 
         }
-
         else {
             title = "";
             message = "";
@@ -908,9 +900,10 @@ public class HelperMethods extends Activity {
             icon = 0;
         }
 
-
+        // instantiate a bundle
         Bundle bundle = new Bundle();
 
+        // add key-values to bundle
         bundle.putString("title", title);
         bundle.putString("message", message);
         bundle.putString("positiveButton", positiveButton);
@@ -919,13 +912,43 @@ public class HelperMethods extends Activity {
         bundle.putInt("icon", icon);
         bundle.putString("tagListener", tagListener);
 
+        // return bundle of key-values
         return bundle;
     }
 
 
+    /**
+     * Function to set value of SplashActivity in this class
+     *
+     * @param splashActivity - instance of SplashActivity
+     */
     public void setSplashActivity(SplashActivity splashActivity) {
-
+        // set this classes instance of SplashActivity to splashActivity
         this.splashActivity = splashActivity;
     }
+
+    /**
+     * Function to set value of LoginActivity in this class
+     *
+     * @param loginActivity - instance of LoginActivity
+     */
+    public void setLoginActivity(LoginActivity loginActivity) {
+
+        // set this classes instance of LoginActivity to loginActivity
+        this.loginActivity = loginActivity;
+    }
+
+    /**
+     * Function to set value of MainActivity in this class
+     *
+     * @param mainActivity - instance of MainActivity
+     */
+    public void setMainActivity(MainActivity mainActivity) {
+
+        // set this classes instance of MainActivity to mainActivity
+        this.mainActivity = mainActivity;
+    }
+
+
 
 }
