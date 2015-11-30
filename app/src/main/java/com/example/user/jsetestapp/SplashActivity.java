@@ -17,82 +17,71 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity {
 
-    //Controls
-
-    //Activities HelperClasses Classes;
+    // Declare Classes
     MainActivity mainActivity;
+    HelperMethods helperMethods;
+    DialogListeners dialogListeners;
 
-    //Fragments
-
-    //Variables
+    // Declare Variables
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Branch> branchesArrayList;
     ArrayList<Alerts> alertsArrayList;
 
+    // Declare Booleans
     Boolean gotLocations = false;
     Boolean gotTests = false;
     Boolean gotHours = false;
     Boolean gotBranches = false;
     Boolean gotAlerts = false;
-    AsyncTask taskGetLocations, taskGetTests, taskGetHours, taskGetBranches, taskGetAlerts;
-
-
     static boolean active = false;
+
+    // Declare AsyncTasks
+    AsyncTask taskGetLocations, taskGetTests, taskGetHours, taskGetBranches, taskGetAlerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // call the parent activities onCreate
         super.onCreate(savedInstanceState);
 
         // Entry point to initialize Fabric and contained Kits
         Fabric.with(this, new Crashlytics());
 
+        // attach xml to activity
         setContentView(R.layout.activity_splash);
 
         // send activity reference to Util class
         Util.setReference(this);
+
+        instantiateFragments();
     }
-
-
-    private void getDataFromDatabase() {
-
-        setUpLocations();
-        setUpTests();
-        setUpHours();
-        setUpBranches();
-        setUpAlerts();
-
-    }
-
-
-    public void onPause() {
-        super.onPause();
-
-        cancelAsyncTasks();
-        //finish();
-    }
-
 
     @Override
     public void onStart() {
+        // call the parent activities onStart
         super.onStart();
+        // set active to true
         active = true;
     }
 
     @Override
     public void onStop() {
+        // call the parent activities onStop
         super.onStop();
+        // set active to false
         active = false;
     }
 
-
+    @Override
     public void onResume() {
+        // call the parent activities onResume
         super.onResume();
 
         // check for Internet status and set true/false
@@ -103,64 +92,24 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void cancelAsyncTasks() {
-        taskGetLocations.cancel(true);
-        gotLocations = false;
-        taskGetTests.cancel(true);
-        gotTests = false;
-        taskGetHours.cancel(true);
-        gotHours = false;
-        taskGetBranches.cancel(true);
-        gotBranches = false;
-        taskGetAlerts.cancel(true);
-        gotAlerts = false;
+    @Override
+    public void onPause() {
+        // call the parent activities onPause
+        super.onPause();
+
+        cancelAsyncTasks();
     }
-
-    public void setUpLocations() {
-        //initialize locationArrayList
-        locationsArrayList = new ArrayList<Location>();
-        //execute GetLocations asyncTask
-        taskGetLocations = new GetLocations().execute();
-
-    }
-
-    public void setUpTests() {
-        testsArrayList = new ArrayList<Test>();
-        //new GetTests().execute();
-        taskGetTests = new GetTests().execute();
-    }
-
-    public void setUpHours() {
-        hoursArrayList = new ArrayList<Hours>();
-        //new GetHours().execute();
-        taskGetHours = new GetHours().execute();
-    }
-
-    public void setUpBranches() {
-        branchesArrayList = new ArrayList<Branch>();
-        //new GetBranches().execute();
-        taskGetBranches = new GetBranches().execute();
-    }
-
-    public void setUpAlerts() {
-        alertsArrayList = new ArrayList<Alerts>();
-        //new getAlerts().execute();
-        taskGetAlerts = new getAlerts().execute();
-    }
-
-
-    private void displayDialog(String tag) {
-        switch (tag) {
-            case "no_internet_connection":
-                showAlertDialog(SplashActivity.this, getString(R.string.d_no_connection),
-                        getString(R.string.d_no_connection_msg), false);
-                break;
-        }
-    }
-
 
     /**
-     * Async task class to get json by making HTTP call
+     * Function to instantiate fragments
+     */
+    private void instantiateFragments() {
+
+        dialogListeners = new DialogListeners();
+        //dialogListeners.setSplashActivity(this);
+    }
+    /**
+     * AsyncTask class to get json by making HTTP call
      */
     private class GetLocations extends AsyncTask<Void, Void, Boolean> {
 
@@ -168,8 +117,7 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addLocationToLocationsArrayList();
-
-
+            // if locationsArrayList is empty or if task is canceled
             if (locationsArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
@@ -179,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
+            // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
                 gotLocations = true;
                 changeActivities();
@@ -193,93 +141,11 @@ public class SplashActivity extends AppCompatActivity {
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
             gotLocations = false;
-            //  appInfoNotLoaded();
         }
     }
-
-    public void addLocationToLocationsArrayList() {
-
-        JSONArray locationsJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.locations_url), (getString(R.string.TAG_LOCATIONS)));
-        try {
-            // looping through All Locations
-            for (int i = 0; i < locationsJsonArray.length(); i++) {
-
-                JSONObject location = locationsJsonArray.getJSONObject(i);
-                //adding location to locationsArrayList
-                locationsArrayList.add(setLocation(location));
-
-                if (taskGetLocations.isCancelled()) {
-                    break;
-                }
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            // return false;
-        }
-
-        //return (taskGetLocations.isCancelled()) ? false : true;
-
-    }
-
-
-    private void appInfoNotLoaded() {
-        //   cancelAsyncTasks();
-        if (active)
-            showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
-        // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
-
-    }
-
-    public Location setLocation(JSONObject locationObject) {
-
-        Location location = new Location();
-
-        try {
-
-            location.setId(Integer.parseInt(locationObject.getString(getString(R.string.TAG__LOCATION_ID))));
-            location.setBrachId(Integer.parseInt(locationObject.getString(getString(R.string.TAG__BRANCH_ID))));
-            location.setName(locationObject.getString(getString(R.string.TAG_NAME)));
-            location.setAddress(getAddress(locationObject));
-            location.setPhone(locationObject.getString(getString(R.string.TAG_PHONE)));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return location;
-    }
-
-    private String getAddress(JSONObject locationObject) {
-
-        StringBuilder fullAddress = new StringBuilder();
-
-        try {
-
-            String address = locationObject.getString(getString(R.string.TAG_ADDRESS));
-            String city = locationObject.getString(getString(R.string.TAG_CITY));
-            String state = locationObject.getString(getString(R.string.TAG_STATE));
-            String zip = locationObject.getString(getString(R.string.TAG_ZIP));
-            String country = locationObject.getString(getString(R.string.TAG_COUNTRY));
-
-            if (!address.equals("null")) fullAddress.append(address + " ");
-            if (!city.equals("null")) fullAddress.append(city + " ");
-            if (!state.equals("null")) fullAddress.append(state + " ");
-            if (!zip.equals("null")) fullAddress.append(zip + " ");
-            if (!country.equals("null")) fullAddress.append(country);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return fullAddress.toString();
-    }
-
 
     /**
-     * Async task class to get json by making HTTP call
+     * AsyncTask class to get json by making HTTP call
      */
     private class GetTests extends AsyncTask<Void, Void, Boolean> {
 
@@ -287,7 +153,7 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addTestToTestsArrayList();
-
+            // if testsArrayList is empty or if task is canceled
             if (testsArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
@@ -297,7 +163,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
+            // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
                 gotTests = true;
                 changeActivities();
@@ -312,68 +178,12 @@ public class SplashActivity extends AppCompatActivity {
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
             gotTests = false;
-//            if (gotTests)
-//                changeActivities();
-//            else
-//                appInfoNotLoaded();
+
         }
     }
-
-    public void addTestToTestsArrayList() {
-
-        JSONArray testsJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.tests_url), (getString(R.string.TAG_TESTS)));
-
-        try {
-            // looping through All Tests
-            for (int i = 0; i < testsJsonArray.length(); i++) {
-
-                JSONObject test = testsJsonArray.getJSONObject(i);
-
-                testsArrayList.add(setTest(test));
-                //taskGetTests.cancel(true);
-                if (taskGetTests.isCancelled()) {
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            //return false;
-        }
-        //return (taskGetTests.isCancelled()) ? false : true;
-    }
-
-    public Test setTest(JSONObject testObject) {
-
-        Test test = new Test();
-
-        try {
-
-            test.branchId = Integer.parseInt(testObject.getString(getString(R.string.TAG_BRANCH_ID)));
-            test.location = testObject.getString(getString(R.string.TAG_LOCATION));
-            test.date = LocalDate.parse(testObject.getString(getString(R.string.TAG_DATE)));
-            test.setDayOfWeek(Test.DayOfWeek.values()[
-                    (test.getDate().getDayOfWeek() - 1)].toString());
-            test.time = LocalTime.parse(new StringBuilder(
-                    testObject.getString(getString(R.string.TAG_TIME))).insert(
-                    testObject.getString(getString(R.string.TAG_TIME)).length() - 2, ":").toString());
-            test.deadlineDate = LocalDate.parse(testObject.getString(getString(R.string.TAG_CLOSING_DATE)));
-            test.deadlineTime = LocalTime.parse(new StringBuilder(
-                    testObject.getString(getString(R.string.TAG_CLOSING_TIME))).insert(
-                    testObject.getString(getString(R.string.TAG_CLOSING_TIME)).length() - 2, ":").toString());
-            test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[
-                    (test.getDeadlineDate().getDayOfWeek() - 1)].toString());
-            test.setGender(Integer.parseInt(testObject.getString(getString(R.string.TAG_GENDER))));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return test;
-    }
-
 
     /**
-     * Async task class to get json by making HTTP call
+     * AsyncTask class to get json by making HTTP call
      */
     private class GetHours extends AsyncTask<Void, Void, Boolean> {
 
@@ -381,20 +191,18 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addHoursToHoursArrayList();
-
+            // if hoursArrayList is empty or if task is canceled
             if (hoursArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
             return true;
-
-
 
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
+            // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
                 gotHours = true;
                 changeActivities();
@@ -408,66 +216,12 @@ public class SplashActivity extends AppCompatActivity {
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
             gotTests = false;
-//            if (gotHours)
-//                changeActivities();
-//            else
-//                appInfoNotLoaded();
+
         }
     }
-
-
-    public void addHoursToHoursArrayList() {
-
-        JSONArray hoursJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.hours_url), (getString(R.string.TAG_HOURS)));
-
-        try {
-
-            // looping through All Tests
-            for (int i = 0; i < hoursJsonArray.length(); i++) {
-
-                JSONObject hours = hoursJsonArray.getJSONObject(i);
-
-                hoursArrayList.add(setHours(hours));
-                if (taskGetHours.isCancelled()) {
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-           // return false;
-        }
-        //return (taskGetHours.isCancelled()) ? false : true;
-
-    }
-
-
-    public Hours setHours(JSONObject hoursObject) {
-
-
-        Hours hours = new Hours();
-
-        try {
-
-            hours.name = hoursObject.getString(getString(R.string.TAG_LIBRARY_LOCATION));
-            String day = hoursObject.getString(getString(R.string.TAG_DAY_OF_WEEK));
-            hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
-            hours.startTime = LocalTime.parse(hoursObject.getString(getString(R.string.TAG_OPENING_TIME)));
-            LocalTime duration = LocalTime.parse(hoursObject.getString(getString(R.string.TAG_DURATION)));
-            hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay())
-                    .plusMinutes(duration.getMinuteOfHour());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return hours;
-
-    }
-
 
     /**
-     * Async task class to get json by making HTTP call
+     * AsyncTask class to get json by making HTTP call
      */
     private class GetBranches extends AsyncTask<Void, Void, Boolean> {
 
@@ -475,7 +229,7 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addBranchesToBranchesArrayList();
-
+            // if branchesArrayList is empty or if task is canceled
             if (branchesArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
@@ -486,7 +240,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
+            // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
                 gotBranches = true;
                 changeActivities();
@@ -500,55 +254,12 @@ public class SplashActivity extends AppCompatActivity {
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
             gotBranches = result;
-//            if (gotBranches)
-//                changeActivities();
-//            else
-//                appInfoNotLoaded();
+
         }
-    }
-
-    public void addBranchesToBranchesArrayList() {
-
-        JSONArray branchesJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.branches_url), (getString(R.string.TAG_BRANCHES)));
-
-        try {
-
-            // looping through All Tests
-            for (int i = 0; i < branchesJsonArray.length(); i++) {
-
-                JSONObject branch = branchesJsonArray.getJSONObject(i);
-
-                branchesArrayList.add(setBranch(branch));
-                if (taskGetBranches.isCancelled()) {
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            //return false;
-        }
-       // return (taskGetBranches.isCancelled()) ? false : true;
-
-    }
-
-    public Branch setBranch(JSONObject branchObject) {
-
-        Branch branch = new Branch();
-        try {
-
-            branch.id = Integer.parseInt(branchObject.getString(getString(R.string.TAG_ID)));
-            branch.name = branchObject.getString(getString(R.string.TAG_BRANCH_NAME));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return branch;
     }
 
     /**
-     * Async task class to get json by making HTTP call
+     * AsyncTask class to get json by making HTTP call
      */
     private class getAlerts extends AsyncTask<Void, Void, Boolean> {
 
@@ -556,7 +267,7 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addAlertsToAlertsArrayList();
-
+            // if alertsArrayList is empty or if task is canceled
             if (alertsArrayList.size() == 0 || isCancelled()) {
                 return false;
             }
@@ -567,7 +278,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
+            // if results is not null and result is true and isCancelled is false
             if (result != null && result && !isCancelled())  {
                 gotAlerts = true;
                 changeActivities();
@@ -577,65 +288,65 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
 
-        // @Override
+         @Override
         protected void onCancelled(Boolean result) {
-            // super.onCancelled(result);
+             super.onCancelled(result);
             gotBranches = false;
-//            if (gotBranches)
-//                changeActivities();
-//            else
-//                appInfoNotLoaded();
+
         }
     }
 
-    public void addAlertsToAlertsArrayList() {
 
-
-        // Getting JSON Array node
-        JSONArray alertsJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.alerts_url), (getString(R.string.TAG_ALERTS)));
-
-        try {
-
-            // looping through All Tests
-            for (int i = 0; i < alertsJsonArray.length(); i++) {
-
-                JSONObject alert = alertsJsonArray.getJSONObject(i);
-
-                alertsArrayList.add(setAlert(alert));
-                if (taskGetAlerts.isCancelled()) {
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            //return false;
+    private void displayDialog(String tag) {
+        switch (tag) {
+            case "no_internet_connection":
+                showAlertDialog(SplashActivity.this, getString(R.string.d_no_connection),
+                        getString(R.string.d_no_connection_msg), false);
+                break;
         }
-        // return (taskGetBranches.isCancelled()) ? false : true;
-
     }
 
+    private void getDataFromDatabase() {
+        setUpArrayLists();
+        setUpAsyncTasks();
+    }
 
-    public Alerts setAlert(JSONObject alertObject) {
-// ToDo handle if any values are null
+    //instantiate arrayLists
+    public void setUpArrayLists(){
+        locationsArrayList = new ArrayList<Location>();
+        testsArrayList = new ArrayList<Test>();
+        hoursArrayList = new ArrayList<Hours>();
+        branchesArrayList = new ArrayList<Branch>();
+        alertsArrayList = new ArrayList<Alerts>();
+    }
 
-        Alerts alert = new Alerts();
+    //instantiate AsyncTasks and execute them
+    public void setUpAsyncTasks() {
+        taskGetLocations = new GetLocations().execute();
+        taskGetTests = new GetTests().execute();
+        taskGetHours = new GetHours().execute();
+        taskGetBranches = new GetBranches().execute();
+        taskGetAlerts = new getAlerts().execute();
+    }
 
-        try {
-            alert.setLocationName(alertObject.getString(getString(R.string.TAG_LOCATION_NAME)));
-            String timeStamp = (alertObject.getString(getString(R.string.TAG_TIME_STAMP)));
-            String date = timeStamp.substring(0, 10);
-            alert.date = LocalDate.parse(date);
-            alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate()
-                    .getDayOfWeek() - 1)]);
-            String time = timeStamp.substring(timeStamp.length() - 8);
-            alert.setTime(LocalTime.parse(time));
-            alert.setAlertText(alertObject.getString(getString(R.string.TAG_ALERT_TEXT)));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    //cancel AsyncTasks
+    private void cancelAsyncTasks() {
+        taskGetLocations.cancel(true);
+        gotLocations = false;
+        taskGetTests.cancel(true);
+        gotTests = false;
+        taskGetHours.cancel(true);
+        gotHours = false;
+        taskGetBranches.cancel(true);
+        gotBranches = false;
+        taskGetAlerts.cancel(true);
+        gotAlerts = false;
+    }
 
-        return alert;
+    private void appInfoNotLoaded() {
+        if (active)
+            showAlertDialog(this, "Load Information Fail", "Application information can not be loaded right now.", false);
+        // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
     }
 
     private void changeActivities() {
@@ -648,11 +359,155 @@ public class SplashActivity extends AppCompatActivity {
             b.putSerializable("hoursArrayList", hoursArrayList);
             b.putSerializable("branchesArrayList", branchesArrayList);
             b.putSerializable("alertsArrayList", alertsArrayList);
+            intent.putExtra("outcome", "login");
             intent.putExtras(b);
             startActivity(intent);
             finish();
         }
     }
+
+    /**
+     * Function to add locations from locationJsonArray to locationsArrayList
+     *
+     */
+    public void addLocationToLocationsArrayList() {
+
+        JSONArray locationsJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.locations_url), (getString(R.string.TAG_LOCATIONS)));
+        try {
+            // looping through All Locations
+            for (int i = 0; i < locationsJsonArray.length(); i++) {
+
+                JSONObject location = locationsJsonArray.getJSONObject(i);
+                //adding location to locationsArrayList
+                locationsArrayList.add(HelperMethods.setLocation(location));
+
+                if (taskGetLocations.isCancelled()) {
+                    break;
+                }
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * Function to add tests from testsJsonArray to testsArrayList
+     *
+     */
+    public void addTestToTestsArrayList() {
+
+        JSONArray testsJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.tests_url), (getString(R.string.TAG_TESTS)));
+
+        try {
+            // looping through All Tests
+            for (int i = 0; i < testsJsonArray.length(); i++) {
+
+                JSONObject test = testsJsonArray.getJSONObject(i);
+
+                testsArrayList.add(HelperMethods.setTest(test));
+
+                if (taskGetTests.isCancelled()) {
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+    /**
+     * Function to add hours from hoursJsonArray to hoursArrayList
+     *
+     */
+    public void addHoursToHoursArrayList() {
+
+        JSONArray hoursJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.hours_url), (getString(R.string.TAG_HOURS)));
+
+        try {
+
+            // looping through All Tests
+            for (int i = 0; i < hoursJsonArray.length(); i++) {
+
+                JSONObject hours = hoursJsonArray.getJSONObject(i);
+
+                hoursArrayList.add(HelperMethods.setHours(hours));
+                if (taskGetHours.isCancelled()) {
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    /**
+     * Function to add branches from branchesJsonArray to branchesArrayList
+     *
+     */
+    public void addBranchesToBranchesArrayList() {
+
+        JSONArray branchesJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.branches_url), (getString(R.string.TAG_BRANCHES)));
+
+        try {
+
+            // looping through All Tests
+            for (int i = 0; i < branchesJsonArray.length(); i++) {
+
+                JSONObject branch = branchesJsonArray.getJSONObject(i);
+
+                branchesArrayList.add(HelperMethods.setBranch(branch));
+                if (taskGetBranches.isCancelled()) {
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+    /**
+     * Function to add alerts from alertsJsonArray to alertsArrayList
+     *
+     */
+    public void addAlertsToAlertsArrayList() {
+
+        // Getting JSON Array node
+        JSONArray alertsJsonArray = HelperMethods.getJsonArray
+                (getString(R.string.alerts_url), (getString(R.string.TAG_ALERTS)));
+
+        try {
+
+            // looping through All Tests
+            for (int i = 0; i < alertsJsonArray.length(); i++) {
+
+                JSONObject alert = alertsJsonArray.getJSONObject(i);
+
+                alertsArrayList.add(HelperMethods.setAlert(alert));
+                if (taskGetAlerts.isCancelled()) {
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     /**
      * Function to display simple Alerts Dialog
@@ -685,15 +540,6 @@ public class SplashActivity extends AppCompatActivity {
 
         // Showing Alerts Message
         alertDialog.show();
-    }
-
-
-    public int getGender(Test test) {
-        if (test.getGender().name().equals("MALE"))
-            return 1;
-        else if (test.getGender().name().equals("FEMALE"))
-            return 2;
-        else return 3;
     }
 
     public void setMainActivity(MainActivity mainActivity) {

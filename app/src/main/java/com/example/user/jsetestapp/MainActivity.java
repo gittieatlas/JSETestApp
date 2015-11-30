@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Controls
+    // Declare Controls
     TabLayout tabLayout;
     Toolbar toolbar;
     ScrollView scrollView;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout container;
     CoordinatorLayout coordinatorLayout;
 
-    //Activities HelperClasses Classes;
+    // Declare Classes
     HelperMethods helperMethods;
     QueryMethods queryMethods;
     DialogListeners dialogListeners;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     SplashActivity splashActivity;
     DatabaseOperations databaseOperations;
 
-    //Fragments
+    // Declare Fragments
     LoginFragment loginFragment;
     ContactFragment contactFragment;
     SearchFragment searchFragment;
@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ResultsFragment resultsFragment;
     MainActivityDialogFragment mainActivityDialogFragment;
 
-
-    //Variables
+    // Declare Variables
     ArrayList<Location> locationsArrayList;
     ArrayList<String> locationsNameArrayList;
     ArrayList<Branch> branchesArrayList;
@@ -60,54 +59,66 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Alerts> alertsArrayList;
     User user = new User();
     Location defaultLocation;
-
     // boolean isJseMember = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // call the parent activities onCreate
         super.onCreate(savedInstanceState);
+
+        // attach xml to activity
         setContentView(R.layout.activity_main);
 
+        instantiateClasses();
+        instantiateFragments();
         initializeViews();
-        createFragmentsActivitiesClasses();
-        helperMethods.checkTag();
+        initializeVariables();
         setupToolbar();
         setupTablayout();
         setScrollViewMinHeight();
+
+        helperMethods.checkTag();
         helperMethods.replaceFragment(dashboardFragment,
                 getResources().getString(R.string.toolbar_title_dashboard),
                 MainActivity.this, scrollView);
-        queryMethods.setUpLocationsArrayList();
-        queryMethods.setUpUser();
-       // queryMethods.setUpLocationsNameArrayList(this);
-        locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
-        queryMethods.setUpDefaultLocation();
-        queryMethods.setUpBranchesArrayList();
-        queryMethods.setUpBranchesNameArrayList();
-        queryMethods.setUpTestsArrayList();
-        queryMethods.setUpTestsFilteredArrayList();
-        queryMethods.setUpHoursArrayList();
-        queryMethods.setUpAlertsArrayList();
-
-        hoursFilteredArrayList = new ArrayList<HoursDataObject>();
-        queryMethods.setUpIsJseMember();
 
         // send activity reference to Util class
         Util.setReference(this);
     }
 
-    private void initializeViews() {
+    @Override
+    public void onBackPressed() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        container = (FrameLayout) findViewById(R.id.container);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    private void createFragmentsActivitiesClasses() {
+    /**
+     * Function to instantiate classes
+     */
+    private void instantiateClasses() {
+        helperMethods = new HelperMethods();
+        helperMethods.setMainActivity(this);
+        queryMethods = new QueryMethods();
+        queryMethods.setMainActivity(this);
+        dialogListeners = new DialogListeners();
+        dialogListeners.setMainActivity(this);
+        intentMethods = new IntentMethods();
+        intentMethods.setMainActivity(this);
+        splashActivity = new SplashActivity();
+        splashActivity.setMainActivity(this);
+        databaseOperations = new DatabaseOperations();
+        databaseOperations.setMainActivity(this);
+    }
+
+    /**
+     * Function to instantiate fragments
+     */
+    private void instantiateFragments() {
         loginFragment = new LoginFragment();
         loginFragment.setMainActivity(this);
         contactFragment = new ContactFragment();
@@ -120,23 +131,47 @@ public class MainActivity extends AppCompatActivity {
         dashboardFragment.setMainActivity(this);
         resultsFragment = new ResultsFragment();
         resultsFragment.setMainActivity(this);
-        helperMethods = new HelperMethods();
-        helperMethods.setMainActivity(this);
-        queryMethods = new QueryMethods();
-        queryMethods.setMainActivity(this);
         mainActivityDialogFragment = new MainActivityDialogFragment();
         mainActivityDialogFragment.setMainActivity(this);
-        dialogListeners = new DialogListeners();
-        dialogListeners.setMainActivity(this);
-        intentMethods = new IntentMethods();
-        intentMethods.setMainActivity(this);
-        splashActivity = new SplashActivity();
-        splashActivity.setMainActivity(this);
-        databaseOperations = new DatabaseOperations();
-        databaseOperations.setMainActivity(this);
-
     }
 
+    /**
+     * Function to initialize controls
+     */
+    private void initializeViews() {
+
+        // initialize and reference controls
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        container = (FrameLayout) findViewById(R.id.container);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+    }
+
+    /**
+     * Function to initialize variables and assign its values
+     */
+    private void initializeVariables() {
+
+        queryMethods.setUpLocationsArrayList();
+        queryMethods.setUpUser();
+        // queryMethods.setUpLocationsNameArrayList(this);
+        locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
+        queryMethods.setUpDefaultLocation();
+        queryMethods.setUpBranchesArrayList();
+        queryMethods.setUpBranchesNameArrayList();
+        queryMethods.setUpTestsArrayList();
+        queryMethods.setUpTestsFilteredArrayList();
+        queryMethods.setUpHoursArrayList();
+        queryMethods.setUpAlertsArrayList();
+        hoursFilteredArrayList = new ArrayList<HoursDataObject>();
+        queryMethods.setUpIsJseMember();
+    }
+
+    /**
+     * Function to set up toolBar
+     */
     private void setupToolbar() {
         // designate toolbar as the action bar for this activity
         setSupportActionBar(toolbar);
@@ -156,15 +191,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     private void setupTablayout() {
         createTab(R.layout.tab_layout_dashboard, R.id.tab_title_dashboard, getResources().getString(R.string.tabLayout_dashboard));

@@ -474,17 +474,25 @@ public class HelperMethods extends Activity {
         return arrayList;
     }
 
+    /**
+     * Function to get jsonArray
+     *
+     * @param url          - url to get the JSON string from
+     * @param TAG_LOCATIONS        - tag to get locations from
+     * @return jsonArray
+     */
     public static JSONArray getJsonArray(String url, String TAG_LOCATIONS) {
-        //instantiating jsonArray
+        // instantiating jsonArray
         JSONArray jsonArray= new JSONArray();
-
+        // instantiating ServiceHandler
         ServiceHandler sh = new ServiceHandler();
 
         // Making a request to locations_url and getting response
         String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
-
+        // if jsonStr is not null
         if (jsonStr != null) {
             try {
+                // instantiating JSONObject
                 JSONObject jsonObj = new JSONObject(jsonStr);
 
                 // Getting JSON Array node
@@ -493,13 +501,185 @@ public class HelperMethods extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+        // if jsonStr is null
         }else{
             Log.e("ServiceHandler", "Couldn't get any data from the locations_url");
         }
         return jsonArray;
+    }
+
+    /**
+     * Function to set location
+     *
+     * @param locationObject
+     *
+     * @return location
+     */
+    public static Location setLocation(JSONObject locationObject) {
+        // instantiating location
+        Location location = new Location();
+
+        try {
+            // Storing each json item in location
+            location.setId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__LOCATION_ID))));
+            location.setBrachId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__BRANCH_ID))));
+            location.setName(locationObject.getString(Util.getStringValue(R.string.TAG_NAME)));
+            location.setAddress(getAddress(locationObject));
+            location.setPhone(locationObject.getString(Util.getStringValue(R.string.TAG_PHONE)));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return location;
+    }
+
+    /**
+     * Function to build address location
+     *
+     * @param locationObject
+     *
+     * @return fullAddress
+     */
+    public static String getAddress(JSONObject locationObject) {
+        // instantiating fullAddress
+        StringBuilder fullAddress = new StringBuilder();
+
+        try {
+
+            String address = locationObject.getString(Util.getStringValue(R.string.TAG_ADDRESS));
+            String city = locationObject.getString(Util.getStringValue(R.string.TAG_CITY));
+            String state = locationObject.getString(Util.getStringValue(R.string.TAG_STATE));
+            String zip = locationObject.getString(Util.getStringValue(R.string.TAG_ZIP));
+            String country = locationObject.getString(Util.getStringValue(R.string.TAG_COUNTRY));
+
+            if (!address.equals("null")) fullAddress.append(address + " ");
+            if (!city.equals("null")) fullAddress.append(city + " ");
+            if (!state.equals("null")) fullAddress.append(state + " ");
+            if (!zip.equals("null")) fullAddress.append(zip + " ");
+            if (!country.equals("null")) fullAddress.append(country);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return fullAddress.toString();
+    }
+
+    /**
+     * Function to set test
+     *
+     * @param testObject
+     *
+     * @return test
+     */
+    public static Test setTest(JSONObject testObject) {
+        // instantiating test
+        Test test = new Test();
+
+        try {
+            // Storing each json item in test
+            test.branchId = Integer.parseInt(testObject.getString(Util.getStringValue(R.string.TAG_BRANCH_ID)));
+            test.location = testObject.getString(Util.getStringValue(R.string.TAG_LOCATION));
+            test.date = LocalDate.parse(testObject.getString(Util.getStringValue(R.string.TAG_DATE)));
+            test.setDayOfWeek(Test.DayOfWeek.values()[
+                    (test.getDate().getDayOfWeek() - 1)].toString());
+            test.time = LocalTime.parse(new StringBuilder(
+                    testObject.getString(Util.getStringValue(R.string.TAG_TIME))).insert(
+                    testObject.getString(Util.getStringValue(R.string.TAG_TIME)).length() - 2, ":").toString());
+            test.deadlineDate = LocalDate.parse(testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_DATE)));
+            test.deadlineTime = LocalTime.parse(new StringBuilder(
+                    testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_TIME))).insert(
+                    testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_TIME)).length() - 2, ":").toString());
+            test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[
+                    (test.getDeadlineDate().getDayOfWeek() - 1)].toString());
+            test.setGender(Integer.parseInt(testObject.getString(Util.getStringValue(R.string.TAG_GENDER))));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return test;
+    }
+
+    /**
+     * Function to set hours
+     *
+     * @param hoursObject
+     *
+     * @return hours
+     */
+    public static Hours setHours(JSONObject hoursObject) {
+        // instantiating hours
+        Hours hours = new Hours();
+
+        try {
+            // Storing each json item in hours
+            hours.name = hoursObject.getString(Util.getStringValue(R.string.TAG_LIBRARY_LOCATION));
+            String day = hoursObject.getString(Util.getStringValue(R.string.TAG_DAY_OF_WEEK));
+            hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
+            hours.startTime = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_OPENING_TIME)));
+            LocalTime duration = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_DURATION)));
+            hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay())
+                    .plusMinutes(duration.getMinuteOfHour());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return hours;
 
     }
 
+    /**
+     * Function to set branch
+     *
+     * @param branchObject
+     *
+     * @return branch
+     */
+    public static Branch setBranch(JSONObject branchObject) {
+        // instantiating branches
+        Branch branch = new Branch();
+        try {
+            // Storing each json item in branch
+            branch.id = Integer.parseInt(branchObject.getString(Util.getStringValue(R.string.TAG_ID)));
+            branch.name = branchObject.getString(Util.getStringValue(R.string.TAG_BRANCH_NAME));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return branch;
+    }
+
+    /**
+     * Function to set alert
+     *
+     * @param alertObject
+     *
+     * @return alert
+     */
+    public static Alerts setAlert(JSONObject alertObject) {
+// ToDo handle if any values are null
+        // instantiating alert
+        Alerts alert = new Alerts();
+
+        try {
+            // Storing each json item in alert
+            alert.setLocationName(alertObject.getString(Util.getStringValue(R.string.TAG_LOCATION_NAME)));
+            String timeStamp = (alertObject.getString(Util.getStringValue(R.string.TAG_TIME_STAMP)));
+            String date = timeStamp.substring(0, 10);
+            alert.date = LocalDate.parse(date);
+            alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate()
+                    .getDayOfWeek() - 1)]);
+            String time = timeStamp.substring(timeStamp.length() - 8);
+            alert.setTime(LocalTime.parse(time));
+            alert.setAlertText(alertObject.getString(Util.getStringValue(R.string.TAG_ALERT_TEXT)));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return alert;
+    }
 
 }
