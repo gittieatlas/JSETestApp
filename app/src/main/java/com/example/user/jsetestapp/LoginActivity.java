@@ -157,8 +157,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void inflateScrollViewWithFragment() {
         // if getIntentOutcome = "update_profile", inflate update profile  fragment
-        if (getIntentOutcome() != null && getIntentOutcome().equals("update_profile")) {
-
+        if (getIntent().getExtras().getString("outcome").equals("update_profile")) {
             // inflate scrollView with UpdateProfileFragment
             helperMethods.replaceFragment(updateProfileFragment,
                     getResources().getString(R.string.toolbar_title_update_profile),
@@ -166,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         // else inflate login fragment
         else {
-
             // inflate scrollView with LoginFragment
             helperMethods.replaceFragment(loginFragment,
                     getResources().getString(R.string.toolbar_title_login),
@@ -175,31 +173,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Function to get "outcome" from intent
-     * @return String - try to return intent extra with tag "outcome", else return null
-     */
-    public String getIntentOutcome() {
-        // if intent exists
-        if (this.getIntent() != null) {
-            // Obtain String with tag "fragment" from Intent
-            return this.getIntent().getExtras().getString("outcome");
-        } else
-            return null;
-    }
-
-    /**
      * Function to get info from intent extras
      */
     private void getInfoFromIntent() {
         // if getIntentOutcome = "log_out", inflate login fragment
-        if (getIntentOutcome() != null && getIntentOutcome().equals("log_out")) {
+        if (getIntent().getExtras().getString("outcome").equals("log_out")) {
 
             //  show snack bar - "log out successful"
             helperMethods.showSnackBar(getString(R.string.msg_logged_out), coordinatorLayout);
 
         }
         // else if getIntentOutcome = "update_profile", get user and default location from intent
-        else if (getIntentOutcome() != null && getIntentOutcome().equals("update_profile")) {
+        else if (getIntent().getExtras().getString("outcome").equals("update_profile")) {
 
             // get user info from intent extras
             user = (User) this.getIntent().getExtras().getSerializable("user");

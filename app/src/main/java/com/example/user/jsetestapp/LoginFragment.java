@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-
+//CLEANED
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,54 +14,54 @@ import android.widget.TextView;
 
 public class LoginFragment extends Fragment {
 
-    //Controls
-    View rootView;
+    // Declare Controls
     RelativeLayout rootLayout;
     Button buttonLeft, buttonRight;
     TextView forgotPasswordTextView;
     EditText emailEditText, passwordEditText;
 
-    //Activities
-    MainActivity mainActivity;
+    // Declare Activities
     LoginActivity loginActivity;
+
+    // Declare Variables
     AsyncTask taskGetUser;
-
-    //Fragments
-
-
-    //Variables
-    //boolean isValuesEntered = false;
-    boolean isEmailValid = false;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        rootView = inflater.inflate(R.layout.fragment_login,
-                container, false);
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         initializeViews(rootView);
-        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
         registerListeners();
 
-         Util.setToolbarTitle(R.string.toolbar_title_login, loginActivity.toolbar);
+        // Set up touch listener for non-text box views to hide keyboard
+        HelperMethods.setupUI(rootView.findViewById(R.id.rootLayout));//  ToDo refactor / rename
 
+        // set toolbar title
+        Util.setToolbarTitle(R.string.toolbar_title_login, loginActivity.toolbar);
+
+        // return the layout for this fragment
         return rootView;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if (loginActivity.user.getId()  != 0){
 
+        // if user does not exist
+        if (loginActivity.user.getId() != 0) {
             // launch activity with main activity intent
             Util.launchActivity(loginActivity.getLaunchMainActivityIntent("login"));
         }
     }
 
+    /**
+     * Function to initialize controls
+     */
     private void initializeViews(View rootView) {
-
+        // initialize and reference controls
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
         emailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         passwordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
@@ -70,90 +70,125 @@ public class LoginFragment extends Fragment {
         forgotPasswordTextView = (TextView) rootView.findViewById(R.id.forgotPasswordTextView);
     }
 
+    /**
+     * Function to register listeners
+     */
     private void registerListeners() {
+        // set onClickListeners
         forgotPasswordTextView.setOnClickListener(forgotPasswordEditTextOnClickListener);
         buttonLeft.setOnClickListener(buttonLeftOnClickListener);
         buttonRight.setOnClickListener(buttonRightOnClickListener);
     }
 
+    /**
+     * OnClickListener for buttonRight
+     */
     OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!isValuesEntered()) {
-
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_login_failed_values)
-                ));
-
-            } else {
-                if (!isEmailValid()) {
-                    Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                            getString(R.string.d_login_failed_invalid_email)
-                    ));
-                } else {
-                    login();
-                }
-            }
+            // if form validates, login. otherwise a dialog will display with errors found
+            if (formValidates()) login();
         }
     };
 
+    /**
+     * Function to validate form
+     */
+    private Boolean formValidates() {
+        // if all required field controls on page don't have values
+        if (!isValuesEntered()) {
+            // Show dialog: Login Failed - missing required values
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_login_failed_values)));
+        }
+        // if all required field controls on page have values
+        else {
+            // if email address entered is not a valid email address
+            if (!isEmailValid()) {
+                // Show dialog: Login Failed - missing required values
+                Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                        getString(R.string.d_login_failed_invalid_email)));
+            } else {
+                // if email address entered is a valid email address
+                return true;
+            }
+        }
+        // if isValuesEntered or isEmailValid return false
+        return false;
+    }
+
+    /**
+     * OnClickListener for buttonLeft
+     */
     OnClickListener buttonLeftOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            // inflate container with Register1Fragment
             loginActivity.helperMethods.replaceFragment(loginActivity.register1Fragment,
                     loginActivity.getResources().getString(R.string.toolbar_title_register1),
                     loginActivity, loginActivity.scrollView);
         }
     };
 
+    /**
+     * OnClickListener for forgotPasswordEditText
+     */
     OnClickListener forgotPasswordEditTextOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
 
+            // Show dialog: Forgot Password - missing required values
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_forgot_password)));
-
-
         }
     };
 
+    /**
+     * Function to check if values for required fields were entered
+     */
     private boolean isValuesEntered() {
-        if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
-                !loginActivity.helperMethods.isEmpty(passwordEditText)) {
-            return true;
-        } else
-            return false;
+        // return true if emailEditText and passwordEditText have values
+        return !loginActivity.helperMethods.isEmpty(emailEditText) &&
+                !loginActivity.helperMethods.isEmpty(passwordEditText);
     }
 
+    /**
+     * Function to check if value entered for email address contains a valid email address
+     */
     private boolean isEmailValid() {
-        isEmailValid = Util.isEmailAddressValid(emailEditText.getText().toString());
-        return isEmailValid;
+        // return true if emailEditText contains a valid email address
+        return Util.isEmailAddressValid(emailEditText.getText().toString());
     }
 
+    /**
+     * Function to login the user
+     */
     private void login() {
+        // set users email and password
         loginActivity.user.setEmail(emailEditText.getText().toString());
         loginActivity.user.setPassword(passwordEditText.getText().toString());
 
-        // check for Internet status and set true/false
+        // if internet status connection is true
         if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
-            taskGetUser =  loginActivity.databaseOperations.getUser(loginActivity.user);
-        } else {
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_no_internet_connection)
-            ));
 
+            // call AsyncTask taskGetUser
+            taskGetUser = loginActivity.databaseOperations.getUser(loginActivity.user);
         }
-
+        // if internet status connection is false
+        else {
+            // Show Dialog: No Internet Connection
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_no_internet_connection)));
+        }
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-
-        this.mainActivity = mainActivity;
-    }
-
+    /**
+     * Function to set reference of LoginActivity
+     *
+     * @param loginActivity - reference to LoginActivity
+     */
     public void setLoginActivity(LoginActivity loginActivity) {
-
+        // set this loginActivity to loginActivity
         this.loginActivity = loginActivity;
     }
 }
