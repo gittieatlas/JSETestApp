@@ -285,28 +285,6 @@ public class HelperMethods extends Activity {
         }
     }
 
-    public void checkTag() {
-        switch (mainActivity.queryMethods.getTag()) {
-
-            case "create_account": {
-                showSnackBar("Account created", mainActivity.coordinatorLayout);
-                break;
-            }
-            case "login": {
-                showSnackBar("Logged in", mainActivity.coordinatorLayout);
-                break;
-            }
-            case "update_profile": {
-                showSnackBar("Profile updated", mainActivity.coordinatorLayout);
-                break;
-            }
-            case "update_profile_cancel": {
-                showSnackBar("Profile not updated", mainActivity.coordinatorLayout);
-                break;
-            }
-        }
-    }
-
     /**
      * Function to show a snack bar in Coordinator Layout
      *
@@ -425,7 +403,7 @@ public class HelperMethods extends Activity {
         return 0;
     }
 
-    public void setupUI(View view) {
+    public static void setupUI(View view) {
 
         //Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
@@ -433,7 +411,7 @@ public class HelperMethods extends Activity {
             view.setOnTouchListener(new View.OnTouchListener() {
 
                 public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(loginActivity);
+                    hideSoftKeyboard();
                     return false;
                 }
 
@@ -452,9 +430,9 @@ public class HelperMethods extends Activity {
     }
 
 
-    public static void hideSoftKeyboard(Activity loginActivity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
+    public static void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(Util.getActivity().getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
     }
 
     public ArrayList<String> editLocationsNameArrayList() {

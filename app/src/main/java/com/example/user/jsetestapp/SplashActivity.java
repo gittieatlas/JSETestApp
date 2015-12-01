@@ -82,6 +82,7 @@ public class SplashActivity extends AppCompatActivity {
         if (HelperMethods.checkInternetConnection(getApplicationContext())) {
             getDataFromDatabase();
         } else {
+            // call method showDialog and send tag "d_no_internet_connection"
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_no_internet_connection)
             ));
@@ -100,12 +101,12 @@ public class SplashActivity extends AppCompatActivity {
      * Function to instantiate fragments
      */
     private void instantiateClasses() {
-
         dialogListeners = new DialogListeners();
         dialogListeners.setSplashActivity(this);
         helperMethods = new HelperMethods();
         helperMethods.setSplashActivity(this);
     }
+
     /**
      * AsyncTask class to get json by making HTTP call
      */
@@ -115,14 +116,14 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addLocationToLocationsArrayList();
-            // return true if locationsArrayList is empty or if task is canceled
+            // return true/false if locationsArrayList is empty or if task is canceled
             return !(locationsArrayList.size() == 0 || isCancelled());
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            // if results is not null and result is true and isCancelled is false
+            // if results is not null and result is true and task is not cancelled
             if (result != null && result && !isCancelled())  {
                 // setting gotLocation to true
                 gotLocations = true;
@@ -150,16 +151,15 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-
             addTestToTestsArrayList();
-            // return true if testsArrayList is empty or if task is canceled
+            // return true/false if testsArrayList is empty or if task is canceled
             return !(testsArrayList.size() == 0 || isCancelled());
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            // if results is not null and result is true and isCancelled is false
+            // if results is not null and result is true and task is not cancelled
             if (result != null && result && !isCancelled())  {
                 // setting gotTests to true
                 gotTests = true;
@@ -189,9 +189,8 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-
             addHoursToHoursArrayList();
-            // return true if hoursArrayList is empty or if task is canceled
+            // return true/false if hoursArrayList is empty or if task is canceled
             return !(hoursArrayList.size() == 0 || isCancelled());
 
         }
@@ -199,7 +198,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            // if results is not null and result is true and isCancelled is false
+            // if results is not null and result is true and task is not cancelled
             if (result != null && result && !isCancelled())  {
                 // setting gotHours to true
                 gotHours = true;
@@ -228,9 +227,8 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-
             addBranchesToBranchesArrayList();
-            // return true if branchesArrayList is empty or if task is canceled
+            // return true/false if branchesArrayList is empty or if task is canceled
             return !(branchesArrayList.size() == 0 || isCancelled());
 
         }
@@ -238,7 +236,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            // if results is not null and result is true and isCancelled is false
+            // if results is not null and result is true and task is not cancelled
             if (result != null && result && !isCancelled())  {
                 // setting gotBranches to true
                 gotBranches = true;
@@ -264,12 +262,11 @@ public class SplashActivity extends AppCompatActivity {
      * AsyncTask class to get json by making HTTP call
      */
     private class getAlerts extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... arg0) {
 
             addAlertsToAlertsArrayList();
-            // return true if alertsArrayList is empty or if task is canceled
+            // return true/false if alertsArrayList is empty or if task is canceled
             return !(alertsArrayList.size() == 0 || isCancelled());
 
         }
@@ -277,7 +274,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            // if results is not null and result is true and isCancelled is false
+            // if results is not null and result is true and task is not cancelled
             if (result != null && result && !isCancelled())  {
                 // setting gotAlerts to true
                 gotAlerts = true;
@@ -304,7 +301,7 @@ public class SplashActivity extends AppCompatActivity {
         setUpAsyncTasks();
     }
 
-    //instantiate arrayLists
+    // instantiate arrayLists
     public void setUpArrayLists(){
         locationsArrayList = new ArrayList<>();
         testsArrayList = new ArrayList<>();
@@ -313,7 +310,7 @@ public class SplashActivity extends AppCompatActivity {
         alertsArrayList = new ArrayList<>();
     }
 
-    //instantiate AsyncTasks and execute them
+    // instantiate AsyncTasks and execute them
     public void setUpAsyncTasks() {
         taskGetLocations = new GetLocations().execute();
         taskGetTests = new GetTests().execute();
@@ -322,7 +319,8 @@ public class SplashActivity extends AppCompatActivity {
         taskGetAlerts = new getAlerts().execute();
     }
 
-    //cancel AsyncTasks
+    // cancel AsyncTasks
+    // set all booleans to false
     private void cancelAsyncTasks() {
         taskGetLocations.cancel(true);
         gotLocations = false;
@@ -337,8 +335,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void appInfoNotLoaded() {
+        // if asycTasks are not cancelled
         if (active)
-
+            // call method showDialog and send tag "d_load_info_fail"
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_load_info_fail)
             ));
@@ -346,7 +345,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void changeActivities() {
+        // if all asyncTasks were completed successfully
         if (gotLocations && gotTests && gotHours && gotBranches && gotAlerts) {
+            // launch activity with login activity intent
             Util.launchActivity(getLaunchLoginActivityIntent("login"));
         }
     }
@@ -527,7 +528,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     }
-
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;

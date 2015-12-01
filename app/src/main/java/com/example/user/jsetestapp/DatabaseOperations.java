@@ -98,6 +98,8 @@ public class DatabaseOperations {
 
         /**
          * Before starting background thread Show Progress Dialog
+         * Runs on the UI thread before doInBackground
+         * Good for toggling visibility of a progress indicator
          */
         @Override
         protected void onPreExecute() {

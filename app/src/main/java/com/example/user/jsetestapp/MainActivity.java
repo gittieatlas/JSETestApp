@@ -1,6 +1,5 @@
 package com.example.user.jsetestapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     DatabaseOperations databaseOperations;
 
     // Declare Fragments
-    LoginFragment loginFragment;
     ContactFragment contactFragment;
     SearchFragment searchFragment;
     LibrariesFragment librariesFragment;
@@ -51,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Branch> branchesArrayList;
     ArrayList<String> branchesNameArrayList;
     ArrayList<Test> testsArrayList;
-    ArrayList<DataObject> testsFilteredArrayList = new ArrayList<DataObject>();
+    ArrayList<DataObject> testsFilteredArrayList;
     ArrayList<Hours> hoursArrayList;
-    ArrayList<HoursDataObject> hoursFilteredArrayList = new ArrayList<HoursDataObject>();
+    ArrayList<HoursDataObject> hoursFilteredArrayList;
     ArrayList<Alerts> alertsArrayList;
-    User user = new User();
+    User user;
     Location defaultLocation;
 
     @Override
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setupTablayout();
         setScrollViewMinHeight();
         inflateScrollViewWithFragment();
-        helperMethods.checkTag();
+        getInfoFromIntent();
 
         // send activity reference to Util class
         Util.setReference(this);
@@ -83,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // if backStack contains more than fragment/activity
+        // if there are fragments in the back stack
         if (getFragmentManager().getBackStackEntryCount() > 1) {
-            // then pop the most recent one.
+            // undo the last back stack transaction
             getFragmentManager().popBackStack();
-        // if it has one or less
+            // if there are no fragments in the back stack
         } else {
-            // close the app
+            // finish this activity
             super.onBackPressed();
         }
     }
@@ -114,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
      * Function to instantiate fragments
      */
     private void instantiateFragments() {
-        loginFragment = new LoginFragment();
-        loginFragment.setMainActivity(this);
         contactFragment = new ContactFragment();
         contactFragment.setMainActivity(this);
         searchFragment = new SearchFragment();
@@ -132,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
      * Function to initialize controls
      */
     private void initializeViews() {
-
         // initialize and reference controls
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
@@ -146,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
      * Function to initialize variables and assign its values
      */
     private void initializeVariables() {
-
         // assign array list values from intent
         user = (User) getIntent().getExtras().getSerializable("user");
         locationsArrayList = (ArrayList<Location>) getIntent().getExtras()
@@ -170,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
         branchesNameArrayList = queryMethods.setUpBranchesNameArrayList(branchesArrayList);
 
         // initialize arrayLists
-        //testsFilteredArrayList = new ArrayList<>();
-        //hoursFilteredArrayList = new ArrayList<>();
+        testsFilteredArrayList = new ArrayList<>();
+        hoursFilteredArrayList = new ArrayList<>();
 
         // set up isJseMember
         queryMethods.setUpIsJseMember();
@@ -204,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
      * Function to set up tabLayout
      */
     private void setupTablayout() {
+        // call method createTab and send layout, textView and text
         createTab(R.layout.tab_layout_dashboard, R.id.tab_title_dashboard, getString(R.string.tabLayout_dashboard));
         createTab(R.layout.tab_layout_tests, R.id.tab_title_tests, getString(R.string.tabLayout_tests));
         createTab(R.layout.tab_layout_libraries, R.id.tab_title_libraries, getString(R.string.tabLayout_libraries));
@@ -212,46 +207,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setOnTabSelectedListener(tabListener);
     }
 
-
-    /**
-     * Function to set the toolbar title
-     *
-     * @param toolbarTitle - title for toolbar
-     *
-     */
-    public void setToolbarTitle(int toolbarTitle) {
-        assert getSupportActionBar() != null;
-        // set title of action bar
-        getSupportActionBar().setTitle(toolbarTitle);
-    }
-
-    /**
-     *
-     * Function to set the scroll views min height
-     */
-    private void setScrollViewMinHeight() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-        scrollView.setMinimumHeight(height);
-    }
-
-    /**
-     *
-     * Function inflate scroll view with fragment
-     */
-    private void inflateScrollViewWithFragment() {
-        helperMethods.replaceFragment(dashboardFragment,
-                getResources().getString(R.string.toolbar_title_dashboard),
-                MainActivity.this, scrollView);
-
-    }
-
     /**
      * Function to set up each tab
-     * @param view - view for tab
-     * @param titleView - style to use for text on the tab
+     * @param view - the view
+     * @param titleView - textView
      * @param title - text for tab
      */
     public void createTab(int view, int titleView, String title) {
@@ -267,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * initializing a tabListener
-     *
      */
     TabLayout.OnTabSelectedListener tabListener = new TabLayout.OnTabSelectedListener() {
         @Override
@@ -335,6 +293,63 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    /**
+     * Function to set the toolbar title
+     * @param toolbarTitle - title for toolbar
+     */
+    public void setToolbarTitle(int toolbarTitle) {
+        assert getSupportActionBar() != null;
+        // set title of action bar
+        getSupportActionBar().setTitle(toolbarTitle);
+    }
+
+    /**
+     * Function to sets the minimum height of the scrollView
+     */
+    private void setScrollViewMinHeight() {
+        // get screen dimensions
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        // sets the minimum height
+        scrollView.setMinimumHeight(height);
+    }
+
+    /**
+     * Function to inflate scroll view with fragment
+     */
+    private void inflateScrollViewWithFragment() {
+        // inflate scrollView with dashboardFragment
+        helperMethods.replaceFragment(dashboardFragment,
+                getString(R.string.toolbar_title_dashboard),
+                MainActivity.this, scrollView);
+
+    }
+
+    /**
+     * Function to get info from intent extras
+     */
+    private void getInfoFromIntent() {
+        // if intent outcome = "create_account"
+        if (getIntent().getExtras().getString("outcome").equals("create_account")) {
+            // call showSnackBar and send tag "Account created"
+            helperMethods.showSnackBar("Account created", coordinatorLayout);
+            // if intent outcome = "login"
+        } else if (getIntent().getExtras().getString("outcome").equals("login")){
+            // call showSnackBar and send tag "Logged in"
+            helperMethods.showSnackBar("Logged in", coordinatorLayout);
+            // if intent outcome = "update_profile"
+        } else if (getIntent().getExtras().getString("outcome").equals("update_profile")){
+            // call showSnackBar and send tag "Profile updated"
+            helperMethods.showSnackBar("Profile updated", coordinatorLayout);
+            // if intent outcome = "update_profile_cancel"
+        } else if (getIntent().getExtras().getString("outcome").equals("update_profile_cancel")){
+            // call showSnackBar and send tag "Profile not updated"
+            helperMethods.showSnackBar("Profile not updated", coordinatorLayout);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
