@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // call the parent activities onCreate
+        // call onCreate from the parent activity
         super.onCreate(savedInstanceState);
 
         // attach xml to activity
@@ -227,9 +227,11 @@ public class LoginActivity extends AppCompatActivity {
         // if async task GetUser  is not null- cancel the task
         if (loginFragment.taskGetUser != null)
             loginFragment.taskGetUser.cancel(true);
+
         // if async task NewUser  is not null- cancel the task
         if (register2Fragment.taskNewUser != null)
             register2Fragment.taskNewUser.cancel(true);
+        
         // if async task UpdateUser  is not null- cancel the task
         if (updateProfileFragment.taskUpdateUser != null)
             updateProfileFragment.taskUpdateUser.cancel(true);
