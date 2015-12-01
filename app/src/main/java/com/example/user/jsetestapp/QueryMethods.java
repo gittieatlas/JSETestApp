@@ -18,26 +18,9 @@ public class QueryMethods extends Activity {
 
     public String getTag() {
         Bundle bundle = mainActivity.getIntent().getExtras();
-        return bundle.getString("tag");
+        return bundle.getString("outcome");
 
     }
-
-    public ArrayList<Location> setUpLocationsArrayList() {
-
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        return (ArrayList<Location>) bundle.getSerializable("locationsArrayList");
-
-    }
-
-
-    public void setUpLocationsNameArrayList(MainActivity mainActivity) {
-        mainActivity.locationsNameArrayList = new ArrayList<String>();
-        mainActivity.locationsNameArrayList.add("Location");
-        for (Location location : mainActivity.locationsArrayList) {
-            mainActivity.locationsNameArrayList.add(location.getName());
-        }
-    }
-
 
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
 
@@ -49,17 +32,12 @@ public class QueryMethods extends Activity {
         return locationsNameArrayList;
     }
 
-    public ArrayList<Branch> setUpBranchesArrayList() {
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        return  (ArrayList<Branch>) bundle.getSerializable("branchesArrayList");
-    }
-
     public ArrayList<String> setUpBranchesNameArrayList(ArrayList<Branch> branchesArrayList) {
         ArrayList<String> branchesNameArrayList = new ArrayList<String>();
         branchesNameArrayList.add("Branch");
 
         for (Branch branch : branchesArrayList) {
-            if (branch.getId() == (mainActivity.defaultLocation.brachId)) {
+            if (branch.getId() == (mainActivity.defaultLocation.branchId)) {
                 branchesNameArrayList.add(branch.getName() + " (Default Branch)");
             } else {
                 branchesNameArrayList.add(branch.getName());
@@ -68,9 +46,7 @@ public class QueryMethods extends Activity {
         return branchesNameArrayList;
     }
 
-    public ArrayList<Test> setUpTestsArrayList() {
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        ArrayList<Test> testsArrayList = (ArrayList<Test>) bundle.getSerializable("testsArrayList");
+    public ArrayList<Test> setUpTestsArrayList(ArrayList<Test> testsArrayList) {
 
         // filtering by gender
         for (int i = 0; i < testsArrayList.size(); i++) {
@@ -82,13 +58,6 @@ public class QueryMethods extends Activity {
        return testsArrayList;
     }
 
-    public ArrayList<Hours> setUpHoursArrayList() {
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        return  (ArrayList<Hours>) bundle.getSerializable("hoursArrayList");
-
-    }
-
-
     public void updateHoursArrayListView(ListView listView, String name) {
 
         setUpHoursFilteredArrayList(name);
@@ -98,14 +67,9 @@ public class QueryMethods extends Activity {
 
 
     public void setupListView(ListAdapter adapter, ListView listView, String name) {
-        adapter = new MyBaseAdapter(mainActivity.getContext(), mainActivity.hoursFilteredArrayList);
+        adapter = new MyBaseAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
         listView.setAdapter(adapter);
         updateHoursArrayListView(listView, name);
-    }
-
-    public ArrayList<Alerts> setUpAlertsArrayList() {
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        return  (ArrayList<Alerts>) bundle.getSerializable("alertsArrayList");
     }
 
     public User setUpUser() {

@@ -15,8 +15,6 @@ import java.util.Calendar;
  */
 public class IntentMethods extends Activity {
 
-    MainActivity mainActivity;
-
     public IntentMethods() {
 
     }
@@ -28,15 +26,16 @@ public class IntentMethods extends Activity {
      * @param addresses - array of email addresses
      * @param subject   - subject line of email
      */
-    public void composeEmail(String[] addresses, String subject) {
+    public static void composeEmail(String[] addresses, String subject) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        if (intent.resolveActivity(mainActivity.getApplicationContext().getPackageManager()) != null) {
-            mainActivity.doIntent(intent);
+        if (intent.resolveActivity(Util.getContext().getPackageManager()) != null) {
+            //mainActivity.doIntent(intent);
+            Util.getActivity().startActivity(intent);
         } else {
-            Toast.makeText(mainActivity.getApplicationContext(), "No email clients installed.",
+            Toast.makeText(Util.getContext(), "No email clients installed.",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -46,18 +45,14 @@ public class IntentMethods extends Activity {
      *
      * @param number - number to call
      */
-    public void callIntent(String number) {
+    public static void callIntent(String number) {
         Uri call = Uri.parse("tel:" + number);
         Intent intent = new Intent(Intent.ACTION_CALL, call);
-        mainActivity.doIntent(intent);
+        Util.getActivity().startActivity(intent);
+       // mainActivity.doIntent(intent);
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-
-        this.mainActivity = mainActivity;
-    }
-
-    public void calendarIntent(String title, String eventLocation, String description, LocalDate testDate, LocalTime testTime) {
+    public static void calendarIntent(String title, String eventLocation, String description, LocalDate testDate, LocalTime testTime) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
 
@@ -79,10 +74,11 @@ public class IntentMethods extends Activity {
         intent.putExtra("rrule", "FREQ=YEARLY");
         intent.putExtra("hasAlarm", 1);
 
-        if (intent.resolveActivity(mainActivity.getApplicationContext().getPackageManager()) != null) {
-            mainActivity.doIntent(intent);
+        if (intent.resolveActivity(Util.getContext().getPackageManager()) != null) {
+            //mainActivity.doIntent(intent);
+            Util.getActivity().startActivity(intent);
         } else {
-            Toast.makeText(mainActivity.getApplicationContext(), "No calendar clients installed.",
+            Toast.makeText(Util.getContext(), "No calendar clients installed.",
                     Toast.LENGTH_SHORT).show();
         }
     }

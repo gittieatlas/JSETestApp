@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 public class Util extends Activity {
 
     private static Context context = null;
+
     private static Activity activity = null;
 
     public static String getStringValue(int i) {
@@ -25,7 +26,9 @@ public class Util extends Activity {
         Util.activity = activity;
     }
 
-
+    public static Context getContext() {
+        return context;
+    }
     /**
      * Function to check if ssnEditText contains 4 numbers
      *
@@ -156,6 +159,18 @@ public class Util extends Activity {
         dialogFragment.setArguments(bundle);
 
         dialogFragment.show(activity.getFragmentManager(), bundle.getString("tagListener"));
+    }
+
+    /**
+     * Function to launch new activity and finish current activity
+     * @param intent - intent to switch activities
+     */
+    public static void launchActivity(Intent intent) {
+// start new intent
+        getContext().startActivity(intent);
+
+// close this activity
+        getActivity().finish();
     }
 
 

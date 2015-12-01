@@ -5,21 +5,21 @@ import java.util.ArrayList;
 
 public class Location implements Serializable {
 
-    int id, brachId;
+    int id, branchId;
     String name, address, phone;
     ArrayList<Hours> hoursArrayList;
     ArrayList<Alerts> alertsArrayList;
 
-    public int getBrachId() {
-        return brachId;
-    }
-
-    public void setBrachId(int brachId) {
-        this.brachId = brachId;
-    }
-
     public Location() {
 
+    }
+
+    public int getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
     }
 
     public int getId() {
