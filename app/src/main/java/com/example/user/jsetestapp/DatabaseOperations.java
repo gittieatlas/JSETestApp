@@ -3,7 +3,6 @@ package com.example.user.jsetestapp;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -476,9 +475,6 @@ public class DatabaseOperations {
 
         protected void onCancelled(String result){
 
-            Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
-
-            //loginActivity.helperMethods.updateUser(result);
             pDialog.dismiss();
         }
 

@@ -54,7 +54,9 @@ public class LoginFragment extends Fragment {
     public void onResume(){
         super.onResume();
         if (loginActivity.user.getId()  != 0){
-            loginActivity.switchToMainActivity("login");
+
+            // launch activity with main activity intent
+            Util.launchActivity(loginActivity.getLaunchMainActivityIntent("login"));
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.user.jsetestapp;
-
-import android.content.Context;
+//CLEANED
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -44,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         // call the parent activities onCreate
         super.onCreate(savedInstanceState);
 
@@ -78,11 +76,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         // if update profile is visible
         if (updateProfileFragment != null && updateProfileFragment.isVisible()) {
-            // go to main activity with "update_profile_cancel" tag
-            switchToMainActivity("update_profile_cancel");
+            // launch activity with main activity intent
+            Util.launchActivity(getLaunchMainActivityIntent("update_profile_cancel"));
         }
         // if there are fragments in the back stack
         else if (getFragmentManager().getBackStackEntryCount() > 1) {
@@ -130,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
      * Function to initialize controls
      */
     private void initializeViews() {
-
         // initialize and reference controls
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         container = (FrameLayout) findViewById(R.id.container);
@@ -142,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
      * Function to initialize variables and assign its values
      */
     private void initializeVariables() {
-
         // initialize user
         user = new User();
 
@@ -161,14 +156,13 @@ public class LoginActivity extends AppCompatActivity {
      * Function to get source of intent and inflate scroll view with fragment
      */
     private void inflateScrollViewWithFragment() {
-
         // if getIntentOutcome = "update_profile", inflate update profile  fragment
         if (getIntentOutcome() != null && getIntentOutcome().equals("update_profile")) {
 
             // inflate scrollView with UpdateProfileFragment
             helperMethods.replaceFragment(updateProfileFragment,
                     getResources().getString(R.string.toolbar_title_update_profile),
-                    LoginActivity.this, LoginActivity.this.scrollView);
+                    this, scrollView);
         }
         // else inflate login fragment
         else {
@@ -176,17 +170,15 @@ public class LoginActivity extends AppCompatActivity {
             // inflate scrollView with LoginFragment
             helperMethods.replaceFragment(loginFragment,
                     getResources().getString(R.string.toolbar_title_login),
-                    LoginActivity.this, scrollView);
+                    this, scrollView);
         }
     }
 
     /**
      * Function to get "outcome" from intent
-     *
      * @return String - try to return intent extra with tag "outcome", else return null
      */
     public String getIntentOutcome() {
-
         // if intent exists
         if (this.getIntent() != null) {
             // Obtain String with tag "fragment" from Intent
@@ -199,7 +191,6 @@ public class LoginActivity extends AppCompatActivity {
      * Function to get info from intent extras
      */
     private void getInfoFromIntent() {
-
         // if getIntentOutcome = "log_out", inflate login fragment
         if (getIntentOutcome() != null && getIntentOutcome().equals("log_out")) {
 
@@ -223,62 +214,53 @@ public class LoginActivity extends AppCompatActivity {
      * Function to cancel async tasks that are running
      */
     private void cancelRunningAsyncTasks() {
-
         // if async task GetUser  is not null- cancel the task
         if (loginFragment.taskGetUser != null)
             loginFragment.taskGetUser.cancel(true);
+
         // if async task NewUser  is not null- cancel the task
         if (register2Fragment.taskNewUser != null)
             register2Fragment.taskNewUser.cancel(true);
+
         // if async task UpdateUser  is not null- cancel the task
         if (updateProfileFragment.taskUpdateUser != null)
             updateProfileFragment.taskUpdateUser.cancel(true);
     }
 
     /**
-     * Function to create an Activity intent and go to Main Activity
-     *
-     * @param tag - tag for new activity to pick up
+     * Function to create an intent to launch MainActivity
+     * @param tag - string to describe intent intention
+     * @return Intent
      */
-    public void switchToMainActivity(String tag) {
-
-        // create a new intent from this activity to MainActivity
-        Intent intent = new Intent(this, MainActivity.class);
-
-        // create bundle
-        Bundle b = new Bundle();
-
-        // put array lists, user, default location, and tag in to bundle
-        b.putSerializable("locationsArrayList", locationsArrayList);
-        b.putSerializable("testsArrayList", testsArrayList);
-        b.putSerializable("hoursArrayList", hoursArrayList);
-        b.putSerializable("branchesArrayList", branchesArrayList);
-        b.putSerializable("alertsArrayList", alertsArrayList);
-        b.putSerializable("user", user);
-        b.putSerializable("defaultLocation", defaultLocation);
-        b.putString("tag", tag);
+    public Intent getLaunchMainActivityIntent(String tag) {
+        // create new intent for current activity to launch MainActivity
+        Intent intent = new Intent(Util.getActivity(), MainActivity.class);
 
         // attach bundle to intent
-        intent.putExtras(b);
+        intent.putExtras(getLaunchMainActivityBundle(tag));
 
-        // start new intent
-        startActivity(intent);
-
-        // close this activity
-        finish();
+        return intent;
     }
-
 
     /**
-     * Function to return reference of current activities context
-     *
-     * @return context
+     * Function to create bundle for MainActivity
+     * @param outcome - string to describe intent intention
+     * @return bundle
      */
-    public Context getContext() {
-        return LoginActivity.this;
+    public Bundle getLaunchMainActivityBundle(String outcome) {
+        // create bundle
+        Bundle bundle = new Bundle();
+
+        // put array lists, user, default location, and tag in to bundle
+        bundle.putSerializable("locationsArrayList", locationsArrayList);
+        bundle.putSerializable("testsArrayList", testsArrayList);
+        bundle.putSerializable("hoursArrayList", hoursArrayList);
+        bundle.putSerializable("branchesArrayList", branchesArrayList);
+        bundle.putSerializable("alertsArrayList", alertsArrayList);
+        bundle.putSerializable("user", user);
+        bundle.putSerializable("defaultLocation", defaultLocation);
+        bundle.putString("outcome", outcome);
+
+        return bundle;
     }
-
-
-
-
 }

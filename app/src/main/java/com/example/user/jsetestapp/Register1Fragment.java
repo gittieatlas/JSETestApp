@@ -139,7 +139,7 @@ public class Register1Fragment extends Fragment {
     }
 
     public Boolean passwordEqualsConfirmPassword(){
-        return Util.passwordEqualsConfirmPassword(passwordEditText.getText().toString(), confirmPasswordEditText.getText().toString());
+        return Util.compareTwoStrings(passwordEditText.getText().toString(), confirmPasswordEditText.getText().toString());
     }
 
     private boolean isValuesEntered() {
