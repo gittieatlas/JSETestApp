@@ -1,8 +1,5 @@
 package com.example.user.jsetestapp;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,14 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -121,11 +115,8 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addLocationToLocationsArrayList();
-            // if locationsArrayList is empty or if task is canceled
-            if (locationsArrayList.size() == 0 || isCancelled()) {
-                return false;
-            }
-            return true;
+            // return true if locationsArrayList is empty or if task is canceled
+            return !(locationsArrayList.size() == 0 || isCancelled());
         }
 
         @Override
@@ -161,11 +152,8 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addTestToTestsArrayList();
-            // if testsArrayList is empty or if task is canceled
-            if (testsArrayList.size() == 0 || isCancelled()) {
-                return false;
-            }
-            return true;
+            // return true if testsArrayList is empty or if task is canceled
+            return !(testsArrayList.size() == 0 || isCancelled());
         }
 
         @Override
@@ -203,11 +191,8 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addHoursToHoursArrayList();
-            // if hoursArrayList is empty or if task is canceled
-            if (hoursArrayList.size() == 0 || isCancelled()) {
-                return false;
-            }
-            return true;
+            // return true if hoursArrayList is empty or if task is canceled
+            return !(hoursArrayList.size() == 0 || isCancelled());
 
         }
 
@@ -245,11 +230,8 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addBranchesToBranchesArrayList();
-            // if branchesArrayList is empty or if task is canceled
-            if (branchesArrayList.size() == 0 || isCancelled()) {
-                return false;
-            }
-            return true;
+            // return true if branchesArrayList is empty or if task is canceled
+            return !(branchesArrayList.size() == 0 || isCancelled());
 
         }
 
@@ -287,11 +269,8 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... arg0) {
 
             addAlertsToAlertsArrayList();
-            // if alertsArrayList is empty or if task is canceled
-            if (alertsArrayList.size() == 0 || isCancelled()) {
-                return false;
-            }
-            return true;
+            // return true if alertsArrayList is empty or if task is canceled
+            return !(alertsArrayList.size() == 0 || isCancelled());
 
         }
 
@@ -327,11 +306,11 @@ public class SplashActivity extends AppCompatActivity {
 
     //instantiate arrayLists
     public void setUpArrayLists(){
-        locationsArrayList = new ArrayList<Location>();
-        testsArrayList = new ArrayList<Test>();
-        hoursArrayList = new ArrayList<Hours>();
-        branchesArrayList = new ArrayList<Branch>();
-        alertsArrayList = new ArrayList<Alerts>();
+        locationsArrayList = new ArrayList<>();
+        testsArrayList = new ArrayList<>();
+        hoursArrayList = new ArrayList<>();
+        branchesArrayList = new ArrayList<>();
+        alertsArrayList = new ArrayList<>();
     }
 
     //instantiate AsyncTasks and execute them
@@ -368,19 +347,43 @@ public class SplashActivity extends AppCompatActivity {
 
     private void changeActivities() {
         if (gotLocations && gotTests && gotHours && gotBranches && gotAlerts) {
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("locationsArrayList", locationsArrayList);
-            b.putSerializable("testsArrayList", testsArrayList);
-            b.putSerializable("hoursArrayList", hoursArrayList);
-            b.putSerializable("branchesArrayList", branchesArrayList);
-            b.putSerializable("alertsArrayList", alertsArrayList);
-            intent.putExtra("outcome", "login");
-            intent.putExtras(b);
-            startActivity(intent);
-            finish();
+            Util.launchActivity(getLaunchLoginActivityIntent("login"));
         }
+    }
+
+    /**
+     * Function to create an intent to launch LoginActivity
+     * @param tag - string to describe intent intention
+     * @return Intent
+     */
+    public Intent getLaunchLoginActivityIntent(String tag) {
+        // create new intent for current activity to launch LoginActivity
+        Intent intent = new Intent(Util.getActivity(), LoginActivity.class);
+
+        // attach bundle to intent
+        intent.putExtras(getLaunchLoginActivityBundle(tag));
+
+        return intent;
+    }
+
+    /**
+     * Function to create bundle for LoginActivity
+     * @param outcome - string to describe intent intention
+     * @return bundle
+     */
+    public Bundle getLaunchLoginActivityBundle(String outcome) {
+        // create bundle
+        Bundle bundle = new Bundle();
+
+        // put array lists, user, default location, and tag in to bundle
+        bundle.putSerializable("locationsArrayList", locationsArrayList);
+        bundle.putSerializable("testsArrayList", testsArrayList);
+        bundle.putSerializable("hoursArrayList", hoursArrayList);
+        bundle.putSerializable("branchesArrayList", branchesArrayList);
+        bundle.putSerializable("alertsArrayList", alertsArrayList);
+        bundle.putString("outcome", outcome);
+
+        return bundle;
     }
 
     /**
