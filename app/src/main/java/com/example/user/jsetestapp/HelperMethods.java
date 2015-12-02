@@ -228,7 +228,10 @@ public class HelperMethods extends Activity {
                                         R.string.d_create_account_failed_duplicate_email)));
             } else if (result.equals("true") && id != 0) {
                 loginActivity.user.setId(id);
-                loginActivity.switchToMainActivity("create_account");
+
+                // launch activity with main activity intent
+                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
+
             } else {
 
                 Util.showDialog(getDialogFragmentBundle(
@@ -241,7 +244,6 @@ public class HelperMethods extends Activity {
 
             } else if (result.equals("true") && id != 0) {
                 loginActivity.user.setId(id);
-                //loginActivity.switchToMainActivity("create_account");
             } else {
 
             }
@@ -258,8 +260,9 @@ public class HelperMethods extends Activity {
                         activity.getString(R.string.d_login_failed_not_match)));
             } else {
                 //login successful
-                loginActivity.switchToMainActivity("login");
 
+                // launch activity with main activity intent
+                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("login"));
             }
         }
     }
@@ -269,34 +272,15 @@ public class HelperMethods extends Activity {
         if (loginActivity.updateProfileFragment.isVisible()) {
             if (result.equals("true")) {
                 // user updated
-                loginActivity.switchToMainActivity("update_profile");
+
+// launch activity with main activity intent
+                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("update_profile"));
+
             } else {
                 //user not updated
                 Util.showDialog(getDialogFragmentBundle(
                         activity.getString(R.string.d_create_account_failed_email_duplicate)));
 
-            }
-        }
-    }
-
-    public void checkTag() {
-        switch (mainActivity.queryMethods.getTag()) {
-
-            case "create_account": {
-                showSnackBar("Account created", mainActivity.coordinatorLayout);
-                break;
-            }
-            case "login": {
-                showSnackBar("Logged in", mainActivity.coordinatorLayout);
-                break;
-            }
-            case "update_profile": {
-                showSnackBar("Profile updated", mainActivity.coordinatorLayout);
-                break;
-            }
-            case "update_profile_cancel": {
-                showSnackBar("Profile not updated", mainActivity.coordinatorLayout);
-                break;
             }
         }
     }
@@ -419,7 +403,7 @@ public class HelperMethods extends Activity {
         return 0;
     }
 
-    public void setupUI(View view) {
+    public static void setupUI(View view) {
 
         //Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
@@ -427,7 +411,7 @@ public class HelperMethods extends Activity {
             view.setOnTouchListener(new View.OnTouchListener() {
 
                 public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(loginActivity);
+                    hideSoftKeyboard();
                     return false;
                 }
 
@@ -446,9 +430,9 @@ public class HelperMethods extends Activity {
     }
 
 
-    public static void hideSoftKeyboard(Activity loginActivity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) loginActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(loginActivity.getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
+    public static void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(Util.getActivity().getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
     }
 
     public ArrayList<String> editLocationsNameArrayList() {
@@ -511,7 +495,7 @@ public class HelperMethods extends Activity {
         try {
             // Storing each json item in location
             location.setId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__LOCATION_ID))));
-            location.setBrachId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__BRANCH_ID))));
+            location.setBranchId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__BRANCH_ID))));
             location.setName(locationObject.getString(Util.getStringValue(R.string.TAG_NAME)));
             location.setAddress(getAddress(locationObject));
             location.setPhone(locationObject.getString(Util.getStringValue(R.string.TAG_PHONE)));

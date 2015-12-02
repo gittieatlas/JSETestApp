@@ -18,12 +18,12 @@ public class DialogListeners extends Activity {
         switch (TAG_LISTENER) {
 
             case "schedule_test": {
-                mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.schedule_test_phone_number));
+                IntentMethods.callIntent(Util.getStringValue(R.string.schedule_test_phone_number));
                 break;
             }
 
             case "become_jse_member": {
-                mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
+                IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
                 break;
             }
 
@@ -58,7 +58,7 @@ public class DialogListeners extends Activity {
 
 
             case "call_jse_during_office_hours": {
-                mainActivity.intentMethods.callIntent(mainActivity.getStringFromResources(R.string.jse_phone_number));
+                IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
                 break;
             }
 
@@ -117,14 +117,14 @@ public class DialogListeners extends Activity {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
         LocalTime localTime;
         localTime = fmt.parseLocalTime(hours);
-        mainActivity.intentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
+        IntentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
     }
 
     public void setReminderToCallJse(String hours) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
         LocalTime localTime;
         localTime = fmt.parseLocalTime(hours);
-        mainActivity.intentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(1), localTime);
+        IntentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(1), localTime);
     }
 }
 

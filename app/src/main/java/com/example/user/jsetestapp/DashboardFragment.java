@@ -26,7 +26,6 @@ public class DashboardFragment extends Fragment {
     LoginActivity loginActivity;
 
     // Declare Fragments
-    LocationInfoFragment locationInfoFragment;
 
     // Declare Variables
     ListView lvDetail;
@@ -95,7 +94,7 @@ public class DashboardFragment extends Fragment {
     OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainActivity.intentMethods.callIntent(locationPhoneNumber.getText().toString());
+            IntentMethods.callIntent(locationPhoneNumber.getText().toString());
         }
     };
 

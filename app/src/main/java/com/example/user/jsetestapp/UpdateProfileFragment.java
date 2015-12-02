@@ -84,7 +84,7 @@ public class UpdateProfileFragment extends Fragment {
 
         loginActivity.helperMethods.addDataToSpinner
                 (loginActivity.helperMethods.editUpdateProfileLocationsNameArrayList(),
-                        locationsSpinner, "locationsNameArray", loginActivity.getContext());
+                        locationsSpinner, "locationsNameArray", Util.getContext());
     }
 
     //set user information in views
@@ -178,7 +178,7 @@ public class UpdateProfileFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!controlsHaveValues()) {
-                //|| passwordEqualsConfirmPassword() ) {
+                //|| compareTwoStrings() ) {
 
                 Util.showDialog(HelperMethods.getDialogFragmentBundle(
                         getString(R.string.d_update_account_failed_missing_fields)
@@ -231,11 +231,11 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     public Boolean isSsn(){
-        return Util.isSsn(ssnEditText.getText().toString());
+        return Util.isLength(ssnEditText.getText().toString(), 4);
     }
 
     public Boolean passwordEqualsConfirmPassword(){
-        return Util.passwordEqualsConfirmPassword(newPasswordEditText.getText().toString(),
+        return Util.compareTwoStrings(newPasswordEditText.getText().toString(),
                 confirmNewPasswordEditText.getText().toString());
     }
 

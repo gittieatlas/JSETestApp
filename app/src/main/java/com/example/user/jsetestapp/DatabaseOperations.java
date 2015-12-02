@@ -3,7 +3,6 @@ package com.example.user.jsetestapp;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -99,6 +98,8 @@ public class DatabaseOperations {
 
         /**
          * Before starting background thread Show Progress Dialog
+         * Runs on the UI thread before doInBackground
+         * Good for toggling visibility of a progress indicator
          */
         @Override
         protected void onPreExecute() {
@@ -476,9 +477,6 @@ public class DatabaseOperations {
 
         protected void onCancelled(String result){
 
-            Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
-
-            //loginActivity.helperMethods.updateUser(result);
             pDialog.dismiss();
         }
 

@@ -103,7 +103,7 @@ public class ContactFragment extends Fragment {
         public void onClick(View v) {
             String[] addresses = {"info@jseoffice.com"};
             String subject = "Contact JSE - Android App";
-            mainActivity.intentMethods.composeEmail(addresses, subject);
+            IntentMethods.composeEmail(addresses, subject);
         }
     };
 

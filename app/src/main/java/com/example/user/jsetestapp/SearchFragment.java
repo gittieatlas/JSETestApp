@@ -87,13 +87,13 @@ public class SearchFragment extends Fragment {
     private void bindSpinnerData() {
 
         mainActivity.helperMethods.addDataToSpinner(mainActivity.branchesNameArrayList,
-                locationsSpinner, "location", mainActivity.getContext());
+                locationsSpinner, "location", Util.getContext());
 
         String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
         ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();
         for (String s : daysOfWeek) daysOfWeekArrayList.add(s);
         mainActivity.helperMethods.addDataToSpinner(daysOfWeekArrayList,
-                daysOfWeekSpinner, "dayOfWeek", mainActivity.getContext());
+                daysOfWeekSpinner, "dayOfWeek", Util.getContext());
     }
 
     OnClickListener searchButtonListener = new OnClickListener() {

@@ -48,7 +48,9 @@ public class Register2Fragment extends Fragment {
     public void onResume(){
         super.onResume();
         if (loginActivity.user.getId()  != 0){
-            loginActivity.switchToMainActivity("create_account");
+
+            // launch activity with main activity intent
+            Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
         }
     }
 
@@ -80,7 +82,7 @@ public class Register2Fragment extends Fragment {
 
         loginActivity.helperMethods.addDataToSpinner(
                 loginActivity.helperMethods.editLocationsNameArrayList(), locationsSpinner,
-                "locationNameArrayList", loginActivity.getContext());
+                "locationNameArrayList", Util.getContext());
 
     }
 
@@ -198,7 +200,7 @@ public class Register2Fragment extends Fragment {
     }
 
     public Boolean isSsn(){
-        return Util.isSsn(ssnEditText.getText().toString());
+        return Util.isLength(ssnEditText.getText().toString(), 4);
     }
 
     private void saveUser() {

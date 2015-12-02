@@ -29,8 +29,6 @@ public class LibrariesFragment extends Fragment {
     MainActivity mainActivity;
 
     //Fragments
-    LocationInfoFragment locationInfoFragment;
-    //  HelperMethods helperMethods;
 
     //Variables
     ListView lvDetail;
@@ -102,7 +100,7 @@ public class LibrariesFragment extends Fragment {
     OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainActivity.intentMethods.callIntent(locationPhoneNumber.getText().toString());
+           IntentMethods.callIntent(locationPhoneNumber.getText().toString());
         }
     };
 
@@ -151,7 +149,7 @@ public class LibrariesFragment extends Fragment {
     private void bindSpinnerData() {
 
         mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList,
-                locationsSpinner, "libraries_location", mainActivity.getContext());
+                locationsSpinner, "libraries_location", Util.getContext());
     }
 
     public void setMainActivity(MainActivity mainActivity) {
