@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -16,27 +15,22 @@ public class DashboardFragment extends Fragment {
 
 
     // Declare Controls
-    View rootView;
-    TextView locationTextView, locationAddress, locationPhoneNumber, alertsTitleTextView,
+    TextView locationTextView, locationAddressTextView, locationPhoneNumberTextView, alertsTitleTextView,
             alertsDayTextView, alertsDateTextView, alertsTimeTextView, alertsMessageTextView;
     CardView findTestButton;
 
     // Declare Classes;
     MainActivity mainActivity;
-    LoginActivity loginActivity;
-
-    // Declare Fragments
 
     // Declare Variables
     ListView lvDetail;
-    Context context;
     ListAdapter hoursAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        rootView = inflater.inflate(R.layout.fragment_dashboard,
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_dashboard,
                 container, false);
 
         initializeViews(rootView);
@@ -44,8 +38,11 @@ public class DashboardFragment extends Fragment {
         loadDefaultLocationInformation();
         setUpAlerts();
         setUpHoursListView();
-        mainActivity.setToolbarTitle(R.string.toolbar_title_dashboard);
 
+        // set toolbar title
+        Util.setToolbarTitle(R.string.toolbar_title_dashboard, mainActivity.toolbar);
+
+        // return the layout for this fragment
         return rootView;
     }
 
@@ -53,16 +50,21 @@ public class DashboardFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        //locationInfoFragment.getArguments().putAll(mainActivity.helperMethods.passLocationToLocationInfoFragment(mainActivity.defaultLocation));
-
-        mainActivity.tabLayout.getTabAt(0).select();
+        // select dashboard tab
+        if (mainActivity.tabLayout != null) {
+            mainActivity.tabLayout.getTabAt(0).select();
+        }
 
     }
 
+    /**
+     * Function to initialize controls
+     */
     private void initializeViews(View rootView) {
+        // initialize and reference controls
         locationTextView = (TextView) rootView.findViewById(R.id.locationTextView);
-        locationAddress = (TextView) rootView.findViewById(R.id.locationAddress);
-        locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
+        locationAddressTextView = (TextView) rootView.findViewById(R.id.locationAddressTextView);
+        locationPhoneNumberTextView = (TextView) rootView.findViewById(R.id.locationPhoneNumberTextView);
         alertsTitleTextView = (TextView) rootView.findViewById(R.id.alertsTitleTextView);
         alertsDayTextView = (TextView) rootView.findViewById(R.id.alertsDayTextView);
         alertsDateTextView = (TextView) rootView.findViewById(R.id.alertsDateTextView);
@@ -72,18 +74,19 @@ public class DashboardFragment extends Fragment {
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
     }
 
-    private void loadDefaultLocationInformation() {
-        locationTextView.setText(mainActivity.defaultLocation.getName());
-        locationAddress.setText(mainActivity.defaultLocation.getAddress());
-        locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
-    }
-
+    /**
+     * Function to register listeners
+     */
     private void registerListeners() {
+        // set onClickListeners
         findTestButton.setOnClickListener(findTestButtonListener);
-        locationAddress.setOnClickListener(locationAddressOnClickListener);
-        locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
+        locationAddressTextView.setOnClickListener(locationAddressOnClickListener);
+        locationPhoneNumberTextView.setOnClickListener(locationPhoneNumberOnClickListener);
     }
 
+    /**
+     * OnClickListener for locationAddress
+     */
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -91,13 +94,19 @@ public class DashboardFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for locationPhoneNumber
+     */
     OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            IntentMethods.callIntent(locationPhoneNumber.getText().toString());
+            IntentMethods.callIntent(locationPhoneNumberTextView.getText().toString());
         }
     };
 
+    /**
+     * OnClickListener for findTestButton
+     */
     OnClickListener findTestButtonListener = new OnClickListener() {
 
         @Override
@@ -107,32 +116,55 @@ public class DashboardFragment extends Fragment {
         }
     };
 
+    /**
+     * Function to load default location information into controls
+     */
+    private void loadDefaultLocationInformation() {
+        locationTextView.setText(mainActivity.defaultLocation.getName());
+        locationAddressTextView.setText(mainActivity.defaultLocation.getAddress());
+        locationPhoneNumberTextView.setText(mainActivity.defaultLocation.getPhone());
+    }
+
+    /**
+     * Function to set up alerts
+     */
     public void setUpAlerts() {
+        // loop through each alert in alertsArrayList
         for (Alerts alerts : mainActivity.alertsArrayList) {
+            // if location name in alert is equal to default location
             if (alerts.locationName.equals(mainActivity.defaultLocation.getName())) {
+                // load alert information into controls
                 alertsMessageTextView.setText(alerts.alertText);
                 alertsDayTextView.setText(Util.firstLetterCaps(alerts.getDayOfWeek().toString()));
                 alertsDateTextView.setText(alerts.getDate().toString("MMMM dd yyyy"));
                 alertsTimeTextView.setText(alerts.getTime().toString("hh:mm a"));
             }
         }
+        // if there is no alert for this location
         if (alertsMessageTextView.getText().equals("")){
+            // display "There are no alerts for this location"
             alertsMessageTextView.setText("There are no alerts for this location");
         }
     }
 
+    /**
+     * Function to set up hours list view
+     */
     public void setUpHoursListView(){
+        // set up list view
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
+        // get hoursArrayList of default location
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
     }
 
+    /**
+     * Function to set reference of MainActivity
+     *
+     * @param mainActivity - reference to MainActivity
+     */
     public void setMainActivity(MainActivity mainActivity) {
-
+        // set this mainActivity to mainActivity
         this.mainActivity = mainActivity;
     }
 
-    public void setLoginActivity(LoginActivity loginActivity) {
-
-        this.loginActivity = loginActivity;
-    }
 }

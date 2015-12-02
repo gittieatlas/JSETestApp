@@ -119,8 +119,6 @@ public class LoginActivity extends AppCompatActivity {
         register2Fragment.setLoginActivity(this);
         updateProfileFragment = new UpdateProfileFragment();
         updateProfileFragment.setLoginActivity(this);
-        dashboardFragment = new DashboardFragment();
-        dashboardFragment.setLoginActivity(this);
     }
 
     /**

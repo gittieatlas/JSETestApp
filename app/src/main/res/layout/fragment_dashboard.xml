@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/default_margin"/>
 
         <TextView
-            android:id="@+id/locationAddress"
+            android:id="@+id/locationAddressTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text" />
@@ -47,14 +47,14 @@
             style="@style/App_TextView_Colored_Label"
             android:layout_marginTop="@dimen/default_margin"/>
         <TextView
-            android:id="@+id/locationPhoneNumber"
+            android:id="@+id/locationPhoneNumberTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text"/>
 
 
         <TextView
-            android:id="@+id/locationLibraryHours"
+            android:id="@+id/locationLibraryHoursTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
