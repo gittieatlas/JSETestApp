@@ -1,9 +1,7 @@
 package com.example.user.jsetestapp;
-
+// CLEANED
 import android.app.Fragment;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,45 +11,43 @@ import android.widget.EditText;
 
 public class Register1Fragment extends Fragment {
 
-    //Controls
-    View rootView;
+    // Declare Controls
     Button buttonLeft, buttonRight;
     EditText emailEditText, passwordEditText, confirmPasswordEditText;
 
-    //Activities
+    // Declare Activities
     LoginActivity loginActivity;
-
-    //Fragments
-
-    //Variables
-    boolean isValuesEntered = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_register1,
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_register1,
                 container, false);
 
         initializeViews(rootView);
-        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
-        registerListeners();
+        registerListeners(rootView);
 
-
+        // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_register1, loginActivity.toolbar);
 
         return rootView;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
+        // give focus to emailEditText
         emailEditText.requestFocus();
     }
 
+    /**
+     * Function to initialize controls
+     */
     private void initializeViews(View rootView) {
-
+        // initialize and reference controls
         emailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         passwordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
         confirmPasswordEditText = (EditText) rootView.findViewById(R.id.confirmPasswordEditText);
@@ -59,101 +55,130 @@ public class Register1Fragment extends Fragment {
         buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
     }
 
-    private void registerListeners() {
-
-        emailEditText.addTextChangedListener(editTextTextWatcher);
-        passwordEditText.addTextChangedListener(editTextTextWatcher);
-        confirmPasswordEditText.addTextChangedListener(editTextTextWatcher);
+    /**
+     * Function to register listeners
+     */
+    private void registerListeners(View rootView) {
+        // set onClickListeners
         buttonLeft.setOnClickListener(buttonLeftOnClickListener);
         buttonRight.setOnClickListener(buttonRightOnClickListener);
+
+        // set onTouchListener for all non ediText controls to hide the soft keyboard
+        HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
     }
 
-    TextWatcher editTextTextWatcher = new TextWatcher() {
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            isValuesEntered();
-        }
-    };
-
+    /**
+     * OnClickListener for buttonLeft
+     */
     OnClickListener buttonLeftOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             // this will be the "already have an account? Sign in" button
-           // loginActivity.helperMethods.replaceFragment(R.id.container, loginActivity.loginFragment, loginActivity.getResources().getString(R.string.toolbar_title_login), loginActivity);
+
+            // undo the last back stack transaction
             loginActivity.getFragmentManager().popBackStack();
         }
     };
 
+    /**
+     * OnClickListener for buttonRight
+     */
     OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!isValuesEntered) {
-
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_create_account_failed_values)));
-
-            } else {
-                validateForm();
-            }
+            // if form validates, go to create account step 2.
+            // otherwise a dialog will display with errors found
+            if (formValidates()) goToCreateAccountStep2();
         }
     };
 
-    private void validateForm() {
-        // check if email exists- cant do now as not doing db on server
-        if (!isEmailAddressValid()){
+    /**
+     * Function to validate form
+     * return boolean
+     */
+    private boolean formValidates() {
+        // return true if requiredFieldsHaveValues, emailAddressIsValid, and passwordsMatch
+        return requiredFieldsHaveValues() && emailAddressIsValid() && passwordsMatch();
+    }
 
+    /**
+     * Function to check if required fields have values entered
+     * return boolean
+     */
+    private boolean requiredFieldsHaveValues() {
+        // if emailEditText, passwordEditText, & confirmPasswordEditText have values
+        if (loginActivity.helperMethods.isEmpty(emailEditText) ||
+                loginActivity.helperMethods.isEmpty(passwordEditText) ||
+                loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {
+
+            // Show dialog: Create Account Failed - missing required values
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_create_account_failed_values)));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Function to check if email address entered is a valid email address
+     * return boolean
+     */
+    private boolean emailAddressIsValid() {
+        // if email entered is not a valid email address
+        if (!Util.isEmailAddressValid(emailEditText)) {
+            // Show dialog: Create Account Failed - email address invalid
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_create_account_failed_email)));
-        } else {
-            if (!passwordEqualsConfirmPassword()) {
 
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_create_account_failed_values_not_match)));
-
-                passwordEditText.setText("");
-                confirmPasswordEditText.setText("");
-            } else {
-                loginActivity.user.setEmail(emailEditText.getText().toString());
-                loginActivity.user.setPassword(passwordEditText.getText().toString());
-                loginActivity.helperMethods.replaceFragment(loginActivity.register2Fragment,
-                        loginActivity.getResources().getString(R.string.toolbar_title_register2),
-                        loginActivity, loginActivity.scrollView);
-            }
+            return false;
         }
-
+        return true;
     }
 
-    public Boolean isEmailAddressValid() {
-       return Util.isEmailAddressValid(emailEditText.getText().toString());
+    /**
+     * Function to check if passwords entered match
+     * return boolean
+     */
+    private boolean passwordsMatch() {
+        // if passwordEditText and confirmPasswordEditText don't match
+        if (!Util.compareTwoStrings(
+                passwordEditText.getText().toString(),
+                confirmPasswordEditText.getText().toString())) {
+
+            // Show dialog: Create Account Failed - passwords don't match
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_create_account_failed_values_not_match)));
+
+            // clear passwordEditText and confirmPasswordEditText values
+            passwordEditText.setText("");
+            confirmPasswordEditText.setText("");
+
+            return false;
+        }
+        return true;
     }
 
-    public Boolean passwordEqualsConfirmPassword(){
-        return Util.compareTwoStrings(passwordEditText.getText().toString(), confirmPasswordEditText.getText().toString());
+    /**
+     * Function to move on to step 2 of create account
+     */
+    private void goToCreateAccountStep2() {
+        // save entered email and password to User
+        loginActivity.user.setEmail(emailEditText.getText().toString());
+        loginActivity.user.setPassword(passwordEditText.getText().toString());
+
+        // inflate container with Register2Fragment
+        loginActivity.helperMethods.replaceFragment(loginActivity.register2Fragment,
+                loginActivity.getResources().getString(R.string.toolbar_title_register2),
+                loginActivity, loginActivity.scrollView);
     }
 
-    private boolean isValuesEntered() {
-        if (!loginActivity.helperMethods.isEmpty(emailEditText) &&
-                !loginActivity.helperMethods.isEmpty(passwordEditText) &&
-                !loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {
-            isValuesEntered = true;
-        } else
-            isValuesEntered = false;
-        return isValuesEntered;
-    }
-
+    /**
+     * Function to set reference of LoginActivity
+     *
+     * @param loginActivity - reference to LoginActivity
+     */
     public void setLoginActivity(LoginActivity loginActivity) {
-
+        // set this loginActivity to loginActivity
         this.loginActivity = loginActivity;
     }
 }

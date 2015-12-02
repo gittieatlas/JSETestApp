@@ -5,7 +5,7 @@ import org.joda.time.LocalTime;
 
 import java.io.Serializable;
 
-public class Alerts implements Serializable {
+public class Alert implements Serializable {
     public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
     int locationId;
     String locationName;
@@ -53,7 +53,7 @@ public class Alerts implements Serializable {
         this.alertText = alertText;
     }
 
-    public Alerts(){
+    public Alert(){
 
     }
 }

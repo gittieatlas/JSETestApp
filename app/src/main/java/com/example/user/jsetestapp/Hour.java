@@ -5,14 +5,14 @@ import org.joda.time.LocalTime;
 
 import java.io.Serializable;
 
-public class Hours implements Serializable{
+public class Hour implements Serializable{
     public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
 
     String name;
     DayOfWeek dayOfWeek;
     LocalTime startTime, endTime;
 
-    public Hours() {
+    public Hour() {
 
     }
 

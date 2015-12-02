@@ -40,7 +40,7 @@ public class UpdateProfileFragment extends Fragment {
                 container, false);
 
         initializeViews(rootView);
-        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
+        loginActivity.helperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
         registerListeners();
         return rootView;
     }
@@ -140,7 +140,7 @@ public class UpdateProfileFragment extends Fragment {
             }
             if (s == ssnEditText.getEditableText()) {
                 if (ssnEditText.getText().toString().length() == 4)
-                    loginActivity.helperMethods.hideSoftKeyboard(loginActivity);
+                    loginActivity.helperMethods.hideSoftKeyboard();
             }
 
 
@@ -178,14 +178,10 @@ public class UpdateProfileFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (!controlsHaveValues()) {
-                //|| compareTwoStrings() ) {
-
                 Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_update_account_failed_missing_fields)
-                ));
+                        getString(R.string.d_update_account_failed_missing_fields)));
             } else {
                 validateForm();
-
             }
         }
     };
@@ -253,7 +249,7 @@ public class UpdateProfileFragment extends Fragment {
         testUser.setPassword(newPasswordEditText.getText().toString());
         testUser.setLocationId(loginActivity.locationsArrayList, testUser);
 
-        //calling async task and sending testUser
+        // calling async task and sending testUser
 
         // check for Internet status and set true/false
         if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {

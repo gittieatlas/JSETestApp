@@ -403,8 +403,7 @@ public class HelperMethods extends Activity {
         return 0;
     }
 
-    public static void setupUI(View view) {
-        // TODO refactore rename method
+    public static void registerTouchListenerForNonEditText(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
 
@@ -424,7 +423,7 @@ public class HelperMethods extends Activity {
 
                 View innerView = ((ViewGroup) view).getChildAt(i);
 
-                setupUI(innerView);
+                registerTouchListenerForNonEditText(innerView);
             }
         }
     }
@@ -578,25 +577,25 @@ public class HelperMethods extends Activity {
      * @param hoursObject
      * @return hours
      */
-    public static Hours setHours(JSONObject hoursObject) {
-        // instantiating hours
-        Hours hours = new Hours();
+    public static Hour setHours(JSONObject hoursObject) {
+        // instantiating hour
+        Hour hour = new Hour();
 
         try {
-            // Storing each json item in hours
-            hours.name = hoursObject.getString(Util.getStringValue(R.string.TAG_LIBRARY_LOCATION));
+            // Storing each json item in hour
+            hour.name = hoursObject.getString(Util.getStringValue(R.string.TAG_LIBRARY_LOCATION));
             String day = hoursObject.getString(Util.getStringValue(R.string.TAG_DAY_OF_WEEK));
-            hours.setDayOfWeek(Hours.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
-            hours.startTime = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_OPENING_TIME)));
+            hour.setDayOfWeek(Hour.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
+            hour.startTime = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_OPENING_TIME)));
             LocalTime duration = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_DURATION)));
-            hours.endTime = hours.getStartTime().plusHours(duration.getHourOfDay())
+            hour.endTime = hour.getStartTime().plusHours(duration.getHourOfDay())
                     .plusMinutes(duration.getMinuteOfHour());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return hours;
+        return hour;
 
     }
 
@@ -627,10 +626,10 @@ public class HelperMethods extends Activity {
      * @param alertObject
      * @return alert
      */
-    public static Alerts setAlert(JSONObject alertObject) {
+    public static Alert setAlert(JSONObject alertObject) {
 // ToDo handle if any values are null
         // instantiating alert
-        Alerts alert = new Alerts();
+        com.example.user.jsetestapp.Alert alert = new Alert();
 
         try {
             // Storing each json item in alert
@@ -638,7 +637,7 @@ public class HelperMethods extends Activity {
             String timeStamp = (alertObject.getString(Util.getStringValue(R.string.TAG_TIME_STAMP)));
             String date = timeStamp.substring(0, 10);
             alert.date = LocalDate.parse(date);
-            alert.setDayOfWeek(Alerts.DayOfWeek.values()[(alert.getDate()
+            alert.setDayOfWeek(Alert.DayOfWeek.values()[(alert.getDate()
                     .getDayOfWeek() - 1)]);
             String time = timeStamp.substring(timeStamp.length() - 8);
             alert.setTime(LocalTime.parse(time));

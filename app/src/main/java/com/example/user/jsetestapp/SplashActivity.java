@@ -25,9 +25,9 @@ public class SplashActivity extends AppCompatActivity {
     // Declare Variables
     ArrayList<Location> locationsArrayList;
     ArrayList<Test> testsArrayList;
-    ArrayList<Hours> hoursArrayList;
+    ArrayList<Hour> hourArrayList;
     ArrayList<Branch> branchesArrayList;
-    ArrayList<Alerts> alertsArrayList;
+    ArrayList<Alert> alertArrayList;
 
     // Declare Booleans
     Boolean gotLocations = false;
@@ -208,8 +208,8 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             addHoursToHoursArrayList();
-            // return true/false if hoursArrayList is empty or if task is canceled
-            return !(hoursArrayList.size() == 0 || isCancelled());
+            // return true/false if hourArrayList is empty or if task is canceled
+            return !(hourArrayList.size() == 0 || isCancelled());
 
         }
 
@@ -297,8 +297,8 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
 
             addAlertsToAlertsArrayList();
-            // return true/false if alertsArrayList is empty or if task is canceled
-            return !(alertsArrayList.size() == 0 || isCancelled());
+            // return true/false if alertArrayList is empty or if task is canceled
+            return !(alertArrayList.size() == 0 || isCancelled());
 
         }
 
@@ -336,9 +336,9 @@ public class SplashActivity extends AppCompatActivity {
     public void setUpArrayLists(){
         locationsArrayList = new ArrayList<>();
         testsArrayList = new ArrayList<>();
-        hoursArrayList = new ArrayList<>();
+        hourArrayList = new ArrayList<>();
         branchesArrayList = new ArrayList<>();
-        alertsArrayList = new ArrayList<>();
+        alertArrayList = new ArrayList<>();
     }
 
     // instantiate AsyncTasks and execute them
@@ -410,9 +410,9 @@ public class SplashActivity extends AppCompatActivity {
         // put array lists, user, default location, and tag in to bundle
         bundle.putSerializable("locationsArrayList", locationsArrayList);
         bundle.putSerializable("testsArrayList", testsArrayList);
-        bundle.putSerializable("hoursArrayList", hoursArrayList);
+        bundle.putSerializable("hourArrayList", hourArrayList);
         bundle.putSerializable("branchesArrayList", branchesArrayList);
-        bundle.putSerializable("alertsArrayList", alertsArrayList);
+        bundle.putSerializable("alertArrayList", alertArrayList);
         bundle.putString("outcome", outcome);
 
         return bundle;
@@ -480,7 +480,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     /**
-     * Function to add hours from hoursJsonArray to hoursArrayList
+     * Function to add hours from hoursJsonArray to hourArrayList
      *
      */
     public void addHoursToHoursArrayList() {
@@ -494,8 +494,8 @@ public class SplashActivity extends AppCompatActivity {
             for (int i = 0; i < hoursJsonArray.length(); i++) {
                 // get hours from JsonObject
                 JSONObject hours = hoursJsonArray.getJSONObject(i);
-                // convert JSONObject to hours and add to hoursArrayList
-                hoursArrayList.add(HelperMethods.setHours(hours));
+                // convert JSONObject to hours and add to hourArrayList
+                hourArrayList.add(HelperMethods.setHours(hours));
                 // if taskGetHours is cancelled
                 if (taskGetHours.isCancelled()) {
                     // exit method
@@ -543,7 +543,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     /**
-     * Function to add alerts from alertsJsonArray to alertsArrayList
+     * Function to add alerts from alertsJsonArray to alertArrayList
      *
      */
     public void addAlertsToAlertsArrayList() {
@@ -557,8 +557,8 @@ public class SplashActivity extends AppCompatActivity {
             for (int i = 0; i < alertsJsonArray.length(); i++) {
                 // get alert from JsonObject
                 JSONObject alert = alertsJsonArray.getJSONObject(i);
-                // convert JSONObject to alert and add to alertsArrayList
-                alertsArrayList.add(HelperMethods.setAlert(alert));
+                // convert JSONObject to alert and add to alertArrayList
+                alertArrayList.add(HelperMethods.setAlert(alert));
                 // if taskGetAlerts is cancelled
                 if (taskGetAlerts.isCancelled()) {
                     // exit method

@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> branchesNameArrayList;
     ArrayList<Test> testsArrayList;
     ArrayList<DataObject> testsFilteredArrayList;
-    ArrayList<Hours> hoursArrayList;
+    ArrayList<com.example.user.jsetestapp.Hour> hourArrayList;
     ArrayList<HoursDataObject> hoursFilteredArrayList;
-    ArrayList<Alerts> alertsArrayList;
+    ArrayList<Alert> alertArrayList;
     User user;
     Location defaultLocation;
 
@@ -149,10 +149,10 @@ public class MainActivity extends AppCompatActivity {
                 .getSerializable("branchesArrayList");
         testsArrayList = queryMethods.setUpTestsArrayList((ArrayList<Test>) getIntent()
                 .getExtras().getSerializable("testsArrayList"));
-        hoursArrayList = (ArrayList<Hours>) getIntent().getExtras()
-                .getSerializable("hoursArrayList");
-        alertsArrayList = (ArrayList<Alerts>) getIntent().getExtras()
-                .getSerializable("alertsArrayList");
+        hourArrayList = (ArrayList<Hour>) getIntent().getExtras()
+                .getSerializable("hourArrayList");
+        alertArrayList = (ArrayList<Alert>) getIntent().getExtras()
+                .getSerializable("alertArrayList");
 
         // set up default location
         defaultLocation = queryMethods.setUpDefaultLocation();
@@ -409,9 +409,9 @@ public class MainActivity extends AppCompatActivity {
         // put array lists, default location, and outcome in to bundle
         bundle.putSerializable("locationsArrayList", locationsArrayList);
         bundle.putSerializable("testsArrayList", testsArrayList);
-        bundle.putSerializable("hoursArrayList", hoursArrayList);
+        bundle.putSerializable("hourArrayList", hourArrayList);
         bundle.putSerializable("branchesArrayList", branchesArrayList);
-        bundle.putSerializable("alertsArrayList", alertsArrayList);
+        bundle.putSerializable("alertArrayList", alertArrayList);
         // check if outcome is update_profile or not
         if (outcome.equals("update_profile"))
             // put user in to bundle

@@ -16,31 +16,26 @@ import android.widget.Spinner;
 
 public class Register2Fragment extends Fragment {
 
-    //Controls
-    View rootView;
+    // Declare Controls
     Spinner genderSpinner, locationsSpinner;
     EditText firstNameEditText, lastNameEditText, dobMonthEditText,
             dobDayEditText, dobYearEditText, ssnEditText;
     Button rightButton, leftButton;
     AsyncTask taskNewUser;
 
-    //Activities
+    // Declare Activities
     LoginActivity loginActivity;
-
-    //Fragments
-
-    //Variables
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_register2,
+        View rootView = inflater.inflate(R.layout.fragment_register2,
                 container, false);
 
         initializeViews(rootView);
-        loginActivity.helperMethods.setupUI(rootView.findViewById(R.id.rootLayout));
-        registerListeners();
+        registerListeners(rootView);
+
         return rootView;
     }
 
@@ -86,13 +81,16 @@ public class Register2Fragment extends Fragment {
 
     }
 
-    private void registerListeners() {
+    private void registerListeners(View rootView) {
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
         dobDayEditText.addTextChangedListener(textWatcher);
         dobMonthEditText.addTextChangedListener(textWatcher);
         dobYearEditText.addTextChangedListener(textWatcher);
         ssnEditText.addTextChangedListener(textWatcher);
+
+        // set onTouchListener for all non ediText controls to hide the soft keyboard
+        HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -112,7 +110,7 @@ public class Register2Fragment extends Fragment {
             }
             if (s == ssnEditText.getEditableText()) {
                 if (ssnEditText.getText().toString().length() == 4)
-                    loginActivity.helperMethods.hideSoftKeyboard(loginActivity);
+                    HelperMethods.hideSoftKeyboard();
             }
 
         }
@@ -127,17 +125,14 @@ public class Register2Fragment extends Fragment {
     };
 
     private Boolean controlsHaveValues() {
-        if (!loginActivity.helperMethods.isEmpty(firstNameEditText) &&
+        return !loginActivity.helperMethods.isEmpty(firstNameEditText) &&
                 !loginActivity.helperMethods.isEmpty(lastNameEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobDayEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(ssnEditText) &&
                 genderSpinner.getSelectedItemPosition() != 0 &&
-                locationsSpinner.getSelectedItemPosition() != 0) {
-            return true;
-        } else
-            return false;
+                locationsSpinner.getSelectedItemPosition() != 0;
     }
 
     OnClickListener rightButtonListener = new OnClickListener() {

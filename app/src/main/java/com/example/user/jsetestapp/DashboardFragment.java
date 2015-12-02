@@ -129,15 +129,15 @@ public class DashboardFragment extends Fragment {
      * Function to set up alerts
      */
     public void setUpAlerts() {
-        // loop through each alert in alertsArrayList
-        for (Alerts alerts : mainActivity.alertsArrayList) {
+        // loop through each alert in alertArrayList
+        for (Alert alert : mainActivity.alertArrayList) {
             // if location name in alert is equal to default location
-            if (alerts.locationName.equals(mainActivity.defaultLocation.getName())) {
+            if (alert.locationName.equals(mainActivity.defaultLocation.getName())) {
                 // load alert information into controls
-                alertsMessageTextView.setText(alerts.alertText);
-                alertsDayTextView.setText(Util.firstLetterCaps(alerts.getDayOfWeek().toString()));
-                alertsDateTextView.setText(alerts.getDate().toString("MMMM dd yyyy"));
-                alertsTimeTextView.setText(alerts.getTime().toString("hh:mm a"));
+                alertsMessageTextView.setText(alert.alertText);
+                alertsDayTextView.setText(Util.firstLetterCaps(alert.getDayOfWeek().toString()));
+                alertsDateTextView.setText(alert.getDate().toString("MMMM dd yyyy"));
+                alertsTimeTextView.setText(alert.getTime().toString("hh:mm a"));
             }
         }
         // if there is no alert for this location
@@ -153,7 +153,7 @@ public class DashboardFragment extends Fragment {
     public void setUpHoursListView(){
         // set up list view
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
-        // get hoursArrayList of default location
+        // get hourArrayList of default location
         mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
     }
 

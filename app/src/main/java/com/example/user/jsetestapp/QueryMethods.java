@@ -82,14 +82,14 @@ public class QueryMethods extends Activity {
 
         if (mainActivity.hoursFilteredArrayList != null)
             mainActivity.hoursFilteredArrayList.clear();
-        for (Hours hours : mainActivity.hoursArrayList) {
+        for (Hour hour : mainActivity.hourArrayList) {
 
-            if (hours.getName().equals(location)) {
+            if (hour.getName().equals(location)) {
 
-                HoursDataObject obj = new HoursDataObject(Util.firstLetterCaps(hours.getDayOfWeek().toString()),
+                HoursDataObject obj = new HoursDataObject(Util.firstLetterCaps(hour.getDayOfWeek().toString()),
 
-                        hours.getStartTime().toString("hh:mm a"),
-                        hours.getEndTime().toString("hh:mm a"));
+                        hour.getStartTime().toString("hh:mm a"),
+                        hour.getEndTime().toString("hh:mm a"));
 
                 mainActivity.hoursFilteredArrayList.add(obj);
             }

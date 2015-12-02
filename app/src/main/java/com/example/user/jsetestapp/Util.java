@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
 
 public class Util extends Activity {
 
@@ -126,13 +127,13 @@ public class Util extends Activity {
     }
 
     /**
-     * Function to check if string contains a valid email address
-     * @param email - string containing the email to be validated
+     * Function to check if editText contains a string with a valid email address
+     * @param email - editText containing the string to be validated
      * @return boolean
      */
-    public static boolean isEmailAddressValid(String email) {
+    public static boolean isEmailAddressValid(EditText email) {
         // return true if email matches a valid email address pattern
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
     }
 
     /**

@@ -34,10 +34,7 @@ public class LoginFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         initializeViews(rootView);
-        registerListeners();
-
-        // Set up touch listener for non-text box views to hide keyboard
-        HelperMethods.setupUI(rootView.findViewById(R.id.rootLayout));//  ToDo refactor / rename
+        registerListeners(rootView);
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_login, loginActivity.toolbar);
@@ -73,11 +70,14 @@ public class LoginFragment extends Fragment {
     /**
      * Function to register listeners
      */
-    private void registerListeners() {
+    private void registerListeners(View rootView) {
         // set onClickListeners
         forgotPasswordTextView.setOnClickListener(forgotPasswordEditTextOnClickListener);
         buttonLeft.setOnClickListener(buttonLeftOnClickListener);
         buttonRight.setOnClickListener(buttonRightOnClickListener);
+
+        // Set up touch listener for non-text box views to hide keyboard
+        HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
     }
 
     /**
@@ -91,31 +91,6 @@ public class LoginFragment extends Fragment {
         }
     };
 
-    /**
-     * Function to validate form
-     */
-    private Boolean formValidates() {
-        // if all required field controls on page don't have values
-        if (!isValuesEntered()) {
-            // Show dialog: Login Failed - missing required values
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_login_failed_values)));
-        }
-        // if all required field controls on page have values
-        else {
-            // if email address entered is not a valid email address
-            if (!isEmailValid()) {
-                // Show dialog: Login Failed - missing required values
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_login_failed_invalid_email)));
-            } else {
-                // if email address entered is a valid email address
-                return true;
-            }
-        }
-        // if isValuesEntered or isEmailValid return false
-        return false;
-    }
 
     /**
      * OnClickListener for buttonLeft
@@ -136,7 +111,6 @@ public class LoginFragment extends Fragment {
     OnClickListener forgotPasswordEditTextOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
             // Show dialog: Forgot Password - missing required values
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_forgot_password)));
@@ -144,20 +118,45 @@ public class LoginFragment extends Fragment {
     };
 
     /**
-     * Function to check if values for required fields were entered
+     * Function to validate form
+     * return boolean
      */
-    private boolean isValuesEntered() {
-        // return true if emailEditText and passwordEditText have values
-        return !loginActivity.helperMethods.isEmpty(emailEditText) &&
-                !loginActivity.helperMethods.isEmpty(passwordEditText);
+    private boolean formValidates() {
+        // return true if requiredFieldsHaveValues, emailAddressIsValid, and passwordsMatch
+        return requiredFieldsHaveValues() && emailAddressIsValid();
     }
 
     /**
-     * Function to check if value entered for email address contains a valid email address
+     * Function to check if required fields have values entered
+     * return boolean
      */
-    private boolean isEmailValid() {
-        // return true if emailEditText contains a valid email address
-        return Util.isEmailAddressValid(emailEditText.getText().toString());
+    private boolean requiredFieldsHaveValues() {
+        // if emailEditText & passwordEditText have values
+        if (loginActivity.helperMethods.isEmpty(emailEditText) ||
+                loginActivity.helperMethods.isEmpty(passwordEditText)) {
+
+            // Show dialog: Login Failed - missing required values
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_login_failed_values)));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Function to check if email address entered is a valid email address
+     * return boolean
+     */
+    private boolean emailAddressIsValid() {
+        // if email entered is not a valid email address
+        if (!Util.isEmailAddressValid(emailEditText)) {
+            // Show dialog: Login Failed - email address invalid
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_login_failed_invalid_email)));
+
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -184,7 +183,6 @@ public class LoginFragment extends Fragment {
 
     /**
      * Function to set reference of LoginActivity
-     *
      * @param loginActivity - reference to LoginActivity
      */
     public void setLoginActivity(LoginActivity loginActivity) {

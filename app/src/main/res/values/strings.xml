@@ -36,7 +36,7 @@
     <!-- URL to get hoursJsonArray JSON -->
     <string name="hours_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/library_hours.php</string>
 
-    <!-- Node names - hours -->
+    <!-- Node names - hour -->
     <string name="TAG_HOURS">hours</string>
     <string name="TAG_LIBRARY_LOCATION">name</string>
     <string name="TAG_DAY_OF_WEEK">dayOfWeek</string>
@@ -55,7 +55,7 @@
     <!-- URL to get alertsJsonArray JSON -->
     <string name="alerts_url">http://phpstack-1830-4794-62139.cloudwaysapps.com/alerts.php</string>
 
-    <!-- JSON Nodes names - alerts -->
+    <!-- JSON Nodes names - alert -->
     <string name="TAG_ALERTS">alerts</string>
     <string name="TAG_LOCATION_NAME">NAME</string>
     <string name="TAG_ALERT_TEXT">alertText</string>
@@ -112,7 +112,7 @@
     <!-- fragment_ controls-->
     <string name="default_location_label">Your Default Location</string>
     <string name="location">Location Name</string>
-    <string name="alerts">LOCATION ALERTS</string>
+    <string name="alert">LOCATION ALERTS</string>
     <string name="alerts_day">Sunday</string>
     <string name="alerts_date">September 7 2015</string>
     <string name="alerts_time">9:57 AM</string>
@@ -195,7 +195,7 @@
 
     <!-- Dialogs Messages -->
     <string name="d_office_closed_msg">The JSE office is currently closed.
-        Would you like to set a reminder on your phone to call during office hours?</string>
+        Would you like to set a reminder on your phone to call during office hour?</string>
     <string name="d_account_create_fail_duplicate_email_msg">Please enter a different email address.
         This one is already taken.</string>
     <string name="d_account_create_fail_msg">Account could not be created at this time.

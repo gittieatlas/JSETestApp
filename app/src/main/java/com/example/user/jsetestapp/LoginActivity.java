@@ -35,9 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Location> locationsArrayList;
     ArrayList<String> locationsNameArrayList;
     ArrayList<Test> testsArrayList;
-    ArrayList<Hours> hoursArrayList;
+    ArrayList<Hour> hourArrayList;
     ArrayList<Branch> branchesArrayList;
-    ArrayList<Alerts> alertsArrayList;
+    ArrayList<Alert> alertArrayList;
     Location defaultLocation;
     User user;
 
@@ -143,8 +143,8 @@ public class LoginActivity extends AppCompatActivity {
         locationsArrayList = (ArrayList<Location>) getIntent().getExtras().getSerializable("locationsArrayList");
         branchesArrayList = (ArrayList<Branch>) getIntent().getExtras().getSerializable("branchesArrayList");
         testsArrayList = (ArrayList<Test>) getIntent().getExtras().getSerializable("testsArrayList");
-        hoursArrayList = (ArrayList<Hours>) getIntent().getExtras().getSerializable("hoursArrayList");
-        alertsArrayList = (ArrayList<Alerts>) getIntent().getExtras().getSerializable("alertsArrayList");
+        hourArrayList = (ArrayList<Hour>) getIntent().getExtras().getSerializable("hourArrayList");
+        alertArrayList = (ArrayList<Alert>) getIntent().getExtras().getSerializable("alertArrayList");
 
         // assign array list values from locationsArrayList
         locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
@@ -237,9 +237,9 @@ public class LoginActivity extends AppCompatActivity {
         // put array lists, user, default location, and tag in to bundle
         bundle.putSerializable("locationsArrayList", locationsArrayList);
         bundle.putSerializable("testsArrayList", testsArrayList);
-        bundle.putSerializable("hoursArrayList", hoursArrayList);
+        bundle.putSerializable("hourArrayList", hourArrayList);
         bundle.putSerializable("branchesArrayList", branchesArrayList);
-        bundle.putSerializable("alertsArrayList", alertsArrayList);
+        bundle.putSerializable("alertArrayList", alertArrayList);
         bundle.putSerializable("user", user);
         bundle.putSerializable("defaultLocation", defaultLocation);
         bundle.putString("outcome", outcome);

@@ -7,8 +7,8 @@ public class Location implements Serializable {
 
     int id, branchId;
     String name, address, phone;
-    ArrayList<Hours> hoursArrayList;
-    ArrayList<Alerts> alertsArrayList;
+    ArrayList<Hour> hourArrayList;
+    ArrayList<Alert> alertArrayList;
 
     public Location() {
 
@@ -54,19 +54,19 @@ public class Location implements Serializable {
         this.phone = phone;
     }
 
-    public ArrayList<Hours> getHoursArrayList() {
-        return hoursArrayList;
+    public ArrayList<Hour> getHourArrayList() {
+        return hourArrayList;
     }
 
-    public void setHoursArrayList(ArrayList<Hours> hoursArrayList) {
-        this.hoursArrayList = hoursArrayList;
+    public void setHourArrayList(ArrayList<Hour> hourArrayList) {
+        this.hourArrayList = hourArrayList;
     }
 
-    public ArrayList<Alerts> getAlertsArrayList() {
-        return alertsArrayList;
+    public ArrayList<Alert> getAlertArrayList() {
+        return alertArrayList;
     }
 
-    public void setAlertsArrayList(ArrayList<Alerts> alertsArrayList) {
-        this.alertsArrayList = alertsArrayList;
+    public void setAlertArrayList(ArrayList<Alert> alertArrayList) {
+        this.alertArrayList = alertArrayList;
     }
 }
