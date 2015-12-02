@@ -404,7 +404,7 @@ public class HelperMethods extends Activity {
     }
 
     public static void setupUI(View view) {
-
+        // TODO refactore rename method
         //Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
 
@@ -449,7 +449,7 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to get jsonArray
+     * Function to get jsonArray from Json string
      *
      * @param url           - url to get the JSON string from
      * @param TAG_LOCATIONS - tag to get locations from

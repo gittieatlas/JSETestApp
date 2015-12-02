@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
      * Function to set up tabLayout
      */
     private void setupTablayout() {
-        // call method createTab and send layout, textView and text
+        // createTab and send layout, textView and text
         createTab(R.layout.tab_layout_dashboard, R.id.tab_title_dashboard, getString(R.string.tabLayout_dashboard));
         createTab(R.layout.tab_layout_tests, R.id.tab_title_tests, getString(R.string.tabLayout_tests));
         createTab(R.layout.tab_layout_libraries, R.id.tab_title_libraries, getString(R.string.tabLayout_libraries));
@@ -214,13 +214,13 @@ public class MainActivity extends AppCompatActivity {
      * @param title - text for tab
      */
     public void createTab(int view, int titleView, String title) {
-        // initializing the tab
+        // initialize the tab
         TabLayout.Tab tab = tabLayout.newTab();
-        // setting the view
+        // set the view
         tab.setCustomView(view);
-        // adding this tab to the tabLayout
+        // add this tab to the tabLayout
         tabLayout.addTab(tab);
-        // setting customized text on the tab
+        // set customized text on the tab
         ((TextView) findViewById(titleView)).setText(title);
     }
 
@@ -365,14 +365,14 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        // check if selected menu item is log out
+        // if selected menu item is log out
         if (id == R.id.log_out) {
             // launch activity with login activity intent
             Util.launchActivity(getLaunchLoginActivityIntent("log_out"));
             return true;
         }
 
-        // check if selected menu item is update profile
+        // if selected menu item is update profile
         if (id == R.id.update_profile) {
             // launch activity with login activity intent
             Util.launchActivity(getLaunchLoginActivityIntent("update_profile"));
