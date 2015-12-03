@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class HelperMethods extends Activity {
@@ -53,18 +54,29 @@ public class HelperMethods extends Activity {
                 fragment).addToBackStack(tag).commit();
     }
 
+    // bind arraylist with instantiated arrayList
+    public static void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner) {
 
-    public void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner,
-                                 String tag, Context context) {
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Util.getContext(),
                 R.layout.spinner_dropdown_item, arrayList);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
         spinner.setAdapter(adapter);
-
-        //if (tag.equals("location"))
     }
+
+    // bind arraylist from resource
+    public static void addDataToSpinner(String[] stringArray, Spinner spinner) {
+// convert String Array to ArrayList<String>; and call addDataToSpinner
+        addDataToSpinner(new ArrayList<>(Arrays.asList(stringArray)), spinner);
+    }
+
+
+
+
+
+
+
+
 
     public void scheduleTest() {
         if (mainActivity.user.isJseMember) {

@@ -18,19 +18,16 @@ import android.widget.TextView;
 
 public class LibrariesFragment extends Fragment {
 
-    //Controls
-    View rootView;
+    // Declare Controls
     Spinner locationsSpinner;
     CardView findTestButton;
     LinearLayout libraryInfoLinearLayout;
     TextView locationAddress, locationPhoneNumber;
 
-    //Activities
+    // Declare Activities
     MainActivity mainActivity;
 
-    //Fragments
-
-    //Variables
+    // Declare Variables
     ListView lvDetail;
     ListAdapter hoursAdapter;
 
@@ -38,18 +35,16 @@ public class LibrariesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_libraries,
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_libraries,
                 container, false);
 
         initializeViews(rootView);
-
         registerListeners();
-        mainActivity.setToolbarTitle(R.string.toolbar_title_libraries);
-        libraryInfoLinearLayout.setVisibility(View.GONE);
-
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
 
-
+        // set toolbar title
+        Util.setToolbarTitle(R.string.toolbar_title_libraries, mainActivity.toolbar);
         return rootView;
     }
 
@@ -73,7 +68,11 @@ public class LibrariesFragment extends Fragment {
         return locationToPass;
     }
 
+    /**
+     * Function to initialize controls
+     */
     private void initializeViews(View rootView) {
+        // initialize and reference controls
         locationAddress = (TextView) rootView.findViewById(R.id.locationAddress);
         locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
@@ -81,15 +80,24 @@ public class LibrariesFragment extends Fragment {
         bindSpinnerData();
         libraryInfoLinearLayout = (LinearLayout) rootView.findViewById(R.id.libraryInfoLinearLayout);
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
+        // set layout to be invisible
+        libraryInfoLinearLayout.setVisibility(View.GONE);
     }
 
+    /**
+     * Function to register listeners
+     */
     private void registerListeners() {
+        // set onClickListeners
         findTestButton.setOnClickListener(findTestButtonListener);
         locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
         locationAddress.setOnClickListener(locationAddressOnClickListener);
         locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
     }
 
+    /**
+     * OnClickListener for locationAddress
+     */
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -97,6 +105,9 @@ public class LibrariesFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for locationPhoneNumber
+     */
     OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -104,8 +115,10 @@ public class LibrariesFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for locationsSpinner
+     */
     OnItemSelectedListener locationsSpinnerOnItemSelectedListener = new OnItemSelectedListener() {
-
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -120,7 +133,6 @@ public class LibrariesFragment extends Fragment {
 
             setUpScreen(getSelectedLocation());
 
-
         }
 
         @Override
@@ -129,14 +141,14 @@ public class LibrariesFragment extends Fragment {
         }
     };
 
-
+    /**
+     * OnClickListener for findTestButton
+     */
     OnClickListener findTestButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
             mainActivity.helperMethods.findTests(getSelectedLocation());
-//            Toast.makeText(mainActivity.getApplicationContext(), locationsSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-//            mainActivity.replaceFragment(R.id.container, mainActivity.resultsFragment);
         }
     };
 
@@ -146,14 +158,22 @@ public class LibrariesFragment extends Fragment {
         locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
     }
 
+    /**
+     * Function to bind spinner to data
+     */
     private void bindSpinnerData() {
 
         mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList,
-                locationsSpinner, "libraries_location", Util.getContext());
+                locationsSpinner);
     }
 
+    /**
+     * Function to set reference of MainActivity
+     *
+     * @param mainActivity - reference to MainActivity
+     */
     public void setMainActivity(MainActivity mainActivity) {
-
+        // set this mainActivity to mainActivity
         this.mainActivity = mainActivity;
     }
 }

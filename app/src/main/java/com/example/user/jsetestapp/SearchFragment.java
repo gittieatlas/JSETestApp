@@ -44,8 +44,9 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        // set selection to user's default location
         locationsSpinner.setSelection(mainActivity.helperMethods.setBranchSpinnerSelection());
+        // set selection to "day of week"
         daysOfWeekSpinner.setSelection(0);
 
         mainActivity.tabLayout.getTabAt(1).select();
@@ -107,13 +108,11 @@ public class SearchFragment extends Fragment {
     private void bindSpinnerData() {
 
         mainActivity.helperMethods.addDataToSpinner(mainActivity.branchesNameArrayList,
-                locationsSpinner, "location", Util.getContext());
+                locationsSpinner);
 
-        String[] daysOfWeek = getResources().getStringArray(R.array.days_of_week_array);
-        ArrayList<String> daysOfWeekArrayList = new ArrayList<String>();
-        for (String s : daysOfWeek) daysOfWeekArrayList.add(s);
-        mainActivity.helperMethods.addDataToSpinner(daysOfWeekArrayList,
-                daysOfWeekSpinner, "dayOfWeek", Util.getContext());
+
+        mainActivity.helperMethods.addDataToSpinner(getResources().getStringArray(R.array.days_of_week_array),
+                daysOfWeekSpinner);
     }
 
     private String getOpenRegistrationDates() {

@@ -11,29 +11,26 @@ import android.widget.TextView;
 
 public class ContactFragment extends Fragment {
 
-    //Controls
-    View rootView;
+    // Declare Controls
     LinearLayout officeNumberTextViews, scheduleTestNumberTextViews, emailAddressTextViews;
     TextView jseOfficeHoursMonThursTextView, jseOfficeHoursFridayTextView;
 
-    //Activities
+    // Declare Activities
     MainActivity mainActivity;
-
-    //Fragments
-
-
-    //Variables
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_contact, container, false);
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
 
         initializeViews(rootView);
         registerListeners();
-        mainActivity.setToolbarTitle(R.string.toolbar_title_contact);
-        setText();
+        setOfficeHours();
+
+        // set toolbar title
+        Util.setToolbarTitle(R.string.toolbar_title_contact, mainActivity.toolbar);
         return rootView;
     }
     @Override
@@ -44,8 +41,11 @@ public class ContactFragment extends Fragment {
 
     }
 
+    /**
+     * Function to initialize controls
+     */
     private void initializeViews(View rootView) {
-
+        // initialize and reference controls
         officeNumberTextViews = (LinearLayout) rootView.findViewById(R.id.officeNumberTextViews);
         scheduleTestNumberTextViews = (LinearLayout) rootView.findViewById(R.id.scheduleTestNumberTextViews);
         emailAddressTextViews = (LinearLayout) rootView.findViewById(R.id.emailAddressTextViews);
@@ -53,18 +53,27 @@ public class ContactFragment extends Fragment {
         jseOfficeHoursFridayTextView = (TextView) rootView.findViewById(R.id.jseOfficeHoursFridayTextView);
     }
 
-    private void setText() {
-        jseOfficeHoursMonThursTextView.setText(getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_mon_thurs_hours_end_time));
-        jseOfficeHoursFridayTextView.setText(getResources().getString(R.string.jse_office_hours_friday_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_friday_hours_end_time));
-    }
-
+    /**
+     * Function to register listeners
+     */
     private void registerListeners() {
-
+        // set onClickListeners
         officeNumberTextViews.setOnClickListener(officeNumberListener);
         scheduleTestNumberTextViews.setOnClickListener(scheduleTestNumberListener);
         emailAddressTextViews.setOnClickListener(emailAddressListener);
     }
 
+    /**
+     * Function to set office hours in the text views
+     */
+    private void setOfficeHours() {
+        jseOfficeHoursMonThursTextView.setText(getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_mon_thurs_hours_end_time));
+        jseOfficeHoursFridayTextView.setText(getResources().getString(R.string.jse_office_hours_friday_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_friday_hours_end_time));
+    }
+
+    /**
+     * OnClickListener for officeNumber
+     */
     OnClickListener officeNumberListener = new OnClickListener() {
 
         @Override
@@ -83,6 +92,9 @@ public class ContactFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for scheduleTestNumber
+     */
     OnClickListener scheduleTestNumberListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -97,6 +109,9 @@ public class ContactFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for emailAddress
+     */
     OnClickListener emailAddressListener = new OnClickListener() {
 
         @Override
@@ -107,9 +122,13 @@ public class ContactFragment extends Fragment {
         }
     };
 
-
+    /**
+     * Function to set reference of MainActivity
+     *
+     * @param mainActivity - reference to MainActivity
+     */
     public void setMainActivity(MainActivity mainActivity) {
-
+        // set this mainActivity to mainActivity
         this.mainActivity = mainActivity;
     }
 }
