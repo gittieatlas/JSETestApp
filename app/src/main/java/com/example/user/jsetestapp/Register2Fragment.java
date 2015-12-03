@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,73 +16,91 @@ import android.widget.Spinner;
 public class Register2Fragment extends Fragment {
 
     // Declare Controls
+    View rootView;
     Spinner genderSpinner, locationsSpinner;
-    EditText firstNameEditText, lastNameEditText, dobMonthEditText,
-            dobDayEditText, dobYearEditText, ssnEditText;
+    EditText firstNameEditText, lastNameEditText, dobMonthEditText;
+    EditText dobDayEditText, dobYearEditText, ssnEditText;
     Button rightButton, leftButton;
-    AsyncTask taskNewUser;
 
     // Declare Activities
     LoginActivity loginActivity;
 
+    // Declare Variables
+    AsyncTask taskNewUser;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_register2,
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_register2,
                 container, false);
 
-        initializeViews(rootView);
-        registerListeners(rootView);
+        initializeViews();
+        registerListeners();
 
+        // set toolbar title
+        Util.setToolbarTitle(R.string.toolbar_title_register2, loginActivity.toolbar);
+
+        // return the layout for this fragment
         return rootView;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if (loginActivity.user.getId()  != 0){
 
-            // launch activity with main activity intent
+        // if user was created before the activity got paused and did not switch activities
+        if (loginActivity.user.getId() != 0) {
+            // launch MainActivity
             Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
         }
     }
 
-    private void initializeViews(View rootView) {
-        Util.setToolbarTitle(R.string.toolbar_title_register2, loginActivity.toolbar);
+    /**
+     * Function to initialize controls
+     */
+    private void initializeViews() {
+        // initialize and reference EditTexts
         firstNameEditText = (EditText) rootView.findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) rootView.findViewById(R.id.lastNameEditText);
         dobMonthEditText = (EditText) rootView.findViewById(R.id.dobMonthEditText);
         dobDayEditText = (EditText) rootView.findViewById(R.id.dobDayEditText);
         dobYearEditText = (EditText) rootView.findViewById(R.id.dobYearEditText);
         ssnEditText = (EditText) rootView.findViewById(R.id.ssnEditText);
-        genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
-        locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
+
+        // initialize and reference Buttons
         rightButton = (Button) rootView.findViewById(R.id.rightButton);
         leftButton = (Button) rootView.findViewById(R.id.leftButton);
-        bindSpinnerData();
+
+        // initialize and reference Spinners
+        genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
+        locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
+
+        bindDataToSpinners();
     }
 
-    private void bindSpinnerData() {
-        // Create an adapter from the string array resource and use android's inbuilt layout file
-        // simple_spinner_item that represents the default spinner in the UI
-        ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(
-                getActivity().getApplicationContext(),
-                R.array.gender_array,
-                R.layout.spinner_dropdown_item);
-        // Set the layout to use for each dropdown item
-        genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-        genderSpinner.setAdapter(genderAdapter);
+    /**
+     * Function to bind list of data to spinners
+     */
+    private void bindDataToSpinners() {
+        // add data to genderSpinner
+        HelperMethods.addDataToSpinner(
+                getResources().getStringArray(R.array.gender_array), genderSpinner);
 
-        loginActivity.helperMethods.addDataToSpinner(
-                loginActivity.helperMethods.editLocationsNameArrayList(), locationsSpinner,
-                "locationNameArrayList", Util.getContext());
-
+        // add data to locationSpinner
+        HelperMethods.addDataToSpinner(
+                loginActivity.helperMethods.editLocationsNameArrayList(), locationsSpinner);
     }
 
-    private void registerListeners(View rootView) {
+    /**
+     * Function to register listeners
+     */
+    private void registerListeners() {
+        // set onClickListeners
         rightButton.setOnClickListener(rightButtonListener);
         leftButton.setOnClickListener(leftButtonListener);
+
+        // set textWatchers
         dobDayEditText.addTextChangedListener(textWatcher);
         dobMonthEditText.addTextChangedListener(textWatcher);
         dobYearEditText.addTextChangedListener(textWatcher);
@@ -95,26 +112,13 @@ public class Register2Fragment extends Fragment {
 
     private TextWatcher textWatcher = new TextWatcher() {
 
-        public void afterTextChanged(Editable s) {
-            if (s == dobMonthEditText.getEditableText()) {
-                if (dobMonthEditText.getText().toString().length() == 2)
-                    dobDayEditText.requestFocus();
-            }
-            if (s == dobDayEditText.getEditableText()) {
-                if (dobDayEditText.getText().toString().length() == 2)
-                    dobYearEditText.requestFocus();
-            }
-            if (s == dobYearEditText.getEditableText()) {
-                if (dobYearEditText.getText().toString().length() == 4)
-                    ssnEditText.requestFocus();
-            }
-            if (s == ssnEditText.getEditableText()) {
-                if (ssnEditText.getText().toString().length() == 4)
-                    HelperMethods.hideSoftKeyboard();
-            }
-
+        public void afterTextChanged(Editable editable) {
+            // if editTexts have required length amount of text, move focus to next editText
+            Util.removeFocusFromEditText(editable, dobMonthEditText, dobDayEditText, 2);
+            Util.removeFocusFromEditText(editable, dobDayEditText, dobYearEditText, 2);
+            Util.removeFocusFromEditText(editable, dobYearEditText, ssnEditText, 4);
+            Util.removeFocusFromEditText(editable, ssnEditText, null, 4);
         }
-
 
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -123,6 +127,7 @@ public class Register2Fragment extends Fragment {
 
         }
     };
+
 
     private Boolean controlsHaveValues() {
         return !loginActivity.helperMethods.isEmpty(firstNameEditText) &&
@@ -164,16 +169,13 @@ public class Register2Fragment extends Fragment {
 
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_registration_failed_birthday_incorrect)));
-        }
-        else if (!isSsn()) {
+        } else if (!isSsn()) {
 
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_registration_failed_ssn_incorrect)));
 
             ssnEditText.setText("");
-        }
-
-        else {
+        } else {
             saveUser();
 
             // check for Internet status and set true/false
@@ -189,12 +191,12 @@ public class Register2Fragment extends Fragment {
 
     }
 
-    public Boolean isBirthdayCorrect(){
+    public Boolean isBirthdayCorrect() {
         return Util.isBirthdayCorrect(dobYearEditText.getText().toString(),
                 dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
     }
 
-    public Boolean isSsn(){
+    public Boolean isSsn() {
         return Util.isLength(ssnEditText.getText().toString(), 4);
     }
 
@@ -214,7 +216,6 @@ public class Register2Fragment extends Fragment {
 
         this.loginActivity = loginActivity;
     }
-
 
 
 }

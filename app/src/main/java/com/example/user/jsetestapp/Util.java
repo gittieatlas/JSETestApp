@@ -1,11 +1,13 @@
 package com.example.user.jsetestapp;
 // CLEANED
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.widget.EditText;
 
 public class Util extends Activity {
@@ -16,6 +18,7 @@ public class Util extends Activity {
 
     /**
      * Function to set reference of current activity
+     *
      * @param activity - current activity
      */
     public static void setActivity(Activity activity) {
@@ -25,6 +28,7 @@ public class Util extends Activity {
 
     /**
      * Function to return reference of current activity
+     *
      * @return activity
      */
     public static Activity getActivity() {
@@ -33,6 +37,7 @@ public class Util extends Activity {
 
     /**
      * Function to return reference of current context
+     *
      * @return context
      */
     public static Context getContext() {
@@ -41,6 +46,7 @@ public class Util extends Activity {
 
     /**
      * Function to set reference of current context
+     *
      * @param context - current context
      */
     public static void setContext(Context context) {
@@ -51,6 +57,7 @@ public class Util extends Activity {
 
     /**
      * Function to call methods that set reference to current activity
+     *
      * @param activity - current activity
      */
     public static void setReference(Activity activity) {
@@ -62,6 +69,7 @@ public class Util extends Activity {
 
     /**
      * Function to return string from resource
+     *
      * @param resourceReference - reference to position in resource file
      * @return String
      */
@@ -72,7 +80,8 @@ public class Util extends Activity {
 
     /**
      * Function to check length of string
-     * @param text - string of text
+     *
+     * @param text   - string of text
      * @param length - length of text
      * @return boolean
      */
@@ -83,9 +92,10 @@ public class Util extends Activity {
 
     /**
      * Function to check if dob is valid
-     * @param dobYear - dob year
+     *
+     * @param dobYear  - dob year
      * @param dobMonth - dob month
-     * @param dobDay - dob day
+     * @param dobDay   - dob day
      * @return boolean
      */
     public static Boolean isBirthdayCorrect(String dobYear, String dobMonth, String dobDay) {
@@ -106,6 +116,7 @@ public class Util extends Activity {
 
     /**
      * Function to check if two Strings are equal
+     *
      * @param s1 - string 1
      * @param s2 - string 2
      * @return boolean
@@ -117,6 +128,7 @@ public class Util extends Activity {
 
     /**
      * Function to make the first letter caps and the rest lowercase.
+     *
      * @param data - capitalize this
      * @return String
      */
@@ -128,6 +140,7 @@ public class Util extends Activity {
 
     /**
      * Function to check if editText contains a string with a valid email address
+     *
      * @param email - editText containing the string to be validated
      * @return boolean
      */
@@ -138,6 +151,7 @@ public class Util extends Activity {
 
     /**
      * Function to open Google Maps with address populated
+     *
      * @param address - address that is added to Uri for intent
      */
     public static void navigationIntent(String address) {
@@ -157,6 +171,7 @@ public class Util extends Activity {
 
     /**
      * Function to set title of toolbar
+     *
      * @param toolbarTitle - int of string reference to add as toolbar title
      * @param toolbar      - set title to this toolbar
      */
@@ -167,6 +182,7 @@ public class Util extends Activity {
 
     /**
      * Function to create and show dialog fragment
+     *
      * @param bundle - information to be passed to new dialog fragment
      */
     public static void showDialog(Bundle bundle) {
@@ -182,6 +198,7 @@ public class Util extends Activity {
 
     /**
      * Function to launch new activity and finish current activity
+     *
      * @param intent - intent to switch activities
      */
     public static void launchActivity(Intent intent) {
@@ -190,5 +207,32 @@ public class Util extends Activity {
 
         // close this activity
         activity.finish();
+    }
+
+    /**
+     * Function to move focus to the next control if text length is a given value
+     *
+     * @param editable  - text that the textWatcher picked up
+     * @param fromFocus - move focus from this editText
+     * @param toFocus   - move focus to this editText
+     * @param length    - required length of text
+     */
+    public static void removeFocusFromEditText(Editable editable, EditText fromFocus,
+                                               EditText toFocus, int length) {
+        // if text the textWatcher picked up equals to text of fromFocus editText
+        if (editable == fromFocus.getEditableText()) {
+            // if length of text from fromFocus editText equals to 'length'
+            if (fromFocus.getText().toString().length() == length)
+                // if a editText exists after the fromFocus editText
+                if (toFocus != null) {
+                    // move focus to toFocus editText
+                    toFocus.requestFocus();
+                }
+                // if the next control is not an editText
+                else {
+                    // hide soft keyboard
+                    HelperMethods.hideSoftKeyboard();
+                }
+        }
     }
 }

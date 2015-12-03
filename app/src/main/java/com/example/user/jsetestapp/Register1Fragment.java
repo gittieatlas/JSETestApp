@@ -12,6 +12,7 @@ import android.widget.EditText;
 public class Register1Fragment extends Fragment {
 
     // Declare Controls
+    View rootView;
     Button buttonLeft, buttonRight;
     EditText emailEditText, passwordEditText, confirmPasswordEditText;
 
@@ -21,17 +22,17 @@ public class Register1Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_register1,
+        rootView = inflater.inflate(R.layout.fragment_register1,
                 container, false);
 
-        initializeViews(rootView);
-        registerListeners(rootView);
+        initializeViews();
+        registerListeners();
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_register1, loginActivity.toolbar);
 
+        // return the layout for this fragment
         return rootView;
     }
 
@@ -46,11 +47,13 @@ public class Register1Fragment extends Fragment {
     /**
      * Function to initialize controls
      */
-    private void initializeViews(View rootView) {
-        // initialize and reference controls
+    private void initializeViews() {
+        // initialize and reference EditTexts
         emailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         passwordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
         confirmPasswordEditText = (EditText) rootView.findViewById(R.id.confirmPasswordEditText);
+
+        // initialize and reference Buttons
         buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
         buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
     }
@@ -58,7 +61,7 @@ public class Register1Fragment extends Fragment {
     /**
      * Function to register listeners
      */
-    private void registerListeners(View rootView) {
+    private void registerListeners() {
         // set onClickListeners
         buttonLeft.setOnClickListener(buttonLeftOnClickListener);
         buttonRight.setOnClickListener(buttonRightOnClickListener);

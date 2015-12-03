@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -66,25 +65,21 @@ public class UpdateProfileFragment extends Fragment {
         locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
         rightButton = (Button) rootView.findViewById(R.id.rightButton);
         leftButton = (Button) rootView.findViewById(R.id.leftButton);
-        bindSpinnerData();
+        bindDataToSpinners();
 
     }
 
-    private void bindSpinnerData() {
+    /**
+     * Function to bind list of data to spinners
+     */
+    private void bindDataToSpinners() {
+        // add data to genderSpinner
+        HelperMethods.addDataToSpinner(
+                getResources().getStringArray(R.array.update_profile_gender_array), genderSpinner);
 
-
-        // Create an adapter from the string array resource and use android's
-        // inbuilt layout file simple_spinner_item that represents the default spinner in the UI
-        ArrayAdapter genderAdapter = ArrayAdapter.createFromResource(getActivity()
-                .getApplicationContext(), R.array.update_profile_gender_array, R.layout.spinner_dropdown_item);
-        // Set the layout to use for each dropdown item
-        genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-        genderSpinner.setAdapter(genderAdapter);
-
-
-        loginActivity.helperMethods.addDataToSpinner
-                (loginActivity.helperMethods.editUpdateProfileLocationsNameArrayList(),
-                        locationsSpinner, "locationsNameArray", Util.getContext());
+        // add data to locationSpinner
+        HelperMethods.addDataToSpinner(
+                loginActivity.helperMethods.editUpdateProfileLocationsNameArrayList(), locationsSpinner);
     }
 
     //set user information in views
@@ -140,7 +135,7 @@ public class UpdateProfileFragment extends Fragment {
             }
             if (s == ssnEditText.getEditableText()) {
                 if (ssnEditText.getText().toString().length() == 4)
-                    loginActivity.helperMethods.hideSoftKeyboard();
+                    HelperMethods.hideSoftKeyboard();
             }
 
 
@@ -158,17 +153,14 @@ public class UpdateProfileFragment extends Fragment {
     };
 
     private Boolean controlsHaveValues() {
-        if (!loginActivity.helperMethods.isEmpty(firstNameEditText) &&
+        return !loginActivity.helperMethods.isEmpty(firstNameEditText) &&
                 !loginActivity.helperMethods.isEmpty(lastNameEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobDayEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
                 !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
                 !loginActivity.helperMethods.isEmpty(newPasswordEditText) &&
                 !loginActivity.helperMethods.isEmpty(confirmNewPasswordEditText) &&
-                !loginActivity.helperMethods.isEmpty(ssnEditText)) {
-            return true;
-        } else
-            return false;
+                !loginActivity.helperMethods.isEmpty(ssnEditText);
     }
 
 

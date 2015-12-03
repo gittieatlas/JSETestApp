@@ -15,6 +15,7 @@ import android.widget.TextView;
 public class LoginFragment extends Fragment {
 
     // Declare Controls
+    View rootView;
     RelativeLayout rootLayout;
     Button buttonLeft, buttonRight;
     TextView forgotPasswordTextView;
@@ -31,10 +32,10 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        initializeViews(rootView);
-        registerListeners(rootView);
+        initializeViews();
+        registerListeners();
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_login, loginActivity.toolbar);
@@ -57,20 +58,27 @@ public class LoginFragment extends Fragment {
     /**
      * Function to initialize controls
      */
-    private void initializeViews(View rootView) {
-        // initialize and reference controls
+    private void initializeViews() {
+        // initialize and reference RelativeLayouts
+        rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
+
+        // initialize and reference EditTexts
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
         emailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         passwordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
+
+        // initialize and reference TextViews
+        forgotPasswordTextView = (TextView) rootView.findViewById(R.id.forgotPasswordTextView);
+
+        // initialize and reference Buttons
         buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
         buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
-        forgotPasswordTextView = (TextView) rootView.findViewById(R.id.forgotPasswordTextView);
     }
 
     /**
      * Function to register listeners
      */
-    private void registerListeners(View rootView) {
+    private void registerListeners() {
         // set onClickListeners
         forgotPasswordTextView.setOnClickListener(forgotPasswordEditTextOnClickListener);
         buttonLeft.setOnClickListener(buttonLeftOnClickListener);
