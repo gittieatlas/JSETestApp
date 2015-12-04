@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-
+// CLEANED
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -161,7 +161,7 @@ public class Register2Fragment extends Fragment {
         public void onClick(View v) {
             // if form validates, go to create account step 2.
             // otherwise a dialog will display with errors found
-            if (formValidates()) createUser();
+            if (formValidates()) createAccount();
         }
     };
 
@@ -179,7 +179,7 @@ public class Register2Fragment extends Fragment {
      * return boolean
      */
     private boolean requiredFieldsHaveValues() {
-        // if any control does not have a value or a value selected
+        // if any if the required field controls don't have a value or a value selected
         if (loginActivity.helperMethods.isEmpty(firstNameEditText) ||
                 loginActivity.helperMethods.isEmpty(lastNameEditText) ||
                 loginActivity.helperMethods.isEmpty(dobDayEditText) ||
@@ -240,7 +240,7 @@ public class Register2Fragment extends Fragment {
     /**
      * Function to create account with new user info
      */
-    private void createUser(){
+    private void createAccount(){
         // if application can connect to internet
         if (HelperMethods.checkInternetConnection()) {
             saveUser();

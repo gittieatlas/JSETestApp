@@ -125,12 +125,6 @@ public class HelperMethods extends Activity {
 
     }
 
-    public Bundle passLocationToLocationInfoFragment(Location location) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("location", location);
-        return bundle;
-    }
-
     //for dashboard and library search
     public void findTests(Location location) {
         clearTestsFilteredArrayList();
@@ -308,10 +302,7 @@ public class HelperMethods extends Activity {
      * @return boolean      -   if is between, return true; if is not between, return false
      */
     public static boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
-        if (time.isAfter(start) && time.isBefore(end)) {
-            return true;
-        }
-        return false;
+        return time.isAfter(start) && time.isBefore(end);
     }
 
 
@@ -385,7 +376,7 @@ public class HelperMethods extends Activity {
 
         for (Location l : loginActivity.locationsArrayList) {
             if (loginActivity.defaultLocation.name.equals(l.getName())) {
-                return loginActivity.locationsArrayList.indexOf(l) + 1;
+                return loginActivity.locationsArrayList.indexOf(l);
             }
         }
         return 0;

@@ -139,7 +139,7 @@ public class LoginFragment extends Fragment {
      * return boolean
      */
     private boolean requiredFieldsHaveValues() {
-        // if emailEditText & passwordEditText have values
+        // if any if the required field controls don't have a value
         if (loginActivity.helperMethods.isEmpty(emailEditText) ||
                 loginActivity.helperMethods.isEmpty(passwordEditText)) {
 

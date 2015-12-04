@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-
+// CLEANED
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,7 +37,6 @@ public class UpdateProfileFragment extends Fragment {
                 container, false);
 
         initializeViews();
-        HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
         registerListeners();
 
         // set toolbar title
@@ -48,11 +47,10 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-        //
-        loadUserInformation(loginActivity.user);
+        loadUserInfoOnScreen();
     }
 
     /**
@@ -94,6 +92,9 @@ public class UpdateProfileFragment extends Fragment {
         dobMonthEditText.addTextChangedListener(textWatcher);
         dobYearEditText.addTextChangedListener(textWatcher);
         ssnEditText.addTextChangedListener(textWatcher);
+
+        // Set up touch listener for non-text box views to hide keyboard
+        HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
     }
 
     /**
@@ -110,32 +111,46 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     /**
-     * Function to bind get User info and load in on the page
+     * Function to get User info and load in on the page
      */
-    private void loadUserInformation(User user) {
+    private void loadUserInfoOnScreen() {
+        // instantiate a user from User
+        User user = loginActivity.user;
+
+        // set firstNameEditText and lastNameEditText
         firstNameEditText.setText(user.firstName);
         lastNameEditText.setText(user.lastName);
-        int month = user.dob.getMonthOfYear();
-        setDayAndMonthEditTexts(month, dobMonthEditText);
-        int day = user.dob.getDayOfMonth();
-        setDayAndMonthEditTexts(day, dobDayEditText);
-        int year = user.dob.getYear();
-        dobYearEditText.setText(year + "");
-        String ssn = user.ssn;
-        ssnEditText.setText(ssn.substring(ssn.length() - 4));
-        int gender = user.gender.ordinal() ;
-        genderSpinner.setSelection(gender);
-        locationsSpinner.setSelection(loginActivity.helperMethods
-                .setLocationSpinnerSelection()-1);
+
+        // set dobMonthEditText, dobDayEditText, and dobYearEditText
+        dobMonthEditText.setText(formatInt(user.dob.getMonthOfYear(), 2));
+        dobDayEditText.setText(formatInt(user.dob.getDayOfMonth(), 2));
+        dobYearEditText.setText(formatInt(user.dob.getYear(), 4));
+
+        // set ssnEditText
+        ssnEditText.setText(user.ssn.substring(user.ssn.length() - 4));
+
+        // set selection of genderSpinner and locationSpinner
+        genderSpinner.setSelection(user.gender.ordinal());
+        locationsSpinner.setSelection(loginActivity.helperMethods.setLocationSpinnerSelection());
+
+        // set newPasswordEditText and confirmNewPasswordEditText
         newPasswordEditText.setText(user.password);
         confirmNewPasswordEditText.setText(user.password);
     }
 
-    public void setDayAndMonthEditTexts(int value, EditText editText) {
-        if (value < 10)
-            editText.setText("0" + value);
-        else
-            editText.setText(value + "");
+    /**
+     * Function to format int before loading the screen
+     * @param value - value to be formatted and / or returned as String
+     * @param length - desired length of text/int
+     */
+    private String formatInt(int value, int length) {
+        // if value's length of characters is not equal to desired length
+        if (String.valueOf(value).toCharArray().length != length) {
+            // add a "0" to the beginning of the value and return as a String
+            return "0" + Integer.toString(value);
+        }
+        // return value as a String
+        return Integer.toString(value);
     }
 
     /**
@@ -168,31 +183,6 @@ public class UpdateProfileFragment extends Fragment {
         }
     };
 
-    private Boolean controlsHaveValues() {
-        return !loginActivity.helperMethods.isEmpty(firstNameEditText) &&
-                !loginActivity.helperMethods.isEmpty(lastNameEditText) &&
-                !loginActivity.helperMethods.isEmpty(dobDayEditText) &&
-                !loginActivity.helperMethods.isEmpty(dobMonthEditText) &&
-                !loginActivity.helperMethods.isEmpty(dobYearEditText) &&
-                !loginActivity.helperMethods.isEmpty(newPasswordEditText) &&
-                !loginActivity.helperMethods.isEmpty(confirmNewPasswordEditText) &&
-                !loginActivity.helperMethods.isEmpty(ssnEditText);
-    }
-
-
-
-    View.OnClickListener rightButtonListener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            if (!controlsHaveValues()) {
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_update_account_failed_missing_fields)));
-            } else {
-                validateForm();
-            }
-        }
-    };
 
     View.OnClickListener leftButtonListener = new View.OnClickListener() {
 
@@ -203,77 +193,171 @@ public class UpdateProfileFragment extends Fragment {
         }
     };
 
-    private void validateForm() {
-        if (!isBirthdayCorrect()) {
+    View.OnClickListener rightButtonListener = new View.OnClickListener() {
 
+        @Override
+        public void onClick(View v) {
+            // if form validates, update account. otherwise a dialog will display with errors found
+            if (formValidates()) updateAccount();
+        }
+    };
+
+    /**
+     * Function to validate form
+     * return boolean
+     */
+    private boolean formValidates() {
+        // return true if requiredFieldsHaveValues, birthdayDateIsValid, ssnIsValid, passwordsMatch
+        return requiredFieldsHaveValues() && birthdayDateIsValid() &&
+                ssnIsValid() && passwordsMatch();
+    }
+
+    /**
+     * Function to check if required fields have values entered
+     * return boolean
+     */
+    private boolean requiredFieldsHaveValues() {
+        // if any if the required field controls don't have a value
+        if (loginActivity.helperMethods.isEmpty(firstNameEditText) ||
+                loginActivity.helperMethods.isEmpty(lastNameEditText) ||
+                loginActivity.helperMethods.isEmpty(dobDayEditText) ||
+                loginActivity.helperMethods.isEmpty(dobMonthEditText) ||
+                loginActivity.helperMethods.isEmpty(dobYearEditText) ||
+                loginActivity.helperMethods.isEmpty(newPasswordEditText) ||
+                loginActivity.helperMethods.isEmpty(confirmNewPasswordEditText) ||
+                loginActivity.helperMethods.isEmpty(ssnEditText)) {
+
+            // Show dialog: Update Account Failed - missing required values
+            Util.showDialog(HelperMethods.getDialogFragmentBundle(
+                    getString(R.string.d_update_account_failed_missing_fields)));
+
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Function to check if birthday entered is a valid date
+     * return boolean
+     */
+    public Boolean birthdayDateIsValid() {
+        // if birthday entered is not a valid date
+        if (!Util.isBirthdayCorrect(
+                dobYearEditText.getText().toString(),
+                dobMonthEditText.getText().toString(),
+                dobDayEditText.getText().toString())) {
+
+            // Show dialog: Update Account Failed - birthday is invalid date
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_update_account_failed_birthday_incorrect)));
-        }
-        else if (!isSsn()) {
 
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Function to check if ssn entered is a length of 4
+     * return boolean
+     */
+    public Boolean ssnIsValid() {
+        // if ssn entered is not a length of 4
+        if (!Util.isLength(ssnEditText.getText().toString(), 4)) {
+
+            // Show dialog: Update Account Failed - ssn is not length of 4
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_update_account_failed_ssn_incorrect)));
 
+            // clear value of ssnEditText
             ssnEditText.setText("");
 
-        } else if (!passwordEqualsConfirmPassword()) {
+            return false;
+        }
+        return true;
+    }
 
+    /**
+     * Function to check if passwords entered match
+     * return boolean
+     */
+    private boolean passwordsMatch() {
+        // if newPasswordEditText and confirmNewPasswordEditText don't match
+        if (!Util.compareTwoStrings(
+                newPasswordEditText.getText().toString(),
+                confirmNewPasswordEditText.getText().toString())) {
+
+            // Show dialog: Update Account Failed - passwords don't match
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_update_account_failed_values_not_match)));
 
-
+            // clear newPasswordEditText and confirmNewPasswordEditText values
             newPasswordEditText.setText("");
             confirmNewPasswordEditText.setText("");
-        } else {
-            saveTestUser();
+
+            return false;
         }
+        return true;
     }
 
-    public Boolean isBirthdayCorrect(){
-        return Util.isBirthdayCorrect(dobYearEditText.getText().toString(),
-                dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
-    }
-
-    public Boolean isSsn(){
-        return Util.isLength(ssnEditText.getText().toString(), 4);
-    }
-
-    public Boolean passwordEqualsConfirmPassword(){
-        return Util.compareTwoStrings(newPasswordEditText.getText().toString(),
-                confirmNewPasswordEditText.getText().toString());
-    }
-
-    public void saveTestUser() {
-        User testUser = new User();
-        testUser.id = loginActivity.user.id;
-        testUser.setFirstName(firstNameEditText.getText().toString());
-        testUser.setLastName(lastNameEditText.getText().toString());
-        testUser.setSsn("XXX-XX-" + ssnEditText.getText().toString());
-        testUser.setGender(genderSpinner.getSelectedItem().toString());
-        testUser.setDob(dobYearEditText.getText().toString(), dobMonthEditText.getText().toString(),
-                dobDayEditText.getText().toString());
-        testUser.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
-        testUser.email = loginActivity.user.email;
-        testUser.setPassword(newPasswordEditText.getText().toString());
-        testUser.setLocationId(loginActivity.locationsArrayList, testUser);
-
-        // calling async task and sending testUser
-
-        // check for Internet status and set true/false
+    /**
+     * Function to create account with new user info
+     */
+    private void updateAccount() {
+        // if application can connect to internet
         if (HelperMethods.checkInternetConnection()) {
-            taskUpdateUser = loginActivity.databaseOperations.updateUser(testUser);
-        } else {
 
+
+            // call AsyncTask to create new user
+            taskUpdateUser = loginActivity.databaseOperations.updateUser(saveUpdatedUser());
+        } else {
+            // Show Dialog: No Internet Connection
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_no_internet_connection)));
-
         }
-
     }
 
-    public void setLoginActivity(LoginActivity loginActivity) {
+    /**
+     * Function to set updated account info to User
+     */
+    private User saveUpdatedUser() {
+        // instantiate a new user to hold updated user info
+        User updatedUser = new User();
 
+        // set id
+        updatedUser.id = loginActivity.user.id;
+
+        // set email and password
+        updatedUser.email = loginActivity.user.email;
+        updatedUser.setPassword(newPasswordEditText.getText().toString());
+
+        // set first and last name
+        updatedUser.setFirstName(firstNameEditText.getText().toString());
+        updatedUser.setLastName(lastNameEditText.getText().toString());
+
+        // set ssn to XXX-XX- plus 4 digits entered
+        updatedUser.setSsn("XXX-XX-" + ssnEditText.getText().toString());
+
+        // set gender and default location from the selected item of the spinners
+        updatedUser.setGender(genderSpinner.getSelectedItem().toString());
+        updatedUser.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
+
+        // set dob from year, month, and day
+        updatedUser.setDob(dobYearEditText.getText().toString(),
+                dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
+
+        // set location id based on text of updatedUser's default location name
+        updatedUser.setLocationId(loginActivity.locationsArrayList, updatedUser);
+
+        return updatedUser;
+    }
+
+    /**
+     * Function to set reference of LoginActivity
+     *
+     * @param loginActivity - reference to LoginActivity
+     */
+    public void setLoginActivity(LoginActivity loginActivity) {
+        // set this loginActivity to loginActivity
         this.loginActivity = loginActivity;
     }
-
 }

@@ -109,7 +109,7 @@ public class Register1Fragment extends Fragment {
      * return boolean
      */
     private boolean requiredFieldsHaveValues() {
-        // if any control does not have a value
+        // if any if the required field controls don't have a value
         if (loginActivity.helperMethods.isEmpty(emailEditText) ||
                 loginActivity.helperMethods.isEmpty(passwordEditText) ||
                 loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {

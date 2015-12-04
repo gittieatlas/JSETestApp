@@ -1,6 +1,5 @@
 package com.example.user.jsetestapp;
 // CLEANED
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -99,12 +98,27 @@ public class Util extends Activity {
      * @return boolean
      */
     public static Boolean isBirthdayCorrect(String dobYear, String dobMonth, String dobDay) {
-        // instantiate user
-        User user = new User();
 
+        // if year isn't a length of 4
+        if (dobYear.length() != 4)
+            return false;
+
+        // if month isn't a length of 2
+        if (dobMonth.length() != 2)
+            return false;
+
+        // if day isn't a length of 2
+        if (dobDay.length() != 2)
+            return false;
+
+        // check if actual values entered is a valid calendar date
         try {
+            // instantiate user
+            User user = new User();
+
             // try to set dob to user. if it doesn't throw exception, date is valid
             user.setDob(dobYear, dobMonth, dobDay);
+
             return true;
 
         } catch (Exception ex) {
