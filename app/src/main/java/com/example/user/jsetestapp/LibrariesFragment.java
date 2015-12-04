@@ -22,7 +22,7 @@ public class LibrariesFragment extends Fragment {
     Spinner locationsSpinner;
     CardView findTestButton;
     LinearLayout libraryInfoLinearLayout;
-    TextView locationAddress, locationPhoneNumber;
+    TextView locationAddressTextView, locationPhoneNumberTextView;
 
     // Declare Activities
     MainActivity mainActivity;
@@ -41,10 +41,13 @@ public class LibrariesFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
+        setLinearLayoutVisibility();
+        setUpHoursListView();
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_libraries, mainActivity.toolbar);
+
+        // return the layout for this fragment
         return rootView;
     }
 
@@ -52,36 +55,40 @@ public class LibrariesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mainActivity.queryMethods.updateHoursArrayListView(lvDetail, locationsSpinner.getSelectedItem().toString());
-        setUpScreen(getSelectedLocation());
-
+        // select libraries tab
         mainActivity.tabLayout.getTabAt(2).select();
-    }
-
-    private Location getSelectedLocation() {
-        Location locationToPass = new Location();
-        for (Location location : mainActivity.locationsArrayList) {
-            if (location.getName().equals(locationsSpinner.getSelectedItem().toString()))
-                locationToPass = location;
-        }
-        if (locationToPass == null) locationToPass = mainActivity.defaultLocation;
-        return locationToPass;
     }
 
     /**
      * Function to initialize controls
      */
     private void initializeViews(View rootView) {
-        // initialize and reference controls
-        locationAddress = (TextView) rootView.findViewById(R.id.locationAddress);
-        locationPhoneNumber = (TextView) rootView.findViewById(R.id.locationPhoneNumber);
+        // initialize and reference TextViews
+        locationAddressTextView = (TextView) rootView.findViewById(R.id.locationAddressTextView);
+        locationPhoneNumberTextView = (TextView)
+                rootView.findViewById(R.id.locationPhoneNumberTextView);
+
+        // initialize and reference CardView
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
+
+        // initialize and reference LinearLayout
+        libraryInfoLinearLayout = (LinearLayout) rootView.findViewById(R.id.libraryInfoLinearLayout);
+
+        // initialize and reference ListView
+        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
+
+        // initialize and reference Spinner
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         bindSpinnerData();
-        libraryInfoLinearLayout = (LinearLayout) rootView.findViewById(R.id.libraryInfoLinearLayout);
-        lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
-        // set layout to be invisible
-        libraryInfoLinearLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * Function to bind list of data to spinners
+     */
+    private void bindSpinnerData() {
+        // add data to locationsSpinner
+        HelperMethods.addDataToSpinner(mainActivity.locationsNameArrayList,
+                locationsSpinner);
     }
 
     /**
@@ -89,29 +96,43 @@ public class LibrariesFragment extends Fragment {
      */
     private void registerListeners() {
         // set onClickListeners
+        locationAddressTextView.setOnClickListener(locationAddressOnClickListener);
+        locationPhoneNumberTextView.setOnClickListener(locationPhoneNumberOnClickListener);
         findTestButton.setOnClickListener(findTestButtonListener);
         locationsSpinner.setOnItemSelectedListener(locationsSpinnerOnItemSelectedListener);
-        locationAddress.setOnClickListener(locationAddressOnClickListener);
-        locationPhoneNumber.setOnClickListener(locationPhoneNumberOnClickListener);
     }
 
     /**
-     * OnClickListener for locationAddress
+     * OnClickListener for locationAddressTextView
      */
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            // open Google Maps and populate it with defaultLocation
             Util.navigationIntent(mainActivity.defaultLocation.getAddress());
         }
     };
 
     /**
-     * OnClickListener for locationPhoneNumber
+     * OnClickListener for locationPhoneNumberTextView
      */
     OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-           IntentMethods.callIntent(locationPhoneNumber.getText().toString());
+            // call selected location
+            IntentMethods.callIntent(locationPhoneNumberTextView.getText().toString());
+        }
+    };
+
+    /**
+     * OnClickListener for findTestButton
+     */
+    OnClickListener findTestButtonListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            // find available tests at selected location
+            mainActivity.helperMethods.findTests(getSelectedLocation());
         }
     };
 
@@ -122,15 +143,9 @@ public class LibrariesFragment extends Fragment {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (position == 0)
-                libraryInfoLinearLayout.setVisibility(View.GONE);
-            else
-                libraryInfoLinearLayout.setVisibility(View.VISIBLE);
 
-            mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, locationsSpinner.getSelectedItem().toString());
-
-            //locationInfoFragment.setUpScreen(getSelectedLocation());
-
+            setLinearLayoutVisibility();
+            setUpHoursListView();
             setUpScreen(getSelectedLocation());
 
         }
@@ -142,29 +157,62 @@ public class LibrariesFragment extends Fragment {
     };
 
     /**
-     * OnClickListener for findTestButton
+     * Function to set LinearLayout visibility based on location selection
      */
-    OnClickListener findTestButtonListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            mainActivity.helperMethods.findTests(getSelectedLocation());
+    public void setLinearLayoutVisibility(){
+        // if selected location is "location" (first option)
+        if (locationsSpinner.getSelectedItemPosition()==0){
+            // hide LinearLayout
+            libraryInfoLinearLayout.setVisibility(View.GONE);
         }
-    };
-
-
-    public void setUpScreen(Location location) {
-        locationAddress.setText(mainActivity.defaultLocation.getAddress());
-        locationPhoneNumber.setText(mainActivity.defaultLocation.getPhone());
+        // if a location is selected
+        else {
+            // show LinearLayout
+            libraryInfoLinearLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
-     * Function to bind spinner to data
+     * Function to set up hours list view
      */
-    private void bindSpinnerData() {
+    public void setUpHoursListView(){
+        // set up hours list view based on selected location
+        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail,
+                locationsSpinner.getSelectedItem().toString());
+    }
 
-        mainActivity.helperMethods.addDataToSpinner(mainActivity.locationsNameArrayList,
-                locationsSpinner);
+    /**
+     * Function to populate text views with the selected location's information
+     *
+     * @param location - selected location
+     */
+    public void setUpScreen(Location location) {
+        // set location address and phone number in textViews
+        locationAddressTextView.setText(location.getAddress());
+        locationPhoneNumberTextView.setText(location.getPhone());
+    }
+
+    /**
+     * Function to get selected location
+     * @return Location
+     */
+    private Location getSelectedLocation() {
+        // initialize locationToPass
+        Location locationToPass = new Location();
+        // loop through each location in locationsArrayList
+        for (Location location : mainActivity.locationsArrayList) {
+            // if location name is equal to selected location in spinner
+            if (location.getName().equals(locationsSpinner.getSelectedItem().toString()))
+                // assign location to locationToPass
+                locationToPass = location;
+        }
+
+        // if locationToPass is null
+        if (locationToPass == null)
+            // assign defaultLocation to locationToPass
+            locationToPass = mainActivity.defaultLocation;
+        // return locationToPass
+        return locationToPass;
     }
 
     /**

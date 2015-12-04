@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class SearchFragment extends Fragment {
@@ -32,35 +31,62 @@ public class SearchFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
-        bindSpinnerData();
-        setOpenRegistrationDateRange();
+        setOpenRegistrationDates();
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_search, mainActivity.toolbar);
 
+        // return the layout for this fragment
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // set selection to user's default location
-        locationsSpinner.setSelection(mainActivity.helperMethods.setBranchSpinnerSelection());
-        // set selection to "day of week"
-        daysOfWeekSpinner.setSelection(0);
 
+        setSpinnerSelections();
+        // select search tab
         mainActivity.tabLayout.getTabAt(1).select();
+    }
+
+    /**
+     * Function that sets spinners selection
+     */
+    public void setSpinnerSelections() {
+        // set spinner selection to user's default location
+        locationsSpinner.setSelection(mainActivity.helperMethods.setBranchSpinnerSelection());
+        // set spinner selection to "day of week"
+        daysOfWeekSpinner.setSelection(0);
     }
 
     /**
      * Function to initialize controls
      */
     private void initializeViews(View rootView) {
-        // initialize and reference controls
+        // initialize and reference TextView
         registrationDateTextView = (TextView) rootView.findViewById(R.id.registrationDateTextView);
+
+        // initialize and reference Spinners
         locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
         daysOfWeekSpinner = (Spinner) rootView.findViewById(R.id.dayOfWeekSpinner);
+
+        // initialize and reference CardView
         searchButton = (CardView) rootView.findViewById(R.id.searchButton);
+
+        bindSpinnerData();
+    }
+
+    /**
+     * Function to bind list of data to spinners
+     */
+    private void bindSpinnerData() {
+        // add data to locationsSpinner
+        HelperMethods.addDataToSpinner(mainActivity.branchesNameArrayList,
+                locationsSpinner);
+
+        // add data to daysOfWeekSpinner
+        HelperMethods.addDataToSpinner(getResources().getStringArray(R.array.days_of_week_array),
+                daysOfWeekSpinner);
     }
 
     /**
@@ -80,16 +106,17 @@ public class SearchFragment extends Fragment {
         public void onClick(View v) {
             // assign selected location to location
             String location = locationsSpinner.getSelectedItem().toString();
-            // if location contains " (Default Branch)"
-            if (location.contains(" (Default Branch)")){
-                // remove " (Default Branch)" from location
+            // if location contains: " (Default Branch)"
+            if (location.contains(" (Default Branch)")) {
+                // remove the string " (Default Branch)" from location
                 location = location.replace(" (Default Branch)", "").trim();
             }
+
             // initialize searchCriteriaBranch
             Branch searchCriteriaBranch = new Branch();
             // loop through each branch in branchesArrayList
             for (Branch branch : mainActivity.branchesArrayList) {
-                // if location is equal to branch.name
+                // if location is equal to branch name
                 if (location.equals(branch.getName()))
                     // assign branch to searchCriteriaBranch
                     searchCriteriaBranch = branch;
@@ -97,43 +124,35 @@ public class SearchFragment extends Fragment {
 
             // assign selected day of week to searchCriteriaDayOfWeek
             int searchCriteriaDayOfWeek = daysOfWeekSpinner.getSelectedItemPosition();
-            //  find tests based on both criterias
+            //  find tests based on both criteria
             mainActivity.helperMethods.findTests(searchCriteriaBranch, searchCriteriaDayOfWeek);
         }
     };
 
     /**
-     * Function to bind spinner to data
+     * Function to set open registration dates in textView
      */
-    private void bindSpinnerData() {
-
-        mainActivity.helperMethods.addDataToSpinner(mainActivity.branchesNameArrayList,
-                locationsSpinner);
-
-
-        mainActivity.helperMethods.addDataToSpinner(getResources().getStringArray(R.array.days_of_week_array),
-                daysOfWeekSpinner);
-    }
-
-    private String getOpenRegistrationDates() {
-
-        Collections.sort(mainActivity.testsArrayList);
-
-        String fromDate = mainActivity.testsArrayList.get(0).getDate().toString("MMMM dd yyyy");
-        String toDate = mainActivity.testsArrayList.get(
-                mainActivity.testsArrayList.size() - 1).getDate().toString("MMMM dd yyyy");
-        String openRegistrationString =
-                String.format(getResources().getString(R.string.registration_date_range),
-                fromDate, toDate);
-        return openRegistrationString;
+    public void setOpenRegistrationDates() {
+        // set open registration date range in control
+        registrationDateTextView.setText(getOpenRegistrationDates());
     }
 
     /**
-     * Function that sets registration dates information
+     * Function to get openRegistrationDate
+     *
+     * @return String
      */
-    public void setOpenRegistrationDateRange(){
-        // set open registration date range in control
-        registrationDateTextView.setText(getOpenRegistrationDates());
+    private String getOpenRegistrationDates() {
+        // sort testsArrayList
+        Collections.sort(mainActivity.testsArrayList);
+        // assign to fromDate date of first test in testsArrayList
+        String fromDate = mainActivity.testsArrayList.get(0).getDate().toString("MMMM dd yyyy");
+        // assign to toDate date of last test in testsArrayList
+        String toDate = mainActivity.testsArrayList.get(
+                mainActivity.testsArrayList.size() - 1).getDate().toString("MMMM dd yyyy");
+        // return: Registration is currently open from fromDate to toDate
+        return String.format(getResources().getString(R.string.registration_date_range), fromDate, toDate);
+
     }
 
     /**

@@ -15,8 +15,9 @@ public class DashboardFragment extends Fragment {
 
 
     // Declare Controls
-    TextView locationTextView, locationAddressTextView, locationPhoneNumberTextView, alertsTitleTextView,
-            alertsDayTextView, alertsDateTextView, alertsTimeTextView, alertsMessageTextView;
+    TextView locationTextView, locationAddressTextView, locationPhoneNumberTextView,
+            alertsTitleTextView, alertsDayTextView, alertsDateTextView, alertsTimeTextView,
+            alertsMessageTextView;
     CardView findTestButton;
 
     // Declare Classes;
@@ -36,7 +37,7 @@ public class DashboardFragment extends Fragment {
         initializeViews(rootView);
         registerListeners();
         loadDefaultLocationInformation();
-        setUpAlerts();
+        findAlerts();
         setUpHoursListView();
 
         // set toolbar title
@@ -49,19 +50,15 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         // select dashboard tab
-        if (mainActivity.tabLayout != null) {
-            mainActivity.tabLayout.getTabAt(0).select();
-        }
-
+        mainActivity.tabLayout.getTabAt(0).select();
     }
 
     /**
      * Function to initialize controls
      */
     private void initializeViews(View rootView) {
-        // initialize and reference controls
+        // initialize and reference TextViews
         locationTextView = (TextView) rootView.findViewById(R.id.locationTextView);
         locationAddressTextView = (TextView) rootView.findViewById(R.id.locationAddressTextView);
         locationPhoneNumberTextView = (TextView) rootView.findViewById(R.id.locationPhoneNumberTextView);
@@ -70,7 +67,11 @@ public class DashboardFragment extends Fragment {
         alertsDateTextView = (TextView) rootView.findViewById(R.id.alertsDateTextView);
         alertsTimeTextView = (TextView) rootView.findViewById(R.id.alertsTimeTextView);
         alertsMessageTextView = (TextView) rootView.findViewById(R.id.AlertsMessageTextView);
+
+        // initialize and reference ListView
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
+
+        // initialize and reference CardView
         findTestButton = (CardView) rootView.findViewById(R.id.findTestButton);
     }
 
@@ -90,6 +91,7 @@ public class DashboardFragment extends Fragment {
     OnClickListener locationAddressOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            // open Google Maps and populate it with location
             Util.navigationIntent(mainActivity.defaultLocation.getAddress());
         }
     };
@@ -100,6 +102,7 @@ public class DashboardFragment extends Fragment {
     OnClickListener locationPhoneNumberOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            // call default location
             IntentMethods.callIntent(locationPhoneNumberTextView.getText().toString());
         }
     };
@@ -111,50 +114,56 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            // find available tests in default location
             mainActivity.helperMethods.findTests(mainActivity.defaultLocation);
-
         }
     };
 
     /**
-     * Function to load default location information into controls
+     * Function to load default location information
      */
     private void loadDefaultLocationInformation() {
+        // set location information in text views
         locationTextView.setText(mainActivity.defaultLocation.getName());
         locationAddressTextView.setText(mainActivity.defaultLocation.getAddress());
         locationPhoneNumberTextView.setText(mainActivity.defaultLocation.getPhone());
     }
 
     /**
-     * Function to set up alerts
+     * Function to check for alerts in user's default location
      */
-    public void setUpAlerts() {
+    public void findAlerts() {
         // loop through each alert in alertArrayList
         for (Alert alert : mainActivity.alertArrayList) {
-            // if location name in alert is equal to default location
+            // if location of alert is equal to default location
             if (alert.locationName.equals(mainActivity.defaultLocation.getName())) {
-                // load alert information into controls
-                alertsMessageTextView.setText(alert.alertText);
-                alertsDayTextView.setText(Util.firstLetterCaps(alert.getDayOfWeek().toString()));
-                alertsDateTextView.setText(alert.getDate().toString("MMMM dd yyyy"));
-                alertsTimeTextView.setText(alert.getTime().toString("hh:mm a"));
+                setAlertInformation(alert);
             }
         }
-        // if there is no alert for this location
-        if (alertsMessageTextView.getText().equals("")){
-            // display "There are no alerts for this location"
+
+        // if there are no alerts at this location
+        if (alertsMessageTextView.getText().equals("")) {
+            // display message: "There are no alerts for this location" in text view
             alertsMessageTextView.setText("There are no alerts for this location");
         }
     }
 
     /**
+     * Function to set text views with alert information
+     */
+    public void setAlertInformation(Alert alert){
+        alertsMessageTextView.setText(alert.alertText);
+        alertsDayTextView.setText(Util.firstLetterCaps(alert.getDayOfWeek().toString()));
+        alertsDateTextView.setText(alert.getDate().toString("MMMM dd yyyy"));
+        alertsTimeTextView.setText(alert.getTime().toString("hh:mm a"));
+    }
+
+    /**
      * Function to set up hours list view
      */
-    public void setUpHoursListView(){
-        // set up list view
+    public void setUpHoursListView() {
+        // set up list view based on user's default location
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
-        // get hourArrayList of default location
-        mainActivity.queryMethods.updateHoursArrayListView(lvDetail, mainActivity.defaultLocation.getName());
     }
 
     /**

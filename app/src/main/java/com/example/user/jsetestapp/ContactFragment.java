@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class ContactFragment extends Fragment {
 
     // Declare Controls
-    LinearLayout officeNumberTextViews, scheduleTestNumberTextViews, emailAddressTextViews;
+    LinearLayout officeNumber, scheduleTestNumber, emailAddress;
     TextView jseOfficeHoursMonThursTextView, jseOfficeHoursFridayTextView;
 
     // Declare Activities
@@ -31,24 +31,28 @@ public class ContactFragment extends Fragment {
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_contact, mainActivity.toolbar);
+
+        // return the layout for this fragment
         return rootView;
     }
+
     @Override
     public void onResume() {
         super.onResume();
-
-         mainActivity.tabLayout.getTabAt(3).select();
-
+        // select contact tab
+        mainActivity.tabLayout.getTabAt(3).select();
     }
 
     /**
      * Function to initialize controls
      */
     private void initializeViews(View rootView) {
-        // initialize and reference controls
-        officeNumberTextViews = (LinearLayout) rootView.findViewById(R.id.officeNumberTextViews);
-        scheduleTestNumberTextViews = (LinearLayout) rootView.findViewById(R.id.scheduleTestNumberTextViews);
-        emailAddressTextViews = (LinearLayout) rootView.findViewById(R.id.emailAddressTextViews);
+        // initialize and reference LinearLayouts
+        officeNumber = (LinearLayout) rootView.findViewById(R.id.officeNumber);
+        scheduleTestNumber = (LinearLayout) rootView.findViewById(R.id.scheduleTestNumber);
+        emailAddress = (LinearLayout) rootView.findViewById(R.id.emailAddress);
+
+        // initialize and reference TextViews
         jseOfficeHoursMonThursTextView = (TextView) rootView.findViewById(R.id.jseOfficeHoursMonThursTextView);
         jseOfficeHoursFridayTextView = (TextView) rootView.findViewById(R.id.jseOfficeHoursFridayTextView);
     }
@@ -58,15 +62,16 @@ public class ContactFragment extends Fragment {
      */
     private void registerListeners() {
         // set onClickListeners
-        officeNumberTextViews.setOnClickListener(officeNumberListener);
-        scheduleTestNumberTextViews.setOnClickListener(scheduleTestNumberListener);
-        emailAddressTextViews.setOnClickListener(emailAddressListener);
+        officeNumber.setOnClickListener(officeNumberListener);
+        scheduleTestNumber.setOnClickListener(scheduleTestNumberListener);
+        emailAddress.setOnClickListener(emailAddressListener);
     }
 
     /**
-     * Function to set office hours in the text views
+     * Function to set office hours
      */
     private void setOfficeHours() {
+        // set office hours in text views
         jseOfficeHoursMonThursTextView.setText(getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_mon_thurs_hours_end_time));
         jseOfficeHoursFridayTextView.setText(getResources().getString(R.string.jse_office_hours_friday_hours_start_time) + " - " + getResources().getString(R.string.jse_office_hours_friday_hours_end_time));
     }
@@ -78,13 +83,15 @@ public class ContactFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            // if its during office hours
             if (mainActivity.helperMethods.isDuringOfficeHours()) {
-
+                // show dialog "Call JSE"
                 Util.showDialog(HelperMethods.getDialogFragmentBundle(
                         getString(R.string.d_call_jse_during_hours)
                 ));
-
+                // if its after office hours
             } else {
+                // show dialog "Jse office is currently closed. Would you like to set a reminder?"
                 Util.showDialog(HelperMethods.getDialogFragmentBundle(
                         getString(R.string.d_call_jse_non_hours)
                 ));
@@ -98,12 +105,16 @@ public class ContactFragment extends Fragment {
     OnClickListener scheduleTestNumberListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            // if user is jse member
             if (mainActivity.user.isJseMember) {
+                // call to schedule a test
                 mainActivity.helperMethods.scheduleTest();
             } else {
+                // set user to be a jse member
                 mainActivity.user.isJseMember = true;
+                // call to schedule a test
                 mainActivity.helperMethods.scheduleTest();
+                // set user to be a non jse member
                 mainActivity.user.isJseMember = false;
             }
         }
@@ -116,8 +127,11 @@ public class ContactFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            // jse email address
             String[] addresses = {"info@jseoffice.com"};
+            // subject line
             String subject = "Contact JSE - Android App";
+            // compose email using email address and subject line
             IntentMethods.composeEmail(addresses, subject);
         }
     };

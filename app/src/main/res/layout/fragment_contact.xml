@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/officeNumberTextViews"
+        android:id="@+id/officeNumber"
         android:clickable="true" >
 
         <TextView
@@ -33,7 +33,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scheduleTestNumberTextViews"
+        android:id="@+id/scheduleTestNumber"
         android:clickable="true" >
 
         <TextView
@@ -56,7 +56,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/emailAddressTextViews"
+        android:id="@+id/emailAddress"
         android:clickable="true" >
 
         <TextView
