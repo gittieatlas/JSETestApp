@@ -176,9 +176,9 @@ public class LoginFragment extends Fragment {
         loginActivity.user.setPassword(passwordEditText.getText().toString());
 
         // if internet status connection is true
-        if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
+        if (HelperMethods.checkInternetConnection()) {
 
-            // call AsyncTask taskGetUser
+            // call AsyncTask to get user
             taskGetUser = loginActivity.databaseOperations.getUser(loginActivity.user);
         }
         // if internet status connection is false

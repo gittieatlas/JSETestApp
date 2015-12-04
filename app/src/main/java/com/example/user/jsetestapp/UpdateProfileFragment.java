@@ -14,45 +14,52 @@ import android.widget.Spinner;
 
 public class UpdateProfileFragment extends Fragment {
 
-    //Controls
+    // Declare Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
-    AsyncTask taskUpdateUser;
+    Button rightButton, leftButton;
+    EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText;
+    EditText dobYearEditText, ssnEditText, newPasswordEditText, confirmNewPasswordEditText;
 
-    //Activities
+    // Declare Activities
     MainActivity mainActivity;
     LoginActivity loginActivity;
-    //Fragments
 
-    //Variables
+    // Declare Variables
     User user = new User();
-    Location defaultLocation;
-    EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText, dobYearEditText,
-            ssnEditText, newPasswordEditText, confirmNewPasswordEditText;
-    Button rightButton, leftButton;
+    AsyncTask taskUpdateUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_update_profile,
                 container, false);
 
-        initializeViews(rootView);
-        loginActivity.helperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
+        initializeViews();
+        HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
         registerListeners();
+
+        // set toolbar title
+        Util.setToolbarTitle(R.string.toolbar_title_update_profile, loginActivity.toolbar);
+
+        // return the layout for this fragment
         return rootView;
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        loadUserInformation();
+
+        //
+        loadUserInformation(loginActivity.user);
     }
 
-    private void initializeViews(View rootView) {
-        Util.setToolbarTitle(R.string.toolbar_title_update_profile, loginActivity.toolbar);
-
+    /**
+     * Function to initialize controls
+     */
+    private void initializeViews() {
+        // initialize and reference EditTexts
         firstNameEditText = (EditText) rootView.findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) rootView.findViewById(R.id.lastNameEditText);
         dobMonthEditText = (EditText) rootView.findViewById(R.id.dobMonthEditText);
@@ -60,13 +67,33 @@ public class UpdateProfileFragment extends Fragment {
         dobYearEditText = (EditText) rootView.findViewById(R.id.dobYearEditText);
         ssnEditText = (EditText) rootView.findViewById(R.id.ssnEditText);
         newPasswordEditText = (EditText) rootView.findViewById(R.id.newPasswordEditText);
-        confirmNewPasswordEditText = (EditText) rootView.findViewById(R.id.confirmNewPasswordEditText);
+        confirmNewPasswordEditText =
+                (EditText) rootView.findViewById(R.id.confirmNewPasswordEditText);
+
+        // initialize and reference Spinners
         genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
+
+        // initialize and reference Buttons
         rightButton = (Button) rootView.findViewById(R.id.rightButton);
         leftButton = (Button) rootView.findViewById(R.id.leftButton);
-        bindDataToSpinners();
 
+        bindDataToSpinners();
+    }
+
+    /**
+     * Function to register listeners
+     */
+    private void registerListeners() {
+        // set onClickListeners
+        rightButton.setOnClickListener(rightButtonListener);
+        leftButton.setOnClickListener(leftButtonListener);
+
+        // set textWatchers
+        dobDayEditText.addTextChangedListener(textWatcher);
+        dobMonthEditText.addTextChangedListener(textWatcher);
+        dobYearEditText.addTextChangedListener(textWatcher);
+        ssnEditText.addTextChangedListener(textWatcher);
     }
 
     /**
@@ -82,24 +109,26 @@ public class UpdateProfileFragment extends Fragment {
                 loginActivity.helperMethods.editUpdateProfileLocationsNameArrayList(), locationsSpinner);
     }
 
-    //set user information in views
-    private void loadUserInformation() {
-        firstNameEditText.setText(loginActivity.user.firstName);
-        lastNameEditText.setText(loginActivity.user.lastName);
-        int month = loginActivity.user.dob.getMonthOfYear();
+    /**
+     * Function to bind get User info and load in on the page
+     */
+    private void loadUserInformation(User user) {
+        firstNameEditText.setText(user.firstName);
+        lastNameEditText.setText(user.lastName);
+        int month = user.dob.getMonthOfYear();
         setDayAndMonthEditTexts(month, dobMonthEditText);
-        int day = loginActivity.user.dob.getDayOfMonth();
+        int day = user.dob.getDayOfMonth();
         setDayAndMonthEditTexts(day, dobDayEditText);
-        int year = loginActivity.user.dob.getYear();
+        int year = user.dob.getYear();
         dobYearEditText.setText(year + "");
-        String ssn = loginActivity.user.ssn;
+        String ssn = user.ssn;
         ssnEditText.setText(ssn.substring(ssn.length() - 4));
-        int gender = loginActivity.user.gender.ordinal() ;
+        int gender = user.gender.ordinal() ;
         genderSpinner.setSelection(gender);
         locationsSpinner.setSelection(loginActivity.helperMethods
                 .setLocationSpinnerSelection()-1);
-        newPasswordEditText.setText(loginActivity.user.password);
-        confirmNewPasswordEditText.setText(loginActivity.user.password);
+        newPasswordEditText.setText(user.password);
+        confirmNewPasswordEditText.setText(user.password);
     }
 
     public void setDayAndMonthEditTexts(int value, EditText editText) {
@@ -109,47 +138,34 @@ public class UpdateProfileFragment extends Fragment {
             editText.setText(value + "");
     }
 
-    private void registerListeners() {
-        rightButton.setOnClickListener(rightButtonListener);
-        leftButton.setOnClickListener(leftButtonListener);
-        dobDayEditText.addTextChangedListener(textWatcher);
-        dobMonthEditText.addTextChangedListener(textWatcher);
-        dobYearEditText.addTextChangedListener(textWatcher);
-        ssnEditText.addTextChangedListener(textWatcher);
-    }
-
+    /**
+     * TextWatcher - for all EditText controls
+     */
     private TextWatcher textWatcher = new TextWatcher() {
 
-        public void afterTextChanged(Editable s) {
-            if (s == dobMonthEditText.getEditableText()) {
-                if (dobMonthEditText.getText().toString().length() == 2)
-                    dobDayEditText.requestFocus();
-            }
-            if (s == dobDayEditText.getEditableText()) {
-                if (dobDayEditText.getText().toString().length() == 2)
-                    dobYearEditText.requestFocus();
-            }
-            if (s == dobYearEditText.getEditableText()) {
-                if (dobYearEditText.getText().toString().length() == 4)
-                    ssnEditText.requestFocus();
-            }
-            if (s == ssnEditText.getEditableText()) {
-                if (ssnEditText.getText().toString().length() == 4)
-                    HelperMethods.hideSoftKeyboard();
-            }
-
-
-        }
-
+        /**
+         * This method is called when text is about to be replaced by new text
+         * */
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
+        /**
+         * This method is called when text have just replaced old text.
+         * */
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            //controlsHaveValues();
 
         }
 
+        /**
+         * This method is called when text has been changed.
+         */
+        public void afterTextChanged(Editable s) {
+            // if editTexts have required length amount of text, move focus to next editText
+            Util.removeFocusFromEditText(s, dobMonthEditText, dobDayEditText, 2);
+            Util.removeFocusFromEditText(s, dobDayEditText, dobYearEditText, 2);
+            Util.removeFocusFromEditText(s, dobYearEditText, ssnEditText, 4);
+            Util.removeFocusFromEditText(s, ssnEditText, null, 4);
+        }
     };
 
     private Boolean controlsHaveValues() {
@@ -244,7 +260,7 @@ public class UpdateProfileFragment extends Fragment {
         // calling async task and sending testUser
 
         // check for Internet status and set true/false
-        if (HelperMethods.checkInternetConnection(loginActivity.getApplicationContext())) {
+        if (HelperMethods.checkInternetConnection()) {
             taskUpdateUser = loginActivity.databaseOperations.updateUser(testUser);
         } else {
 

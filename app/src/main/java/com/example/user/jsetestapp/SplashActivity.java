@@ -79,7 +79,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onResume();
 
         // check for Internet status and set true/false
-        if (HelperMethods.checkInternetConnection(getApplicationContext())) {
+        if (HelperMethods.checkInternetConnection()) {
             getDataFromDatabase();
         } else {
             // call method showDialog and send tag "d_no_internet_connection"

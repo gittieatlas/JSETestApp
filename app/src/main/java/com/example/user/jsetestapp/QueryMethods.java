@@ -112,7 +112,7 @@ public class QueryMethods extends Activity {
         if (mainActivity.user.jseStudentId == null) {
 
             // if internet connection status is true getJseStudentId
-            if (HelperMethods.checkInternetConnection(mainActivity.getApplicationContext())) {
+            if (HelperMethods.checkInternetConnection()) {
                 mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
             }
         }

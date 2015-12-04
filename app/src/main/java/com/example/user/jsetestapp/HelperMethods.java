@@ -2,7 +2,6 @@ package com.example.user.jsetestapp;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -69,13 +68,6 @@ public class HelperMethods extends Activity {
 // convert String Array to ArrayList<String>; and call addDataToSpinner
         addDataToSpinner(new ArrayList<>(Arrays.asList(stringArray)), spinner);
     }
-
-
-
-
-
-
-
 
 
     public void scheduleTest() {
@@ -236,8 +228,8 @@ public class HelperMethods extends Activity {
         if (loginActivity.register2Fragment.isVisible()) {
             if (result.equals("") && id == 0) {
                 Util.showDialog(getDialogFragmentBundle(
-                                activity.getString(
-                                        R.string.d_create_account_failed_duplicate_email)));
+                        activity.getString(
+                                R.string.d_create_account_failed_duplicate_email)));
             } else if (result.equals("true") && id != 0) {
                 loginActivity.user.setId(id);
 
@@ -326,13 +318,11 @@ public class HelperMethods extends Activity {
     /**
      * Function to check internet status
      *
-     * @param context -   current context
-     * @return boolean      -   true if present/false if not present
+     * @return boolean
      */
-    public static boolean checkInternetConnection(Context context) {
-
+    public static boolean checkInternetConnection() {
         // creating connection detector class instance
-        ConnectionDetector cd = new ConnectionDetector(context);
+        ConnectionDetector cd = new ConnectionDetector(Util.getContext());
 
         // get Internet status
         return cd.isConnectingToInternet();
@@ -443,7 +433,10 @@ public class HelperMethods extends Activity {
 
     public static void hideSoftKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(Util.getActivity().getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
+        if (Util.getActivity().getCurrentFocus().getWindowToken() != null) {
+
+            inputMethodManager.hideSoftInputFromWindow(Util.getActivity().getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
+        }
     }
 
     public ArrayList<String> editLocationsNameArrayList() {
@@ -466,6 +459,7 @@ public class HelperMethods extends Activity {
      * @param TAG_LOCATIONS - tag to get locations from
      * @return jsonArray
      */
+
     public static JSONArray getJsonArray(String url, String TAG_LOCATIONS) {
         // instantiating jsonArray
         JSONArray jsonArray = new JSONArray();
@@ -666,7 +660,7 @@ public class HelperMethods extends Activity {
      * Function to create a bundle for a DialogFragment
      *
      * @param tagListener - tag of dialog fragment
-     * return bundle
+     *                    return bundle
      */
     public static Bundle getDialogFragmentBundle(String tagListener) {
 
@@ -885,8 +879,7 @@ public class HelperMethods extends Activity {
             neutralButton = activity.getString(R.string.d_ok);
             icon = R.drawable.ic_clipboard_text_grey600_24dp;
 
-        }
-        else {
+        } else {
             title = "";
             message = "";
             positiveButton = null;
@@ -943,7 +936,6 @@ public class HelperMethods extends Activity {
         // set this classes instance of MainActivity to mainActivity
         this.mainActivity = mainActivity;
     }
-
 
 
 }
