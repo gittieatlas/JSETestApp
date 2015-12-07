@@ -2,16 +2,16 @@ package com.example.user.jsetestapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class CustomDialogFragment extends android.app.DialogFragment {
+public class CustomDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Bundle bundle = this.getArguments();
 
         String title = getArguments().getString("title");
         String message = getArguments().getString("message");
@@ -51,26 +51,25 @@ public class CustomDialogFragment extends android.app.DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
-                        if (Util.getActivity().equals(((LoginActivity) getActivity()))) {
-                            ((LoginActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                        if (Util.getActivity().getClass().equals(LoginActivity.class)) {
+                            ((LoginActivity) getActivity()).dialogFragmentPositiveClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
                     try {
-                        if (Util.getActivity().equals(((MainActivity) getActivity()))) {
-                            ((MainActivity) getActivity()).dialogListeners.positiveButtonOnClickListener(TAG_LISTENER);
+                        if (Util.getActivity().getClass().equals(MainActivity.class)) {
+                            ((MainActivity) getActivity()).dialogFragmentPositiveClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
                     try {
-                        if (Util.getActivity().equals(((SplashActivity) getActivity()))) {
-                            ((SplashActivity) getActivity()).dialogListeners.positiveButtonOnClickListener
-                                    (TAG_LISTENER);
+                        if (Util.getActivity().getClass().equals(SplashActivity.class)) {
+                            ((SplashActivity) getActivity()).dialogFragmentPositiveClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
 
                 }
@@ -95,25 +94,25 @@ public class CustomDialogFragment extends android.app.DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
-                        if (Util.getActivity().equals(((LoginActivity) getActivity()))) {
-                            ((LoginActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                        if (Util.getActivity().getClass().equals(LoginActivity.class)) {
+                            ((LoginActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
                     try {
-                        if (Util.getActivity().equals(((MainActivity) getActivity()))) {
-                            ((MainActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                        if (Util.getActivity().getClass().equals(MainActivity.class)) {
+                            ((MainActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
                     try {
-                        if (Util.getActivity().equals(((SplashActivity) getActivity()))) {
-                            ((SplashActivity) getActivity()).dialogListeners.neutralButtonOnClickListener(TAG_LISTENER);
+                        if (Util.getActivity().getClass().equals(SplashActivity.class)) {
+                            ((SplashActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
                 }
             });

@@ -785,9 +785,9 @@ public class HelperMethods extends Activity {
 
             title = activity.getString(R.string.d_create_account_failed);
             message = activity.getString(R.string.d_enter_last_4_ssn);
-            positiveButton = activity.getString(R.string.d_ok);
-            negativeButton = activity.getString(R.string.d_cancel);
-            neutralButton = null;
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
             icon = R.drawable.ic_alert_grey600_24dp;
 
         } else if (tagListener.equals(
@@ -869,6 +869,15 @@ public class HelperMethods extends Activity {
             negativeButton = null;
             neutralButton = activity.getString(R.string.d_ok);
             icon = R.drawable.ic_clipboard_text_grey600_24dp;
+        } else if (tagListener.equals(
+                activity.getString(R.string.d_update_account_failed_ssn_incorrect))) {
+
+            title = activity.getString(R.string.d_update_account_failed);
+            message = activity.getString(R.string.d_enter_last_4_ssn);
+            positiveButton = null;
+            negativeButton = null;
+            neutralButton = activity.getString(R.string.d_ok);
+            icon = R.drawable.ic_alert_grey600_24dp;
 
         } else {
             title = "";

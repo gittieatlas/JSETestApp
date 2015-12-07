@@ -18,9 +18,7 @@ import io.fabric.sdk.android.Fabric;
 public class SplashActivity extends AppCompatActivity {
 
     // Declare Classes
-    MainActivity mainActivity;
     HelperMethods helperMethods;
-    DialogListeners dialogListeners;
 
     // Declare Variables
     ArrayList<Location> locationsArrayList;
@@ -101,8 +99,6 @@ public class SplashActivity extends AppCompatActivity {
      * Function to instantiate fragments
      */
     private void instantiateClasses() {
-        dialogListeners = new DialogListeners();
-        dialogListeners.setSplashActivity(this);
         helperMethods = new HelperMethods();
         helperMethods.setSplashActivity(this);
     }
@@ -372,7 +368,7 @@ public class SplashActivity extends AppCompatActivity {
             Util.showDialog(HelperMethods.getDialogFragmentBundle(
                     getString(R.string.d_load_info_fail)
             ));
-        // Todo add ok = neutral and "try again" - reload async task - do getDataFromDatabase();
+
     }
 
     private void changeActivities() {
@@ -572,8 +568,21 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    /**
+     * Function to check which dialog the positive button is from
+     * @param listenerTag - tag of dialog created
+     */
+    public void dialogFragmentPositiveClick(String listenerTag) {
+        if (listenerTag.equals(getString(R.string.d_load_info_fail))){
+            // Todo reload async task - do getDataFromDatabase();
+        }
     }
 
+    /**
+     * Function to check which dialog the neutral button is from
+     * @param listenerTag - tag of dialog created
+     */
+    public void dialogFragmentNeutralClick(String listenerTag) {
+
+    }
 }

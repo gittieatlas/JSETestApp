@@ -17,6 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
     // Declare Classes
     HelperMethods helperMethods;
     QueryMethods queryMethods;
-    DialogListeners dialogListeners;
-    SplashActivity splashActivity;
     DatabaseOperations databaseOperations;
 
     // Declare Fragments
@@ -100,10 +103,6 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.setMainActivity(this);
         queryMethods = new QueryMethods();
         queryMethods.setMainActivity(this);
-        dialogListeners = new DialogListeners();
-        dialogListeners.setMainActivity(this);
-        splashActivity = new SplashActivity();
-        splashActivity.setMainActivity(this);
         databaseOperations = new DatabaseOperations();
         databaseOperations.setMainActivity(this);
     }
@@ -209,9 +208,10 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function to set up each tab
-     * @param view - the view
+     *
+     * @param view      - the view
      * @param titleView - textView
-     * @param title - text for tab
+     * @param title     - text for tab
      */
     public void createTab(int view, int titleView, String title) {
         // initialize the tab
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         public void onTabSelected(TabLayout.Tab tab) {
             // check selected tab item position
             switch (tabLayout.getSelectedTabPosition()) {
-               // first tab - Dashboard
+                // first tab - Dashboard
                 case 0:
                     // check if dashboardFragment is visible or not
                     if (!dashboardFragment.isVisible()) {
@@ -296,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function to set the toolbar title
+     *
      * @param toolbarTitle - title for toolbar
      */
     public void setToolbarTitle(int toolbarTitle) {
@@ -337,15 +338,15 @@ public class MainActivity extends AppCompatActivity {
             // call showSnackBar and send tag "Account created"
             helperMethods.showSnackBar("Account created", coordinatorLayout);
             // if intent outcome = "login"
-        } else if (getIntent().getExtras().getString("outcome").equals("login")){
+        } else if (getIntent().getExtras().getString("outcome").equals("login")) {
             // call showSnackBar and send tag "Logged in"
             helperMethods.showSnackBar("Logged in", coordinatorLayout);
             // if intent outcome = "update_profile"
-        } else if (getIntent().getExtras().getString("outcome").equals("update_profile")){
+        } else if (getIntent().getExtras().getString("outcome").equals("update_profile")) {
             // call showSnackBar and send tag "Profile updated"
             helperMethods.showSnackBar("Profile updated", coordinatorLayout);
             // if intent outcome = "update_profile_cancel"
-        } else if (getIntent().getExtras().getString("outcome").equals("update_profile_cancel")){
+        } else if (getIntent().getExtras().getString("outcome").equals("update_profile_cancel")) {
             // call showSnackBar and send tag "Profile not updated"
             helperMethods.showSnackBar("Profile not updated", coordinatorLayout);
         }
@@ -384,6 +385,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function to create an intent to launch MainActivity
+     *
      * @param outcome - string to describe intent intention
      * @return Intent
      */
@@ -399,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function to create bundle for MainActivity
+     *
      * @param outcome - string to describe intent intention
      * @return bundle
      */
@@ -420,6 +423,74 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("outcome", outcome);
 
         return bundle;
+    }
+
+    /**
+     * Function to check which dialog the neutral button is from
+     * @param listenerTag - tag of dialog created
+     */
+    public void dialogFragmentPositiveClick(String listenerTag) {
+        // TODO comment this methods and the methods it calls
+
+        if (listenerTag.equals(getString(R.string.d_call_jse_non_hours))) {
+            setReminderToCallJse();
+        }
+
+        if (listenerTag.equals(getString(R.string.d_call_jse_during_hours))) {
+            IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
+        }
+
+        if (listenerTag.equals(getString(R.string.d_schedule_test))) {
+            IntentMethods.callIntent(Util.getStringValue(R.string.schedule_test_phone_number));
+        }
+
+        if (listenerTag.equals(getString(R.string.d_become_jse_member))) {
+            IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
+        }
+    }
+
+    /**
+     * Function to check which dialog the neutral button is from
+     * @param listenerTag - tag of dialog created
+     */
+    public void dialogFragmentNeutralClick(String listenerTag) {
+    }
+
+    /**
+     * Function to check which dialog the neutral button is from
+     */
+    public void setReminderToCallJse() {
+        LocalDate localDate = LocalDate.now();
+        int dayOfWeek = localDate.getDayOfWeek();
+        String hours = getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+        switch (dayOfWeek) {
+            case 4: {
+                // Thursday
+                String fridayHours = getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
+                setUpIntentToCallJse(fridayHours, 1);
+            }
+            case 5: {
+                // Friday
+                setUpIntentToCallJse(hours, 3);
+            }
+            case 6: {
+                // Saturday
+                // closed ?
+                setUpIntentToCallJse(hours, 2);
+            }
+            default: {
+                // Sunday - Thursday
+                setUpIntentToCallJse(hours, 1);
+            }
+        }
+    }
+
+
+    public void setUpIntentToCallJse(String hours, int days) {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
+        LocalTime localTime;
+        localTime = fmt.parseLocalTime(hours);
+        IntentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.user.jsetestapp;
 //CLEANED
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -22,7 +23,6 @@ public class LoginActivity extends AppCompatActivity {
     HelperMethods helperMethods;
     QueryMethods queryMethods;
     DatabaseOperations databaseOperations;
-    DialogListeners dialogListeners;
 
     // Declare Fragments
     LoginFragment loginFragment;
@@ -101,8 +101,6 @@ public class LoginActivity extends AppCompatActivity {
         helperMethods.setLoginActivity(this);
         queryMethods = new QueryMethods();
         queryMethods.setLoginActivity(this);
-        dialogListeners = new DialogListeners();
-        dialogListeners.setLoginActivity(this);
         databaseOperations = new DatabaseOperations();
         databaseOperations.setLoginActivity(this);
     }
@@ -245,5 +243,26 @@ public class LoginActivity extends AppCompatActivity {
         bundle.putString("outcome", outcome);
 
         return bundle;
+    }
+
+    /**
+     * Function to check which dialog the positive button is from
+     * @param listenerTag - tag of dialog created
+     */
+    public void dialogFragmentPositiveClick(String listenerTag) {
+
+        if (listenerTag.equals(getString(R.string.d_forgot_password))){
+            // ToDo send email with password
+        }
+    }
+
+    /**
+     * Function to check which dialog the neutral button is from
+     * @param listenerTag - tag of dialog created
+     */
+    public void dialogFragmentNeutralClick(String listenerTag) {
+        if (listenerTag.equals(getString(R.string.d_create_account_failed_email))){
+            getFragmentManager().popBackStack();
+        }
     }
 }
