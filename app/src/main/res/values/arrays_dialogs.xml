@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="dialogs">
+
+        <item value="0">
+            <tag>create_account_failed_email_duplicate,</tag>
+            <title>Create Account Failed,</title>
+            <message>Please enter a different email address. This one is already taken.,</message>
+            <positiveButton>null,</positiveButton>
+            <negativeButton>null,</negativeButton>
+            <neutralButton>OK,</neutralButton>
+            <icon>R.drawable.ic_alert_grey600_24dp</icon>
+        </item>
+
+        <item value="1">
+            <tag>create_account_failed_insert_failed,</tag>
+            <title>Create Account Failed,</title>
+            <message>Account could not be created at this time. Please try again later.,</message>
+            <positiveButton>null,</positiveButton>
+            <negativeButton>null,</negativeButton>
+            <neutralButton>OK,</neutralButton>
+            <icon>R.drawable.ic_alert_grey600_24dp,</icon>
+        </item>
+
+
+    </array>
+
+    <string-array name="dialog_0">
+        <item>create_account_failed_email_duplicate,</item>
+        <item>Create Account Failed,</item>
+        <item>Please enter a different email address. This one is already taken.,</item>
+        <item>null,</item>
+        <item>null,</item>
+        <item>OK,</item>
+        <item>R.drawable.ic_alert_grey600_24dp</item>
+    </string-array>
+
+    <!-- getResources().getStringArray(R.array.your_array)[position] -->
+</resources>
+
+
