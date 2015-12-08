@@ -61,6 +61,29 @@
     <string name="TAG_ALERT_TEXT">alertText</string>
     <string name="TAG_TIME_STAMP">timeStamp</string>
 
+
+    <!-- URL to create new user -->
+    <string name="url_create_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_check_email_insert.php</string>
+
+
+    <!-- URL to get user -->
+    <string name="url_get_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/login.php</string>
+
+    <!-- URL to get id from student-->
+    <string name="url_get_jse_student_id">http://phpstack-1830-4794-62139.cloudwaysapps.com/get_jse_student_id.php</string>
+
+    <!-- URL to update jseStudentId-->
+    <string name="url_update_jse_student_id">http://phpstack-1830-4794-62139.cloudwaysapps.com/update_jse_student_id.php</string>
+
+    <!-- URL to update user-->
+    <string name="url_update_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/update_user.php</string>
+
+
+
+
+
+
+
     <!-- fragment_login, fragment_register1, fragment_register2, fragment_update_profile -->
     <string name="email">Email Address</string>
     <string name="password">Password</string>

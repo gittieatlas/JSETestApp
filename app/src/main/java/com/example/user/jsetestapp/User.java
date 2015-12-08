@@ -21,64 +21,64 @@ public class User implements Serializable {
     }
 
     /**
-     * Retrieve the value of firstName.
-     * @return A String data type.
+     * Retrieve the value of firstName
+     * @return String
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * Set the value of firstName.
-     * @param firstName A variable of type String.
+     * Set the value of firstName
+     * @param firstName - variable of type String
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * Retrieve the value of lastName.
-     * @return A String data type.
+     * Retrieve the value of lastName
+     * @return String
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * Set the value of lastName.
-     * @param lastName A variable of type String.
+     * Set the value of lastName
+     * @param lastName - variable of type String
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * Retrieve the value of email.
-     * @return A String data type.
+     * Retrieve the value of email
+     * @return String
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Set the value of email.
-     * @param email A variable of type String.
+     * Set the value of email
+     * @param email - variable of type String.
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Retrieve the value of password.
-     * @return A String data type.
+     * Retrieve the value of password
+     * @return String data type
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * Set the value of password.
-     * @param password A variable of type String.
+     * Set the value of password
+     * @param password - variable of type String.
      */
     public void setPassword(String password) {
         this.password = password;
@@ -86,7 +86,7 @@ public class User implements Serializable {
 
     /**
      * Retrieve the value of ssn.
-     * @return A String data type.
+     * @return String
      */
     public String getSsn() {
         return ssn;
@@ -94,7 +94,7 @@ public class User implements Serializable {
 
     /**
      * Set the value of ssn.
-     * @param ssn A variable of type String.
+     * @param ssn - variable of type String.
      */
     public void setSsn(String ssn) {
         this.ssn = ssn;
@@ -102,7 +102,7 @@ public class User implements Serializable {
 
     /**
      * Retrieve the value of defaultLocation.
-     * @return A String data type.
+     * @return String data type.
      */
     public String getDefaultLocation() {
         return defaultLocation;
@@ -110,31 +110,31 @@ public class User implements Serializable {
 
     /**
      * Set the value of defaultLocation.
-     * @param defaultLocation A variable of type String.
+     * @param defaultLocation - variable of type String.
      */
     public void setDefaultLocation(String defaultLocation) {
         this.defaultLocation = defaultLocation;
     }
 
     /**
-     * Retrieve the value of dob.
-     * @return A LocalDate data type.
+     * Retrieve the value of dob
+     * @return LocalDate
      */
     public LocalDate getDob() {
         return dob;
     }
 
     /**
-     * Set the value of dob.
-     * @param dob A variable of type LocalDate.
+     * Set the value of dob
+     * @param dob - variable of type LocalDate
      */
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
     /**
-     * Set the value of dob.
-     * @param dob A variable of type String.
+     * Set the value of dob
+     * @param dob - variable of type String
      */
     public void setDob(String dob) {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -142,8 +142,8 @@ public class User implements Serializable {
     }
 
     /**
-     * Set the value of dob.
-     * @param year, months, day variables of type String.
+     * Set the value of dob
+     * @param year, months, day - variables of type String
      */
     public void setDob(String year, String month, String day) {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -151,16 +151,16 @@ public class User implements Serializable {
     }
 
     /**
-     * Retrieve the value of gender.
-     * @return A Gender data type.
+     * Retrieve the value of gender
+     * @return Gender
      */
     public Gender getGender() {
         return gender;
     }
 
     /**
-     * Retrieve the value of gender.
-     * @return A int data type.
+     * Retrieve the value of gender
+     * @return int
      */
     public int getGender(User user) {
         return Gender.valueOf(user.getGender().name()).ordinal();
@@ -168,15 +168,15 @@ public class User implements Serializable {
 
     /**
      * Set the value of gender.
-     * @param gender A variable of type Gender.
+     * @param gender - variable of type Gender.
      */
     public void setGender(Gender gender) {
         this.gender = gender;
     }
 
     /**
-     * Set the value of gender.
-     * @param gender A variable of type String.
+     * Set the value of gender
+     * @param gender - variable of type String
      */
     public void setGender(String gender) {
         try {
@@ -187,8 +187,8 @@ public class User implements Serializable {
     }
 
     /**
-     * Set the value of gender.
-     * @param gender A variable of type int.
+     * Set the value of gender
+     * @param gender - variable of type int
      */
     public void setGender(int gender) {
         try {
@@ -198,22 +198,25 @@ public class User implements Serializable {
         }
     }
 
-
+    /**
+     * Retrieve if isJseMember
+     * @return boolean
+     */
     public boolean isJseMember() {
         return isJseMember;
     }
 
     /**
-     * Set the value of isJseMember.
-     * @param isJseMember A variable of type boolean.
+     * Set the value of isJseMember
+     * @param isJseMember - variable of type boolean
      */
     public void setIsJseMember(boolean isJseMember) {
         this.isJseMember = isJseMember;
     }
 
     /**
-     * Set the value of isJseMember.
-     * @param isJseMember A variable of type String.
+     * Set the value of isJseMember
+     * @param isJseMember - variable of type String
      */
     public void setIsJseMember(String isJseMember) {
         if (isJseMember != null) {
@@ -222,16 +225,16 @@ public class User implements Serializable {
     }
 
     /**
-     * Retrieve the value of locationId.
-     * @return A int data type.
+     * Retrieve the value of locationId
+     * @return int
      */
     public int getLocationId() {
         return locationId;
     }
 
     /**
-     * Set the value of locationId.
-     * @param locationId A variable of type int.
+     * Set the value of locationId
+     * @param locationId - variable of type int
      */
     public void setLocationId(int locationId) {
 
@@ -239,8 +242,8 @@ public class User implements Serializable {
     }
 
     /**
-     * Set the value of locationId.
-     * @param locationId A variable of type String.
+     * Set the value of locationId
+     * @param locationId - variable of type String
      */
     public void setLocationId(String locationId) {
         if (locationId != null)
@@ -249,44 +252,47 @@ public class User implements Serializable {
 
     /**
      * Set the value of locationId.
-     * @param locationArrayList of type Location.
-     * @param user of type User.
+     * @param locationArrayList - variable of type Location.
+     * @param user - variable of type User.
      */
     public void setLocationId(ArrayList<Location> locationArrayList, User user) {
+        // loop through each location in locationArrayList
         for (Location location : locationArrayList) {
+            // if user's defaultLocation is equal to current location
             if (user.getDefaultLocation().equals(location.getName())) {
+                // assign id of location to locationId
                 this.locationId = location.getId();
             }
         }
     }
 
     /**
-     * Retrieve the value of id.
-     * @return A int data type.
+     * Retrieve the value of id
+     * @return int
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Set the value of id.
-     * @param id A variable of type int.
+     * Set the value of id
+     * @param id - variable of type int
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Retrieve the value of jseStudentId.
-     * @return A String data type.
+     * Retrieve the value of jseStudentId
+     * @return String
      */
     public String getJseStudentId() {
         return jseStudentId;
     }
 
     /**
-     * Set the value of jseStudentId.
-     * @param jseStudentId A variable of type String.
+     * Set the value of jseStudentId
+     * @param jseStudentId - variable of type String
      */
     public void setJseStudentId(String jseStudentId) {
         if (!jseStudentId.equals("null"))

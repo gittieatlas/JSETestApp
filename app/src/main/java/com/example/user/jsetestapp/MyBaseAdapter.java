@@ -44,13 +44,17 @@ public class MyBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // create a ViewHolder reference
         MyViewHolder mViewHolder;
 
+        //check to see if the reused view is null or not, if is not null then reuse it
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.location_info_list_item, parent, false);
             mViewHolder = new MyViewHolder(convertView);
+            // save the view holder on the cell view to get it back latter
             convertView.setTag(mViewHolder);
         } else {
+            // the getTag returns the viewHolder object set as a tag to the view
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
 

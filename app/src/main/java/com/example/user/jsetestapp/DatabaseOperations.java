@@ -22,17 +22,6 @@ public class DatabaseOperations {
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    // url to create new user
-    private static String url_create_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_check_email_insert.php";
-    // url to get user
-    private static String url_get_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/login.php";
-    // url to get id from student
-    private static String url_get_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/get_jse_student_id.php";
-    // url to update jseStudentId
-    private static String url_update_jse_student_id = "http://phpstack-1830-4794-62139.cloudwaysapps.com/update_jse_student_id.php";
-    // url to update user
-    private static String url_update_user = "http://phpstack-1830-4794-62139.cloudwaysapps.com/update_user.php";
-
     // JSON Node names
     private static final String TAG_RESULT = "result";
     private static final String TAG_INSERT_RESULT = "insertResult";
@@ -78,6 +67,11 @@ public class DatabaseOperations {
         return new UpdateUser(user).execute();
     }
 
+
+
+
+
+
     /**
      * Background Async Task to Create new product
      */
@@ -104,15 +98,12 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(loginActivity);
-            pDialog.setMessage("Creating account. Please wait...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+            showProgressDialog("Creating account. Please wait...");
+
         }
 
         /**
-         * Creating product
+         * Creating user
          */
         protected String doInBackground(String... args) {
             result = "";
@@ -132,10 +123,10 @@ public class DatabaseOperations {
             // getting JSON Object
             // Note that create user url accepts POST method
             JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(url_create_user,
+            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_create_user),
                     "POST", params);
 
-            // check log cat fro response
+            // check log cat for response
             Log.d("Create User", json.toString());
 
 
@@ -199,11 +190,7 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(loginActivity);
-            pDialog.setMessage("Logging in. Please wait...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+            showProgressDialog("Logging in. Please wait...");
         }
 
         /**
@@ -219,7 +206,7 @@ public class DatabaseOperations {
             // getting JSON Object
             // Note that create user url accepts POST method
             JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(url_get_user,
+            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_get_user),
                     "POST", params);
 
             // check log cat fro response
@@ -328,7 +315,7 @@ public class DatabaseOperations {
             // getting JSON Object
             // Note that get jse student id url accepts POST method
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonGet = jsonParser.makeHttpRequest(url_get_jse_student_id,
+            JSONObject jsonGet = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_get_jse_student_id),
                     "POST", params);
 
             // check log cat for response
@@ -354,7 +341,7 @@ public class DatabaseOperations {
                 paramsUpdate.add(new BasicNameValuePair("id", Integer.toString(id)));
                 paramsUpdate.add(new BasicNameValuePair("jseStudentId", studentId));
 
-                JSONObject jsonUpdate = jsonParser.makeHttpRequest(url_update_jse_student_id,
+                JSONObject jsonUpdate = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_update_jse_student_id),
                         "POST", paramsUpdate);
 
                 // check log cat for response
@@ -417,11 +404,7 @@ public class DatabaseOperations {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(loginActivity);
-            pDialog.setMessage("Updating account. Please wait...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+            showProgressDialog("Updating account. Please wait...");
         }
 
         /**
@@ -444,7 +427,7 @@ public class DatabaseOperations {
             // getting JSON Object
             // Note that create user url accepts POST method
             JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(url_update_user,
+            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_update_user),
                     "POST", params);
 
             // check log cat fro response
@@ -482,6 +465,13 @@ public class DatabaseOperations {
 
     }
 
+    public void showProgressDialog(String message){
+        pDialog = new ProgressDialog(loginActivity);
+        pDialog.setMessage(message);
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
+    }
 
 
     public void setLoginActivity(LoginActivity loginActivity) {
