@@ -1,6 +1,5 @@
 package com.example.user.jsetestapp;
-
-
+// CLEANED
 import java.io.Serializable;
 
 public class Branch implements Serializable{

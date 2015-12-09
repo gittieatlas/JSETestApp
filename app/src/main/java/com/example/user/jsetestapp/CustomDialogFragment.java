@@ -102,14 +102,14 @@ public class CustomDialogFragment extends DialogFragment {
                     }
                     try {
                         if (Util.getActivity().getClass().equals(MainActivity.class)) {
-                            ((MainActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
+                          //  ((MainActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                     try {
                         if (Util.getActivity().getClass().equals(SplashActivity.class)) {
-                            ((SplashActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
+                         //   ((SplashActivity) getActivity()).dialogFragmentNeutralClick(TAG_LISTENER);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();

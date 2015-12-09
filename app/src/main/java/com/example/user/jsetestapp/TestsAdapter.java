@@ -5,19 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
+public class TestsAdapter extends Adapter<RecyclerViewViewHolder> {
 
     // Declare ArrayList
-    private ArrayList<DataObject> arrayListDataObject;
+    private ArrayList<TestDataObject> arrayListTestDataObject;
 
     // Declare RecyclerViewItemClickListener
     private RecyclerViewItemClickListener itemClickListener;
@@ -25,9 +18,9 @@ public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
     // Declare RecyclerViewItemImageClickListener
     private RecyclerViewItemImageClickListener itemImageClickListener;
 
-    public RecyclerViewAdapter(ArrayList<DataObject> data) {
-        // assign data to arrayListDataObject
-        this.arrayListDataObject = data;
+    public TestsAdapter(ArrayList<TestDataObject> data) {
+        // assign data to arrayListTestDataObject
+        this.arrayListTestDataObject = data;
     }
 
     // create new views (invoked by the layout manager)
@@ -45,14 +38,14 @@ public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
     // replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerViewViewHolder holder, int position) {
-        // get data from your arrayListDataObject at this position
-        // replace the contents of the view with that arrayListDataObject
-        holder.location.setText(arrayListDataObject.get(position).getmText1());
-        holder.testDay.setText(arrayListDataObject.get(position).getmText2());
-        holder.testTime.setText(arrayListDataObject.get(position).getmText3());
-        holder.testDate.setText(arrayListDataObject.get(position).getmText4());
-        holder.testDeadlineTitle.setText(arrayListDataObject.get(position).getmText5());
-        holder.testDeadlineDetails.setText(arrayListDataObject.get(position).getmText6());
+        // get data from your arrayListTestDataObject at this position
+        // replace the contents of the view with that arrayListTestDataObject
+        holder.location.setText(arrayListTestDataObject.get(position).getmText1());
+        holder.testDay.setText(arrayListTestDataObject.get(position).getmText2());
+        holder.testTime.setText(arrayListTestDataObject.get(position).getmText3());
+        holder.testDate.setText(arrayListTestDataObject.get(position).getmText4());
+        holder.testDeadlineTitle.setText(arrayListTestDataObject.get(position).getmText5());
+        holder.testDeadlineDetails.setText(arrayListTestDataObject.get(position).getmText6());
     }
 
     /**
@@ -81,6 +74,6 @@ public class RecyclerViewAdapter extends Adapter<RecyclerViewViewHolder> {
      */
     @Override
     public int getItemCount() {
-        return arrayListDataObject.size();
+        return arrayListTestDataObject.size();
     }
 }

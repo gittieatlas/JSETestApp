@@ -190,8 +190,7 @@ public class Register2Fragment extends Fragment {
                 locationsSpinner.getSelectedItemPosition() == 0) {
 
             // Show dialog: Create Account Failed - missing required values
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_registration_failed_missing_fields)));
+            Util.showDialogFragment(R.array.registration_failed_missing_fields);
             return false;
         }
         return true;
@@ -209,8 +208,7 @@ public class Register2Fragment extends Fragment {
                 dobDayEditText.getText().toString())){
 
             // Show dialog: Create Account Failed - birthday is invalid date
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_registration_failed_birthday_incorrect)));
+            Util.showDialogFragment(R.array.registration_failed_birthday_incorrect);
 
             return false;
         }
@@ -226,8 +224,7 @@ public class Register2Fragment extends Fragment {
         if (!Util.isLength(ssnEditText.getText().toString(), 4)){
 
             // Show dialog: Create Account Failed - ssn is not length of 4
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_registration_failed_ssn_incorrect)));
+            Util.showDialogFragment(R.array.registration_failed_ssn_incorrect);
 
             // clear value of ssnEditText
             ssnEditText.setText("");
@@ -249,8 +246,7 @@ public class Register2Fragment extends Fragment {
             taskNewUser = loginActivity.databaseOperations.newUser(loginActivity.user);
         } else {
             // Show Dialog: No Internet Connection
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_no_internet_connection)));
+            Util.showDialogFragment(R.array.no_internet_connection);
         }
     }
 

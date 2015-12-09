@@ -159,9 +159,9 @@ public class LibrariesFragment extends Fragment {
     /**
      * Function to set LinearLayout visibility based on location selection
      */
-    public void setLinearLayoutVisibility(){
+    public void setLinearLayoutVisibility() {
         // if selected location is "location" (first option)
-        if (locationsSpinner.getSelectedItemPosition()==0){
+        if (locationsSpinner.getSelectedItemPosition() == 0) {
             // hide LinearLayout
             libraryInfoLinearLayout.setVisibility(View.GONE);
         }
@@ -175,7 +175,7 @@ public class LibrariesFragment extends Fragment {
     /**
      * Function to set up hours list view
      */
-    public void setUpHoursListView(){
+    public void setUpHoursListView() {
         // set up hours list view based on selected location
         mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail,
                 locationsSpinner.getSelectedItem().toString());
@@ -194,23 +194,42 @@ public class LibrariesFragment extends Fragment {
 
     /**
      * Function to get selected location
+     *
      * @return Location
      */
     private Location getSelectedLocation() {
         // initialize locationToPass
         Location locationToPass = new Location();
-        // loop through each location in locationsArrayList
-        for (Location location : mainActivity.locationsArrayList) {
-            // if location name is equal to selected location in spinner
-            if (location.getName().equals(locationsSpinner.getSelectedItem().toString()))
-                // assign location to locationToPass
-                locationToPass = location;
+
+        if (locationsSpinner.getSelectedItem().toString().equals("Location")) {
+            locationToPass = mainActivity.defaultLocation;
+        } else {
+            for (int i = 0; i < mainActivity.locationsArrayList.size(); i++) {
+                // if location name is equal to selected location in spinner
+                if (mainActivity.locationsArrayList.get(i).getName().equals(locationsSpinner.getSelectedItem().toString())) {
+                    // assign location to locationToPass
+                    locationToPass = mainActivity.locationsArrayList.get(i);
+                    break;
+                }
+            }
         }
 
+
+//        // loop through each location in locationsArrayList
+//        for (Location location : mainActivity.locationsArrayList) {
+//            // if location name is equal to selected location in spinner
+//            if (location.getName().equals(locationsSpinner.getSelectedItem().toString()))
+//                // assign location to locationToPass
+//                locationToPass = location;
+//            else
+//                // assign defaultLocation to locationToPass
+//                locationToPass = mainActivity.defaultLocation;
+//        }
+
         // if locationToPass is null
-        if (locationToPass == null)
-            // assign defaultLocation to locationToPass
-            locationToPass = mainActivity.defaultLocation;
+        // if (locationToPass == null)
+        // assign defaultLocation to locationToPass
+        // locationToPass = mainActivity.defaultLocation;
         // return locationToPass
         return locationToPass;
     }

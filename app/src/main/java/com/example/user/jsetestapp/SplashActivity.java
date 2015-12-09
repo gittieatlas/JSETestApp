@@ -81,9 +81,7 @@ public class SplashActivity extends AppCompatActivity {
             getDataFromDatabase();
         } else {
             // call method showDialog and send tag "d_no_internet_connection"
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_no_internet_connection)
-            ));
+            Util.showDialogFragment(R.array.no_internet_connection);
         }
     }
 
@@ -365,9 +363,7 @@ public class SplashActivity extends AppCompatActivity {
         // if asycTasks are not cancelled
         if (active)
             // call method showDialog and send tag "d_load_info_fail"
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_load_info_fail)
-            ));
+            Util.showDialogFragment(R.array.load_info_fail);
 
     }
 
@@ -573,16 +569,10 @@ public class SplashActivity extends AppCompatActivity {
      * @param listenerTag - tag of dialog created
      */
     public void dialogFragmentPositiveClick(String listenerTag) {
-        if (listenerTag.equals(getString(R.string.d_load_info_fail))){
+        if (listenerTag.equals(Util.getActivity().getResources()
+                .getResourceEntryName(R.array.load_info_fail))){
             // Todo reload async task - do getDataFromDatabase();
         }
     }
 
-    /**
-     * Function to check which dialog the neutral button is from
-     * @param listenerTag - tag of dialog created
-     */
-    public void dialogFragmentNeutralClick(String listenerTag) {
-
-    }
 }

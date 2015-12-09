@@ -120,8 +120,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // Show dialog: Forgot Password - missing required values
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_forgot_password)));
+            Util.showDialogFragment(R.array.forgot_password);
         }
     };
 
@@ -144,8 +143,7 @@ public class LoginFragment extends Fragment {
                 loginActivity.helperMethods.isEmpty(passwordEditText)) {
 
             // Show dialog: Login Failed - missing required values
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_login_failed_values)));
+            Util.showDialogFragment(R.array.login_failed_values);
             return false;
         }
         return true;
@@ -159,8 +157,7 @@ public class LoginFragment extends Fragment {
         // if email entered is not a valid email address
         if (!Util.isEmailAddressValid(emailEditText)) {
             // Show dialog: Login Failed - email address invalid
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_login_failed_invalid_email)));
+            Util. showDialogFragment(R.array.login_failed_invalid_email);
 
             return false;
         }
@@ -184,8 +181,7 @@ public class LoginFragment extends Fragment {
         // if internet status connection is false
         else {
             // Show Dialog: No Internet Connection
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_no_internet_connection)));
+            Util.showDialogFragment(R.array.no_internet_connection);
         }
     }
 

@@ -1,42 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="dialogs">
-
-        <item value="0">
-            <tag>create_account_failed_email_duplicate,</tag>
-            <title>Create Account Failed,</title>
-            <message>Please enter a different email address. This one is already taken.,</message>
-            <positiveButton>null,</positiveButton>
-            <negativeButton>null,</negativeButton>
-            <neutralButton>OK,</neutralButton>
-            <icon>R.drawable.ic_alert_grey600_24dp</icon>
-        </item>
-
-        <item value="1">
-            <tag>create_account_failed_insert_failed,</tag>
-            <title>Create Account Failed,</title>
-            <message>Account could not be created at this time. Please try again later.,</message>
-            <positiveButton>null,</positiveButton>
-            <negativeButton>null,</negativeButton>
-            <neutralButton>OK,</neutralButton>
-            <icon>R.drawable.ic_alert_grey600_24dp,</icon>
-        </item>
-
-
+    <array name="create_account_failed_email_duplicate">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_account_create_fail_duplicate_email_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
     </array>
 
-    <string-array name="dialog_0">
-        <item>create_account_failed_email_duplicate,</item>
-        <item>Create Account Failed,</item>
-        <item>Please enter a different email address. This one is already taken.,</item>
-        <item>null,</item>
-        <item>null,</item>
-        <item>OK,</item>
-        <item>R.drawable.ic_alert_grey600_24dp</item>
-    </string-array>
+    <array name="create_account_failed_insert_failed">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_account_create_fail_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
 
-    <!-- getResources().getStringArray(R.array.your_array)[position] -->
+    <array name="call_jse_during_office_hours">
+        <item>@string/d_jse_office</item>
+        <item>@null</item>
+        <item>@string/d_call</item>
+        <item>@string/d_cancel</item>
+        <item>@null</item>
+        <item>@drawable/ic_phone_grey600_24dp</item>
+    </array>
+
+    <array name="call_jse_during_non_office_hours">
+        <item>@string/d_jse_office</item>
+        <item>@string/d_office_closed_msg</item>
+        <item>@string/d_yes</item>
+        <item>@string/d_no</item>
+        <item>@null</item>
+        <item>@drawable/ic_calendar_clock_grey600_24dp</item>
+    </array>
+
+    <array name="login_failed_not_match">
+        <item>@string/d_login_failed</item>
+        <item>@string/d_username_password_not_match_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="schedule_test">
+        <item>@string/d_schedule_test_title</item>
+        <item>@null</item>
+        <item>@string/d_call</item>
+        <item>@string/d_cancel</item>
+        <item>@null</item>
+        <item>@drawable/ic_clipboard_text_grey600_24dp</item>
+    </array>
+
+    <array name="become_jse_member">
+        <item>@string/d_become_jse_member_title</item>
+        <item>@string/d_schedule_test_become_member</item>
+        <item>@string/d_call</item>
+        <item>@string/d_cancel</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_clipboard_text_grey600_24dp</item>
+    </array>
+
+    <array name="update_account_failed_msg">
+        <item>@string/d_update_account_failed</item>
+        <item>@string/d_update_create_fail_msg</item>
+        <item>@string/d_ok</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="login_failed_invalid_email">
+        <item>@string/d_login_failed</item>
+        <item>@string/d_invalid_email_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="no_internet_connection">
+        <item>@string/d_no_connection</item>
+        <item>@string/d_no_connection_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_exclamation_grey600_24dp</item>
+    </array>
+
+    <array name="login_failed_values">
+        <item>@string/d_login_failed</item>
+        <item>@string/d_fields_require_values_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="forgot_password">
+        <item>@string/d_send_password</item>
+        <item>@string/d_enter_email_msg</item>
+        <item>@string/d_send</item>
+        <item>@string/d_cancel</item>
+        <item>@null</item>
+        <item>@drawable/ic_settings_grey600_24dp</item>
+    </array>
+
+    <array name="create_account_failed_email_not_valid">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_enter_valid_email_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="create_account_failed_passwords_not_match">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_passwords_not_match_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="create_account_failed_values">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_fields_require_values_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="registration_failed_birthday_incorrect">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_enter_valid_dob_msg</item>
+        <item>@string/d_ok</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="registration_failed_ssn_incorrect">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_enter_last_4_ssn</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="registration_failed_missing_fields">
+        <item>@string/d_create_account_failed</item>
+        <item>@string/d_fields_require_values_msg</item>
+        <item>@string/d_ok</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="load_info_fail">
+        <item>@string/d_load_info_fail_title</item>
+        <item>@string/d_load_info_fail_msg</item>
+        <item>@string/d_try_again</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_clipboard_text_grey600_24dp</item>
+    </array>
+
+    <array name="update_account_failed_birthday_incorrect">
+        <item>@string/d_update_account_failed</item>
+        <item>@string/d_enter_valid_dob_msg</item>
+        <item>@string/d_ok</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="update_account_failed_ssn_incorrect">
+        <item>@string/d_update_account_failed</item>
+        <item>@string/d_enter_last_4_ssn</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="update_account_failed_values_not_match">
+        <item>@string/d_update_account_failed</item>
+        <item>@string/d_passwords_not_match_msg</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@string/d_ok</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
+    <array name="update_account_failed_missing_fields">
+        <item>@string/d_update_account_failed</item>
+        <item>@string/d_fields_require_values_msg</item>
+        <item>@string/d_ok</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
 </resources>
 
 

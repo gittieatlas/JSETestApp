@@ -16,9 +16,9 @@ public class Test implements Serializable , Comparable<Test>{
     }
 
     // class members
-    public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
+    public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
 
-    public static enum Gender {MALE, FEMALE, BOTH};
+    public enum Gender {MALE, FEMALE, BOTH}
 
     int branchId;
     String location;
@@ -85,13 +85,8 @@ public class Test implements Serializable , Comparable<Test>{
      * @param dayOfWeek- variable of type String
      */
     public void setDayOfWeek(String dayOfWeek) {
-        try {
-            // assign value of dayOfWeek to dayOfWeek
-            this.dayOfWeek = DayOfWeek.valueOf(dayOfWeek);
-        } catch (Exception ex) {
-            // assign Sunday to dayOfWeek
-            this.dayOfWeek = DayOfWeek.SUNDAY;
-        }
+        // dayOfWeek equals dayOfWeek
+        this.dayOfWeek = DayOfWeek.valueOf(dayOfWeek);
     }
 
     /**
@@ -240,9 +235,7 @@ class LocationDateComparator implements Comparator<Test> {
             int value2= test1.getLocation().compareToIgnoreCase(test2.getLocation());
             // if value2 is 0
             if (value2 == 0){
-                // return date of test2
                 return test2.getDate().compareTo(test2.getDate());
-
             } // if value2 is not 0
             else
                 return value2;

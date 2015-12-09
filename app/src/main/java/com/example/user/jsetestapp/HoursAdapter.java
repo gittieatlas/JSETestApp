@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MyBaseAdapter extends BaseAdapter {
+public class HoursAdapter extends BaseAdapter {
     // Declare ArrayList
     ArrayList<HoursDataObject> myList;
 
@@ -21,7 +21,7 @@ public class MyBaseAdapter extends BaseAdapter {
     Context context;
 
     // constructor
-    public MyBaseAdapter(Context context, ArrayList<HoursDataObject> myList) {
+    public HoursAdapter(Context context, ArrayList<HoursDataObject> myList) {
         this.myList = myList;
         this.context = context;
         inflater = LayoutInflater.from(this.context);

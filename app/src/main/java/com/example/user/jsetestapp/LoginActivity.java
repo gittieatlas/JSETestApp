@@ -251,7 +251,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void dialogFragmentPositiveClick(String listenerTag) {
 
-        if (listenerTag.equals(getString(R.string.d_forgot_password))){
+        if (listenerTag.equals(Util.getActivity().getResources()
+                .getResourceEntryName(R.array.forgot_password))){
             // ToDo send email with password
         }
     }
@@ -261,7 +262,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param listenerTag - tag of dialog created
      */
     public void dialogFragmentNeutralClick(String listenerTag) {
-        if (listenerTag.equals(getString(R.string.d_create_account_failed_email))){
+        if (listenerTag.equals(Util.getActivity().getResources()
+                        .getResourceEntryName(R.array.create_account_failed_email_duplicate))){
             getFragmentManager().popBackStack();
         }
     }

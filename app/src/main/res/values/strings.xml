@@ -191,37 +191,14 @@
     <string name="d_send">SEND</string>
     <string name="d_try_again">TRY AGAIN</string>
 
-    <!-- Dialogs Listener Tags -->
-    <string name="d_call_jse_during_hours">call_jse_during_office_hours</string>
-    <string name="d_call_jse_non_hours">call_jse_during_non_office_hours</string>
-    <string name="d_create_account_insert_failed">create_account_failed_insert_failed</string>
-    <string name="d_create_account_failed_duplicate_email">create_account_failed_email_duplicate</string>
-    <string name="d_no_internet_connection">no_internet_connection</string>
-    <string name="d_login_failed_not_match">login_failed_not_match</string>
-    <string name="d_login_failed_values">login_failed_values</string>
-    <string name="d_login_failed_invalid_email">login_failed_invalid_email</string>
-    <string name="d_forgot_password">forgot_password</string>
-    <string name="d_create_account_failed_email_duplicate">create_account_failed_email_duplicate</string>
-    <string name="d_create_account_failed_values_not_match">create_account_failed_values_match</string>
-    <string name="d_create_account_failed_values">create_account_failed_values</string>
-    <string name="d_create_account_failed_email">create_account_failed_email</string>
-    <string name="d_registration_failed_birthday_incorrect">registration_failed_birthday_incorrect</string>
-    <string name="d_registration_failed_ssn_incorrect">registration_failed_ssn_incorrect</string>
-    <string name="d_registration_failed_missing_fields">registration_failed_missing_fields</string>
-    <string name="d_update_account_failed_missing_fields">update_account__failed_missing_fields</string>
-    <string name="d_update_account_failed_birthday_incorrect">update_account_failed_birthday_incorrect</string>
-    <string name="d_update_account_failed_ssn_incorrect">update_account_failed_ssn_incorrect</string>
-    <string name="d_update_account_failed_values_not_match">update_profile_failed_values_not_match</string>
-    <string name="d_schedule_test">schedule_test</string>
-    <string name="d_become_jse_member">become_jse_member</string>
-    <string name="d_load_info_fail">load_info_fail</string>
-
     <!-- Dialogs Messages -->
     <string name="d_office_closed_msg">The JSE office is currently closed.
         Would you like to set a reminder on your phone to call during office hour?</string>
     <string name="d_account_create_fail_duplicate_email_msg">Please enter a different email address.
         This one is already taken.</string>
     <string name="d_account_create_fail_msg">Account could not be created at this time.
+        Please try again later.</string>
+    <string name="d_update_create_fail_msg">Account could not be updated at this time.
         Please try again later.</string>
     <string name="d_fields_require_values_msg">All fields require a value.</string>
     <string name="d_invalid_email_msg">Email address entered is not valid.

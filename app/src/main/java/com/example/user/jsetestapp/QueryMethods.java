@@ -16,12 +16,6 @@ public class QueryMethods extends Activity {
 
     }
 
-    public String getTag() {
-        Bundle bundle = mainActivity.getIntent().getExtras();
-        return bundle.getString("outcome");
-
-    }
-
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
 
         ArrayList<String> locationsNameArrayList = new ArrayList<String>();
@@ -67,7 +61,7 @@ public class QueryMethods extends Activity {
 
 
     public void setupListView(ListAdapter adapter, ListView listView, String name) {
-        adapter = new MyBaseAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
+        adapter = new HoursAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
         listView.setAdapter(adapter);
         updateHoursArrayListView(listView, name);
     }

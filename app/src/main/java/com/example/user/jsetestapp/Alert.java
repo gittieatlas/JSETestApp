@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-
+//CLEANED
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Alert implements Serializable {
     // class members
-    public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
+    public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
 
     String locationName, alertText;
     DayOfWeek dayOfWeek;

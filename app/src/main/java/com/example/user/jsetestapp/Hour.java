@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Hour implements Serializable{
     // class members
-    public static enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
+    public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
 
     String name;
     DayOfWeek dayOfWeek;
@@ -48,20 +48,6 @@ public class Hour implements Serializable{
      */
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
-    }
-
-    /**
-     * Set dayOfWeek
-     * @param dayOfWeek - variable of type String
-     */
-    public void setDayOfWeek(String dayOfWeek) {
-        try {
-            // assign the value of dayOfWeek to dayOfWeek
-            this.dayOfWeek = DayOfWeek.valueOf(dayOfWeek);
-        } catch (Exception ex) {
-            // assign sunday to dayOfWeek
-            this.dayOfWeek = DayOfWeek.SUNDAY;
-        }
     }
 
     /**

@@ -17,11 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Branch> branchesArrayList;
     ArrayList<String> branchesNameArrayList;
     ArrayList<Test> testsArrayList;
-    ArrayList<DataObject> testsFilteredArrayList;
+    ArrayList<TestDataObject> testsFilteredArrayList;
     ArrayList<com.example.user.jsetestapp.Hour> hourArrayList;
     ArrayList<HoursDataObject> hoursFilteredArrayList;
     ArrayList<Alert> alertArrayList;
@@ -285,12 +280,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
-
         }
 
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
-
         }
     };
 
@@ -326,7 +319,6 @@ public class MainActivity extends AppCompatActivity {
         helperMethods.replaceFragment(dashboardFragment,
                 getString(R.string.toolbar_title_dashboard),
                 MainActivity.this, scrollView);
-
     }
 
     /**
@@ -430,67 +422,34 @@ public class MainActivity extends AppCompatActivity {
      * @param listenerTag - tag of dialog created
      */
     public void dialogFragmentPositiveClick(String listenerTag) {
-        // TODO comment this methods and the methods it calls
 
-        if (listenerTag.equals(getString(R.string.d_call_jse_non_hours))) {
-            setReminderToCallJse();
+        // if listenerTag equals call_jse_during_non_office_hours
+        if (listenerTag.equals( Util.getActivity().getResources()
+                .getResourceEntryName(R.array.call_jse_during_non_office_hours))) {
+            // set reminder to call JSE during office hours
+            helperMethods.setReminderToCallJse();
         }
 
-        if (listenerTag.equals(getString(R.string.d_call_jse_during_hours))) {
+        // if listenerTag equals call_jse_during_office_hours
+        if (listenerTag.equals(Util.getActivity().getResources()
+                .getResourceEntryName(R.array.call_jse_during_office_hours))) {
+            // call JSE Office
             IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
         }
 
-        if (listenerTag.equals(getString(R.string.d_schedule_test))) {
+        // if listenerTag equals schedule_test
+        if (listenerTag.equals(Util.getActivity().getResources()
+                .getResourceEntryName(R.array.schedule_test))) {
+            // Call schedule test phone number
             IntentMethods.callIntent(Util.getStringValue(R.string.schedule_test_phone_number));
         }
 
-        if (listenerTag.equals(getString(R.string.d_become_jse_member))) {
+        // if listenerTag equals become_jse_member
+        if (listenerTag.equals(Util.getActivity().getResources()
+                .getResourceEntryName(R.array.become_jse_member))) {
+            // call JSE office
             IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
         }
+
     }
-
-    /**
-     * Function to check which dialog the neutral button is from
-     * @param listenerTag - tag of dialog created
-     */
-    public void dialogFragmentNeutralClick(String listenerTag) {
-    }
-
-    /**
-     * Function to check which dialog the neutral button is from
-     */
-    public void setReminderToCallJse() {
-        LocalDate localDate = LocalDate.now();
-        int dayOfWeek = localDate.getDayOfWeek();
-        String hours = getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-        switch (dayOfWeek) {
-            case 4: {
-                // Thursday
-                String fridayHours = getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
-                setUpIntentToCallJse(fridayHours, 1);
-            }
-            case 5: {
-                // Friday
-                setUpIntentToCallJse(hours, 3);
-            }
-            case 6: {
-                // Saturday
-                // closed ?
-                setUpIntentToCallJse(hours, 2);
-            }
-            default: {
-                // Sunday - Thursday
-                setUpIntentToCallJse(hours, 1);
-            }
-        }
-    }
-
-
-    public void setUpIntentToCallJse(String hours, int days) {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
-        LocalTime localTime;
-        localTime = fmt.parseLocalTime(hours);
-        IntentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
-    }
-
 }

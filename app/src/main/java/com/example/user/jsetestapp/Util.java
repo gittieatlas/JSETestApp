@@ -197,11 +197,14 @@ public class Util extends Activity {
     /**
      * Function to create and show dialog fragment
      *
-     * @param bundle - information to be passed to new dialog fragment
+     * @param array - that holds info about the dialog fragment
      */
-    public static void showDialog(Bundle bundle) {
+    public static void showDialogFragment(int array) {
         // instantiate new dialog fragment
         CustomDialogFragment dialogFragment = new CustomDialogFragment();
+
+        // create a bundle with dialog information from dialog array
+        Bundle bundle = HelperMethods.getDialogFragmentBundle(array);
 
         // add bundle as an argument to dialogFragment
         dialogFragment.setArguments(bundle);

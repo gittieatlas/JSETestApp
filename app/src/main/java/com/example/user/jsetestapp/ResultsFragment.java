@@ -109,14 +109,14 @@ public class ResultsFragment extends Fragment
         // add item decorator to recyclerView
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL_LIST));
-        // Create recyclerViewAdapter passing in testsFilteredArrayList
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(getDataSet());
+        // Create testsAdapter passing in testsFilteredArrayList
+        TestsAdapter testsAdapter = new TestsAdapter(getDataSet());
         // attach the adapter to the recyclerView to populate items
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setAdapter(testsAdapter);
         // set recyclerView item click listener
-        recyclerViewAdapter.setOnItemClickListener(this);
+        testsAdapter.setOnItemClickListener(this);
         // set recyclerView image click listener
-        recyclerViewAdapter.setOnItemImageClickListener(this);
+        testsAdapter.setOnItemImageClickListener(this);
     }
 
     /**
@@ -173,9 +173,9 @@ public class ResultsFragment extends Fragment
 
     /**
      * Function to get dataSet
-     * @return ArrayList of type DataObject
+     * @return ArrayList of type TestDataObject
      */
-    private ArrayList<DataObject> getDataSet() {
+    private ArrayList<TestDataObject> getDataSet() {
         // return testFilteredArrayList
         return mainActivity.testsFilteredArrayList;
     }

@@ -1,9 +1,9 @@
 package com.example.user.jsetestapp;
 
 /*
- * DataObject class holds data for displaying in RecyclerView
+ * TestDataObject class holds data for displaying in RecyclerView
  * */
-public class DataObject {
+public class TestDataObject {
     private String mText1;
     private String mText2;
     private String mText3;
@@ -11,7 +11,7 @@ public class DataObject {
     private String mText5;
     private String mText6;
 
-    DataObject(String text1, String text2, String text3, String text4, String text5, String text6) {
+    TestDataObject(String text1, String text2, String text3, String text4, String text5, String text6) {
         mText1 = text1;
         mText2 = text2;
         mText3 = text3;

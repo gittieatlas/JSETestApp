@@ -48,8 +48,13 @@ public class IntentMethods extends Activity {
     public static void callIntent(String number) {
         Uri call = Uri.parse("tel:" + number);
         Intent intent = new Intent(Intent.ACTION_CALL, call);
-        Util.getActivity().startActivity(intent);
-       // mainActivity.doIntent(intent);
+
+        if (intent.resolveActivity(Util.getContext().getPackageManager()) != null) {
+            Util.getActivity().startActivity(intent);
+        } else {
+            Toast.makeText(Util.getContext(), "No phone clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void calendarIntent(String title, String eventLocation, String description, LocalDate testDate, LocalTime testTime) {

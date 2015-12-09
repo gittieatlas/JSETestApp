@@ -115,8 +115,7 @@ public class Register1Fragment extends Fragment {
                 loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {
 
             // Show dialog: Create Account Failed - missing required values
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_create_account_failed_values)));
+            Util.showDialogFragment(R.array.create_account_failed_values);
             return false;
         }
         return true;
@@ -130,8 +129,7 @@ public class Register1Fragment extends Fragment {
         // if email entered is not a valid email address
         if (!Util.isEmailAddressValid(emailEditText)) {
             // Show dialog: Create Account Failed - email address invalid
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_create_account_failed_email)));
+            Util.showDialogFragment(R.array.create_account_failed_email_not_valid);
 
             return false;
         }
@@ -149,8 +147,7 @@ public class Register1Fragment extends Fragment {
                 confirmPasswordEditText.getText().toString())) {
 
             // Show dialog: Create Account Failed - passwords don't match
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_create_account_failed_values_not_match)));
+            Util.showDialogFragment(R.array.create_account_failed_passwords_not_match);
 
             // clear passwordEditText and confirmPasswordEditText values
             passwordEditText.setText("");

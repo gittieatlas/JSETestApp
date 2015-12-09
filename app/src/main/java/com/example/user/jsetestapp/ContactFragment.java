@@ -86,15 +86,11 @@ public class ContactFragment extends Fragment {
             // if its during office hours
             if (mainActivity.helperMethods.isDuringOfficeHours()) {
                 // show dialog "Call JSE"
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_call_jse_during_hours)
-                ));
-                // if its after office hours
+                Util.showDialogFragment(R.array.call_jse_during_office_hours);
+            // if its after office hours
             } else {
                 // show dialog "Jse office is currently closed. Would you like to set a reminder?"
-                Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                        getString(R.string.d_call_jse_non_hours)
-                ));
+                Util.showDialogFragment(R.array.call_jse_during_non_office_hours);
             }
         }
     };
@@ -127,8 +123,10 @@ public class ContactFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            // jse email address
-            String[] addresses = {"info@jseoffice.com"};
+            // get list of email addresses from xml array
+            String[] addresses =
+                    Util.getActivity().getResources().getStringArray(R.array.addresses);
+
             // subject line
             String subject = "Contact JSE - Android App";
             // compose email using email address and subject line

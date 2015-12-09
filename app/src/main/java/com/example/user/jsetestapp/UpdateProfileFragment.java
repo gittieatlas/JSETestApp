@@ -228,8 +228,7 @@ public class UpdateProfileFragment extends Fragment {
                 loginActivity.helperMethods.isEmpty(ssnEditText)) {
 
             // Show dialog: Update Account Failed - missing required values
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_update_account_failed_missing_fields)));
+            Util.showDialogFragment(R.array.update_account_failed_missing_fields);
 
             return false;
         }
@@ -248,8 +247,7 @@ public class UpdateProfileFragment extends Fragment {
                 dobDayEditText.getText().toString())) {
 
             // Show dialog: Update Account Failed - birthday is invalid date
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_update_account_failed_birthday_incorrect)));
+            Util.showDialogFragment(R.array.update_account_failed_birthday_incorrect);
 
             return false;
         }
@@ -265,8 +263,7 @@ public class UpdateProfileFragment extends Fragment {
         if (!Util.isLength(ssnEditText.getText().toString(), 4)) {
 
             // Show dialog: Update Account Failed - ssn is not length of 4
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_update_account_failed_ssn_incorrect)));
+            Util.showDialogFragment(R.array.update_account_failed_ssn_incorrect);
 
             // clear value of ssnEditText
             ssnEditText.setText("");
@@ -287,8 +284,7 @@ public class UpdateProfileFragment extends Fragment {
                 confirmNewPasswordEditText.getText().toString())) {
 
             // Show dialog: Update Account Failed - passwords don't match
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_update_account_failed_values_not_match)));
+            Util.showDialogFragment(R.array.update_account_failed_values_not_match);
 
             // clear newPasswordEditText and confirmNewPasswordEditText values
             newPasswordEditText.setText("");
@@ -311,8 +307,7 @@ public class UpdateProfileFragment extends Fragment {
             taskUpdateUser = loginActivity.databaseOperations.updateUser(saveUpdatedUser());
         } else {
             // Show Dialog: No Internet Connection
-            Util.showDialog(HelperMethods.getDialogFragmentBundle(
-                    getString(R.string.d_no_internet_connection)));
+            Util.showDialogFragment(R.array.no_internet_connection);
         }
     }
 
