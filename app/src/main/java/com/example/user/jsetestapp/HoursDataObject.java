@@ -1,45 +1,43 @@
 package com.example.user.jsetestapp;
 
 public class HoursDataObject {
-    private String mText1;
-    private String mText2;
-    private String mText3;
+    // Declare variables
+    private String libraryDay,libraryOpeningTime, libraryClosingTime;
 
 
+    // Constructor
     HoursDataObject(String text1, String text2, String text3) {
-        mText1 = text1;
-        mText2 = text2;
-        mText3 = text3;
+        libraryDay = text1;
+        libraryOpeningTime = text2;
+        libraryClosingTime = text3;
 
     }
 
-    public String getmText1() {
+    /**
+     * Retrieve libraryDay defined in the constructor
+     * @return String
+     */
+    public String getLibraryDay() {
 
-        return mText1;
+        return libraryDay;
     }
 
-    public void setmText1(String mText1) {
+    /**
+     * Retrieve libraryOpeningTime defined in the constructor
+     * @return String
+     */
+    public String getLibraryOpeningTime() {
 
-        this.mText1 = mText1;
+        return libraryOpeningTime;
     }
 
-    public String getmText2() {
+    /**
+     * Retrieve libraryClosingTime defined in the constructor
+     * @return String
+     */
+    public String getLibraryClosingTime() {
 
-        return mText2;
+        return libraryClosingTime;
     }
 
-    public void setmText2(String mText2) {
-
-        this.mText2 = mText2;
-    }
-
-    public String getmText3() {
-
-        return mText3;
-    }
-
-    public void setmText3(String mText3) {
-
-        this.mText3 = mText3;
-    }
 }
