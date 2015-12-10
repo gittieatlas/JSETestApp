@@ -3,6 +3,9 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- node to check success of query -->
+    <string name="TAG_SUCCESS">success</string>
+
     <!-- activity splash -->
 
     <!-- URL to get locationsJsonArray JSON -->
@@ -62,9 +65,10 @@
     <string name="TAG_TIME_STAMP">timeStamp</string>
 
 
+    <!-- DatabaseOperations Class  -->
+
     <!-- URL to create new user -->
     <string name="url_create_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_check_email_insert.php</string>
-
 
     <!-- URL to get user -->
     <string name="url_get_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/login.php</string>
@@ -78,10 +82,23 @@
     <!-- URL to update user-->
     <string name="url_update_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/update_user.php</string>
 
+    <!-- JSON Nodes names -->
 
+    <string name="TAG_RESULT">result</string>
+    <string name="TAG_INSERT_RESULT">insertResult</string>
+    <string name="TAG_CHECK_EMAIL_RESULT">checkEmailResult</string>
+    <string name="TAG_USERS">users</string>
+    <string name="TAG_USER_ID">id</string>
+    <string name="TAG_FIRST_NAME">firstName</string>
+    <string name="TAG_LAST_NAME">lastName</string>
+    <string name="TAG_USER_GENDER">gender</string>
 
-
-
+    <string name="TAG_EMAIL">email</string>
+    <string name="TAG_PASSWORD">password</string>
+    <string name="TAG_SSN">ssn</string>
+    <string name="TAG_LOCATION_ID">locationId</string>
+    <string name="TAG_DOB">dob</string>
+    <string name="TAG_JSE_STUDENT_ID">jseStudentId</string>
 
 
     <!-- fragment_login, fragment_register1, fragment_register2, fragment_update_profile -->

@@ -7,14 +7,6 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 public class Test implements Serializable , Comparable<Test>{
-
-    // Overriding the compareTo method
-    @Override
-    public int compareTo(Test t) {
-        //sorts by date
-        return getDate().compareTo(t.getDate());
-    }
-
     // class members
     public enum DayOfWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
 
@@ -111,10 +103,10 @@ public class Test implements Serializable , Comparable<Test>{
      */
     public void setDeadlineDayOfWeek(String dayOfWeek) {
         try {
-            // assign value of dayOfWeek to deadlineDayOfWeek
+            // deadlineDayOfWeek equals to deadlineDayOfWeek
             this.deadlineDayOfWeek = DayOfWeek.valueOf(dayOfWeek);
         } catch (Exception ex) {
-            // assign Sunday to deadlineDayOfWeek
+            // deadlineDayOfWeek equals to sunday
             this.deadlineDayOfWeek = DayOfWeek.SUNDAY;
         }
     }
@@ -205,12 +197,20 @@ public class Test implements Serializable , Comparable<Test>{
      */
     public void setGender(int gender) {
         try {
-            // assign int value of gender minus 1 gender
+            // gender equals gender param minus 1
             this.gender = Gender.values()[gender-1];
         } catch (Exception ex) {
-            // assign value of BOTH to gender
+            // gender equals BOTH
             this.gender = Gender.BOTH;
         }
+    }
+
+
+    // Overriding the compareTo method
+    @Override
+    public int compareTo(Test t) {
+        //sorts by date
+        return getDate().compareTo(t.getDate());
     }
 }
 
@@ -227,11 +227,11 @@ class LocationDateComparator implements Comparator<Test> {
      *
      */
     public int compare(Test test1, Test test2) {
-        // compare location of test1 and test2 and assign result in value1
+        // compare location of test1 and test2 and store result in value1
         int value1 = test1.getLocation().compareTo(test2.getLocation());
         // if value1 is 0
         if (value1==0){
-            // compare location of test1 and test2 and assign result in value2
+            // compare location of test1 and test2 and store result in value2
             int value2= test1.getLocation().compareToIgnoreCase(test2.getLocation());
             // if value2 is 0
             if (value2 == 0){

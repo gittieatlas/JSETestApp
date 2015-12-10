@@ -434,21 +434,21 @@ public class MainActivity extends AppCompatActivity {
         if (listenerTag.equals(Util.getActivity().getResources()
                 .getResourceEntryName(R.array.call_jse_during_office_hours))) {
             // call JSE Office
-            IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
+            Util.callIntent(Util.getStringValue(R.string.jse_phone_number));
         }
 
         // if listenerTag equals schedule_test
         if (listenerTag.equals(Util.getActivity().getResources()
                 .getResourceEntryName(R.array.schedule_test))) {
             // Call schedule test phone number
-            IntentMethods.callIntent(Util.getStringValue(R.string.schedule_test_phone_number));
+            Util.callIntent(Util.getStringValue(R.string.schedule_test_phone_number));
         }
 
         // if listenerTag equals become_jse_member
         if (listenerTag.equals(Util.getActivity().getResources()
                 .getResourceEntryName(R.array.become_jse_member))) {
             // call JSE office
-            IntentMethods.callIntent(Util.getStringValue(R.string.jse_phone_number));
+            Util.callIntent(Util.getStringValue(R.string.jse_phone_number));
         }
 
     }

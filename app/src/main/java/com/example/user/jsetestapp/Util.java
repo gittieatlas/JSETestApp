@@ -8,6 +8,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+import java.util.Calendar;
 
 public class Util extends Activity {
 
@@ -250,6 +256,109 @@ public class Util extends Activity {
                     // hide soft keyboard
                     HelperMethods.hideSoftKeyboard();
                 }
+        }
+    }
+
+    /**
+     * Function to send email with an intent
+     *
+     * @param addresses - array of email addresses
+     * @param subject   - subject line of email
+     */
+    public static void composeEmail(String[] addresses, String subject) {
+        // Create an Intent. Set the action to ACTION_SENDTO
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        // Only email apps should handle this
+        // Create a Uri from an intent string.
+        intent.setData(Uri.parse("mailto:"));
+        // Add addresses to intent
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        // Add subject to intent
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+
+        // Attempt to start an activity that can handle the Intent
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            activity.startActivity(intent);
+        } else {
+            // Show message: "No email clients installed."
+            Toast.makeText(context, "No email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Function to make a call with an intent
+     *
+     * @param number - number to call
+     */
+    public static void callIntent(String number) {
+        // Create a Uri from an intent string. Use the result to create an Intent.
+        Uri call = Uri.parse("tel:" + number);
+        // Create an Intent. Set the action to ACTION_CALL and send uri
+        Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+        // Attempt to start an activity that can handle the Intent
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            activity.startActivity(intent);
+        } else {
+            // Show message: "No phone clients installed."
+            Toast.makeText(context, "No phone clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Function to make a call with an intent
+     *
+     * @param title - title of event
+     * @param eventLocation - location of event
+     * @param description - description of event
+     * @param testDate - date of event
+     * @param testTime - time of event
+     */
+    public static void calendarIntent(String title, String eventLocation, String description,
+                                      LocalDate testDate, LocalTime testTime) {
+        // Create an Intent. Set the action to ACTION_INSERT
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        // Set type as calendar event
+        intent.setType("vnd.android.cursor.item/event");
+        // If title is not null
+        if (title != null){
+            // Add title to intent
+            intent.putExtra("title", title);
+        }
+        // If eventLocation is not null
+        if (eventLocation!=null){
+            // Add eventLocation to intent
+            intent.putExtra("eventLocation", eventLocation);
+        }
+        // If description is not null
+        if (description!=null){
+            // Add description to intent
+            intent.putExtra("description", description);
+        }
+        // If testDat is not null and testTime is not null
+        if (testDate!=null && testTime!=null){
+            // startTime equals to a calendar object whose fields are set to current date and time:
+            Calendar startTime = Calendar.getInstance();
+            // Set date and time of startTime
+            startTime.set(testDate.getYear(), testDate.getMonthOfYear() - 1,
+                    testDate.getDayOfMonth(), testTime.getHourOfDay(), testTime.getMinuteOfHour());
+            // Add startTime to intent
+            intent.putExtra("beginTime", startTime.getTimeInMillis());
+        }
+        // Add allDay(as false) to intent
+        intent.putExtra("allDay", false);
+        // Add alarm to intent
+        intent.putExtra("hasAlarm", 1);
+
+        // Attempt to start an activity that can handle the Intent
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            activity.startActivity(intent);
+        } else {
+            // Show message: "No calendar clients installed."
+            Toast.makeText(context, "No calendar clients installed.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

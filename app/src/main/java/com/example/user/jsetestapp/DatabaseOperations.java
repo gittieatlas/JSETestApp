@@ -22,22 +22,6 @@ public class DatabaseOperations {
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    // JSON Node names
-    private static final String TAG_RESULT = "result";
-    private static final String TAG_INSERT_RESULT = "insertResult";
-    private static final String TAG_CHECK_EMAIL_RESULT = "checkEmailResult";
-    private static final String TAG_USERS = "users";
-    private static final String TAG_ID = "id";
-    private static final String TAG_FIRST_NAME = "firstName";
-    private static final String TAG_LAST_NAME = "lastName";
-    private static final String TAG_GENDER = "gender";
-    private static final String TAG_EMAIL = "email";
-    private static final String TAG_PASSWORD = "password";
-    private static final String TAG_SSN = "ssn";
-    private static final String TAG_LOCATION_ID = "locationId";
-    private static final String TAG_DOB = "dob";
-    private static final String TAG_JSE_STUDENT_ID = "jseStudentId";
-
     // testsJsonArray JSONArray
     JSONArray usersJsonArray = null;
     private static String result = "";
@@ -131,7 +115,7 @@ public class DatabaseOperations {
 
 
             try {
-                checkEmailResult = json.getString(TAG_CHECK_EMAIL_RESULT);
+                checkEmailResult = json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -139,8 +123,8 @@ public class DatabaseOperations {
             if (checkEmailResult.equals("0")) {
                 // if email does not exist, see if insert was completed successfully
                 try {
-                    insertResult = json.getString(TAG_INSERT_RESULT);
-                    id = Integer.parseInt(json.getString(TAG_ID));
+                    insertResult = json.getString(Util.getActivity().getString(R.string.TAG_INSERT_RESULT));
+                    id = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_ID)));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -213,7 +197,7 @@ public class DatabaseOperations {
             Log.d("Get User", json.toString());
 
             try {
-                loginResult = json.getInt(TAG_RESULT);
+                loginResult = json.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -223,7 +207,7 @@ public class DatabaseOperations {
                     //  JSONObject jsonObj = new JSONObject(json);
 
                     // Getting JSON Array node
-                    usersJsonArray = json.getJSONArray(TAG_USERS);
+                    usersJsonArray = json.getJSONArray(Util.getActivity().getString(R.string.TAG_USERS));
 
                     // looping through All Tests
                     for (int i = 0; i < usersJsonArray.length(); i++) {
@@ -231,19 +215,17 @@ public class DatabaseOperations {
                         JSONObject c = usersJsonArray.getJSONObject(i);
 
                         User user = new User();
-                        user.setFirstName(c.getString(TAG_FIRST_NAME));
-                        user.setId(Integer.parseInt(c.getString(TAG_ID)));
-                        user.setLastName(c.getString(TAG_LAST_NAME));
-                        user.setGender(c.getString(TAG_GENDER));
-                        //  DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
-                        // user.dob = dtf.parseLocalDate(c.getString(TAG_DOB));
-                        user.setDob(c.getString(TAG_DOB));
-                        user.setSsn(c.getString(TAG_SSN));
-                        user.setEmail(c.getString(TAG_EMAIL));
-                        user.setPassword(c.getString(TAG_PASSWORD));
-                        user.setLocationId(c.getString(TAG_LOCATION_ID));
-                        user.setIsJseMember(c.getString(TAG_JSE_STUDENT_ID));
-                        user.setJseStudentId(c.getString(TAG_JSE_STUDENT_ID));
+                        user.setFirstName(c.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
+                        user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_USER_ID))));
+                        user.setLastName(c.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
+                        user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_USER_GENDER)));
+                        user.setDob(c.getString(Util.getActivity().getString(R.string.TAG_DOB)));
+                        user.setSsn(c.getString(Util.getActivity().getString(R.string.TAG_SSN)));
+                        user.setEmail(c.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
+                        user.setPassword(c.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
+                        user.setLocationId(c.getString(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
+                        user.setIsJseMember(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+                        user.setJseStudentId(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
 
                         loginActivity.user = user;
 
@@ -322,7 +304,7 @@ public class DatabaseOperations {
             Log.d("Get JSE Student ID", jsonGet.toString());
 
             try {
-                result = jsonGet.getString(TAG_RESULT);
+                result = jsonGet.getString(Util.getActivity().getString(R.string.TAG_RESULT));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -331,7 +313,7 @@ public class DatabaseOperations {
 
                 try {
 
-                    studentId = jsonGet.getString(TAG_JSE_STUDENT_ID);
+                    studentId = jsonGet.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -348,7 +330,7 @@ public class DatabaseOperations {
                 Log.d("Update JSE Student ID", jsonUpdate.toString());
 
                 try {
-                    resultUpdate = jsonUpdate.getString(TAG_RESULT);
+                    resultUpdate = jsonUpdate.getString(Util.getActivity().getString(R.string.TAG_RESULT));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -435,7 +417,7 @@ public class DatabaseOperations {
 
 
             try {
-                result = json.getString(TAG_RESULT);
+                result = json.getString(Util.getActivity().getString(R.string.TAG_RESULT));
                 //id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
 
             } catch (JSONException e) {

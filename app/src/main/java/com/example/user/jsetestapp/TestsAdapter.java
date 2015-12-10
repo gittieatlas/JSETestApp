@@ -40,18 +40,19 @@ public class TestsAdapter extends Adapter<RecyclerViewViewHolder> {
     public void onBindViewHolder(RecyclerViewViewHolder holder, int position) {
         // get data from your arrayListTestDataObject at this position
         // replace the contents of the view with that arrayListTestDataObject
-        holder.location.setText(arrayListTestDataObject.get(position).getmText1());
-        holder.testDay.setText(arrayListTestDataObject.get(position).getmText2());
-        holder.testTime.setText(arrayListTestDataObject.get(position).getmText3());
-        holder.testDate.setText(arrayListTestDataObject.get(position).getmText4());
-        holder.testDeadlineTitle.setText(arrayListTestDataObject.get(position).getmText5());
-        holder.testDeadlineDetails.setText(arrayListTestDataObject.get(position).getmText6());
+        holder.location.setText(arrayListTestDataObject.get(position).getLocation());
+        holder.testDay.setText(arrayListTestDataObject.get(position).getTestDay());
+        holder.testTime.setText(arrayListTestDataObject.get(position).getTestTime());
+        holder.testDate.setText(arrayListTestDataObject.get(position).getTestDate());
+        holder.testDeadlineTitle.setText(arrayListTestDataObject.get(position)
+                .getTestDeadlineTitle());
+        holder.testDeadlineDetails.setText(arrayListTestDataObject.get(position).getTestDeadlineDetails());
     }
 
     /**
      * Listener for item click
      *
-     * @param listener
+     * @param listener - for item click
      */
     public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
         // assign listener to itemClickListener
@@ -61,7 +62,7 @@ public class TestsAdapter extends Adapter<RecyclerViewViewHolder> {
     /**
      * Listener for image click
      *
-     * @param listener
+     * @param listener - for item click
      */
     public void setOnItemImageClickListener(RecyclerViewItemImageClickListener listener) {
         // assign listener to itemImageClickListener

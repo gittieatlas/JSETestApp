@@ -149,7 +149,7 @@ public class ResultsFragment extends Fragment
         // assign selected test to new test
         Test test = mainActivity.testsArrayList.get(position);
         // open calendar and populate it with test information
-        IntentMethods.calendarIntent("JSE Test at " + test.getLocation(), getTestAddress(test),
+        Util.calendarIntent("JSE Test at " + test.getLocation(), getTestAddress(test),
                 null, test.getDate(), test.getTime());
     }
 

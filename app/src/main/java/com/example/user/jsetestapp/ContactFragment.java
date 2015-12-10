@@ -130,7 +130,7 @@ public class ContactFragment extends Fragment {
             // subject line
             String subject = "Contact JSE - Android App";
             // compose email using email address and subject line
-            IntentMethods.composeEmail(addresses, subject);
+            Util.composeEmail(addresses, subject);
         }
     };
 

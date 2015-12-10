@@ -1,5 +1,8 @@
 package com.example.user.jsetestapp;
 
+/*
+ * HoursDataObject class holds data for displaying in ListView
+ * */
 public class HoursDataObject {
     // Declare variables
     private String libraryDay,libraryOpeningTime, libraryClosingTime;
@@ -14,7 +17,7 @@ public class HoursDataObject {
     }
 
     /**
-     * Retrieve libraryDay defined in the constructor
+     * Retrieve libraryDay
      * @return String
      */
     public String getLibraryDay() {
@@ -23,7 +26,7 @@ public class HoursDataObject {
     }
 
     /**
-     * Retrieve libraryOpeningTime defined in the constructor
+     * Retrieve libraryOpeningTime
      * @return String
      */
     public String getLibraryOpeningTime() {
@@ -32,7 +35,7 @@ public class HoursDataObject {
     }
 
     /**
-     * Retrieve libraryClosingTime defined in the constructor
+     * Retrieve libraryClosingTime
      * @return String
      */
     public String getLibraryClosingTime() {

@@ -120,7 +120,7 @@ public class LibrariesFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // call selected location
-            IntentMethods.callIntent(locationPhoneNumberTextView.getText().toString());
+            Util.callIntent(locationPhoneNumberTextView.getText().toString());
         }
     };
 

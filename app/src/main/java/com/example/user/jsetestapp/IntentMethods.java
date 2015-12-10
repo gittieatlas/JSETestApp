@@ -27,9 +27,15 @@ public class IntentMethods extends Activity {
      * @param subject   - subject line of email
      */
     public static void composeEmail(String[] addresses, String subject) {
+        // Create an Intent. Set the action to ACTION_SENDTO
         Intent intent = new Intent(Intent.ACTION_SENDTO);
+        // setdata convert mailto to uri
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        // add into intent a String[] holding e-mail addresses that should be delivered to.
+        // add address to intent
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        // add into intent a constant string holding the desired subject line of a message.
+        // add subject to intent
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         if (intent.resolveActivity(Util.getContext().getPackageManager()) != null) {
             //mainActivity.doIntent(intent);

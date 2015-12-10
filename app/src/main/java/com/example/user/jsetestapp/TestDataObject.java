@@ -4,50 +4,70 @@ package com.example.user.jsetestapp;
  * TestDataObject class holds data for displaying in RecyclerView
  * */
 public class TestDataObject {
-    private String mText1;
-    private String mText2;
-    private String mText3;
-    private String mText4;
-    private String mText5;
-    private String mText6;
+    private String location, testDay, testTime, testDate, testDeadlineTitle, testDeadlineDetails;
 
-    TestDataObject(String text1, String text2, String text3, String text4, String text5, String text6) {
-        mText1 = text1;
-        mText2 = text2;
-        mText3 = text3;
-        mText4 = text4;
-        mText5 = text5;
-        mText6 = text6;
+    TestDataObject(String text1, String text2, String text3, String text4,
+                   String text5, String text6) {
+        location = text1;
+        testDay = text2;
+        testTime = text3;
+        testDate = text4;
+        testDeadlineTitle = text5;
+        testDeadlineDetails = text6;
     }
 
-    public String getmText1() {
+    /**
+     * Retrieve location
+     * @return String
+     */
+    public String getLocation() {
 
-        return mText1;
+        return location;
     }
 
-    public String getmText2() {
+    /**
+     * Retrieve testDay
+     * @return String
+     */
+    public String getTestDay() {
 
-        return mText2;
+        return testDay;
     }
 
-    public String getmText3() {
+    /**
+     * Retrieve testTime
+     * @return String
+     */
+    public String getTestTime() {
 
-        return mText3;
+        return testTime;
     }
 
-   public String getmText4() {
+    /**
+     * Retrieve testDate
+     * @return String
+     */
+   public String getTestDate() {
 
-        return mText4;
+        return testDate;
     }
 
-    public String getmText5() {
+    /**
+     * Retrieve testDeadlineTitle
+     * @return String
+     */
+    public String getTestDeadlineTitle() {
 
-        return mText5;
+        return testDeadlineTitle;
     }
 
-    public String getmText6() {
+    /**
+     * Retrieve testDeadlineDetails
+     * @return String
+     */
+    public String getTestDeadlineDetails() {
 
-        return mText6;
+        return testDeadlineDetails;
     }
 
 }
