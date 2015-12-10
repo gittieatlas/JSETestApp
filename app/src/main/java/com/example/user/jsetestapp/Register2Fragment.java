@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-// CLEANED
+
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -244,6 +244,7 @@ public class Register2Fragment extends Fragment {
 
             // call AsyncTask to create new user
             taskNewUser = loginActivity.databaseOperations.newUser(loginActivity.user);
+           // taskNewUser = new loginActivity.databaseOperations.CreateNewUser(loginActivity.user).execute();
         } else {
             // Show Dialog: No Internet Connection
             Util.showDialogFragment(R.array.no_internet_connection);

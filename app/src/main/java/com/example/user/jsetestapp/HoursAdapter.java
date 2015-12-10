@@ -1,6 +1,5 @@
 package com.example.user.jsetestapp;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

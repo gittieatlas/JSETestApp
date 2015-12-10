@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-// CLEANED
+
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,6 +51,10 @@ public class UpdateProfileFragment extends Fragment {
         super.onResume();
 
         loadUserInfoOnScreen();
+
+        // clear focus, if any, from screen
+        firstNameEditText.requestFocus();
+        firstNameEditText.clearFocus();
     }
 
     /**

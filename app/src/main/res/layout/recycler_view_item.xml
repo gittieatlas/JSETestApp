@@ -27,6 +27,13 @@
                 android:text="Location"
                 android:textColor="@color/primary" />
 
+            <TextView
+                android:id="@+id/testDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:text="Date" />
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -48,13 +55,6 @@
                     android:layout_marginLeft="6dp" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/testDateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                android:text="Date" />
 
             <LinearLayout
                 android:orientation="vertical"

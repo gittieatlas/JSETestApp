@@ -114,13 +114,14 @@ public class SearchFragment extends Fragment {
 
             // initialize searchCriteriaBranch
             Branch searchCriteriaBranch = new Branch();
-            // loop through each branch in branchesArrayList
-            for (Branch branch : mainActivity.branchesArrayList) {
-                // if location is equal to branch name
-                if (location.equals(branch.getName()))
-                    // assign branch to searchCriteriaBranch
-                    searchCriteriaBranch = branch;
-            }
+
+                // loop through each branch in branchesArrayList
+                for (Branch branch : mainActivity.branchesArrayList) {
+                    // if location is equal to branch name
+                    if (location.equals(branch.getName()))
+                        // assign branch to searchCriteriaBranch
+                        searchCriteriaBranch = branch;
+                }
 
             // assign selected day of week to searchCriteriaDayOfWeek
             int searchCriteriaDayOfWeek = daysOfWeekSpinner.getSelectedItemPosition();

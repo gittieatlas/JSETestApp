@@ -163,7 +163,7 @@ public class DashboardFragment extends Fragment {
      */
     public void setUpHoursListView() {
         // set up list view based on user's default location
-        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
+        mainActivity.helperMethods.setupListView(hoursAdapter, lvDetail, mainActivity.defaultLocation.getName());
     }
 
     /**

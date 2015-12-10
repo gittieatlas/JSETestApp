@@ -1,5 +1,4 @@
 package com.example.user.jsetestapp;
-//CLEANED
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Declare Classes;
     HelperMethods helperMethods;
-    QueryMethods queryMethods;
     DatabaseOperations databaseOperations;
 
     // Declare Fragments
@@ -99,8 +97,6 @@ public class LoginActivity extends AppCompatActivity {
     private void instantiateClasses() {
         helperMethods = new HelperMethods();
         helperMethods.setLoginActivity(this);
-        queryMethods = new QueryMethods();
-        queryMethods.setLoginActivity(this);
         databaseOperations = new DatabaseOperations();
         databaseOperations.setLoginActivity(this);
     }
@@ -145,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
         alertArrayList = (ArrayList<Alert>) getIntent().getExtras().getSerializable("alertArrayList");
 
         // assign array list values from locationsArrayList
-        locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
+        locationsNameArrayList = helperMethods.setUpLocationsNameArrayList(locationsArrayList);
     }
 
     /**

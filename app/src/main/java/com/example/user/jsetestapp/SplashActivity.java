@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
 
+import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,22 +22,22 @@ public class SplashActivity extends AppCompatActivity {
     HelperMethods helperMethods;
 
     // Declare Variables
-    ArrayList<Location> locationsArrayList;
-    ArrayList<Test> testsArrayList;
-    ArrayList<Hour> hourArrayList;
-    ArrayList<Branch> branchesArrayList;
-    ArrayList<Alert> alertArrayList;
+    private ArrayList<Location> locationsArrayList;
+    private ArrayList<Test> testsArrayList;
+    private ArrayList<Hour> hourArrayList;
+    private ArrayList<Branch> branchesArrayList;
+    private ArrayList<Alert> alertArrayList;
 
     // Declare Booleans
-    Boolean gotLocations = false;
-    Boolean gotTests = false;
-    Boolean gotHours = false;
-    Boolean gotBranches = false;
-    Boolean gotAlerts = false;
-    static boolean active = false;
+    private Boolean gotLocations = false;
+    private Boolean gotTests = false;
+    private Boolean gotHours = false;
+    private Boolean gotBranches = false;
+    private Boolean gotAlerts = false;
+    private boolean activityIsInForeground = false;
 
     // Declare AsyncTasks
-    AsyncTask taskGetLocations, taskGetTests, taskGetHours, taskGetBranches, taskGetAlerts;
+    private AsyncTask taskGetLocations, taskGetTests, taskGetHours, taskGetBranches, taskGetAlerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +60,18 @@ public class SplashActivity extends AppCompatActivity {
     public void onStart() {
         // call the parent activities onStart
         super.onStart();
-        // set active to true
-        active = true;
+
+        // set activityIsInForeground to true
+        activityIsInForeground = true;
     }
 
     @Override
     public void onStop() {
         // call the parent activities onStop
         super.onStop();
-        // set active to false
-        active = false;
+
+        // set activityIsInForeground to false
+        activityIsInForeground = false;
     }
 
     @Override
@@ -103,7 +106,6 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * class to get list of locations from the database
-     *
      */
     private class GetLocations extends AsyncTask<Void, Void, Boolean> {
 
@@ -114,8 +116,8 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-
             addLocationToLocationsArrayList();
+
             // return true/false if locationsArrayList is empty or if task is canceled
             return !(locationsArrayList.size() == 0 || isCancelled());
         }
@@ -123,14 +125,17 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
+
             // if results is not null and result is true and task is not cancelled
-            if (result != null && result && !isCancelled())  {
+            if (result != null && result && !isCancelled()) {
                 // setting gotLocation to true
                 gotLocations = true;
+
                 changeActivities();
             } else {
                 // setting gotLocation to false
                 gotLocations = false;
+
                 //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
@@ -146,7 +151,6 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * class to get list of tests from the database
-     *
      */
     private class GetTests extends AsyncTask<Void, Void, Boolean> {
 
@@ -158,6 +162,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             addTestToTestsArrayList();
+
             // return true/false if testsArrayList is empty or if task is canceled
             return !(testsArrayList.size() == 0 || isCancelled());
         }
@@ -165,17 +170,19 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
+
             // if results is not null and result is true and task is not cancelled
-            if (result != null && result && !isCancelled())  {
+            if (result != null && result && !isCancelled()) {
                 // setting gotTests to true
                 gotTests = true;
+
                 changeActivities();
             } else {
                 // setting gotTests to false
                 gotTests = false;
+
                 //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
-
             }
         }
 
@@ -184,13 +191,11 @@ public class SplashActivity extends AppCompatActivity {
             super.onCancelled(result);
             // set gotTests to false
             gotTests = false;
-
         }
     }
 
     /**
      * class to get list of hours from the database
-     *
      */
     private class GetHours extends AsyncTask<Void, Void, Boolean> {
 
@@ -202,22 +207,25 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             addHoursToHoursArrayList();
+
             // return true/false if hourArrayList is empty or if task is canceled
             return !(hourArrayList.size() == 0 || isCancelled());
-
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
+
             // if results is not null and result is true and task is not cancelled
-            if (result != null && result && !isCancelled())  {
+            if (result != null && result && !isCancelled()) {
                 // setting gotHours to true
                 gotHours = true;
+
                 changeActivities();
             } else {
                 // setting gotHours to false
                 gotHours = false;
+
                 //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
@@ -226,15 +234,14 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean result) {
             super.onCancelled(result);
+
             // set gotHours to false
             gotHours = false;
-
         }
     }
 
     /**
      * class to get list of branches from the database
-     *
      */
     private class GetBranches extends AsyncTask<Void, Void, Boolean> {
 
@@ -246,22 +253,25 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             addBranchesToBranchesArrayList();
+
             // return true/false if branchesArrayList is empty or if task is canceled
             return !(branchesArrayList.size() == 0 || isCancelled());
-
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
+
             // if results is not null and result is true and task is not cancelled
-            if (result != null && result && !isCancelled())  {
+            if (result != null && result && !isCancelled()) {
                 // setting gotBranches to true
                 gotBranches = true;
+
                 changeActivities();
             } else {
                 // setting gotBranches to false
                 gotBranches = false;
+
                 //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
@@ -272,13 +282,11 @@ public class SplashActivity extends AppCompatActivity {
             super.onCancelled(result);
             // set gotBranches to false
             gotBranches = false;
-
         }
     }
 
     /**
      * class to get list of alerts from the database
-     *
      */
     private class getAlerts extends AsyncTask<Void, Void, Boolean> {
 
@@ -289,45 +297,52 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-
             addAlertsToAlertsArrayList();
+
             // return true/false if alertArrayList is empty or if task is canceled
             return !(alertArrayList.size() == 0 || isCancelled());
-
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
+
             // if results is not null and result is true and task is not cancelled
-            if (result != null && result && !isCancelled())  {
+            if (result != null && result && !isCancelled()) {
                 // set gotAlerts to true
                 gotAlerts = true;
+
                 changeActivities();
             } else {
                 // set gotAlerts to false
                 gotAlerts = false;
+
                 //if isCancelled is false
                 if (!isCancelled()) appInfoNotLoaded();
             }
         }
 
-         @Override
+        @Override
         protected void onCancelled(Boolean result) {
-             super.onCancelled(result);
-             // set gotAlerts to false
-             gotAlerts = false;
-
+            super.onCancelled(result);
+            // set gotAlerts to false
+            gotAlerts = false;
         }
     }
 
+    /**
+     * Function to get data from the database
+     */
     private void getDataFromDatabase() {
         setUpArrayLists();
         setUpAsyncTasks();
     }
 
-    // instantiate arrayLists
-    public void setUpArrayLists(){
+    /**
+     * Function to initialize new array list
+     */
+    public void setUpArrayLists() {
+        // instantiate arrayLists
         locationsArrayList = new ArrayList<>();
         testsArrayList = new ArrayList<>();
         hourArrayList = new ArrayList<>();
@@ -335,8 +350,11 @@ public class SplashActivity extends AppCompatActivity {
         alertArrayList = new ArrayList<>();
     }
 
-    // instantiate AsyncTasks and execute them
+    /**
+     * Function initialize async tasks and execute them
+     */
     public void setUpAsyncTasks() {
+        // instantiate AsyncTasks and execute them
         taskGetLocations = new GetLocations().execute();
         taskGetTests = new GetTests().execute();
         taskGetHours = new GetHours().execute();
@@ -344,31 +362,62 @@ public class SplashActivity extends AppCompatActivity {
         taskGetAlerts = new getAlerts().execute();
     }
 
-    // cancel AsyncTasks
-    // set all booleans to false
+    /**
+     * Function cancel AsyncTasks and set booleans false
+     */
     private void cancelAsyncTasks() {
-        taskGetLocations.cancel(true);
-        gotLocations = false;
-        taskGetTests.cancel(true);
-        gotTests = false;
-        taskGetHours.cancel(true);
-        gotHours = false;
-        taskGetBranches.cancel(true);
-        gotBranches = false;
-        taskGetAlerts.cancel(true);
-        gotAlerts = false;
+        // if asyncTask has already been called
+        if (taskGetLocations != null) {
+            // cancel the task
+            taskGetLocations.cancel(true);
+            // set boolean of got data to false
+            gotLocations = false;
+        }
+
+        // if asyncTask has already been called
+        if (taskGetTests != null) {
+            // cancel the task
+            taskGetTests.cancel(true);
+            gotTests = false;
+        }
+
+        // if asyncTask has already been called
+        if (taskGetHours != null) {
+            taskGetHours.cancel(true);
+            // cancel the task
+            // set boolean of got data to false
+            gotHours = false;
+        }
+
+        // if asyncTask has already been called
+        if (taskGetBranches != null) {
+            // cancel the task
+            taskGetBranches.cancel(true);
+            // set boolean of got data to false
+            gotBranches = false;
+        }
+
+        // if asyncTask has already been called
+        if (taskGetAlerts != null) {
+            // cancel the task
+            taskGetAlerts.cancel(true);
+            // set boolean of got data to false
+            gotAlerts = false;
+        }
     }
 
+    /**
+     * Function is called when app info could not perform http requests or execute them properly
+     */
     private void appInfoNotLoaded() {
-        // if asycTasks are not cancelled
-        if (active)
-            // call method showDialog and send tag "d_load_info_fail"
+        // if activity is showing
+        if (activityIsInForeground)
+            // Show Dialog: Load Info Fail
             Util.showDialogFragment(R.array.load_info_fail);
-
     }
 
     private void changeActivities() {
-        // if all asyncTasks were completed successfully
+        // if all asyncTasks were completed successfully / all app data is loaded
         if (gotLocations && gotTests && gotHours && gotBranches && gotAlerts) {
             // launch activity with login activity intent
             Util.launchActivity(getLaunchLoginActivityIntent("login"));
@@ -412,12 +461,12 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * Function to add locations from locationJsonArray to locationsArrayList
-     *
      */
     public void addLocationToLocationsArrayList() {
         // get JsonArray of locations from Json string
-        JSONArray locationsJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.locations_url), (getString(R.string.TAG_LOCATIONS)));
+        JSONArray locationsJsonArray = HelperMethods.getJsonArray(
+                Util.getActivity().getString(R.string.locations_url),
+                Util.getActivity().getString(R.string.TAG_LOCATIONS), new ArrayList<NameValuePair>());
         try {
             // try to loop through locationsJsonArray
             for (int i = 0; i < locationsJsonArray.length(); i++) {
@@ -430,25 +479,21 @@ public class SplashActivity extends AppCompatActivity {
                     // exit method
                     break;
                 }
-
             }
-
         } catch (JSONException e) {
             // if Json string is empty print error in console
             e.printStackTrace();
         }
-
     }
-
 
     /**
      * Function to add tests from testsJsonArray to testsArrayList
-     *
      */
     public void addTestToTestsArrayList() {
         // get JsonArray of tests from Json string
-        JSONArray testsJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.tests_url), (getString(R.string.TAG_TESTS)));
+        JSONArray testsJsonArray = HelperMethods.getJsonArray(
+                Util.getActivity().getString(R.string.tests_url),
+                Util.getActivity().getString(R.string.TAG_TESTS), new ArrayList<NameValuePair>());
 
         try {
             // try to loop through testsJsonArray
@@ -466,22 +511,19 @@ public class SplashActivity extends AppCompatActivity {
         } catch (JSONException e) {
             // if Json string is empty print error in console
             e.printStackTrace();
-
         }
 
     }
 
     /**
      * Function to add hours from hoursJsonArray to hourArrayList
-     *
      */
     public void addHoursToHoursArrayList() {
         // get JsonArray of hours from Json string
-        JSONArray hoursJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.hours_url), (getString(R.string.TAG_HOURS)));
-
+        JSONArray hoursJsonArray = HelperMethods.getJsonArray(
+                Util.getActivity().getString(R.string.hours_url),
+                Util.getActivity().getString(R.string.TAG_HOURS), new ArrayList<NameValuePair>());
         try {
-
             // try to looping through hoursJsonArray
             for (int i = 0; i < hoursJsonArray.length(); i++) {
                 // get hours from JsonObject
@@ -497,23 +539,19 @@ public class SplashActivity extends AppCompatActivity {
         } catch (JSONException e) {
             // if Json string is empty print error in console
             e.printStackTrace();
-
         }
-
     }
-
 
     /**
      * Function to add branches from branchesJsonArray to branchesArrayList
-     *
      */
     public void addBranchesToBranchesArrayList() {
-       // get JsonArray of branches from Json string
-        JSONArray branchesJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.branches_url), (getString(R.string.TAG_BRANCHES)));
+        // get JsonArray of branches from Json string
+        JSONArray branchesJsonArray = HelperMethods.getJsonArray(
+                Util.getActivity().getString(R.string.branches_url),
+                Util.getActivity().getString(R.string.TAG_BRANCHES), new ArrayList<NameValuePair>());
 
         try {
-
             // try to loop through branchesJsonArray
             for (int i = 0; i < branchesJsonArray.length(); i++) {
                 // get branch from JsonObject
@@ -529,22 +567,19 @@ public class SplashActivity extends AppCompatActivity {
         } catch (JSONException e) {
             // if Json string is empty print error in console
             e.printStackTrace();
-
         }
-
     }
 
     /**
      * Function to add alerts from alertsJsonArray to alertArrayList
-     *
      */
     public void addAlertsToAlertsArrayList() {
         // get JsonArray of alerts from Json string
-        JSONArray alertsJsonArray = HelperMethods.getJsonArray
-                (getString(R.string.alerts_url), (getString(R.string.TAG_ALERTS)));
+        JSONArray alertsJsonArray = HelperMethods.getJsonArray(
+                Util.getActivity().getString(R.string.alerts_url),
+                Util.getActivity().getString(R.string.TAG_ALERTS), new ArrayList<NameValuePair>());
 
         try {
-
             // try to loop through alertsJsonArray
             for (int i = 0; i < alertsJsonArray.length(); i++) {
                 // get alert from JsonObject
@@ -561,7 +596,6 @@ public class SplashActivity extends AppCompatActivity {
             // if Json string is empty print error in console
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -570,9 +604,8 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void dialogFragmentPositiveClick(String listenerTag) {
         if (listenerTag.equals(Util.getActivity().getResources()
-                .getResourceEntryName(R.array.load_info_fail))){
+                .getResourceEntryName(R.array.load_info_fail))) {
             // Todo reload async task - do getDataFromDatabase();
         }
     }
-
 }

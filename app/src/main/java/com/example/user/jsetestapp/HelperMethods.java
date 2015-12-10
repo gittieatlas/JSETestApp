@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 
+import org.apache.http.NameValuePair;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
@@ -32,9 +34,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class HelperMethods extends Activity {
-
+    // Declare classes
     MainActivity mainActivity;
     LoginActivity loginActivity;
     SplashActivity splashActivity;
@@ -130,14 +133,14 @@ public class HelperMethods extends Activity {
     public void findTests(Branch branch, int dayOfWeek) {
         clearTestsFilteredArrayList();
         Collections.sort(mainActivity.testsArrayList, new LocationDateComparator());
-        //Collections.sort(mainActivity.testsArrayList);
-        if (branch.equals("branch") && dayOfWeek == 0)
+
+        if (branch.getName() == null && dayOfWeek == 0)
             filterTests();
-        else if (!branch.equals("branch") && dayOfWeek == 0)
+        else if (branch.getName() != null && dayOfWeek == 0)
             filterTests(branch);
-        else if (branch.equals("branch") && dayOfWeek != 0)
+        else if (branch.getName() == null && dayOfWeek > 0)
             filterTests(dayOfWeek);
-        else if (!branch.equals("branch") && dayOfWeek != 0)
+        else if (branch.getName() != null && dayOfWeek > 0)
             filterTests(branch, dayOfWeek);
 
         replaceFragment(mainActivity.resultsFragment,
@@ -430,41 +433,6 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to get jsonArray from Json string
-     *
-     * @param url           - url to get the JSON string from
-     * @param TAG_LOCATIONS - tag to get locations from
-     * @return jsonArray
-     */
-
-    public static JSONArray getJsonArray(String url, String TAG_LOCATIONS) {
-        // instantiating jsonArray
-        JSONArray jsonArray = new JSONArray();
-        // instantiating ServiceHandler
-        ServiceHandler sh = new ServiceHandler();
-
-        // Making a request to locations_url and getting response
-        String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
-        // if jsonStr is not null
-        if (jsonStr != null) {
-            try {
-                // instantiating JSONObject
-                JSONObject jsonObj = new JSONObject(jsonStr);
-
-                // Getting JSON Array node
-                jsonArray = jsonObj.getJSONArray(TAG_LOCATIONS);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            // if jsonStr is null
-        } else {
-            Log.e("ServiceHandler", "Couldn't get any data from the locations_url");
-        }
-        return jsonArray;
-    }
-
-    /**
      * Function to set location
      *
      * @param locationObject
@@ -723,7 +691,148 @@ public class HelperMethods extends Activity {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
         LocalTime localTime;
         localTime = fmt.parseLocalTime(hours);
-        IntentMethods.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
+        Util.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
     }
 
+
+    /**
+     * Function to make http request that return a JsonObject and then convert it to a JsonArray
+     * @param url - url to get the JSON string from
+     * @param tag - tag of node to get objects from
+     * @param params - list of key values to pass along to the http request
+     * @return JsonArray
+     */
+    public static JSONArray getJsonArray(String url, String tag, List<NameValuePair> params) {
+        // instantiate new JsonArray
+        JSONArray jsonArray = new JSONArray();
+
+        // instantiate new JsonParser
+        JSONParser jsonParser = new JSONParser();
+
+        // create JSON Object from request made to url
+        JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
+
+        // initialize int to receive value of success (0 or 1)
+        int success = 0;
+
+        try {
+            // try to get int with tag "success" from json object
+            success = json.getInt(Util.getStringValue(R.string.TAG_SUCCESS));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // if success is 0 ; either because the query of the http request was not successful
+        // or because the http request itself was unsuccessful and therefor the JsonObject is null
+        if (success != 0) {
+            try {
+                // get JSON Array node
+                jsonArray = json.getJSONArray(tag);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // could not get JSON Array node
+            Log.e("Json Parser", "Couldn't get any data from the url");
+        }
+
+        return jsonArray;
+    }
+
+
+
+
+
+
+
+
+    public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
+
+        ArrayList<String> locationsNameArrayList = new ArrayList<String>();
+        locationsNameArrayList.add("Location");
+        for (Location location : locationsArrayList) {
+            locationsNameArrayList.add(location.getName());
+        }
+        return locationsNameArrayList;
+    }
+
+    public ArrayList<String> setUpBranchesNameArrayList(ArrayList<Branch> branchesArrayList) {
+        ArrayList<String> branchesNameArrayList = new ArrayList<String>();
+        branchesNameArrayList.add("All");
+
+        for (Branch branch : branchesArrayList) {
+            if (branch.getId() == (mainActivity.defaultLocation.branchId)) {
+                branchesNameArrayList.add(branch.getName() + " (Default Branch)");
+            } else {
+                branchesNameArrayList.add(branch.getName());
+            }
+        }
+        return branchesNameArrayList;
+    }
+
+    public ArrayList<Test> setUpTestsArrayList(ArrayList<Test> testsArrayList) {
+
+        // filtering by gender
+        for (int i = 0; i < testsArrayList.size(); i++) {
+            if (!testsArrayList.get(i).gender.name().equals(mainActivity.user.gender.name())) {
+                testsArrayList.remove(i);
+                i--;
+            }
+        }
+        return testsArrayList;
+    }
+
+    public void updateHoursArrayListView(ListView listView, String name) {
+
+        setUpHoursFilteredArrayList(name);
+        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        mainActivity.helperMethods.setListViewHeightBasedOnItems(listView);
+    }
+
+
+    public void setupListView(ListAdapter adapter, ListView listView, String name) {
+        adapter = new HoursAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
+        listView.setAdapter(adapter);
+        updateHoursArrayListView(listView, name);
+    }
+
+    public void setUpHoursFilteredArrayList(String location) {
+
+        if (mainActivity.hoursFilteredArrayList != null)
+            mainActivity.hoursFilteredArrayList.clear();
+        for (Hour hour : mainActivity.hourArrayList) {
+
+            if (hour.getName().equals(location)) {
+
+                HoursDataObject obj = new HoursDataObject(Util.firstLetterCaps(hour.getDayOfWeek().toString()),
+
+                        hour.getStartTime().toString("hh:mm a"),
+                        hour.getEndTime().toString("hh:mm a"));
+
+                mainActivity.hoursFilteredArrayList.add(obj);
+            }
+        }
+    }
+
+
+    public Location setUpDefaultLocation() {
+        Location location = new Location();
+        for (Location l : mainActivity.locationsArrayList) {
+            if (l.getId() == mainActivity.user.locationId) {
+                location = l;
+            }
+        }
+        return location;
+    }
+
+    public void setUpIsJseMember() {
+
+        if (mainActivity.user.jseStudentId == null) {
+
+            // if internet connection status is true getJseStudentId
+            if (HelperMethods.checkInternetConnection()) {
+                mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
+            }
+        }
+    }
 }

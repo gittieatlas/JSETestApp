@@ -177,7 +177,7 @@ public class LibrariesFragment extends Fragment {
      */
     public void setUpHoursListView() {
         // set up hours list view based on selected location
-        mainActivity.queryMethods.setupListView(hoursAdapter, lvDetail,
+        mainActivity.helperMethods.setupListView(hoursAdapter, lvDetail,
                 locationsSpinner.getSelectedItem().toString());
     }
 

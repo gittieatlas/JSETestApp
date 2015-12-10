@@ -88,11 +88,8 @@
     <string name="TAG_INSERT_RESULT">insertResult</string>
     <string name="TAG_CHECK_EMAIL_RESULT">checkEmailResult</string>
     <string name="TAG_USERS">users</string>
-    <string name="TAG_USER_ID">id</string>
     <string name="TAG_FIRST_NAME">firstName</string>
     <string name="TAG_LAST_NAME">lastName</string>
-    <string name="TAG_USER_GENDER">gender</string>
-
     <string name="TAG_EMAIL">email</string>
     <string name="TAG_PASSWORD">password</string>
     <string name="TAG_SSN">ssn</string>

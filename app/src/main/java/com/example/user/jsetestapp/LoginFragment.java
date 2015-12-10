@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-//CLEANED
+
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;

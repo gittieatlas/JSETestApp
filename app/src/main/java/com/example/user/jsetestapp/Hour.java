@@ -1,4 +1,3 @@
-
 package com.example.user.jsetestapp;
 
 import org.joda.time.LocalTime;

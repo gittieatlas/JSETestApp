@@ -1,5 +1,5 @@
 package com.example.user.jsetestapp;
-// CLEANED
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

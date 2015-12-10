@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Declare Classes
     HelperMethods helperMethods;
-    QueryMethods queryMethods;
     DatabaseOperations databaseOperations;
 
     // Declare Fragments
@@ -96,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
     private void instantiateClasses() {
         helperMethods = new HelperMethods();
         helperMethods.setMainActivity(this);
-        queryMethods = new QueryMethods();
-        queryMethods.setMainActivity(this);
         databaseOperations = new DatabaseOperations();
         databaseOperations.setMainActivity(this);
     }
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 .getSerializable("locationsArrayList");
         branchesArrayList = (ArrayList<Branch>) getIntent().getExtras()
                 .getSerializable("branchesArrayList");
-        testsArrayList = queryMethods.setUpTestsArrayList((ArrayList<Test>) getIntent()
+        testsArrayList = helperMethods.setUpTestsArrayList((ArrayList<Test>) getIntent()
                 .getExtras().getSerializable("testsArrayList"));
         hourArrayList = (ArrayList<Hour>) getIntent().getExtras()
                 .getSerializable("hourArrayList");
@@ -149,20 +146,20 @@ public class MainActivity extends AppCompatActivity {
                 .getSerializable("alertArrayList");
 
         // set up default location
-        defaultLocation = queryMethods.setUpDefaultLocation();
+        defaultLocation = helperMethods.setUpDefaultLocation();
 
         // assign array list values from locationsArrayList
-        locationsNameArrayList = queryMethods.setUpLocationsNameArrayList(locationsArrayList);
+        locationsNameArrayList = helperMethods.setUpLocationsNameArrayList(locationsArrayList);
 
         // assign array list values from branchesArrayList
-        branchesNameArrayList = queryMethods.setUpBranchesNameArrayList(branchesArrayList);
+        branchesNameArrayList = helperMethods.setUpBranchesNameArrayList(branchesArrayList);
 
         // initialize arrayLists
         testsFilteredArrayList = new ArrayList<>();
         hoursFilteredArrayList = new ArrayList<>();
 
         // set up isJseMember
-        queryMethods.setUpIsJseMember();
+        helperMethods.setUpIsJseMember();
     }
 
     /**

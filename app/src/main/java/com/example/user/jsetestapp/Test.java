@@ -224,7 +224,6 @@ class LocationDateComparator implements Comparator<Test> {
      * @param test1 - of type Test
      * @param test2 - of type Test
      * @return int
-     *
      */
     public int compare(Test test1, Test test2) {
         // compare location of test1 and test2 and store result in value1

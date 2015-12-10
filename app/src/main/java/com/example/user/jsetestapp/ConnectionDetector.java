@@ -6,24 +6,35 @@ import android.net.NetworkInfo;
 
 public class ConnectionDetector {
 
+    // declare variable
     private Context _context;
 
-    public ConnectionDetector(Context context){
+    // constructor
+    public ConnectionDetector(Context context) {
+        // assign current context to context
         this._context = context;
     }
 
-    public boolean isConnectingToInternet(){
+    /**
+     * Function to check if application can connect to internet
+     * @return boolean
+     */
+    public boolean isConnectingToInternet() {
+        // create a new ConnectivityManager and try to get connectivity system service
         ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null)
-        {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                    {
-                        return true;
-                    }
 
+        // connectivity is not empty
+        if (connectivity != null) {
+            // create a new Network info from the connectivity
+            NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
+
+            // if networkInfo is not empty
+            if (networkInfo != null) {
+                // if state of network info equals connected
+                if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

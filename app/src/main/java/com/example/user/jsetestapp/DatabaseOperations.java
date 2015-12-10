@@ -34,7 +34,7 @@ public class DatabaseOperations {
 
     public AsyncTask newUser(User user) {
 
-        return new CreateNewUser(user).execute();
+        return new CreateNewUser().execute(user);
     }
 
     public AsyncTask getUser(User user) {
@@ -51,28 +51,10 @@ public class DatabaseOperations {
         return new UpdateUser(user).execute();
     }
 
-
-
-
-
-
     /**
      * Background Async Task to Create new product
      */
-    class CreateNewUser extends AsyncTask<String, String, String> {
-
-        String firstName, lastName, gender, dob, ssn, email, password, locationId;
-
-        CreateNewUser(User user) {
-            this.email = user.getEmail();
-            this.password = user.getPassword();
-            this.firstName = user.getFirstName();
-            this.lastName = user.getLastName();
-            this.dob = user.getDob().toString("yyyy-MM-dd");
-            this.gender = Integer.toString(user.getGender(user) + 1);
-            this.ssn = user.getSsn();
-            this.locationId = Integer.toString(user.getLocationId());
-        }
+    class CreateNewUser extends AsyncTask<User, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -89,26 +71,29 @@ public class DatabaseOperations {
         /**
          * Creating user
          */
-        protected String doInBackground(String... args) {
+        protected String doInBackground(User... params) {
             result = "";
             insertResult = "";
             id = 0;
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("firstName", firstName));
-            params.add(new BasicNameValuePair("lastName", lastName));
-            params.add(new BasicNameValuePair("gender", gender));
-            params.add(new BasicNameValuePair("dob", dob));
-            params.add(new BasicNameValuePair("ssn", ssn));
-            params.add(new BasicNameValuePair("email", email));
-            params.add(new BasicNameValuePair("password", password));
-            params.add(new BasicNameValuePair("locationId", locationId));
 
+            addUserToDatabase();
+
+            User user = params[0];
+            // Building Parameters
+            List<NameValuePair> httpParams = new ArrayList<>();
+            httpParams.add(new BasicNameValuePair("firstName", user.getFirstName()));
+            httpParams.add(new BasicNameValuePair("lastName", user.getLastName()));
+            httpParams.add(new BasicNameValuePair("gender", Integer.toString(user.getGender(user) + 1)));
+            httpParams.add(new BasicNameValuePair("dob", user.getDob().toString("yyyy-MM-dd")));
+            httpParams.add(new BasicNameValuePair("ssn", user.getSsn()));
+            httpParams.add(new BasicNameValuePair("email", user.getEmail()));
+            httpParams.add(new BasicNameValuePair("password", user.getPassword()));
+            httpParams.add(new BasicNameValuePair("locationId", Integer.toString(user.getLocationId())));
             // getting JSON Object
             // Note that create user url accepts POST method
             JSONParser jsonParser = new JSONParser();
             JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_create_user),
-                    "POST", params);
+                    "POST", httpParams);
 
             // check log cat for response
             Log.d("Create User", json.toString());
@@ -153,6 +138,10 @@ public class DatabaseOperations {
             if (id != 0) loginActivity.user.setId(id);
             pDialog.dismiss();
         }
+
+    }
+
+    public void addUserToDatabase(){
 
     }
 
@@ -216,9 +205,9 @@ public class DatabaseOperations {
 
                         User user = new User();
                         user.setFirstName(c.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
-                        user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_USER_ID))));
+                        user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_ID))));
                         user.setLastName(c.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
-                        user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_USER_GENDER)));
+                        user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
                         user.setDob(c.getString(Util.getActivity().getString(R.string.TAG_DOB)));
                         user.setSsn(c.getString(Util.getActivity().getString(R.string.TAG_SSN)));
                         user.setEmail(c.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
