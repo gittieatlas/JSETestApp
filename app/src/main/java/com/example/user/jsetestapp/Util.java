@@ -13,6 +13,7 @@ import android.widget.Toast;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Util extends Activity {
@@ -360,5 +361,49 @@ public class Util extends Activity {
             Toast.makeText(context, "No calendar clients installed.",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Function to clear all values of an ArrayList
+     * @param arrayList - arrayList to clear
+     */
+    public static void clearArrayList(ArrayList arrayList) {
+        //  if arrayList is not already cleared
+        if (arrayList != null)
+            // clear arrayList
+            arrayList.clear();
+    }
+
+    /**
+     * Function to check if an EditText does not contain text
+     * @param editText - editText to check
+     */
+    public static boolean isEmpty(EditText editText) {
+        // return true if editText values length is 0
+        return editText.getText().toString().trim().length() == 0;
+    }
+
+    /**
+     * Function to check if the current time is a start and end time
+     * @param start - beginning time
+     * @param end - finishing time
+     * @param time - now
+     * @return boolean
+     */
+    public static boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
+        // return true if time is between start time and end time
+        return time.isAfter(start) && time.isBefore(end);
+    }
+
+    /**
+     * Function to check internet status
+     * @return boolean
+     */
+    public static boolean checkInternetConnection() {
+        // creating connection detector class instance
+        ConnectionDetector cd = new ConnectionDetector(Util.getContext());
+
+        // return true if ConnectionDetector can connect to internet
+        return cd.isConnectingToInternet();
     }
 }

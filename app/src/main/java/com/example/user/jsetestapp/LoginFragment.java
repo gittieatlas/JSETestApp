@@ -107,9 +107,8 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // inflate container with Register1Fragment
-            loginActivity.helperMethods.replaceFragment(loginActivity.register1Fragment,
-                    loginActivity.getResources().getString(R.string.toolbar_title_register1),
-                    loginActivity, loginActivity.scrollView);
+            HelperMethods.replaceFragment(loginActivity.register1Fragment,
+                    loginActivity.getResources().getString(R.string.toolbar_title_register1));
         }
     };
 
@@ -139,8 +138,8 @@ public class LoginFragment extends Fragment {
      */
     private boolean requiredFieldsHaveValues() {
         // if any if the required field controls don't have a value
-        if (loginActivity.helperMethods.isEmpty(emailEditText) ||
-                loginActivity.helperMethods.isEmpty(passwordEditText)) {
+        if (Util.isEmpty(emailEditText) ||
+                Util.isEmpty(passwordEditText)) {
 
             // Show dialog: Login Failed - missing required values
             Util.showDialogFragment(R.array.login_failed_values);
@@ -173,7 +172,7 @@ public class LoginFragment extends Fragment {
         loginActivity.user.setPassword(passwordEditText.getText().toString());
 
         // if internet status connection is true
-        if (HelperMethods.checkInternetConnection()) {
+        if (Util.checkInternetConnection()) {
 
             // call AsyncTask to get user
             taskGetUser = loginActivity.databaseOperations.getUser(loginActivity.user);

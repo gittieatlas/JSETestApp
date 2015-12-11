@@ -110,9 +110,9 @@ public class Register1Fragment extends Fragment {
      */
     private boolean requiredFieldsHaveValues() {
         // if any if the required field controls don't have a value
-        if (loginActivity.helperMethods.isEmpty(emailEditText) ||
-                loginActivity.helperMethods.isEmpty(passwordEditText) ||
-                loginActivity.helperMethods.isEmpty(confirmPasswordEditText)) {
+        if (Util.isEmpty(emailEditText) ||
+                Util.isEmpty(passwordEditText) ||
+                Util.isEmpty(confirmPasswordEditText)) {
 
             // Show dialog: Create Account Failed - missing required values
             Util.showDialogFragment(R.array.create_account_failed_values);
@@ -167,9 +167,8 @@ public class Register1Fragment extends Fragment {
         loginActivity.user.setPassword(passwordEditText.getText().toString());
 
         // inflate container with Register2Fragment
-        loginActivity.helperMethods.replaceFragment(loginActivity.register2Fragment,
-                loginActivity.getResources().getString(R.string.toolbar_title_register2),
-                loginActivity, loginActivity.scrollView);
+        HelperMethods.replaceFragment(loginActivity.register2Fragment,
+                loginActivity.getResources().getString(R.string.toolbar_title_register2));
     }
 
     /**

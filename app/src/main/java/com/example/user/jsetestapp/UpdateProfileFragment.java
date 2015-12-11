@@ -133,8 +133,9 @@ public class UpdateProfileFragment extends Fragment {
         // set ssnEditText
         ssnEditText.setText(user.ssn.substring(user.ssn.length() - 4));
 
-        // set selection of genderSpinner and locationSpinner
+        // set selection of genderSpinner to User's gender
         genderSpinner.setSelection(user.gender.ordinal());
+        // set selection of locationsSpinner to User's default location
         locationsSpinner.setSelection(loginActivity.helperMethods.setLocationSpinnerSelection());
 
         // set newPasswordEditText and confirmNewPasswordEditText
@@ -222,14 +223,14 @@ public class UpdateProfileFragment extends Fragment {
      */
     private boolean requiredFieldsHaveValues() {
         // if any if the required field controls don't have a value
-        if (loginActivity.helperMethods.isEmpty(firstNameEditText) ||
-                loginActivity.helperMethods.isEmpty(lastNameEditText) ||
-                loginActivity.helperMethods.isEmpty(dobDayEditText) ||
-                loginActivity.helperMethods.isEmpty(dobMonthEditText) ||
-                loginActivity.helperMethods.isEmpty(dobYearEditText) ||
-                loginActivity.helperMethods.isEmpty(newPasswordEditText) ||
-                loginActivity.helperMethods.isEmpty(confirmNewPasswordEditText) ||
-                loginActivity.helperMethods.isEmpty(ssnEditText)) {
+        if (Util.isEmpty(firstNameEditText) ||
+                Util.isEmpty(lastNameEditText) ||
+                Util.isEmpty(dobDayEditText) ||
+                Util.isEmpty(dobMonthEditText) ||
+                Util.isEmpty(dobYearEditText) ||
+                Util.isEmpty(newPasswordEditText) ||
+                Util.isEmpty(confirmNewPasswordEditText) ||
+                Util.isEmpty(ssnEditText)) {
 
             // Show dialog: Update Account Failed - missing required values
             Util.showDialogFragment(R.array.update_account_failed_missing_fields);
@@ -304,9 +305,7 @@ public class UpdateProfileFragment extends Fragment {
      */
     private void updateAccount() {
         // if application can connect to internet
-        if (HelperMethods.checkInternetConnection()) {
-
-
+        if (Util.checkInternetConnection()) {
             // call AsyncTask to create new user
             taskUpdateUser = loginActivity.databaseOperations.updateUser(saveUpdatedUser());
         } else {

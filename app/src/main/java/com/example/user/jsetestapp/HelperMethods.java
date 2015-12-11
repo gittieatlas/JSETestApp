@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.joda.time.DateTime;
@@ -37,64 +38,94 @@ import java.util.Collections;
 import java.util.List;
 
 public class HelperMethods extends Activity {
+
     // Declare classes
     MainActivity mainActivity;
     LoginActivity loginActivity;
     SplashActivity splashActivity;
-    static Activity activity;
 
+    // constructor
     public HelperMethods() {
-        activity = Util.getActivity();
-    }
-
-    public void replaceFragment(Fragment fragment, String tag,
-                                Activity activity, ScrollView scrollView) {
-
-        // Scroll to top
-        scrollView.scrollTo(0, 0);
-
-        // replace fragment in container
-        activity.getFragmentManager().beginTransaction().replace(R.id.container,
-                fragment).addToBackStack(tag).commit();
-    }
-
-    // bind arraylist with instantiated arrayList
-    public static void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner) {
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Util.getContext(),
-                R.layout.spinner_dropdown_item, arrayList);
-
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
-        spinner.setAdapter(adapter);
-    }
-
-    // bind arraylist from resource
-    public static void addDataToSpinner(String[] stringArray, Spinner spinner) {
-// convert String Array to ArrayList<String>; and call addDataToSpinner
-        addDataToSpinner(new ArrayList<>(Arrays.asList(stringArray)), spinner);
-    }
-
-
-    public void scheduleTest() {
-        if (mainActivity.user.isJseMember) {
-            Util.showDialogFragment(R.array.schedule_test);
-        } else {
-            Util.showDialogFragment(R.array.become_jse_member);
-        }
-
     }
 
     /**
-     * Sets ListView height dynamically based on the height of the items.
+     * Function to add / replace fragment
      *
-     * @param listView -   to be resized
-     * @return true         -   if the listView is successfully resized, false otherwise
+     * @param fragment - new fragment
+     * @param tag      - tag to add along with the fragment to the back stack
+     */
+    public static void replaceFragment(Fragment fragment, String tag) {
+        // replace fragment in container
+        Util.getActivity().getFragmentManager().beginTransaction().replace(R.id.container,
+                fragment).addToBackStack(tag).commit();
+
+        // scroll to top of scrollView
+        try {
+            // get instance of scrollView the fragment is hosted in
+            ScrollView scrollView = (ScrollView) Util.getActivity().findViewById(R.id.scrollView);
+            // scroll to top
+            scrollView.scrollTo(0, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Function to create adapter with arrayList
+     *
+     * @param arrayList - list of data to be bound
+     * @param spinner   - bind adapter to this view
+     */
+    public static void addDataToSpinner(ArrayList<String> arrayList, Spinner spinner) {
+        // create new adapter with layout of how spinner items will look and arrayList
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Util.getContext(),
+                R.layout.spinner_dropdown_item, arrayList);
+        // set layout of how selected item of spinner will look
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_single);
+        // bind adapter to spinner
+        spinner.setAdapter(adapter);
+    }
+
+    /**
+     * Function to create adapter with arrayList from a resource file
+     *
+     * @param stringArray - list of data to be bound
+     * @param spinner     - bind adapter to this view
+     */
+    public static void addDataToSpinner(String[] stringArray, Spinner spinner) {
+        // convert String Array to ArrayList<String>; and call addDataToSpinner()
+        addDataToSpinner(new ArrayList<>(Arrays.asList(stringArray)), spinner);
+    }
+
+    /**
+     * Function to show a dialog to schedule a test
+     */
+    public void scheduleTest() {
+        // if User is a JSE member
+        if (mainActivity.user.isJseMember) {
+            // Show Dialog: Schedule A Test
+            Util.showDialogFragment(R.array.schedule_test);
+        }
+        // if User is not a JSE member
+        else {
+            // Show Dialog: Become a JSE Member
+            Util.showDialogFragment(R.array.become_jse_member);
+        }
+    }
+
+    /**
+     * Sets a ListView height dynamically based on the height of the items
+     *
+     * @param listView - being resized
+     * @return true
      */
     public static boolean setListViewHeightBasedOnItems(ListView listView) {
-
+        // get ListAdapter from listView
         ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter != null) {
 
+        // if listAdapter was obtained successfully
+        if (listAdapter != null) {
+            // get amount of listView items
             int numberOfItems = listAdapter.getCount();
 
             // Get total height of all items.
@@ -120,102 +151,164 @@ public class HelperMethods extends Activity {
         } else {
             return false;
         }
-
     }
 
-    //for dashboard and library search
+    /**
+     * Function to get tests filtered by a location
+     *
+     * @param location - add tests that have a location matching to this location
+     */
     public void findTests(Location location) {
-        clearTestsFilteredArrayList();
-        filterTests(location);
+        // clear testsFilteredArrayList
+        Util.clearArrayList(mainActivity.testsFilteredArrayList);
+
+        // get tests that have a location matching to this location
+        filterTestsBy(location);
+
+        // inflate scrollView with ResultsFragment
+        replaceFragment(mainActivity.resultsFragment,
+                mainActivity.getResources().getString(R.string.toolbar_title_results));
     }
 
-    //for search page
+    /**
+     * Function to get tests filtered by a branch and a day of week
+     *
+     * @param branch    - selected branch
+     * @param dayOfWeek - selected location
+     */
     public void findTests(Branch branch, int dayOfWeek) {
-        clearTestsFilteredArrayList();
+        // clear testsFilteredArrayList
+        Util.clearArrayList(mainActivity.testsFilteredArrayList);
+
+        // sort testsArrayList by Location and then by Date
         Collections.sort(mainActivity.testsArrayList, new LocationDateComparator());
 
+        // if no specific branch was chosen and no specific dayOfWeek was chosen
         if (branch.getName() == null && dayOfWeek == 0)
-            filterTests();
+            // filter test by nothing
+            filterTestsBy();
+            // if a specific branch was chosen and no specific dayOfWeek was chosen
         else if (branch.getName() != null && dayOfWeek == 0)
-            filterTests(branch);
+            // filter test by a branch
+            filterTestsBy(branch);
+            // if no specific branch was chosen and a specific dayOfWeek was chosen
         else if (branch.getName() == null && dayOfWeek > 0)
-            filterTests(dayOfWeek);
+            // filter test by a dayOfWeek
+            filterTestsBy(dayOfWeek);
+            // if a specific branch was chosen and a specific dayOfWeek was chosen
         else if (branch.getName() != null && dayOfWeek > 0)
-            filterTests(branch, dayOfWeek);
+            // filter test by a branch and a dayOfWeek
+            filterTestsBy(branch, dayOfWeek);
 
+        // inflate scrollView with ResultsFragment
         replaceFragment(mainActivity.resultsFragment,
-                mainActivity.getResources().getString(R.string.toolbar_title_results),
-                mainActivity, mainActivity.scrollView);
+                mainActivity.getResources().getString(R.string.toolbar_title_results));
     }
 
-    private void filterTests(Location location) {
+    /**
+     * Function to get tests that have a location matching to this location
+     *
+     * @param location - add tests that have a location matching to this location
+     */
+    private void filterTestsBy(Location location) {
+        // for each test in testsArrayList
         for (Test test : mainActivity.testsArrayList) {
+            // if the location of test is equal to name of selected 'location'
             if (test.getLocation().equals(location.name)) {
-                addTestToArrayList(test);
+                addTestToTestsFilteredArrayList(test);
             }
         }
-        replaceFragment(mainActivity.resultsFragment,
-                mainActivity.getResources().getString(R.string.toolbar_title_results),
-                mainActivity, mainActivity.scrollView);
     }
 
-    private void addTestToArrayList(Test test) {
-        String day = Util.firstLetterCaps(test.getDeadlineDayOfWeek()
-                .toString());
-        TestDataObject obj = new TestDataObject(test.getLocation(),
-                Util.firstLetterCaps(test.getDayOfWeek().toString()),
-                test.getTime().toString("hh:mm a"),
-                test.getDate().toString("MMMM dd yyyy"),
-                "Registration Deadline: ",
-                day + " " + test.getDeadlineDate().toString("MMMM dd yyyy") + " " +
-                        test.getDeadlineTime().toString("hh:mm a"));
+    /**
+     * Function to get all tests
+     */
+    private void filterTestsBy() {
+        // for each test in testsArrayList
+        for (Test test : mainActivity.testsArrayList) {
+            addTestToTestsFilteredArrayList(test);
+        }
+    }
+
+    /**
+     * Function to get tests that have a branch matching to this branch
+     *
+     * @param branch - add tests that have a branch matching to this branch
+     */
+    private void filterTestsBy(Branch branch) {
+        // for each test in testsArrayList
+        for (Test test : mainActivity.testsArrayList) {
+            // if the branch of test is equal to name of selected 'branch'
+            if (test.getBranchId() == (branch.id)) {
+                addTestToTestsFilteredArrayList(test);
+            }
+        }
+    }
+
+    /**
+     * Function to get tests that have a dayOfWeek matching to this dayOfWeek
+     *
+     * @param dayOfWeek - add tests that have a dayOfWeek matching to this dayOfWeek
+     */
+    private void filterTestsBy(int dayOfWeek) {
+        // for each test in testsArrayList
+        for (Test test : mainActivity.testsArrayList) {
+            // if the dayOfWeek of test is equal to name of selected 'dayOfWeek'
+            if (test.getDayOfWeek().ordinal() + 1 == (dayOfWeek)) {
+                addTestToTestsFilteredArrayList(test);
+            }
+        }
+    }
+
+    /**
+     * Function to get tests that have a branch and dayOfWeek matching to this branch and dayOfWeek
+     *
+     * @param branch    - add tests that have a branch matching to this branch
+     * @param dayOfWeek - add tests that have a dayOfWeek matching to this dayOfWeek
+     */
+    //for branch and dayOfWeek
+    private void filterTestsBy(Branch branch, int dayOfWeek) {
+        // for each test in testsArrayList
+        for (Test test : mainActivity.testsArrayList) {
+            // if the branch and dayOfWeek of test equals to name of selected branch and 'dayOfWeek'
+            if (test.getBranchId() == (branch.id) &&
+                    (test.getDayOfWeek().ordinal() + 1 == (dayOfWeek))) {
+                addTestToTestsFilteredArrayList(test);
+            }
+        }
+    }
+
+    /**
+     * Function to convert a Test to TestDataObject and add it to testsFilteredArrayList
+     *
+     * @param test - test to convert and add
+     */
+    private void addTestToTestsFilteredArrayList(Test test) {
+        // get values from test for TestDataObject
+        String location =
+                test.getLocation();
+        String testDay =
+                Util.firstLetterCaps(test.getDayOfWeek().toString());
+        String testTime =
+                test.getTime().toString("hh:mm a");
+        String testDate =
+                test.getDate().toString("MMMM dd yyyy");
+        String testDeadlineTitle =
+                "Registration Deadline: ";
+        String testDeadlineDetails =
+                Util.firstLetterCaps(test.getDeadlineDayOfWeek().toString()) + " "
+                        + test.getDeadlineDate().toString("MMMM dd yyyy") + " "
+                        + test.getDeadlineTime().toString("hh:mm a");
+
+        // create new TestDataObject from strings
+        TestDataObject obj = new TestDataObject(location, testDay, testTime,
+                testDate, testDeadlineTitle, testDeadlineDetails);
+
+        // add obj to testsFilteredArrayList
         mainActivity.testsFilteredArrayList.add(obj);
     }
 
-    // none
-    private void filterTests() {
-        for (Test test : mainActivity.testsArrayList) {
-            addTestToArrayList(test);
-        }
-    }
-
-    //for branches only
-    private void filterTests(Branch branch) {
-        for (Test test : mainActivity.testsArrayList) {
-            if (test.getBranchId() == (branch.id)) {
-                addTestToArrayList(test);
-            }
-        }
-    }
-
-    //for dayOfWeek only
-    private void filterTests(int dayOfWeek) {
-        for (Test test : mainActivity.testsArrayList) {
-            if (test.getDayOfWeek().ordinal() + 1 == (dayOfWeek)) {
-                addTestToArrayList(test);
-            }
-        }
-    }
-
-    //for branch and dayOfWeek
-    private void filterTests(Branch branch, int dayOfWeek) {
-        for (Test test : mainActivity.testsArrayList) {
-            if (test.getBranchId() == (branch.id) && (test.getDayOfWeek().ordinal() + 1 == (dayOfWeek))) {
-                addTestToArrayList(test);
-            }
-        }
-    }
-
-
-    private void clearTestsFilteredArrayList() {
-        if (mainActivity.testsFilteredArrayList != null)
-            mainActivity.testsFilteredArrayList.clear();
-    }
-
-    public boolean isEmpty(EditText editText) {
-        return editText.getText().toString().trim().length() == 0;
-    }
-
+    // ToDo come back to this
     public void createUser(String result, int id) {
         if (loginActivity.register2Fragment.isVisible()) {
             if (result.equals("") && id == 0) {
@@ -241,6 +334,7 @@ public class HelperMethods extends Activity {
 
     }
 
+    // ToDo come back to this
     public void getUser(String result) {
 
         if (loginActivity.loginFragment.isVisible()) {
@@ -256,13 +350,14 @@ public class HelperMethods extends Activity {
         }
     }
 
+    // ToDo come back to this
     public void updateUser(String result) {
 
         if (loginActivity.updateProfileFragment.isVisible()) {
             if (result.equals("true")) {
                 // user updated
 
-// launch activity with main activity intent
+                // launch activity with main activity intent
                 Util.launchActivity(loginActivity.getLaunchMainActivityIntent("update_profile"));
 
             } else {
@@ -274,47 +369,31 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to show a snack bar in Coordinator Layout
-     *
-     * @param message           -   snack bar message
-     * @param coordinatorLayout -   parent view for snackBar
+     * @param message - snack bar message
      */
-    public void showSnackBar(String message, CoordinatorLayout coordinatorLayout) {
-        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    public void showSnackBar(String message) {
+        try {
+            // create new CoordinatorLayout to hold reference of parent view for snackBar
+            CoordinatorLayout coordinatorLayout = new CoordinatorLayout(Util.getContext());
+
+            // get reference of CoordinatorLayout the layout is hosted in
+            coordinatorLayout =
+                    (CoordinatorLayout) Util.getActivity().findViewById(R.id.coordinatorLayout);
+
+            // show snack bar
+            Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            // show toast
+            Toast.makeText(Util.getContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
+    // ToDo clean this function once hours are confirmed
     /**
-     * Function to check if the current time is a start and end time
-     *
-     * @param start -   beginning time
-     * @param end   -   finishing time
-     * @param time  -   now
-     * @return boolean      -   if is between, return true; if is not between, return false
-     */
-    public static boolean isWithinInterval(LocalTime start, LocalTime end, LocalTime time) {
-        return time.isAfter(start) && time.isBefore(end);
-    }
-
-
-    /**
-     * Function to check internet status
-     *
-     * @return boolean
-     */
-    public static boolean checkInternetConnection() {
-        // creating connection detector class instance
-        ConnectionDetector cd = new ConnectionDetector(Util.getContext());
-
-        // get Internet status
-        return cd.isConnectingToInternet();
-    }
-
-    /**
-     * Function to check if now is during office hours
-     *
+     * Function to check if now is during  office hours
      * @return boolean
      */
     public boolean isDuringOfficeHours() {
-
         String startTime, endTime;
         DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
 
@@ -324,19 +403,17 @@ public class HelperMethods extends Activity {
         //get start time and end time of today's office hours
         switch (dayOfWeek) {
             case "5": {
-                // Friday
+                // Friday - closed ?
                 startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
                 endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
                 break;
             }
             case "6": {
-                // Saturday
-                // closed ?
+                // Saturday - closed ?
                 return false;
             }
             case "7": {
-                // Sunday
-                // closed ?
+                // Sunday - closed ?
                 return false;
             }
             default: {
@@ -358,10 +435,12 @@ public class HelperMethods extends Activity {
         LocalTime now = nowNY.toLocalTime();
 
         // check if now is between start and end
-        return isWithinInterval(start, end, now);
+        return Util.isWithinInterval(start, end, now);
     }
 
+    // ToDo up to here
     public int setLocationSpinnerSelection() {
+    //  loginActivity.locationsArrayList.indexOf(loginActivity.defaultLocation.name)
 
         for (Location l : loginActivity.locationsArrayList) {
             if (loginActivity.defaultLocation.name.equals(l.getName())) {
@@ -604,7 +683,7 @@ public class HelperMethods extends Activity {
      * Function to create a bundle for a DialogFragment
      *
      * @param array - tag of dialog fragment
-     * return bundle
+     *              return bundle
      */
     public static Bundle getDialogFragmentBundle(int array) {
         // instantiate a typed array and get its values from xml array
@@ -697,8 +776,9 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to make http request that return a JsonObject and then convert it to a JsonArray
-     * @param url - url to get the JSON string from
-     * @param tag - tag of node to get objects from
+     *
+     * @param url    - url to get the JSON string from
+     * @param tag    - tag of node to get objects from
      * @param params - list of key values to pass along to the http request
      * @return JsonArray
      */
@@ -738,12 +818,6 @@ public class HelperMethods extends Activity {
 
         return jsonArray;
     }
-
-
-
-
-
-
 
 
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
@@ -786,7 +860,7 @@ public class HelperMethods extends Activity {
 
         setUpHoursFilteredArrayList(name);
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-        mainActivity.helperMethods.setListViewHeightBasedOnItems(listView);
+        setListViewHeightBasedOnItems(listView);
     }
 
 
@@ -830,7 +904,7 @@ public class HelperMethods extends Activity {
         if (mainActivity.user.jseStudentId == null) {
 
             // if internet connection status is true getJseStudentId
-            if (HelperMethods.checkInternetConnection()) {
+            if (Util.checkInternetConnection()) {
                 mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
             }
         }

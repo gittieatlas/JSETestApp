@@ -80,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onResume();
 
         // check for Internet status and set true/false
-        if (HelperMethods.checkInternetConnection()) {
+        if (Util.checkInternetConnection()) {
             getDataFromDatabase();
         } else {
             // call method showDialog and send tag "d_no_internet_connection"
@@ -466,7 +466,8 @@ public class SplashActivity extends AppCompatActivity {
         // get JsonArray of locations from Json string
         JSONArray locationsJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.locations_url),
-                Util.getActivity().getString(R.string.TAG_LOCATIONS), new ArrayList<NameValuePair>());
+                Util.getActivity().getString(R.string.TAG_LOCATIONS),
+                new ArrayList<NameValuePair>());
         try {
             // try to loop through locationsJsonArray
             for (int i = 0; i < locationsJsonArray.length(); i++) {
@@ -493,7 +494,8 @@ public class SplashActivity extends AppCompatActivity {
         // get JsonArray of tests from Json string
         JSONArray testsJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.tests_url),
-                Util.getActivity().getString(R.string.TAG_TESTS), new ArrayList<NameValuePair>());
+                Util.getActivity().getString(R.string.TAG_TESTS),
+                new ArrayList<NameValuePair>());
 
         try {
             // try to loop through testsJsonArray
@@ -522,7 +524,8 @@ public class SplashActivity extends AppCompatActivity {
         // get JsonArray of hours from Json string
         JSONArray hoursJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.hours_url),
-                Util.getActivity().getString(R.string.TAG_HOURS), new ArrayList<NameValuePair>());
+                Util.getActivity().getString(R.string.TAG_HOURS),
+                new ArrayList<NameValuePair>());
         try {
             // try to looping through hoursJsonArray
             for (int i = 0; i < hoursJsonArray.length(); i++) {
@@ -549,7 +552,8 @@ public class SplashActivity extends AppCompatActivity {
         // get JsonArray of branches from Json string
         JSONArray branchesJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.branches_url),
-                Util.getActivity().getString(R.string.TAG_BRANCHES), new ArrayList<NameValuePair>());
+                Util.getActivity().getString(R.string.TAG_BRANCHES),
+                new ArrayList<NameValuePair>());
 
         try {
             // try to loop through branchesJsonArray
@@ -577,7 +581,8 @@ public class SplashActivity extends AppCompatActivity {
         // get JsonArray of alerts from Json string
         JSONArray alertsJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.alerts_url),
-                Util.getActivity().getString(R.string.TAG_ALERTS), new ArrayList<NameValuePair>());
+                Util.getActivity().getString(R.string.TAG_ALERTS),
+                new ArrayList<NameValuePair>());
 
         try {
             // try to loop through alertsJsonArray

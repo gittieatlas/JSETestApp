@@ -47,14 +47,14 @@ public class LoginActivity extends AppCompatActivity {
         // attach xml to activity
         setContentView(R.layout.activity_login);
 
+        // send activity reference to Util class
+        Util.setReference(this);
+
         instantiateClasses();
         instantiateFragments();
         initializeViews();
         initializeVariables();
         inflateScrollViewWithFragment();
-
-        // send activity reference to Util class
-        Util.setReference(this);
     }
 
     @Override
@@ -151,16 +151,14 @@ public class LoginActivity extends AppCompatActivity {
         // if getIntentOutcome = "update_profile", inflate update profile  fragment
         if (getIntent().getExtras().getString("outcome").equals("update_profile")) {
             // inflate scrollView with UpdateProfileFragment
-            helperMethods.replaceFragment(updateProfileFragment,
-                    getResources().getString(R.string.toolbar_title_update_profile),
-                    this, scrollView);
+            HelperMethods.replaceFragment(updateProfileFragment,
+                    getResources().getString(R.string.toolbar_title_update_profile));
         }
         // else inflate login fragment
         else {
             // inflate scrollView with LoginFragment
-            helperMethods.replaceFragment(loginFragment,
-                    getResources().getString(R.string.toolbar_title_login),
-                    this, scrollView);
+            HelperMethods.replaceFragment(loginFragment,
+                    getResources().getString(R.string.toolbar_title_login));
         }
     }
 
@@ -172,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
         if (getIntent().getExtras().getString("outcome").equals("log_out")) {
 
             //  show snack bar - "log out successful"
-            helperMethods.showSnackBar(getString(R.string.msg_logged_out), coordinatorLayout);
+            helperMethods.showSnackBar(getString(R.string.msg_logged_out));
 
         }
         // else if getIntentOutcome = "update_profile", get user and default location from intent

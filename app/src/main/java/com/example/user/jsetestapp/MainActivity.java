@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         // attach xml to activity
         setContentView(R.layout.activity_main);
 
+        // send activity reference to Util class
+        Util.setReference(this);
+
         instantiateClasses();
         instantiateFragments();
         initializeViews();
@@ -71,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
         setScrollViewMinHeight();
         inflateScrollViewWithFragment();
         getInfoFromIntent();
-
-        // send activity reference to Util class
-        Util.setReference(this);
     }
 
     @Override
@@ -229,9 +229,8 @@ public class MainActivity extends AppCompatActivity {
                     // check if dashboardFragment is visible or not
                     if (!dashboardFragment.isVisible()) {
                         // if its not visible call a method that will return this fragment
-                        helperMethods.replaceFragment(dashboardFragment,
-                                getResources().getString(R.string.toolbar_title_dashboard),
-                                MainActivity.this, scrollView);
+                        HelperMethods.replaceFragment(dashboardFragment,
+                                getResources().getString(R.string.toolbar_title_dashboard));
                     }
                     // exit the switch statement
                     break;
@@ -240,9 +239,8 @@ public class MainActivity extends AppCompatActivity {
                     // check if searchFragment is visible or not
                     if (!searchFragment.isVisible()) {
                         // if its not visible call a method that will return this fragment
-                        helperMethods.replaceFragment(searchFragment,
-                                getResources().getString(R.string.toolbar_title_search),
-                                MainActivity.this, scrollView);
+                        HelperMethods.replaceFragment(searchFragment,
+                                getResources().getString(R.string.toolbar_title_search));
                     }
                     // exit the switch statement
                     break;
@@ -251,9 +249,8 @@ public class MainActivity extends AppCompatActivity {
                     // check if librariesFragment is visible or not
                     if (!librariesFragment.isVisible()) {
                         // if its not visible call a method that will return this fragment
-                        helperMethods.replaceFragment(librariesFragment,
-                                getResources().getString(R.string.toolbar_title_libraries),
-                                MainActivity.this, scrollView);
+                        HelperMethods.replaceFragment(librariesFragment,
+                                getResources().getString(R.string.toolbar_title_libraries));
                     }
                     // exit the switch statement
                     break;
@@ -262,9 +259,8 @@ public class MainActivity extends AppCompatActivity {
                     // check if contactFragment is visible or not
                     if (!contactFragment.isVisible()) {
                         // if its not visible call a method that will return this fragment
-                        helperMethods.replaceFragment(contactFragment,
-                                getResources().getString(R.string.toolbar_title_contact),
-                                MainActivity.this, scrollView);
+                        HelperMethods.replaceFragment(contactFragment,
+                                getResources().getString(R.string.toolbar_title_contact));
                     }
                     // exit the switch statement
                     break;
@@ -313,9 +309,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void inflateScrollViewWithFragment() {
         // inflate scrollView with dashboardFragment
-        helperMethods.replaceFragment(dashboardFragment,
-                getString(R.string.toolbar_title_dashboard),
-                MainActivity.this, scrollView);
+        HelperMethods.replaceFragment(dashboardFragment,
+                getString(R.string.toolbar_title_dashboard));
     }
 
     /**
@@ -325,19 +320,19 @@ public class MainActivity extends AppCompatActivity {
         // if intent outcome = "create_account"
         if (getIntent().getExtras().getString("outcome").equals("create_account")) {
             // call showSnackBar and send tag "Account created"
-            helperMethods.showSnackBar("Account created", coordinatorLayout);
+            helperMethods.showSnackBar("Account created");
             // if intent outcome = "login"
         } else if (getIntent().getExtras().getString("outcome").equals("login")) {
             // call showSnackBar and send tag "Logged in"
-            helperMethods.showSnackBar("Logged in", coordinatorLayout);
+            helperMethods.showSnackBar("Logged in");
             // if intent outcome = "update_profile"
         } else if (getIntent().getExtras().getString("outcome").equals("update_profile")) {
             // call showSnackBar and send tag "Profile updated"
-            helperMethods.showSnackBar("Profile updated", coordinatorLayout);
+            helperMethods.showSnackBar("Profile updated");
             // if intent outcome = "update_profile_cancel"
         } else if (getIntent().getExtras().getString("outcome").equals("update_profile_cancel")) {
             // call showSnackBar and send tag "Profile not updated"
-            helperMethods.showSnackBar("Profile not updated", coordinatorLayout);
+            helperMethods.showSnackBar("Profile not updated");
         }
     }
 

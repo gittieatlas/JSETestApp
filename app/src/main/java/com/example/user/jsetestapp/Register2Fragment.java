@@ -180,12 +180,12 @@ public class Register2Fragment extends Fragment {
      */
     private boolean requiredFieldsHaveValues() {
         // if any if the required field controls don't have a value or a value selected
-        if (loginActivity.helperMethods.isEmpty(firstNameEditText) ||
-                loginActivity.helperMethods.isEmpty(lastNameEditText) ||
-                loginActivity.helperMethods.isEmpty(dobDayEditText) ||
-                loginActivity.helperMethods.isEmpty(dobMonthEditText) ||
-                loginActivity.helperMethods.isEmpty(dobYearEditText) ||
-                loginActivity.helperMethods.isEmpty(ssnEditText) ||
+        if (Util.isEmpty(firstNameEditText) ||
+                Util.isEmpty(lastNameEditText) ||
+                Util.isEmpty(dobDayEditText) ||
+                Util.isEmpty(dobMonthEditText) ||
+                Util.isEmpty(dobYearEditText) ||
+                Util.isEmpty(ssnEditText) ||
                 genderSpinner.getSelectedItemPosition() == 0 ||
                 locationsSpinner.getSelectedItemPosition() == 0) {
 
@@ -239,7 +239,7 @@ public class Register2Fragment extends Fragment {
      */
     private void createAccount(){
         // if application can connect to internet
-        if (HelperMethods.checkInternetConnection()) {
+        if (Util.checkInternetConnection()) {
             saveUser();
 
             // call AsyncTask to create new user
