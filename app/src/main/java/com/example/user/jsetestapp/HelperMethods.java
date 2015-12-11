@@ -308,31 +308,6 @@ public class HelperMethods extends Activity {
         mainActivity.testsFilteredArrayList.add(obj);
     }
 
-    // ToDo come back to this
-    public void createUser(String result, int id) {
-        if (loginActivity.register2Fragment.isVisible()) {
-            if (result.equals("") && id == 0) {
-                Util.showDialogFragment(R.array.create_account_failed_email_duplicate);
-            } else if (result.equals("true") && id != 0) {
-                loginActivity.user.setId(id);
-
-                // launch activity with main activity intent
-                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
-
-            } else {
-                Util.showDialogFragment(R.array.create_account_failed_insert_failed);
-            }
-        } else {
-            if (result.equals("") && id == 0) {
-
-            } else if (result.equals("true") && id != 0) {
-                loginActivity.user.setId(id);
-            } else {
-
-            }
-        }
-
-    }
 
     // ToDo come back to this
     public void getUser(String result) {
@@ -818,6 +793,39 @@ public class HelperMethods extends Activity {
 
         return jsonArray;
     }
+
+
+
+    public static JSONObject getJsonObject(String url, List<NameValuePair> params) {
+        // getting JSON Object
+        // Note that create user url accepts POST method
+        JSONParser jsonParser = new JSONParser();
+
+        // create JSON Object from request made to url
+        JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
+
+        int success = 0;
+
+        try {
+            // try to get int with tag "success" from json object
+            success = json.getInt(Util.getStringValue(R.string.TAG_SUCCESS));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        if (json != null && success !=0) {
+            return json;
+        }
+        else if(json!= null && success == 0 ) {
+            return json;
+        }
+        return null;
+
+
+    }
+
+
 
 
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {

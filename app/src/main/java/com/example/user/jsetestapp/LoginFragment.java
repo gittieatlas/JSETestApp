@@ -1,8 +1,10 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,7 +14,29 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoginFragment extends Fragment {
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+
+    // testsJsonArray JSONArray
+    JSONArray usersJsonArray = null;
+    private static String result = "";
+    private static String insertResult = "";
+    private static String checkEmailResult = "";
+    private static String resultUpdate = "";
+    private static int id = 0;
+    private static String studentId = "";
+    private static int loginResult = 0;
 
     // Declare Controls
     View rootView;
@@ -175,7 +199,8 @@ public class LoginFragment extends Fragment {
         if (Util.checkInternetConnection()) {
 
             // call AsyncTask to get user
-            taskGetUser = loginActivity.databaseOperations.getUser(loginActivity.user);
+            //taskGetUser = loginActivity.databaseOperations.getUser(loginActivity.user);
+            taskGetUser = new GetUser().execute();
         }
         // if internet status connection is false
         else {
@@ -192,4 +217,130 @@ public class LoginFragment extends Fragment {
         // set this loginActivity to loginActivity
         this.loginActivity = loginActivity;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Background Async Task to Get User
+     */
+    class GetUser extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog("Logging in. Please wait...");
+        }
+
+        /**
+         * Creating product
+         */
+        protected String doInBackground(String... args) {
+             return getUserFromDataBase();
+
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String result) {
+
+            loginActivity.helperMethods.getUser(result);
+
+            // dismiss the dialog once done
+            pDialog.dismiss();
+
+
+        }
+
+        public void showProgressDialog(String message){
+            pDialog = new ProgressDialog(loginActivity);
+            pDialog.setMessage(message);
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+    }
+
+    public String getUserFromDataBase(){
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("email", loginActivity.user.email));
+        params.add(new BasicNameValuePair("password", loginActivity.user.password));
+
+        // getting JSON Object
+        // Note that create user url accepts POST method
+        JSONParser jsonParser = new JSONParser();
+        JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_get_user),
+                "POST", params);
+
+        // check log cat for response
+        Log.d("Get User", json.toString());
+
+        try {
+            loginResult = json.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // if json is not equal to null and result is not equal to 0
+        if (json != null && loginResult != 0) {
+            try {
+                //  JSONObject jsonObj = new JSONObject(json);
+
+                // Getting JSON Array node
+                usersJsonArray = json.getJSONArray(Util.getActivity().getString(R.string.TAG_USERS));
+
+                // looping through All Tests
+                for (int i = 0; i < usersJsonArray.length(); i++) {
+
+                    JSONObject c = usersJsonArray.getJSONObject(i);
+
+                    User user = new User();
+                    user.setFirstName(c.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
+                    user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_ID))));
+                    user.setLastName(c.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
+                    user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
+                    user.setDob(c.getString(Util.getActivity().getString(R.string.TAG_DOB)));
+                    user.setSsn(c.getString(Util.getActivity().getString(R.string.TAG_SSN)));
+                    user.setEmail(c.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
+                    user.setPassword(c.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
+                    user.setLocationId(c.getString(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
+                    user.setIsJseMember(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+                    user.setJseStudentId(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+
+                    loginActivity.user = user;
+
+                    //DoTo fix isCancelled method
+                    //if (isCancelled()) break;
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("Get User", "Couldn't get any login users");
+        }
+
+        return Integer.toString(loginResult);
+    }
+
 }

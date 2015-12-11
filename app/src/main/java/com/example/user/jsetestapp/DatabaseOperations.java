@@ -32,14 +32,14 @@ public class DatabaseOperations {
     private static String studentId = "";
     private static int loginResult = 0;
 
-    public AsyncTask newUser(User user) {
+//    public AsyncTask newUser(User user) {
+//
+//        return new CreateNewUser().execute(user);
+//    }
 
-        return new CreateNewUser().execute(user);
-    }
-
-    public AsyncTask getUser(User user) {
-        return new GetUser(user).execute();
-    }
+//    public AsyncTask getUser(User user) {
+//        return new GetUser(user).execute();
+//    }
 
     public void getJseStudentId(User user) {
 
@@ -51,203 +51,214 @@ public class DatabaseOperations {
         return new UpdateUser(user).execute();
     }
 
-    /**
-     * Background Async Task to Create new product
-     */
-    class CreateNewUser extends AsyncTask<User, String, String> {
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         * Runs on the UI thread before doInBackground
-         * Good for toggling visibility of a progress indicator
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog("Creating account. Please wait...");
-
-        }
-
-        /**
-         * Creating user
-         */
-        protected String doInBackground(User... params) {
-            result = "";
-            insertResult = "";
-            id = 0;
-
-            addUserToDatabase();
-
-            User user = params[0];
-            // Building Parameters
-            List<NameValuePair> httpParams = new ArrayList<>();
-            httpParams.add(new BasicNameValuePair("firstName", user.getFirstName()));
-            httpParams.add(new BasicNameValuePair("lastName", user.getLastName()));
-            httpParams.add(new BasicNameValuePair("gender", Integer.toString(user.getGender(user) + 1)));
-            httpParams.add(new BasicNameValuePair("dob", user.getDob().toString("yyyy-MM-dd")));
-            httpParams.add(new BasicNameValuePair("ssn", user.getSsn()));
-            httpParams.add(new BasicNameValuePair("email", user.getEmail()));
-            httpParams.add(new BasicNameValuePair("password", user.getPassword()));
-            httpParams.add(new BasicNameValuePair("locationId", Integer.toString(user.getLocationId())));
-            // getting JSON Object
-            // Note that create user url accepts POST method
-            JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_create_user),
-                    "POST", httpParams);
-
-            // check log cat for response
-            Log.d("Create User", json.toString());
-
-
-            try {
-                checkEmailResult = json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (checkEmailResult.equals("0")) {
-                // if email does not exist, see if insert was completed successfully
-                try {
-                    insertResult = json.getString(Util.getActivity().getString(R.string.TAG_INSERT_RESULT));
-                    id = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_ID)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return insertResult;
-            }
-
-            return result;
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         **/
-        protected void onPostExecute(String result) {
-
-            loginActivity.helperMethods.createUser(result, id);
-
-            // dismiss the dialog once done
-            pDialog.dismiss();
-
-        }
-
-
-        protected void onCancelled(String result){
-
-            //Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
-            if (id != 0) loginActivity.user.setId(id);
-            pDialog.dismiss();
-        }
-
-    }
-
-    public void addUserToDatabase(){
-
-    }
-
-    /**
-     * Background Async Task to Get User
-     */
-    class GetUser extends AsyncTask<String, String, String> {
-
-        String email, password;
-
-        GetUser(User user) {
-            this.email = user.getEmail();
-            this.password = user.getPassword();
-        }
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog("Logging in. Please wait...");
-        }
-
-        /**
-         * Creating product
-         */
-        protected String doInBackground(String... args) {
-
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("email", email));
-            params.add(new BasicNameValuePair("password", password));
-
-            // getting JSON Object
-            // Note that create user url accepts POST method
-            JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_get_user),
-                    "POST", params);
-
-            // check log cat fro response
-            Log.d("Get User", json.toString());
-
-            try {
-                loginResult = json.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (json != null && loginResult != 0) {
-                try {
-                    //  JSONObject jsonObj = new JSONObject(json);
-
-                    // Getting JSON Array node
-                    usersJsonArray = json.getJSONArray(Util.getActivity().getString(R.string.TAG_USERS));
-
-                    // looping through All Tests
-                    for (int i = 0; i < usersJsonArray.length(); i++) {
-
-                        JSONObject c = usersJsonArray.getJSONObject(i);
-
-                        User user = new User();
-                        user.setFirstName(c.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
-                        user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_ID))));
-                        user.setLastName(c.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
-                        user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
-                        user.setDob(c.getString(Util.getActivity().getString(R.string.TAG_DOB)));
-                        user.setSsn(c.getString(Util.getActivity().getString(R.string.TAG_SSN)));
-                        user.setEmail(c.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
-                        user.setPassword(c.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
-                        user.setLocationId(c.getString(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
-                        user.setIsJseMember(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
-                        user.setJseStudentId(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
-
-                        loginActivity.user = user;
-
-                        if (isCancelled()) break;
-
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("Get User", "Couldn't get any login users");
-            }
-
-            return Integer.toString(loginResult);
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         **/
-        protected void onPostExecute(String result) {
-
-            loginActivity.helperMethods.getUser(result);
-
-            // dismiss the dialog once done
-            pDialog.dismiss();
-
-
-        }
+//    /**
+//     * Background Async Task to Create new product
+//     */
+//    class CreateNewUser extends AsyncTask<User, String, String> {
+//
+//        /**
+//         * Before starting background thread Show Progress Dialog
+//         * Runs on the UI thread before doInBackground
+//         * Good for toggling visibility of a progress indicator
+//         */
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            showProgressDialog("Creating account. Please wait...");
+//
+//        }
+//
+//        /**
+//         * Creating user
+//         */
+//        protected String doInBackground(User... params) {
+//
+//            User user = params[0];
+//            // Building Parameters
+//            List<NameValuePair> httpParams = new ArrayList<>();
+//            httpParams.add(new BasicNameValuePair("firstName", user.getFirstName()));
+//            httpParams.add(new BasicNameValuePair("lastName", user.getLastName()));
+//            httpParams.add(new BasicNameValuePair("gender", Integer.toString(user.getGender(user) + 1)));
+//            httpParams.add(new BasicNameValuePair("dob", user.getDob().toString("yyyy-MM-dd")));
+//            httpParams.add(new BasicNameValuePair("ssn", user.getSsn()));
+//            httpParams.add(new BasicNameValuePair("email", user.getEmail()));
+//            httpParams.add(new BasicNameValuePair("password", user.getPassword()));
+//            httpParams.add(new BasicNameValuePair("locationId", Integer.toString(user.getLocationId())));
+//
+//            return addUserToDatabase(httpParams);
+//
+//        }
+//
+//        /**
+//         * After completing background task Dismiss the progress dialog
+//         **/
+//        protected void onPostExecute(String result) {
+//
+//            loginActivity.helperMethods.createUser(result, id);
+//
+//            // dismiss the dialog once done
+//            pDialog.dismiss();
+//
+//        }
+//
+//
+//        protected void onCancelled(String result){
+//
+//            //Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
+//            if (id != 0) loginActivity.user.setId(id);
+//            pDialog.dismiss();
+//        }
+//
+//    }
+//
+//    public String addUserToDatabase(List<NameValuePair> httpParams){
+//        result = "";
+//        insertResult = "";
+//        id = 0;
+//
+//        JSONObject json = HelperMethods.getJsonObject(Util.getActivity().getString(R.string.url_create_user),
+//                httpParams);
+//
+//
+//        if (json != null) {
+//
+//            // check log cat for response
+//            Log.d("Create User", json.toString());
+//
+//
+//            try {
+//                checkEmailResult = json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (checkEmailResult.equals("0")) {
+//                // if email does not exist, see if insert was completed successfully
+//                try {
+//                    insertResult = json.getString(Util.getActivity().getString(R.string.TAG_INSERT_RESULT));
+//                    id = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_ID)));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                return insertResult;
+//            }
+//        }
+//        return result;
+//    }
+//
 
 
 
-    }
+//    /**
+//     * Background Async Task to Get User
+//     */
+//    class GetUser extends AsyncTask<String, String, String> {
+//
+//        String email, password;
+//
+//        GetUser(User user) {
+//            this.email = user.getEmail();
+//            this.password = user.getPassword();
+//        }
+//
+//        /**
+//         * Before starting background thread Show Progress Dialog
+//         */
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            showProgressDialog("Logging in. Please wait...");
+//        }
+//
+//        /**
+//         * Creating product
+//         */
+//        protected String doInBackground(String... args) {
+//
+//            // Building Parameters
+//            List<NameValuePair> params = new ArrayList<NameValuePair>();
+//            params.add(new BasicNameValuePair("email", email));
+//            params.add(new BasicNameValuePair("password", password));
+//
+//            // getting JSON Object
+//            // Note that create user url accepts POST method
+//            JSONParser jsonParser = new JSONParser();
+//            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_get_user),
+//                    "POST", params);
+//
+//            // check log cat for response
+//            Log.d("Get User", json.toString());
+//
+//            try {
+//                loginResult = json.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            // if json is not equal to null and result is not equal to 0
+//            if (json != null && loginResult != 0) {
+//                try {
+//                    //  JSONObject jsonObj = new JSONObject(json);
+//
+//                    // Getting JSON Array node
+//                    usersJsonArray = json.getJSONArray(Util.getActivity().getString(R.string.TAG_USERS));
+//
+//                    // looping through All Tests
+//                    for (int i = 0; i < usersJsonArray.length(); i++) {
+//
+//                        JSONObject c = usersJsonArray.getJSONObject(i);
+//
+//                        User user = new User();
+//                        user.setFirstName(c.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
+//                        user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_ID))));
+//                        user.setLastName(c.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
+//                        user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
+//                        user.setDob(c.getString(Util.getActivity().getString(R.string.TAG_DOB)));
+//                        user.setSsn(c.getString(Util.getActivity().getString(R.string.TAG_SSN)));
+//                        user.setEmail(c.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
+//                        user.setPassword(c.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
+//                        user.setLocationId(c.getString(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
+//                        user.setIsJseMember(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+//                        user.setJseStudentId(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+//
+//                        loginActivity.user = user;
+//
+//                        if (isCancelled()) break;
+//
+//
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                Log.e("Get User", "Couldn't get any login users");
+//            }
+//
+//            return Integer.toString(loginResult);
+//        }
+//
+//        /**
+//         * After completing background task Dismiss the progress dialog
+//         **/
+//        protected void onPostExecute(String result) {
+//
+//            loginActivity.helperMethods.getUser(result);
+//
+//            // dismiss the dialog once done
+//            pDialog.dismiss();
+//
+//
+//        }
+//
+//
+//
+//    }
+
+
+
+
+
+
 
 
     /**
