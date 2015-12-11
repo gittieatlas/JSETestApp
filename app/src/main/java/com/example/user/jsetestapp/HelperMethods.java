@@ -413,24 +413,13 @@ public class HelperMethods extends Activity {
         return Util.isWithinInterval(start, end, now);
     }
 
-    // ToDo up to here
-    public int setLocationSpinnerSelection() {
-    //  loginActivity.locationsArrayList.indexOf(loginActivity.defaultLocation.name)
-
-        for (Location l : loginActivity.locationsArrayList) {
-            if (loginActivity.defaultLocation.name.equals(l.getName())) {
-                return loginActivity.locationsArrayList.indexOf(l);
-            }
-        }
-        return 0;
-    }
-
+    // Todo up to here
+    /**
+     * Function to return a position of default branch in branchesNameArrayList
+     * @return int
+     */
     public int setBranchSpinnerSelection() {
-
         for (String s : mainActivity.branchesNameArrayList) {
-//            if (mainActivity.defaultLocation.name.equals(s)) {
-//                return mainActivity.branchesNameArrayList.indexOf(s)+1;
-//            }
             String d = " (Default Branch)";
             if (s.contains(d)) {
                 return mainActivity.branchesNameArrayList.indexOf(s);
@@ -442,28 +431,22 @@ public class HelperMethods extends Activity {
     public static void registerTouchListenerForNonEditText(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
-
             view.setOnTouchListener(new View.OnTouchListener() {
-
                 public boolean onTouch(View v, MotionEvent event) {
                     hideSoftKeyboard();
                     return false;
                 }
-
             });
         }
+
         //If a layout container, iterate over children and seed recursion.
         if (view instanceof ViewGroup) {
-
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-
                 View innerView = ((ViewGroup) view).getChildAt(i);
-
                 registerTouchListenerForNonEditText(innerView);
             }
         }
     }
-
 
     public static void hideSoftKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -654,66 +637,6 @@ public class HelperMethods extends Activity {
         return alert;
     }
 
-    /**
-     * Function to create a bundle for a DialogFragment
-     *
-     * @param array - tag of dialog fragment
-     *              return bundle
-     */
-    public static Bundle getDialogFragmentBundle(int array) {
-        // instantiate a typed array and get its values from xml array
-        TypedArray dialogArray = Util.getActivity().getResources().obtainTypedArray(array);
-
-        // instantiate a bundle
-        Bundle bundle = new Bundle();
-
-        // add key-values to bundle: get values from array and tagListener from array name
-        bundle.putString("title", dialogArray.getString(0));
-        bundle.putString("message", dialogArray.getString(1));
-        bundle.putString("positiveButton", dialogArray.getString(2));
-        bundle.putString("negativeButton", dialogArray.getString(3));
-        bundle.putString("neutralButton", dialogArray.getString(4));
-        bundle.putInt("icon", dialogArray.getResourceId(5, -1));
-        bundle.putString("tagListener", Util.getActivity().getResources().getResourceEntryName(array));
-
-        // recycle the TypedArray, to be re-used by a later caller.
-        dialogArray.recycle();
-
-        return bundle;
-    }
-
-    /**
-     * Function to set value of SplashActivity in this class
-     *
-     * @param splashActivity - instance of SplashActivity
-     */
-    public void setSplashActivity(SplashActivity splashActivity) {
-        // set this classes instance of SplashActivity to splashActivity
-        this.splashActivity = splashActivity;
-    }
-
-    /**
-     * Function to set value of LoginActivity in this class
-     *
-     * @param loginActivity - instance of LoginActivity
-     */
-    public void setLoginActivity(LoginActivity loginActivity) {
-
-        // set this classes instance of LoginActivity to loginActivity
-        this.loginActivity = loginActivity;
-    }
-
-    /**
-     * Function to set value of MainActivity in this class
-     *
-     * @param mainActivity - instance of MainActivity
-     */
-    public void setMainActivity(MainActivity mainActivity) {
-
-        // set this classes instance of MainActivity to mainActivity
-        this.mainActivity = mainActivity;
-    }
-
     public void setReminderToCallJse() {
         LocalDate localDate = LocalDate.now();
         int dayOfWeek = localDate.getDayOfWeek();
@@ -740,14 +663,12 @@ public class HelperMethods extends Activity {
         }
     }
 
-
     public void setUpIntentToCallJse(String hours, int days) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
         LocalTime localTime;
         localTime = fmt.parseLocalTime(hours);
         Util.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
     }
-
 
     /**
      * Function to make http request that return a JsonObject and then convert it to a JsonArray
@@ -794,8 +715,6 @@ public class HelperMethods extends Activity {
         return jsonArray;
     }
 
-
-
     public static JSONObject getJsonObject(String url, List<NameValuePair> params) {
         // getting JSON Object
         // Note that create user url accepts POST method
@@ -807,17 +726,15 @@ public class HelperMethods extends Activity {
         int success = 0;
 
         try {
-            // try to get int with tag "success" from json object
+        // try to get int with tag "success" from json object
             success = json.getInt(Util.getStringValue(R.string.TAG_SUCCESS));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
 
-        if (json != null && success !=0) {
-            return json;
-        }
-        else if(json!= null && success == 0 ) {
+        if (success !=0) {
+
             return json;
         }
         return null;
@@ -825,11 +742,7 @@ public class HelperMethods extends Activity {
 
     }
 
-
-
-
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
-
         ArrayList<String> locationsNameArrayList = new ArrayList<String>();
         locationsNameArrayList.add("Location");
         for (Location location : locationsArrayList) {
@@ -853,7 +766,6 @@ public class HelperMethods extends Activity {
     }
 
     public ArrayList<Test> setUpTestsArrayList(ArrayList<Test> testsArrayList) {
-
         // filtering by gender
         for (int i = 0; i < testsArrayList.size(); i++) {
             if (!testsArrayList.get(i).gender.name().equals(mainActivity.user.gender.name())) {
@@ -865,12 +777,10 @@ public class HelperMethods extends Activity {
     }
 
     public void updateHoursArrayListView(ListView listView, String name) {
-
         setUpHoursFilteredArrayList(name);
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
         setListViewHeightBasedOnItems(listView);
     }
-
 
     public void setupListView(ListAdapter adapter, ListView listView, String name) {
         adapter = new HoursAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
@@ -879,13 +789,10 @@ public class HelperMethods extends Activity {
     }
 
     public void setUpHoursFilteredArrayList(String location) {
-
         if (mainActivity.hoursFilteredArrayList != null)
             mainActivity.hoursFilteredArrayList.clear();
         for (Hour hour : mainActivity.hourArrayList) {
-
             if (hour.getName().equals(location)) {
-
                 HoursDataObject obj = new HoursDataObject(Util.firstLetterCaps(hour.getDayOfWeek().toString()),
 
                         hour.getStartTime().toString("hh:mm a"),
@@ -895,7 +802,6 @@ public class HelperMethods extends Activity {
             }
         }
     }
-
 
     public Location setUpDefaultLocation() {
         Location location = new Location();
@@ -908,13 +814,65 @@ public class HelperMethods extends Activity {
     }
 
     public void setUpIsJseMember() {
-
         if (mainActivity.user.jseStudentId == null) {
-
             // if internet connection status is true getJseStudentId
             if (Util.checkInternetConnection()) {
                 mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
             }
         }
+    }
+
+    /**
+     * Function to create a bundle for a DialogFragment
+     * @param array - tag of dialog fragment
+     * return bundle
+     */
+    public static Bundle getDialogFragmentBundle(int array) {
+        // instantiate a typed array and get its values from xml array
+        TypedArray dialogArray = Util.getActivity().getResources().obtainTypedArray(array);
+
+        // instantiate a bundle
+        Bundle bundle = new Bundle();
+
+        // add key-values to bundle: get values from array and tagListener from array name
+        bundle.putString("title", dialogArray.getString(0));
+        bundle.putString("message", dialogArray.getString(1));
+        bundle.putString("positiveButton", dialogArray.getString(2));
+        bundle.putString("negativeButton", dialogArray.getString(3));
+        bundle.putString("neutralButton", dialogArray.getString(4));
+        bundle.putInt("icon", dialogArray.getResourceId(5, -1));
+        bundle.putString("tagListener", Util.getActivity().getResources().getResourceEntryName(array));
+
+        // recycle the TypedArray, to be re-used by a later caller.
+        dialogArray.recycle();
+
+        return bundle;
+    }
+
+    /**
+     * Function to set value of SplashActivity in this class
+     * @param splashActivity - instance of SplashActivity
+     */
+    public void setSplashActivity(SplashActivity splashActivity) {
+        // set this classes instance of SplashActivity to splashActivity
+        this.splashActivity = splashActivity;
+    }
+
+    /**
+     * Function to set value of LoginActivity in this class
+     * @param loginActivity - instance of LoginActivity
+     */
+    public void setLoginActivity(LoginActivity loginActivity) {
+        // set this classes instance of LoginActivity to loginActivity
+        this.loginActivity = loginActivity;
+    }
+
+    /**
+     * Function to set value of MainActivity in this class
+     * @param mainActivity - instance of MainActivity
+     */
+    public void setMainActivity(MainActivity mainActivity) {
+        // set this classes instance of MainActivity to mainActivity
+        this.mainActivity = mainActivity;
     }
 }

@@ -136,11 +136,26 @@ public class UpdateProfileFragment extends Fragment {
         // set selection of genderSpinner to User's gender
         genderSpinner.setSelection(user.gender.ordinal());
         // set selection of locationsSpinner to User's default location
-        locationsSpinner.setSelection(loginActivity.helperMethods.setLocationSpinnerSelection());
+        locationsSpinner.setSelection(setLocationSpinnerSelection());
 
         // set newPasswordEditText and confirmNewPasswordEditText
         newPasswordEditText.setText(user.password);
         confirmNewPasswordEditText.setText(user.password);
+    }
+
+    /**
+     * Function to return position of default location in locationsArrayList
+     * @return int
+     */
+    public int setLocationSpinnerSelection() {
+        // get position of defaultLocation's name in locationsNameArrayList
+        try {
+            // return position
+            return loginActivity.locationsNameArrayList.indexOf(loginActivity.defaultLocation.name);
+        } catch (Exception ex){
+            // if no such name exists in return 0 for the first item
+            return 0;
+        }
     }
 
     /**
