@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,10 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,16 +27,9 @@ public class Register2Fragment extends Fragment {
     private ProgressDialog pDialog;
 
     // testsJsonArray JSONArray
-    JSONArray usersJsonArray = null;
-    private static String result = "";
-    private static String insertResult = "";
-    private static String checkEmailResult = "";
-    private static String resultUpdate = "";
-    private static int id = 0;
-    private static String studentId = "";
-    private static int loginResult = 0;
-
-
+    private String insertResult;
+    private int checkEmailResult;
+    private int id;
 
 
     // Declare Controls
@@ -232,7 +222,7 @@ public class Register2Fragment extends Fragment {
         if (!Util.isBirthdayCorrect(
                 dobYearEditText.getText().toString(),
                 dobMonthEditText.getText().toString(),
-                dobDayEditText.getText().toString())){
+                dobDayEditText.getText().toString())) {
 
             // Show dialog: Create Account Failed - birthday is invalid date
             Util.showDialogFragment(R.array.registration_failed_birthday_incorrect);
@@ -248,7 +238,7 @@ public class Register2Fragment extends Fragment {
      */
     public Boolean ssnIsValid() {
         // if ssn entered is not a length of 4
-        if (!Util.isLength(ssnEditText.getText().toString(), 4)){
+        if (!Util.isLength(ssnEditText.getText().toString(), 4)) {
 
             // Show dialog: Create Account Failed - ssn is not length of 4
             Util.showDialogFragment(R.array.registration_failed_ssn_incorrect);
@@ -264,14 +254,14 @@ public class Register2Fragment extends Fragment {
     /**
      * Function to create account with new user info
      */
-    private void createAccount(){
+    private void createAccount() {
         // if application can connect to internet
         if (Util.checkInternetConnection()) {
             saveUser();
 
             // call AsyncTask to create new user
             taskNewUser = new CreateNewUser().execute();
-           // taskNewUser = loginActivity.databaseOperations.newUser(loginActivity.user);
+            // taskNewUser = loginActivity.databaseOperations.newUser(loginActivity.user);
         } else {
             // Show Dialog: No Internet Connection
             Util.showDialogFragment(R.array.no_internet_connection);
@@ -315,7 +305,7 @@ public class Register2Fragment extends Fragment {
     /**
      * Background Async Task to Create new product
      */
-    class CreateNewUser extends AsyncTask<String, String, String> {
+    class CreateNewUser extends AsyncTask<String, String, Boolean> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -332,7 +322,7 @@ public class Register2Fragment extends Fragment {
         /**
          * Creating user
          */
-        protected String doInBackground(String... params) {
+        protected Boolean doInBackground(String... params) {
 
             return addUserToDatabase();
 
@@ -341,9 +331,9 @@ public class Register2Fragment extends Fragment {
         /**
          * After completing background task Dismiss the progress dialog
          **/
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Boolean result) {
 
-            createUser(result, id);
+            createUser(result);
 
             // dismiss the dialog once done
             pDialog.dismiss();
@@ -351,7 +341,7 @@ public class Register2Fragment extends Fragment {
         }
 
 
-        protected void onCancelled(String result){
+        protected void onCancelled(Boolean result) {
 
             //Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
             if (id != 0) loginActivity.user.setId(id);
@@ -360,10 +350,9 @@ public class Register2Fragment extends Fragment {
 
     }
 
-    public String addUserToDatabase(){
-        // set variables
-        result = "";
-        insertResult = "";
+    public boolean addUserToDatabase() {
+        insertResult = "false";
+        checkEmailResult = 1;
         id = 0;
 
         //User user = params[0];
@@ -385,69 +374,82 @@ public class Register2Fragment extends Fragment {
                 (Util.getActivity().getString(R.string.url_create_user), httpParams);
 
         // if json is not null
-            if (json != null) {
-
-            // check log cat for response
-            Log.d("Create User", json.toString());
+        if (json != null) {
 
             try {
-                checkEmailResult = json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT));
+                checkEmailResult = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            if (checkEmailResult.equals("0")) {
+            if (checkEmailResult==0) {
                 // if email does not exist, see if insert was completed successfully
                 try {
                     insertResult = json.getString(Util.getActivity().getString(R.string.TAG_INSERT_RESULT));
                     id = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_ID)));
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    // assign value to insertResult
                 }
-                return insertResult;
             }
+            return true;
         }
-        return "false";
-        //return result;
+        return false;
     }
 
-    public void createUser(String result, int id) {
-        // if Register2Fragment is visible
-        if (loginActivity.register2Fragment.isVisible()) {
-            // is result is equals to "" and id is equal to 0
-            if (result.equals("") && id == 0) {
-                Util.showDialogFragment(R.array.create_account_failed_email_duplicate);
 
-            // if result equals "true" and id is not equal to 0
-            } else if (result.equals("true") && id != 0) {
+    public void createUser(boolean result) {
+
+        if (loginActivity.register2Fragment.isVisible()) {
+            // if success = 0 show dialog user cant be created
+            if (!result) {
+                Util.showDialogFragment(R.array.create_account_failed_insert_failed);
+                // if success = 1
+            } else {
+                // if email exists show dialog email exits
+                if (checkEmailResult == 1) {
+                    Util.showDialogFragment(R.array.create_account_failed_email_duplicate);
+                }
+                // if email doest exists
+                else {
+                    // if not inserted
+                    if (insertResult.equals("false")) {
+                        Util.showDialogFragment(R.array.create_account_failed_insert_failed);
+                    }
+                    // if inserted
+                    else {
+                        // set id to user
+                        loginActivity.user.setId(id);
+                        // launch activity with main activity intent
+                        Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
+                    }
+                }
+            }
+
+        } else {
+            if (id!=0){
                 // set id to user
                 loginActivity.user.setId(id);
-                // launch activity with main activity intent
-                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
-
-            } else {
-                Util.showDialogFragment(R.array.create_account_failed_insert_failed);
-            }
-        // if Register2Fragment is not visible
-        } else {
-            // is result is equals to "" and id is equal to 0
-            if (result.equals("") && id == 0) {
-
-            } else if (result.equals("true") && id != 0) {
-                loginActivity.user.setId(id);
-            } else {
-
             }
         }
 
+
     }
 
-    public void showProgressDialog(String message){
+    public void showProgressDialog(String message) {
         pDialog = new ProgressDialog(loginActivity);
         pDialog.setMessage(message);
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();
+    }
+
+    @Override
+    public void onPause() {
+    super.onPause();
+        if (taskNewUser != null){
+            taskNewUser.cancel(true);
+        }
     }
 
 

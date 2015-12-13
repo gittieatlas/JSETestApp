@@ -83,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
         else if (getFragmentManager().getBackStackEntryCount() > 1) {
             // undo the last back stack transaction
             getFragmentManager().popBackStack();
+        } else if (register2Fragment.taskNewUser != null){
+            //register2Fragment.taskNewUser.cancel(true);
         }
         // if there are no fragments in the back stack
         else {
