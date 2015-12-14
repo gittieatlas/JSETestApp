@@ -344,6 +344,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to show a snack bar in Coordinator Layout
+     *
      * @param message - snack bar message
      */
     public void showSnackBar(String message) {
@@ -364,8 +365,10 @@ public class HelperMethods extends Activity {
     }
 
     // ToDo clean this function once hours are confirmed
+
     /**
      * Function to check if now is during  office hours
+     *
      * @return boolean
      */
     public boolean isDuringOfficeHours() {
@@ -413,24 +416,13 @@ public class HelperMethods extends Activity {
         return Util.isWithinInterval(start, end, now);
     }
 
-    // Todo up to here
     /**
-     * Function to return a position of default branch in branchesNameArrayList
-     * @return int
+     * Function to set up touch listener for non-text box views
      */
-    public int setBranchSpinnerSelection() {
-        for (String s : mainActivity.branchesNameArrayList) {
-            String d = " (Default Branch)";
-            if (s.contains(d)) {
-                return mainActivity.branchesNameArrayList.indexOf(s);
-            }
-        }
-        return 0;
-    }
-
     public static void registerTouchListenerForNonEditText(View view) {
-        //Set up touch listener for non-text box views to hide keyboard.
+        // if a view is not an instance of EditText
         if (!(view instanceof EditText)) {
+            // set on touch listener
             view.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View v, MotionEvent event) {
                     hideSoftKeyboard();
@@ -439,53 +431,65 @@ public class HelperMethods extends Activity {
             });
         }
 
-        //If a layout container, iterate over children and seed recursion.
+        // if the view is a layout container
         if (view instanceof ViewGroup) {
+            // iterate over children
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                // get child view
                 View innerView = ((ViewGroup) view).getChildAt(i);
+                // seed recursion
                 registerTouchListenerForNonEditText(innerView);
             }
         }
     }
 
+    /**
+     * Function to hide keyboard
+     */
     public static void hideSoftKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (Util.getActivity().getCurrentFocus().getWindowToken() != null) {
+        // get instance of keyboard through InputMethodManager
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
 
-            inputMethodManager.hideSoftInputFromWindow(Util.getActivity().getCurrentFocus().getWindowToken(), 0); // Todo this has a crash 12:08
+        // find the currently focused view, so we can get the correct window token from it.
+        View view = Util.getActivity().getCurrentFocus();
+
+        // if no view currently has focus, create a new one, so we can grab a window token from it
+        if(view == null) {
+            view = new View(Util.getActivity());
         }
-    }
 
-    public ArrayList<String> editLocationsNameArrayList() {
-        ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
-        arrayList.set(0, "");
-        return arrayList;
-    }
-
-
-    public ArrayList<String> editUpdateProfileLocationsNameArrayList() {
-        ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
-        arrayList.remove(0);
-        return arrayList;
+        // hide keyboard
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
-     * Function to set location
-     *
-     * @param locationObject
+     * Function to create a location object from a JSONObject
+     * @param jsonLocation - JSONObject with location values
      * @return location
      */
-    public static Location setLocation(JSONObject locationObject) {
-        // instantiating location
+    public static Location setLocation(JSONObject jsonLocation) {
+        // instantiate new location
         Location location = new Location();
 
+        // set location values from corresponding JSONObject values
         try {
-            // Storing each json item in location
-            location.setId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__LOCATION_ID))));
-            location.setBranchId(Integer.parseInt(locationObject.getString(Util.getStringValue(R.string.TAG__BRANCH_ID))));
-            location.setName(locationObject.getString(Util.getStringValue(R.string.TAG_NAME)));
-            location.setAddress(getAddress(locationObject));
-            location.setPhone(locationObject.getString(Util.getStringValue(R.string.TAG_PHONE)));
+            // set id
+            location.setId(Integer.parseInt(
+                    jsonLocation.getString(Util.getStringValue(R.string.TAG__LOCATION_ID))));
+
+            // set branchId
+            location.setBranchId(Integer.parseInt(
+                    jsonLocation.getString(Util.getStringValue(R.string.TAG__BRANCH_ID))));
+
+            // set name
+            location.setName(jsonLocation.getString(Util.getStringValue(R.string.TAG_NAME)));
+
+            // set address
+            location.setAddress(getAddress(jsonLocation));
+
+            // set phone
+            location.setPhone(jsonLocation.getString(Util.getStringValue(R.string.TAG_PHONE)));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -496,86 +500,126 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to build address location
-     *
-     * @param locationObject
+     * @param jsonLocation - JSONObject with location values
      * @return fullAddress
      */
-    public static String getAddress(JSONObject locationObject) {
-        // instantiating fullAddress
+    public static String getAddress(JSONObject jsonLocation) {
+        // instantiate StringBuilder to hold full address
         StringBuilder fullAddress = new StringBuilder();
 
+        // create fullAddress from values
         try {
+            // set address values from corresponding JSONObject values
+            String address = jsonLocation.getString(Util.getStringValue(R.string.TAG_ADDRESS));
+            String city = jsonLocation.getString(Util.getStringValue(R.string.TAG_CITY));
+            String state = jsonLocation.getString(Util.getStringValue(R.string.TAG_STATE));
+            String zip = jsonLocation.getString(Util.getStringValue(R.string.TAG_ZIP));
+            String country = jsonLocation.getString(Util.getStringValue(R.string.TAG_COUNTRY));
 
-            String address = locationObject.getString(Util.getStringValue(R.string.TAG_ADDRESS));
-            String city = locationObject.getString(Util.getStringValue(R.string.TAG_CITY));
-            String state = locationObject.getString(Util.getStringValue(R.string.TAG_STATE));
-            String zip = locationObject.getString(Util.getStringValue(R.string.TAG_ZIP));
-            String country = locationObject.getString(Util.getStringValue(R.string.TAG_COUNTRY));
-
+            // if values don't equal to "null", add to StringBuilder along with a space
             if (!address.equals("null")) fullAddress.append(address + " ");
             if (!city.equals("null")) fullAddress.append(city + " ");
             if (!state.equals("null")) fullAddress.append(state + " ");
             if (!zip.equals("null")) fullAddress.append(zip + " ");
             if (!country.equals("null")) fullAddress.append(country);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        // return fullAddress as a string
         return fullAddress.toString();
     }
 
     /**
-     * Function to set test
-     *
-     * @param testObject
+     * Function to create a test object from a JSONObject
+     * @param testObject - JSONObject with test values
      * @return test
      */
     public static Test setTest(JSONObject testObject) {
-        // instantiating test
+        // instantiate new test
         Test test = new Test();
 
+        // set test values from corresponding JSONObject values
         try {
-            // Storing each json item in test
-            test.branchId = Integer.parseInt(testObject.getString(Util.getStringValue(R.string.TAG_BRANCH_ID)));
-            test.location = testObject.getString(Util.getStringValue(R.string.TAG_LOCATION));
-            test.date = LocalDate.parse(testObject.getString(Util.getStringValue(R.string.TAG_DATE)));
+            // set branchId
+            test.branchId = Integer.parseInt(
+                    testObject.getString(Util.getStringValue(R.string.TAG_BRANCH_ID)));
+
+            // set location
+            test.location = testObject.getString(
+                    Util.getStringValue(R.string.TAG_LOCATION));
+
+            // set date
+            test.date = LocalDate.parse(
+                    testObject.getString(Util.getStringValue(R.string.TAG_DATE)));
+
+            // set dayOfWeek
             test.setDayOfWeek(Test.DayOfWeek.values()[
                     (test.getDate().getDayOfWeek() - 1)].toString());
+
+            // set time
             test.time = LocalTime.parse(new StringBuilder(
-                    testObject.getString(Util.getStringValue(R.string.TAG_TIME))).insert(
-                    testObject.getString(Util.getStringValue(R.string.TAG_TIME)).length() - 2, ":").toString());
-            test.deadlineDate = LocalDate.parse(testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_DATE)));
+                    testObject.getString(Util.getStringValue(R.string.TAG_TIME)))
+                    .insert(testObject.getString(Util.getStringValue(R.string.TAG_TIME))
+                            .length() - 2, ":").toString());
+
+            // set deadline date
+            test.deadlineDate = LocalDate.parse(
+                    testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_DATE)));
+
+            // set deadline time
             test.deadlineTime = LocalTime.parse(new StringBuilder(
-                    testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_TIME))).insert(
-                    testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_TIME)).length() - 2, ":").toString());
-            test.setDeadlineDayOfWeek(Test.DayOfWeek.values()[
-                    (test.getDeadlineDate().getDayOfWeek() - 1)].toString());
-            test.setGender(Integer.parseInt(testObject.getString(Util.getStringValue(R.string.TAG_GENDER))));
+                    testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_TIME)))
+                    .insert(testObject.getString(Util.getStringValue(R.string.TAG_CLOSING_TIME))
+                            .length() - 2, ":").toString());
+
+            // set setDeadlineDayOfWeek
+            test.setDeadlineDayOfWeek(Test.DayOfWeek
+                    .values()[(test.getDeadlineDate().getDayOfWeek() - 1)].toString());
+
+            // set gender
+            test.setGender(Integer.parseInt(
+                    testObject.getString(Util.getStringValue(R.string.TAG_GENDER))));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return test;
     }
 
     /**
-     * Function to set hours
-     *
-     * @param hoursObject
-     * @return hours
+     * Function to create a hours object from a JSONObject
+     * @param hoursObject - JSONObject with test values
+     * @return hour
      */
     public static Hour setHours(JSONObject hoursObject) {
-        // instantiating hour
+        // instantiate new hour
         Hour hour = new Hour();
 
+        // set hour values from corresponding JSONObject values
         try {
-            // Storing each json item in hour
-            hour.name = hoursObject.getString(Util.getStringValue(R.string.TAG_LIBRARY_LOCATION));
-            String day = hoursObject.getString(Util.getStringValue(R.string.TAG_DAY_OF_WEEK));
-            hour.setDayOfWeek(Hour.DayOfWeek.values()[(Integer.parseInt(day) - 1)]);
-            hour.startTime = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_OPENING_TIME)));
-            LocalTime duration = LocalTime.parse(hoursObject.getString(Util.getStringValue(R.string.TAG_DURATION)));
+            // set name
+            hour.name =
+                    hoursObject.getString(Util.getStringValue(R.string.TAG_LIBRARY_LOCATION));
+
+            // set day
+            String day =
+                    hoursObject.getString(Util.getStringValue(R.string.TAG_DAY_OF_WEEK));
+
+            // set dayOfWeek
+            hour.setDayOfWeek(Hour.DayOfWeek.
+                    values()[(Integer.parseInt(day) - 1)]);
+
+            // set startTime
+            hour.startTime = LocalTime.parse(
+                    hoursObject.getString(Util.getStringValue(R.string.TAG_OPENING_TIME)));
+
+            // set duration
+            LocalTime duration = LocalTime.parse(
+                    hoursObject.getString(Util.getStringValue(R.string.TAG_DURATION)));
+
+            // set endTime
             hour.endTime = hour.getStartTime().plusHours(duration.getHourOfDay())
                     .plusMinutes(duration.getMinuteOfHour());
 
@@ -588,18 +632,23 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to set branch
-     *
-     * @param branchObject
+     * Function to create a branch object from a JSONObject
+     * @param branchObject - JSONObject with test values
      * @return branch
      */
     public static Branch setBranch(JSONObject branchObject) {
-        // instantiating branches
+        // instantiate new branch
         Branch branch = new Branch();
+
+        // set branch values from corresponding JSONObject values
         try {
-            // Storing each json item in branch
-            branch.id = Integer.parseInt(branchObject.getString(Util.getStringValue(R.string.TAG_ID)));
-            branch.name = branchObject.getString(Util.getStringValue(R.string.TAG_BRANCH_NAME));
+            // set id
+            branch.id = Integer.parseInt(
+                    branchObject.getString(Util.getStringValue(R.string.TAG_ID)));
+
+            // set name
+            branch.name =
+                    branchObject.getString(Util.getStringValue(R.string.TAG_BRANCH_NAME));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -609,27 +658,41 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to set alert
-     *
-     * @param alertObject
+     * Function to create a alert object from a JSONObject
+     * @param alertObject - JSONObject with test values
      * @return alert
      */
     public static Alert setAlert(JSONObject alertObject) {
-// ToDo handle if any values are null
-        // instantiating alert
-        com.example.user.jsetestapp.Alert alert = new Alert();
+        // ToDo handle if any values are null
+        // instantiate new alert
+        Alert alert = new Alert();
 
+        // set alert values from corresponding JSONObject values
         try {
-            // Storing each json item in alert
-            alert.setLocationName(alertObject.getString(Util.getStringValue(R.string.TAG_LOCATION_NAME)));
-            String timeStamp = (alertObject.getString(Util.getStringValue(R.string.TAG_TIME_STAMP)));
-            String date = timeStamp.substring(0, 10);
-            alert.date = LocalDate.parse(date);
-            alert.setDayOfWeek(Alert.DayOfWeek.values()[(alert.getDate()
-                    .getDayOfWeek() - 1)]);
-            String time = timeStamp.substring(timeStamp.length() - 8);
-            alert.setTime(LocalTime.parse(time));
-            alert.setAlertText(alertObject.getString(Util.getStringValue(R.string.TAG_ALERT_TEXT)));
+            // set location name
+            alert.setLocationName(
+                    alertObject.getString(Util.getStringValue(R.string.TAG_LOCATION_NAME)));
+
+            // set time stamp
+            String timeStamp = (
+                    alertObject.getString(Util.getStringValue(R.string.TAG_TIME_STAMP)));
+
+            // set date
+            alert.date = LocalDate.parse(
+                    timeStamp.substring(0, 10));
+
+            // set dayOfWeek
+            alert.setDayOfWeek(
+                    Alert.DayOfWeek.values()[(alert.getDate().getDayOfWeek() - 1)]);
+
+            // set time
+            alert.setTime(LocalTime.parse(
+                    timeStamp.substring(timeStamp.length() - 8)));
+
+            // set alert text
+            alert.setAlertText(
+                    alertObject.getString(Util.getStringValue(R.string.TAG_ALERT_TEXT)));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -637,42 +700,35 @@ public class HelperMethods extends Activity {
         return alert;
     }
 
-    public void setReminderToCallJse() {
-        LocalDate localDate = LocalDate.now();
-        int dayOfWeek = localDate.getDayOfWeek();
-        String hours = getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-        switch (dayOfWeek) {
-            case 4: {
-                // Thursday
-                String fridayHours = getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
-                setUpIntentToCallJse(fridayHours, 1);
-            }
-            case 5: {
-                // Friday
-                setUpIntentToCallJse(hours, 3);
-            }
-            case 6: {
-                // Saturday
-                // closed ?
-                setUpIntentToCallJse(hours, 2);
-            }
-            default: {
-                // Sunday - Thursday
-                setUpIntentToCallJse(hours, 1);
-            }
-        }
+    /**
+     * Function to set value of SplashActivity in this class
+     * @param splashActivity - instance of SplashActivity
+     */
+    public void setSplashActivity(SplashActivity splashActivity) {
+        // set this classes instance of SplashActivity to splashActivity
+        this.splashActivity = splashActivity;
     }
 
-    public void setUpIntentToCallJse(String hours, int days) {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
-        LocalTime localTime;
-        localTime = fmt.parseLocalTime(hours);
-        Util.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
+    /**
+     * Function to set value of LoginActivity in this class
+     * @param loginActivity - instance of LoginActivity
+     */
+    public void setLoginActivity(LoginActivity loginActivity) {
+        // set this classes instance of LoginActivity to loginActivity
+        this.loginActivity = loginActivity;
+    }
+
+    /**
+     * Function to set value of MainActivity in this class
+     * @param mainActivity - instance of MainActivity
+     */
+    public void setMainActivity(MainActivity mainActivity) {
+        // set this classes instance of MainActivity to mainActivity
+        this.mainActivity = mainActivity;
     }
 
     /**
      * Function to make http request that return a JsonObject and then convert it to a JsonArray
-     *
      * @param url    - url to get the JSON string from
      * @param tag    - tag of node to get objects from
      * @param params - list of key values to pass along to the http request
@@ -692,7 +748,7 @@ public class HelperMethods extends Activity {
         int success = 0;
 
         try {
-            // try to get int with tag "success" from json object
+            // get int with tag "success" from json object
             success = json.getInt(Util.getStringValue(R.string.TAG_SUCCESS));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -716,34 +772,62 @@ public class HelperMethods extends Activity {
     }
 
     public static JSONObject getJsonObject(String url, List<NameValuePair> params) {
-        // getting JSON Object
-        // Note that create user url accepts POST method
+        // instantiate new JsonParser
         JSONParser jsonParser = new JSONParser();
 
         // create JSON Object from request made to url
         JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
 
+        // initialize int to receive value of success (0 or 1)
         int success = 0;
 
         try {
-        // try to get int with tag "success" from json object
+            // get int with tag "success" from json object
             success = json.getInt(Util.getStringValue(R.string.TAG_SUCCESS));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        if (success !=0) {
-
+        // if success is 0 ; either because the query of the http request was not successful
+        // or because the http request itself was unsuccessful and therefor the JsonObject is null
+        if (success != 0) {
             return json;
         }
+
         return null;
-
-
     }
 
+    /**
+     * Function to create a bundle for a DialogFragment
+     * @param array - tag of dialog fragment
+     * return bundle
+     */
+    public static Bundle getDialogFragmentBundle(int array) {
+        // instantiate a typed array and get its values from xml array
+        TypedArray dialogArray = Util.getActivity().getResources().obtainTypedArray(array);
+
+        // instantiate a bundle
+        Bundle bundle = new Bundle();
+
+        // add key-values to bundle: get values from array and tagListener from array name
+        bundle.putString("title", dialogArray.getString(0));
+        bundle.putString("message", dialogArray.getString(1));
+        bundle.putString("positiveButton", dialogArray.getString(2));
+        bundle.putString("negativeButton", dialogArray.getString(3));
+        bundle.putString("neutralButton", dialogArray.getString(4));
+        bundle.putInt("icon", dialogArray.getResourceId(5, -1));
+        bundle.putString("tagListener", Util.getActivity().getResources().getResourceEntryName(array));
+
+        // recycle the TypedArray, to be re-used by a later caller.
+        dialogArray.recycle();
+
+        return bundle;
+    }
+
+    // Todo up to here
+
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
-        ArrayList<String> locationsNameArrayList = new ArrayList<String>();
+        ArrayList<String> locationsNameArrayList = new ArrayList<>();
         locationsNameArrayList.add("Location");
         for (Location location : locationsArrayList) {
             locationsNameArrayList.add(location.getName());
@@ -752,7 +836,7 @@ public class HelperMethods extends Activity {
     }
 
     public ArrayList<String> setUpBranchesNameArrayList(ArrayList<Branch> branchesArrayList) {
-        ArrayList<String> branchesNameArrayList = new ArrayList<String>();
+        ArrayList<String> branchesNameArrayList = new ArrayList<>();
         branchesNameArrayList.add("All");
 
         for (Branch branch : branchesArrayList) {
@@ -822,57 +906,36 @@ public class HelperMethods extends Activity {
         }
     }
 
-    /**
-     * Function to create a bundle for a DialogFragment
-     * @param array - tag of dialog fragment
-     * return bundle
-     */
-    public static Bundle getDialogFragmentBundle(int array) {
-        // instantiate a typed array and get its values from xml array
-        TypedArray dialogArray = Util.getActivity().getResources().obtainTypedArray(array);
-
-        // instantiate a bundle
-        Bundle bundle = new Bundle();
-
-        // add key-values to bundle: get values from array and tagListener from array name
-        bundle.putString("title", dialogArray.getString(0));
-        bundle.putString("message", dialogArray.getString(1));
-        bundle.putString("positiveButton", dialogArray.getString(2));
-        bundle.putString("negativeButton", dialogArray.getString(3));
-        bundle.putString("neutralButton", dialogArray.getString(4));
-        bundle.putInt("icon", dialogArray.getResourceId(5, -1));
-        bundle.putString("tagListener", Util.getActivity().getResources().getResourceEntryName(array));
-
-        // recycle the TypedArray, to be re-used by a later caller.
-        dialogArray.recycle();
-
-        return bundle;
+    public void setReminderToCallJse() {
+        LocalDate localDate = LocalDate.now();
+        int dayOfWeek = localDate.getDayOfWeek();
+        String hours = getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+        switch (dayOfWeek) {
+            case 4: {
+                // Thursday
+                String fridayHours = getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
+                setUpIntentToCallJse(fridayHours, 1);
+            }
+            case 5: {
+                // Friday
+                setUpIntentToCallJse(hours, 3);
+            }
+            case 6: {
+                // Saturday
+                // closed ?
+                setUpIntentToCallJse(hours, 2);
+            }
+            default: {
+                // Sunday - Thursday
+                setUpIntentToCallJse(hours, 1);
+            }
+        }
     }
 
-    /**
-     * Function to set value of SplashActivity in this class
-     * @param splashActivity - instance of SplashActivity
-     */
-    public void setSplashActivity(SplashActivity splashActivity) {
-        // set this classes instance of SplashActivity to splashActivity
-        this.splashActivity = splashActivity;
-    }
-
-    /**
-     * Function to set value of LoginActivity in this class
-     * @param loginActivity - instance of LoginActivity
-     */
-    public void setLoginActivity(LoginActivity loginActivity) {
-        // set this classes instance of LoginActivity to loginActivity
-        this.loginActivity = loginActivity;
-    }
-
-    /**
-     * Function to set value of MainActivity in this class
-     * @param mainActivity - instance of MainActivity
-     */
-    public void setMainActivity(MainActivity mainActivity) {
-        // set this classes instance of MainActivity to mainActivity
-        this.mainActivity = mainActivity;
+    public void setUpIntentToCallJse(String hours, int days) {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
+        LocalTime localTime;
+        localTime = fmt.parseLocalTime(hours);
+        Util.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
     }
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -106,8 +107,7 @@ public class Register2Fragment extends Fragment {
                 getResources().getStringArray(R.array.gender_array), genderSpinner);
 
         // add data to locationSpinner
-        HelperMethods.addDataToSpinner(
-                loginActivity.helperMethods.editLocationsNameArrayList(), locationsSpinner);
+        HelperMethods.addDataToSpinner(editLocationsNameArrayList(), locationsSpinner);
     }
 
     /**
@@ -293,7 +293,6 @@ public class Register2Fragment extends Fragment {
 
     /**
      * Function to set reference of LoginActivity
-     *
      * @param loginActivity - reference to LoginActivity
      */
     public void setLoginActivity(LoginActivity loginActivity) {
@@ -452,6 +451,16 @@ public class Register2Fragment extends Fragment {
         }
     }
 
+    /**
+     * Function to set edit first value of locationsNameArrayList
+     */
+    public ArrayList<String> editLocationsNameArrayList() {
+        // create array list from locationsNameArrayList
+        ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
+        // set value of the first location "All" to ""
+        arrayList.set(0, "");
+        return arrayList;
+    }
 
 
 }
