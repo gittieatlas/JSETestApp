@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 .getSerializable("locationsArrayList");
         branchesArrayList = (ArrayList<Branch>) getIntent().getExtras()
                 .getSerializable("branchesArrayList");
-        testsArrayList = helperMethods.setUpTestsArrayList((ArrayList<Test>) getIntent()
+        testsArrayList = helperMethods.filterTestsArrayListByGender((ArrayList<Test>) getIntent()
                 .getExtras().getSerializable("testsArrayList"));
         hourArrayList = (ArrayList<Hour>) getIntent().getExtras()
                 .getSerializable("hourArrayList");
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         hoursFilteredArrayList = new ArrayList<>();
 
         // set up isJseMember
-        helperMethods.setUpIsJseMember();
+        helperMethods.setUpJseStudentId();
     }
 
     /**

@@ -349,13 +349,9 @@ public class HelperMethods extends Activity {
      */
     public void showSnackBar(String message) {
         try {
-            // create new CoordinatorLayout to hold reference of parent view for snackBar
-            CoordinatorLayout coordinatorLayout = new CoordinatorLayout(Util.getContext());
-
-            // get reference of CoordinatorLayout the layout is hosted in
-            coordinatorLayout =
+            // get reference of CoordinatorLayout the snack bar will be hosted in
+            CoordinatorLayout coordinatorLayout =
                     (CoordinatorLayout) Util.getActivity().findViewById(R.id.coordinatorLayout);
-
             // show snack bar
             Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
         } catch (Exception e) {
@@ -455,7 +451,7 @@ public class HelperMethods extends Activity {
         View view = Util.getActivity().getCurrentFocus();
 
         // if no view currently has focus, create a new one, so we can grab a window token from it
-        if(view == null) {
+        if (view == null) {
             view = new View(Util.getActivity());
         }
 
@@ -465,6 +461,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to create a location object from a JSONObject
+     *
      * @param jsonLocation - JSONObject with location values
      * @return location
      */
@@ -500,6 +497,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to build address location
+     *
      * @param jsonLocation - JSONObject with location values
      * @return fullAddress
      */
@@ -532,6 +530,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to create a test object from a JSONObject
+     *
      * @param testObject - JSONObject with test values
      * @return test
      */
@@ -590,6 +589,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to create a hours object from a JSONObject
+     *
      * @param hoursObject - JSONObject with test values
      * @return hour
      */
@@ -633,6 +633,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to create a branch object from a JSONObject
+     *
      * @param branchObject - JSONObject with test values
      * @return branch
      */
@@ -659,6 +660,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to create a alert object from a JSONObject
+     *
      * @param alertObject - JSONObject with test values
      * @return alert
      */
@@ -702,6 +704,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to set value of SplashActivity in this class
+     *
      * @param splashActivity - instance of SplashActivity
      */
     public void setSplashActivity(SplashActivity splashActivity) {
@@ -711,6 +714,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to set value of LoginActivity in this class
+     *
      * @param loginActivity - instance of LoginActivity
      */
     public void setLoginActivity(LoginActivity loginActivity) {
@@ -720,6 +724,7 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to set value of MainActivity in this class
+     *
      * @param mainActivity - instance of MainActivity
      */
     public void setMainActivity(MainActivity mainActivity) {
@@ -728,7 +733,8 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to make http request that return a JsonObject and then convert it to a JsonArray
+     * Function to call http request that return a JsonObject and then convert it to a JsonArray
+     *
      * @param url    - url to get the JSON string from
      * @param tag    - tag of node to get objects from
      * @param params - list of key values to pass along to the http request
@@ -771,6 +777,13 @@ public class HelperMethods extends Activity {
         return jsonArray;
     }
 
+    /**
+     * Function to call http request that returns a JsonObject
+     *
+     * @param url    - url to get the JSON string from
+     * @param params - list of key values to pass along to the http request
+     * @return JsonObject
+     */
     public static JSONObject getJsonObject(String url, List<NameValuePair> params) {
         // instantiate new JsonParser
         JSONParser jsonParser = new JSONParser();
@@ -799,8 +812,9 @@ public class HelperMethods extends Activity {
 
     /**
      * Function to create a bundle for a DialogFragment
+     *
      * @param array - tag of dialog fragment
-     * return bundle
+     * @return bundle
      */
     public static Bundle getDialogFragmentBundle(int array) {
         // instantiate a typed array and get its values from xml array
@@ -824,35 +838,69 @@ public class HelperMethods extends Activity {
         return bundle;
     }
 
-    // Todo up to here
-
+    /**
+     * Function to set up locationsNameArrayList withe names of each location
+     *
+     * @param locationsArrayList - array list with all locations
+     * @return ArrayList<>
+     */
     public ArrayList<String> setUpLocationsNameArrayList(ArrayList<Location> locationsArrayList) {
+        // instantiate a new ArrayList to hold location names
         ArrayList<String> locationsNameArrayList = new ArrayList<>();
+
+        // add "Location" to the beginning of the array
         locationsNameArrayList.add("Location");
+
+        // for each location in locationsArrayList
         for (Location location : locationsArrayList) {
+            // add name of the location to locationsNameArrayList
             locationsNameArrayList.add(location.getName());
         }
+
         return locationsNameArrayList;
     }
 
+    /**
+     * Function to set up branchesNameArrayList withe names of each branch
+     *
+     * @param branchesArrayList - array list with all branches
+     * @return ArrayList<>
+     */
     public ArrayList<String> setUpBranchesNameArrayList(ArrayList<Branch> branchesArrayList) {
+        // instantiate a new ArrayList to hold branch names
         ArrayList<String> branchesNameArrayList = new ArrayList<>();
+
+        // add "All" to the beginning of the array
         branchesNameArrayList.add("All");
 
+        // for each branch in branchesArrayList
         for (Branch branch : branchesArrayList) {
+            // if branch id equals to id of the user's default location
             if (branch.getId() == (mainActivity.defaultLocation.branchId)) {
+                // add name of the branch to branchesNameArrayList along with (Default Branch)
                 branchesNameArrayList.add(branch.getName() + " (Default Branch)");
-            } else {
+            }
+            // if branch id does not equal to id of the user's default location
+            else {
+                // add name of the branch to branchesNameArrayList
                 branchesNameArrayList.add(branch.getName());
             }
         }
         return branchesNameArrayList;
     }
 
-    public ArrayList<Test> setUpTestsArrayList(ArrayList<Test> testsArrayList) {
-        // filtering by gender
+    /**
+     * Function to filter testsArrayList by gender
+     *
+     * @param testsArrayList - array list with all tests
+     *                       return ArrayList<>
+     */
+    public ArrayList<Test> filterTestsArrayListByGender(ArrayList<Test> testsArrayList) {
+        // for each test in testsArrayList
         for (int i = 0; i < testsArrayList.size(); i++) {
+            // if gender of test does not equal to gender of user
             if (!testsArrayList.get(i).gender.name().equals(mainActivity.user.gender.name())) {
+                // remove the test from the array list
                 testsArrayList.remove(i);
                 i--;
             }
@@ -860,82 +908,148 @@ public class HelperMethods extends Activity {
         return testsArrayList;
     }
 
-    public void updateHoursArrayListView(ListView listView, String name) {
-        setUpHoursFilteredArrayList(name);
+    /**
+     * Function to set up lit view that contains library hours
+     *
+     * @param listView     - list view that will hold hours
+     * @param locationName - name of location to get hours for
+     */
+    public void setupListView(ListView listView, String locationName) {
+        // create adapter from hoursFilteredArrayList
+        ListAdapter adapter =
+                new HoursAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
+
+        // set adapter to the list view
+        listView.setAdapter(adapter);
+
+        // update the list view with hours based on location given
+        updateHoursArrayListView(listView, locationName);
+    }
+
+    /**
+     * Function to set up update hours array list with hours from given location
+     *
+     * @param listView     - list view that will hold hours
+     * @param locationName - name of location to get hours for
+     */
+    public void updateHoursArrayListView(ListView listView, String locationName) {
+        // fill hoursFilteredArrayList with all hours from this location
+        setUpHoursFilteredArrayList(locationName);
+
+        // notify adapter that data was changed
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+
+        // set list view height based on total amount of items in list view
         setListViewHeightBasedOnItems(listView);
     }
 
-    public void setupListView(ListAdapter adapter, ListView listView, String name) {
-        adapter = new HoursAdapter(Util.getContext(), mainActivity.hoursFilteredArrayList);
-        listView.setAdapter(adapter);
-        updateHoursArrayListView(listView, name);
-    }
-
-    public void setUpHoursFilteredArrayList(String location) {
+    /**
+     * Function to fill hoursFilteredArrayList with all hours from the given location name
+     *
+     * @param locationName - the location name of hours needed to be retrieved
+     */
+    public void setUpHoursFilteredArrayList(String locationName) {
+        // if hoursFilteredArrayList has values
         if (mainActivity.hoursFilteredArrayList != null)
+            // clear all values
             mainActivity.hoursFilteredArrayList.clear();
-        for (Hour hour : mainActivity.hourArrayList) {
-            if (hour.getName().equals(location)) {
-                HoursDataObject obj = new HoursDataObject(Util.firstLetterCaps(hour.getDayOfWeek().toString()),
 
+        // for each hour in hourArrayList
+        for (Hour hour : mainActivity.hourArrayList) {
+            // if name of the hours equals to locationName
+            if (hour.getName().equals(locationName)) {
+                // create new HoursDataObject from dayOfWeek, startTime, endTime
+                HoursDataObject hoursDataObject = new HoursDataObject(
+                        Util.firstLetterCaps(hour.getDayOfWeek().toString()),
                         hour.getStartTime().toString("hh:mm a"),
                         hour.getEndTime().toString("hh:mm a"));
 
-                mainActivity.hoursFilteredArrayList.add(obj);
+                // add hours data object to hoursFilteredArrayList
+                mainActivity.hoursFilteredArrayList.add(hoursDataObject);
             }
         }
     }
 
+    /**
+     * Function to set up default location
+     *
+     * @return Location
+     */
     public Location setUpDefaultLocation() {
-        Location location = new Location();
-        for (Location l : mainActivity.locationsArrayList) {
-            if (l.getId() == mainActivity.user.locationId) {
-                location = l;
+        // instantiate a new Location
+        Location defaultLocation = new Location();
+
+        // for each location in locationsArrayList
+        for (Location location : mainActivity.locationsArrayList) {
+            // if id of location equals to location id of user
+            if (location.getId() == mainActivity.user.locationId) {
+                // set defaultLocation to this location
+                defaultLocation = location;
             }
         }
-        return location;
+
+        return defaultLocation;
     }
 
-    public void setUpIsJseMember() {
+    /**
+     * Function to set isJseMember
+     */
+    public void setUpJseStudentId() {
+        // if jseStudentId is null
         if (mainActivity.user.jseStudentId == null) {
-            // if internet connection status is true getJseStudentId
+            // if internet connection status is true
             if (Util.checkInternetConnection()) {
+                // call AsyncTask to get jseStudentId
                 mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
             }
         }
     }
 
+    /**
+     * Function to set event time and date of for a calendar event
+     */
     public void setReminderToCallJse() {
-        LocalDate localDate = LocalDate.now();
-        int dayOfWeek = localDate.getDayOfWeek();
-        String hours = getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-        switch (dayOfWeek) {
-            case 4: {
-                // Thursday
-                String fridayHours = getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
-                setUpIntentToCallJse(fridayHours, 1);
-            }
-            case 5: {
-                // Friday
-                setUpIntentToCallJse(hours, 3);
-            }
-            case 6: {
-                // Saturday
-                // closed ?
-                setUpIntentToCallJse(hours, 2);
-            }
-            default: {
-                // Sunday - Thursday
-                setUpIntentToCallJse(hours, 1);
-            }
+        // get current day of week
+        int dayOfWeek = LocalDate.now().getDayOfWeek();
+        // get JSE office hours from resource
+        String timeOfEvent =
+                getResources().getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+        // days to add
+        LocalDate dateOfEvent;
+
+        // if current day of week is Thursday
+        if (dayOfWeek == 4) {
+            // get hours for Friday
+            timeOfEvent = getResources().getString(R.string.jse_office_hours_friday_hours_start_time);
         }
+
+        // if current day of week is Friday
+        if (dayOfWeek == 5) {
+            dateOfEvent = LocalDate.now().plusDays(3);
+        }
+        // if current day of week is Saturday
+        else if (dayOfWeek == 6) {
+            dateOfEvent = LocalDate.now().plusDays(2);
+        }
+        // if current day is Sunday - Wednesday
+        else {
+            dateOfEvent = LocalDate.now().plusDays(1);
+        }
+
+        createCalendarEventToCallJSE(timeOfEvent, dateOfEvent);
     }
 
-    public void setUpIntentToCallJse(String hours, int days) {
+    /**
+     * Function to create calendar event that will remind user to call JSE
+     *
+     * @param timeOfEvent -
+     * @param dateOfEvent -
+     */
+    public void createCalendarEventToCallJSE(String timeOfEvent, LocalDate dateOfEvent) {
+        // create DateTimeFormatter for time of reminder
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
-        LocalTime localTime;
-        localTime = fmt.parseLocalTime(hours);
-        Util.calendarIntent("Call JSE", null, null, LocalDate.now().plusDays(days), localTime);
+
+        // set calendar intent to call JSE during office hours
+        Util.calendarIntent("Call JSE", null, null, dateOfEvent, fmt.parseLocalTime(timeOfEvent));
     }
 }
