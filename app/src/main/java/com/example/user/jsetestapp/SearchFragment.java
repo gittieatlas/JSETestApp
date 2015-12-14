@@ -54,9 +54,28 @@ public class SearchFragment extends Fragment {
      */
     public void setSpinnerSelections() {
         // set spinner selection to user's default location
-        locationsSpinner.setSelection(mainActivity.helperMethods.setBranchSpinnerSelection());
+        locationsSpinner.setSelection(setBranchSpinnerSelection());
         // set spinner selection to "day of week"
         daysOfWeekSpinner.setSelection(0);
+    }
+
+    /**
+     * Function to return a position of default branch in branchesNameArrayList
+     * @return int
+     */
+    public int setBranchSpinnerSelection() {
+        // declare string that contains (Default Branch)
+        String d = " (Default Branch)";
+
+        // loop through branches to see which branch contains (Default Branch)
+        for (String s : mainActivity.branchesNameArrayList) {
+            // if branch contains (Default Branch)
+            if (s.contains(d)) {
+                // return position of branch in array
+                return mainActivity.branchesNameArrayList.indexOf(s);
+            }
+        }
+        return 0;
     }
 
     /**

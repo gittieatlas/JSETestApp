@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 public class UpdateProfileFragment extends Fragment {
 
     // Declare Controls
@@ -110,8 +112,7 @@ public class UpdateProfileFragment extends Fragment {
                 getResources().getStringArray(R.array.update_profile_gender_array), genderSpinner);
 
         // add data to locationSpinner
-        HelperMethods.addDataToSpinner(
-                loginActivity.helperMethods.editUpdateProfileLocationsNameArrayList(), locationsSpinner);
+        HelperMethods.addDataToSpinner(editLocationsNameArrayList(), locationsSpinner);
     }
 
     /**
@@ -362,6 +363,17 @@ public class UpdateProfileFragment extends Fragment {
         updatedUser.setLocationId(loginActivity.locationsArrayList, updatedUser);
 
         return updatedUser;
+    }
+
+    /**
+     * Function to set remove first value of locationsNameArrayList
+     */
+    public ArrayList<String> editLocationsNameArrayList() {
+        // create array list from locationsNameArrayList
+        ArrayList<String> arrayList = loginActivity.locationsNameArrayList;
+        // remove value of the first location "All"
+        arrayList.remove(0);
+        return arrayList;
     }
 
     /**
