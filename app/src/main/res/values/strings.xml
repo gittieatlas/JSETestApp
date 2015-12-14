@@ -214,6 +214,8 @@
         Please try again later.</string>
     <string name="d_update_create_fail_msg">Account could not be updated at this time.
         Please try again later.</string>
+    <string name="d_login_fail_msg">Unable to login at this time.
+        Please try again later.</string>
     <string name="d_fields_require_values_msg">All fields require a value.</string>
     <string name="d_invalid_email_msg">Email address entered is not valid.
         Please correct and try again.</string>

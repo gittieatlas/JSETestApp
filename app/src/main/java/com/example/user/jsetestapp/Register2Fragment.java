@@ -303,7 +303,7 @@ public class Register2Fragment extends Fragment {
 
 
     /**
-     * Background Async Task to Create new product
+     * Background Async Task to Create new user
      */
     class CreateNewUser extends AsyncTask<String, String, Boolean> {
 
@@ -320,7 +320,9 @@ public class Register2Fragment extends Fragment {
         }
 
         /**
-         * Creating user
+         * method to get json by making HTTP call
+         * @param params - params to use for the task
+         * @return Boolean - return true/false if task was successful.
          */
         protected Boolean doInBackground(String... params) {
 
@@ -329,7 +331,7 @@ public class Register2Fragment extends Fragment {
         }
 
         /**
-         * After completing background task Dismiss the progress dialog
+         * @param result - param that hold async task result
          **/
         protected void onPostExecute(Boolean result) {
 
@@ -351,6 +353,7 @@ public class Register2Fragment extends Fragment {
     }
 
     public boolean addUserToDatabase() {
+        // initialize variables
         insertResult = "false";
         checkEmailResult = 1;
         id = 0;
@@ -370,6 +373,7 @@ public class Register2Fragment extends Fragment {
         httpParams.add(new BasicNameValuePair("locationId",
                 Integer.toString(loginActivity.user.getLocationId())));
 
+        // get JsonObject of user from Json string
         JSONObject json = HelperMethods.getJsonObject
                 (Util.getActivity().getString(R.string.url_create_user), httpParams);
 
@@ -377,19 +381,21 @@ public class Register2Fragment extends Fragment {
         if (json != null) {
 
             try {
+                // try to get int with tag "checkEmailResult" from json object
                 checkEmailResult = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            // if email does not exist, see if insert was completed successfully
             if (checkEmailResult==0) {
-                // if email does not exist, see if insert was completed successfully
                 try {
+                    // try to get String with tag "insertResult" from json object
                     insertResult = json.getString(Util.getActivity().getString(R.string.TAG_INSERT_RESULT));
+                    // try to get int with tag "id" from json object
                     id = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_ID)));
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    // assign value to insertResult
                 }
             }
             return true;
@@ -397,9 +403,13 @@ public class Register2Fragment extends Fragment {
         return false;
     }
 
-
+    /**
+     * Function to create user
+     * @param result - param that hold result
+     **/
     public void createUser(boolean result) {
 
+        // if register2Fragment is visible
         if (loginActivity.register2Fragment.isVisible()) {
             // if success = 0 show dialog user cant be created
             if (!result) {
@@ -451,7 +461,5 @@ public class Register2Fragment extends Fragment {
             taskNewUser.cancel(true);
         }
     }
-
-
 
 }

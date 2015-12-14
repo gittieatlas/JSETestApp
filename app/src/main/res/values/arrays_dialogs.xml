@@ -73,6 +73,15 @@
         <item>@drawable/ic_alert_grey600_24dp</item>
     </array>
 
+    <array name="login_failed_msg">
+        <item>@string/d_login_failed</item>
+        <item>@string/d_login_fail_msg</item>
+        <item>@string/d_ok</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@drawable/ic_alert_grey600_24dp</item>
+    </array>
+
     <array name="login_failed_invalid_email">
         <item>@string/d_login_failed</item>
         <item>@string/d_invalid_email_msg</item>

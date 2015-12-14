@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -25,18 +24,11 @@ import java.util.List;
 
 public class LoginFragment extends Fragment {
 
+    // testsJsonArray JSONArray
+    private static int loginResult = 0;
+
     // Progress Dialog
     private ProgressDialog pDialog;
-
-    // testsJsonArray JSONArray
-    JSONArray usersJsonArray = null;
-    private static String result = "";
-    private static String insertResult = "";
-    private static String checkEmailResult = "";
-    private static String resultUpdate = "";
-    private static int id = 0;
-    private static String studentId = "";
-    private static int loginResult = 0;
 
     // Declare Controls
     View rootView;
@@ -237,7 +229,7 @@ public class LoginFragment extends Fragment {
     /**
      * Background Async Task to Get User
      */
-    class GetUser extends AsyncTask<String, String, String> {
+    class GetUser extends AsyncTask<String, String, Integer> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -251,7 +243,7 @@ public class LoginFragment extends Fragment {
         /**
          * Creating product
          */
-        protected String doInBackground(String... args) {
+        protected Integer doInBackground(String... args) {
              return getUserFromDataBase();
 
         }
@@ -259,9 +251,14 @@ public class LoginFragment extends Fragment {
         /**
          * After completing background task Dismiss the progress dialog
          **/
-        protected void onPostExecute(String result) {
-
-            loginActivity.helperMethods.getUser(result);
+        protected void onPostExecute(Integer id) {
+            // if username and password didn't match
+            if (loginResult == 0){
+                // Not logged in
+                Util.showDialogFragment(R.array.login_failed_not_match);
+                }else{
+                loginActivity.helperMethods.getUser(id);
+                }
 
             // dismiss the dialog once done
             pDialog.dismiss();
@@ -279,68 +276,57 @@ public class LoginFragment extends Fragment {
 
     }
 
-    public String getUserFromDataBase(){
+    public int getUserFromDataBase() {
+        // testsJsonArray JSONArray
+        loginResult = 0;
+
         // Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("email", loginActivity.user.email));
         params.add(new BasicNameValuePair("password", loginActivity.user.password));
 
-        // getting JSON Object
-        // Note that create user url accepts POST method
-        JSONParser jsonParser = new JSONParser();
-        JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_get_user),
-                "POST", params);
+        // get JsonObject of user from Json string
+        JSONObject userJsonObject = HelperMethods.getJsonObject
+                (Util.getActivity().getString(R.string.url_get_user), params);
 
-        // check log cat for response
-        Log.d("Get User", json.toString());
-
-        try {
-            loginResult = json.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         // if json is not equal to null and result is not equal to 0
-        if (json != null && loginResult != 0) {
+        if (userJsonObject != null) {
+            User user = new User();
             try {
-                //  JSONObject jsonObj = new JSONObject(json);
+                // Storing each json node in user
+                user.setId(userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_ID)));
+                user.setFirstName(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
+                user.setLastName(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
+                user.setEmail(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
+                user.setPassword(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
+                user.setSsn(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_SSN)));
+                user.setLocationId(userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
+                user.setJseStudentId(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+                user.setDob(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_DOB)));
+                user.setGender(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
+                user.setIsJseMember(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+                // set user
+                loginActivity.user = user;
 
-                // Getting JSON Array node
-                usersJsonArray = json.getJSONArray(Util.getActivity().getString(R.string.TAG_USERS));
+                loginResult = userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
 
-                // looping through All Tests
-                for (int i = 0; i < usersJsonArray.length(); i++) {
-
-                    JSONObject c = usersJsonArray.getJSONObject(i);
-
-                    User user = new User();
-                    user.setFirstName(c.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
-                    user.setId(Integer.parseInt(c.getString(Util.getActivity().getString(R.string.TAG_ID))));
-                    user.setLastName(c.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
-                    user.setGender(c.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
-                    user.setDob(c.getString(Util.getActivity().getString(R.string.TAG_DOB)));
-                    user.setSsn(c.getString(Util.getActivity().getString(R.string.TAG_SSN)));
-                    user.setEmail(c.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
-                    user.setPassword(c.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
-                    user.setLocationId(c.getString(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
-                    user.setIsJseMember(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
-                    user.setJseStudentId(c.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
-
-                    loginActivity.user = user;
-
-                    //DoTo fix isCancelled method
-                    //if (isCancelled()) break;
-
-
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
+
+        }else{
             Log.e("Get User", "Couldn't get any login users");
+            return 0;
+        }
+        //return Integer.toString(loginResult);
+        try {
+            return userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_ID));
+        }catch (JSONException e) {
+            e.printStackTrace();
+            return 0;
         }
 
-        return Integer.toString(loginResult);
     }
 
 }
