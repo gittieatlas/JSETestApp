@@ -309,38 +309,7 @@ public class HelperMethods extends Activity {
     }
 
 
-    // ToDo come back to this
-    public void getUser(String result) {
 
-        if (loginActivity.loginFragment.isVisible()) {
-            if (result.equals("0")) {
-                // Not logged in
-                Util.showDialogFragment(R.array.login_failed_not_match);
-            } else {
-                //login successful
-
-                // launch activity with main activity intent
-                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("login"));
-            }
-        }
-    }
-
-    // ToDo come back to this
-    public void updateUser(String result) {
-
-        if (loginActivity.updateProfileFragment.isVisible()) {
-            if (result.equals("true")) {
-                // user updated
-
-                // launch activity with main activity intent
-                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("update_profile"));
-
-            } else {
-                //user not updated
-                Util.showDialogFragment(R.array.update_account_failed_msg);
-            }
-        }
-    }
 
     /**
      * Function to show a snack bar in Coordinator Layout

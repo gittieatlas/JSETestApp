@@ -87,6 +87,7 @@
     <string name="TAG_RESULT">result</string>
     <string name="TAG_INSERT_RESULT">insertResult</string>
     <string name="TAG_CHECK_EMAIL_RESULT">checkEmailResult</string>
+    <string name="TAG_CHECK_LOGIN_RESULT">loginResult</string>
     <string name="TAG_USERS">users</string>
     <string name="TAG_FIRST_NAME">firstName</string>
     <string name="TAG_LAST_NAME">lastName</string>

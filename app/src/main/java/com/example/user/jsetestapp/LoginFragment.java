@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class LoginFragment extends Fragment {
 
     // testsJsonArray JSONArray
-    private static int loginResult = 0;
+    private static int loginResult;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -211,21 +210,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Background Async Task to Get User
      */
@@ -252,17 +236,16 @@ public class LoginFragment extends Fragment {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(Integer id) {
-            // if username and password didn't match
+            // login result was equal to 0
             if (loginResult == 0){
-                // Not logged in
+                // show dialog: username and password didn't match
                 Util.showDialogFragment(R.array.login_failed_not_match);
                 }else{
-                loginActivity.helperMethods.getUser(id);
+                getUser(id);
                 }
 
             // dismiss the dialog once done
             pDialog.dismiss();
-
 
         }
 
@@ -278,7 +261,7 @@ public class LoginFragment extends Fragment {
 
     public int getUserFromDataBase() {
         // testsJsonArray JSONArray
-        loginResult = 0;
+        loginResult = 1;
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -290,43 +273,64 @@ public class LoginFragment extends Fragment {
                 (Util.getActivity().getString(R.string.url_get_user), params);
 
 
-        // if json is not equal to null and result is not equal to 0
+        // if json is not equal to null
         if (userJsonObject != null) {
-            User user = new User();
+
             try {
-                // Storing each json node in user
-                user.setId(userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_ID)));
-                user.setFirstName(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
-                user.setLastName(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
-                user.setEmail(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
-                user.setPassword(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
-                user.setSsn(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_SSN)));
-                user.setLocationId(userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
-                user.setJseStudentId(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
-                user.setDob(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_DOB)));
-                user.setGender(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
-                user.setIsJseMember(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
-                // set user
-                loginActivity.user = user;
-
-                loginResult = userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_RESULT));
-
+                // try to get int with tag "loginResult" from json object
+                loginResult = userJsonObject.getInt(Util.getStringValue(R.string.TAG_CHECK_LOGIN_RESULT));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        }else{
+            // if username and password don't match
+            if (loginResult == 0) {
+                return 0;
+            // if username and password match
+            } else {
+                User user = new User();
+                try {
+                    // Storing each json node in user
+                    user.setId(userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_ID)));
+                    user.setFirstName(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_FIRST_NAME)));
+                    user.setLastName(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_LAST_NAME)));
+                    user.setEmail(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_EMAIL)));
+                    user.setPassword(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_PASSWORD)));
+                    user.setSsn(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_SSN)));
+                    user.setLocationId(userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_LOCATION_ID)));
+                    user.setJseStudentId(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+                    user.setDob(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_DOB)));
+                    user.setGender(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_GENDER)));
+                    user.setIsJseMember(userJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID)));
+                    // set user
+                    loginActivity.user = user;
+
+                    // return int with tag "id" from json object
+                    return userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_ID));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        } else {
             Log.e("Get User", "Couldn't get any login users");
             return 0;
         }
-        //return Integer.toString(loginResult);
-        try {
-            return userJsonObject.getInt(Util.getActivity().getString(R.string.TAG_ID));
-        }catch (JSONException e) {
-            e.printStackTrace();
-            return 0;
-        }
+    }
 
+    // ToDo come back to this
+    public void getUser(int id) {
+
+        if (loginActivity.loginFragment.isVisible()) {
+            if (id == 0 || loginActivity.user.getId() == 0) {
+                // show dialog: Unable to login at this time
+                Util.showDialogFragment(R.array.login_failed_msg);
+            } else {
+                 //login successful
+                // launch activity with main activity intent
+                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("login"));
+            }
+        }
     }
 
 }

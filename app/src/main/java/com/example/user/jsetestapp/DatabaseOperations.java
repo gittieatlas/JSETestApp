@@ -46,10 +46,10 @@ public class DatabaseOperations {
         new GetJseStudentId(user).execute();
     }
 
-    public AsyncTask updateUser(User user) {
-
-        return new UpdateUser(user).execute();
-    }
+//    public AsyncTask updateUser(User user) {
+//
+//        return new UpdateUser(user).execute();
+//    }
 
 //    /**
 //     * Background Async Task to Create new product
@@ -358,94 +358,94 @@ public class DatabaseOperations {
     }
 
 
-    /**
-     * Background Async Task to Update User
-     */
-    class UpdateUser extends AsyncTask<String, String, String> {
-        User user = new User();
-        String id, firstName, lastName, gender, dob, ssn, email, password, locationId;
-
-        UpdateUser(User user) {
-            this.user = user;
-            this.id = Integer.toString(user.getId());
-            this.email = user.getEmail();
-            this.password = user.getPassword();
-            this.firstName = user.getFirstName();
-            this.lastName = user.getLastName();
-            this.dob = user.getDob().toString("yyyy-MM-dd");
-            this.gender = Integer.toString(user.getGender(user) + 1);
-            this.ssn = user.getSsn();
-            this.locationId = Integer.toString(user.getLocationId());
-
-
-        }
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressDialog("Updating account. Please wait...");
-        }
-
-        /**
-         * Updating User
-         */
-        protected String doInBackground(String... args) {
-
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("id", id));
-            params.add(new BasicNameValuePair("firstName", firstName));
-            params.add(new BasicNameValuePair("lastName", lastName));
-            params.add(new BasicNameValuePair("gender", gender));
-            params.add(new BasicNameValuePair("dob", dob));
-            params.add(new BasicNameValuePair("ssn", ssn));
-            params.add(new BasicNameValuePair("email", email));
-            params.add(new BasicNameValuePair("password", password));
-            params.add(new BasicNameValuePair("locationId", locationId));
-
-            // getting JSON Object
-            // Note that create user url accepts POST method
-            JSONParser jsonParser = new JSONParser();
-            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_update_user),
-                    "POST", params);
-
-            // check log cat fro response
-            Log.d("Update User", json.toString());
-
-
-            try {
-                result = json.getString(Util.getActivity().getString(R.string.TAG_RESULT));
-                //id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (json !=null && !result.equals("false") && !isCancelled()){
-                loginActivity.user = user;
-            }
-            return result;
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         **/
-        protected void onPostExecute(String result) {
-            // dismiss the dialog once done
-
-            loginActivity.helperMethods.updateUser(result);
-            pDialog.dismiss();
-        }
-
-
-        protected void onCancelled(String result){
-
-            pDialog.dismiss();
-        }
-
-    }
+//    /**
+//     * Background Async Task to Update User
+//     */
+//    class UpdateUser extends AsyncTask<String, String, String> {
+//        User user = new User();
+//        String id, firstName, lastName, gender, dob, ssn, email, password, locationId;
+//
+//        UpdateUser(User user) {
+//            this.user = user;
+//            this.id = Integer.toString(user.getId());
+//            this.email = user.getEmail();
+//            this.password = user.getPassword();
+//            this.firstName = user.getFirstName();
+//            this.lastName = user.getLastName();
+//            this.dob = user.getDob().toString("yyyy-MM-dd");
+//            this.gender = Integer.toString(user.getGender(user) + 1);
+//            this.ssn = user.getSsn();
+//            this.locationId = Integer.toString(user.getLocationId());
+//
+//
+//        }
+//
+//        /**
+//         * Before starting background thread Show Progress Dialog
+//         */
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            showProgressDialog("Updating account. Please wait...");
+//        }
+//
+//        /**
+//         * Updating User
+//         */
+//        protected String doInBackground(String... args) {
+//
+//            // Building Parameters
+//            List<NameValuePair> params = new ArrayList<NameValuePair>();
+//            params.add(new BasicNameValuePair("id", id));
+//            params.add(new BasicNameValuePair("firstName", firstName));
+//            params.add(new BasicNameValuePair("lastName", lastName));
+//            params.add(new BasicNameValuePair("gender", gender));
+//            params.add(new BasicNameValuePair("dob", dob));
+//            params.add(new BasicNameValuePair("ssn", ssn));
+//            params.add(new BasicNameValuePair("email", email));
+//            params.add(new BasicNameValuePair("password", password));
+//            params.add(new BasicNameValuePair("locationId", locationId));
+//
+//            // getting JSON Object
+//            // Note that create user url accepts POST method
+//            JSONParser jsonParser = new JSONParser();
+//            JSONObject json = jsonParser.makeHttpRequest(Util.getActivity().getString(R.string.url_update_user),
+//                    "POST", params);
+//
+//            // check log cat fro response
+//            Log.d("Update User", json.toString());
+//
+//
+//            try {
+//                result = json.getString(Util.getActivity().getString(R.string.TAG_RESULT));
+//                //id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            if (json !=null && !result.equals("false") && !isCancelled()){
+//                loginActivity.user = user;
+//            }
+//            return result;
+//        }
+//
+//        /**
+//         * After completing background task Dismiss the progress dialog
+//         **/
+//        protected void onPostExecute(String result) {
+//            // dismiss the dialog once done
+//
+//            loginActivity.helperMethods.updateUser(result);
+//            pDialog.dismiss();
+//        }
+//
+//
+//        protected void onCancelled(String result){
+//
+//            pDialog.dismiss();
+//        }
+//
+//    }
 
     public void showProgressDialog(String message){
         pDialog = new ProgressDialog(loginActivity);

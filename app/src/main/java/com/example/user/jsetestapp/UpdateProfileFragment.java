@@ -1,10 +1,12 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateProfileFragment extends Fragment {
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+    private static String result = "";
 
     // Declare Controls
     View rootView;
@@ -323,7 +335,8 @@ public class UpdateProfileFragment extends Fragment {
         // if application can connect to internet
         if (Util.checkInternetConnection()) {
             // call AsyncTask to create new user
-            taskUpdateUser = loginActivity.databaseOperations.updateUser(saveUpdatedUser());
+            //taskUpdateUser = loginActivity.databaseOperations.updateUser(saveUpdatedUser());
+            taskUpdateUser = new UpdateUser(saveUpdatedUser()).execute();
         } else {
             // Show Dialog: No Internet Connection
             Util.showDialogFragment(R.array.no_internet_connection);
@@ -384,5 +397,131 @@ public class UpdateProfileFragment extends Fragment {
     public void setLoginActivity(LoginActivity loginActivity) {
         // set this loginActivity to loginActivity
         this.loginActivity = loginActivity;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Background Async Task to Update User
+     */
+    class UpdateUser extends AsyncTask<String, String, String> {
+        User user = new User();
+        String id, firstName, lastName, gender, dob, ssn, email, password, locationId;
+
+        UpdateUser(User user) {
+            this.user = user;
+            this.id = Integer.toString(user.getId());
+            this.email = user.getEmail();
+            this.password = user.getPassword();
+            this.firstName = user.getFirstName();
+            this.lastName = user.getLastName();
+            this.dob = user.getDob().toString("yyyy-MM-dd");
+            this.gender = Integer.toString(user.getGender(user) + 1);
+            this.ssn = user.getSsn();
+            this.locationId = Integer.toString(user.getLocationId());
+
+
+        }
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog("Updating account. Please wait...");
+        }
+
+        /**
+         * Updating User
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id", id));
+            params.add(new BasicNameValuePair("firstName", firstName));
+            params.add(new BasicNameValuePair("lastName", lastName));
+            params.add(new BasicNameValuePair("gender", gender));
+            params.add(new BasicNameValuePair("dob", dob));
+            params.add(new BasicNameValuePair("ssn", ssn));
+            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("locationId", locationId));
+            return UpdateUserInDatabase(params, user);
+        }
+
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String result) {
+            // dismiss the dialog once done
+
+            updateUser(result);
+            pDialog.dismiss();
+        }
+
+
+        protected void onCancelled(String result){
+
+            pDialog.dismiss();
+        }
+
+    }
+
+    public String UpdateUserInDatabase(List<NameValuePair> params, User user) {
+
+
+        // get JsonObject of user from Json string
+        JSONObject json = HelperMethods.getJsonObject
+                (Util.getActivity().getString(R.string.url_update_user), new ArrayList<NameValuePair>());
+        if (json != null) {
+            try {
+                result = json.getString(Util.getActivity().getString(R.string.TAG_RESULT));
+                //id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (json != null && !result.equals("false")) {
+                loginActivity.user = user;
+            }
+
+            return result;
+        }
+        return "false";
+    }
+
+    public void showProgressDialog(String message){
+        pDialog = new ProgressDialog(loginActivity);
+        pDialog.setMessage(message);
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
+    }
+
+    // ToDo come back to this
+    public void updateUser(String result) {
+
+        if (loginActivity.updateProfileFragment.isVisible()) {
+            if (result.equals("true")) {
+                // user updated
+                // launch activity with main activity intent
+                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("update_profile"));
+
+            } else {
+                //user not updated
+                Util.showDialogFragment(R.array.update_account_failed_msg);
+            }
+        }
     }
 }
