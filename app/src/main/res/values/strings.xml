@@ -64,9 +64,6 @@
     <string name="TAG_ALERT_TEXT">alertText</string>
     <string name="TAG_TIME_STAMP">timeStamp</string>
 
-
-    <!-- DatabaseOperations Class  -->
-
     <!-- URL to create new user -->
     <string name="url_create_user">http://phpstack-1830-4794-62139.cloudwaysapps.com/new_user_check_email_insert.php</string>
 

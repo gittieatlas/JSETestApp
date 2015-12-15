@@ -1,5 +1,6 @@
 package com.example.user.jsetestapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Declare Classes;
     HelperMethods helperMethods;
-    DatabaseOperations databaseOperations;
 
     // Declare Fragments
     LoginFragment loginFragment;
@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Alert> alertArrayList;
     Location defaultLocation;
     User user;
+    ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +100,6 @@ public class LoginActivity extends AppCompatActivity {
     private void instantiateClasses() {
         helperMethods = new HelperMethods();
         helperMethods.setLoginActivity(this);
-        databaseOperations = new DatabaseOperations();
-        databaseOperations.setLoginActivity(this);
     }
 
     /**
@@ -262,5 +261,24 @@ public class LoginActivity extends AppCompatActivity {
                         .getResourceEntryName(R.array.create_account_failed_email_duplicate))){
             getFragmentManager().popBackStack();
         }
+    }
+
+
+    /**
+     * Function to show progress dialog
+     *
+     * @param message - the dialog will display
+     **/
+    public void showProgressDialog(String message) {
+        // create new ProgressDialog
+        pDialog = new ProgressDialog(this);
+
+        // set message, loading amount, cancel button
+        pDialog.setMessage(message);
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+
+        // show dialog
+        pDialog.show();
     }
 }

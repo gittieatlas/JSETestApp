@@ -3,6 +3,7 @@ package com.example.user.jsetestapp;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
@@ -43,6 +45,9 @@ public class HelperMethods extends Activity {
     MainActivity mainActivity;
     LoginActivity loginActivity;
     SplashActivity splashActivity;
+
+    AsyncTask taskGetJseStudentId;
+    private static String studentId = "";
 
     // constructor
     public HelperMethods() {
@@ -102,7 +107,7 @@ public class HelperMethods extends Activity {
      */
     public void scheduleTest() {
         // if User is a JSE member
-        if (mainActivity.user.isJseMember) {
+        if (mainActivity.user.jseStudentId != null) {
             // Show Dialog: Schedule A Test
             Util.showDialogFragment(R.array.schedule_test);
         }
@@ -309,8 +314,6 @@ public class HelperMethods extends Activity {
     }
 
 
-
-
     /**
      * Function to show a snack bar in Coordinator Layout
      *
@@ -329,44 +332,41 @@ public class HelperMethods extends Activity {
         }
     }
 
-    // ToDo clean this function once hours are confirmed
+    // ToDo confirm office hours and adjust code
 
     /**
-     * Function to check if now is during  office hours
+     * Function to check if now is during office hours
      *
      * @return boolean
      */
     public boolean isDuringOfficeHours() {
-        String startTime, endTime;
-        DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
+        // get JSE office hours start time
+        String startTime =
+                mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
+        // get JSE office hours end time
+        String endTime =
+                mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
 
         // get current day of week
-        String dayOfWeek = Integer.toString(LocalDate.now().getDayOfWeek());
+        int dayOfWeek = LocalDate.now().getDayOfWeek();
 
-        //get start time and end time of today's office hours
-        switch (dayOfWeek) {
-            case "5": {
-                // Friday - closed ?
-                startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
-                endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
-                break;
-            }
-            case "6": {
-                // Saturday - closed ?
-                return false;
-            }
-            case "7": {
-                // Sunday - closed ?
-                return false;
-            }
-            default: {
-                // Monday - Thursday
-                startTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_start_time);
-                endTime = mainActivity.getString(R.string.jse_office_hours_mon_thurs_hours_end_time);
-                break;
-            }
+        // if current day of week is Saturday or Sunday
+        if (dayOfWeek == 6 || dayOfWeek == 7) {
+            // office is closed
+            return false;
         }
 
+        // if current day of week is Friday
+        if (dayOfWeek == 5) {
+            // office is open - get hours for friday
+            startTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_start_time);
+            endTime = mainActivity.getString(R.string.jse_office_hours_friday_hours_end_time);
+        }
+
+        // prepare DateTimeFormatter for start and end time
+        DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
+
+        // parse start and end time
         LocalTime start = LocalTime.parse(startTime, parseFormat);
         LocalTime end = LocalTime.parse(endTime, parseFormat);
 
@@ -377,7 +377,7 @@ public class HelperMethods extends Activity {
         // parse to LocalTime
         LocalTime now = nowNY.toLocalTime();
 
-        // check if now is between start and end
+        // return true if now is between start and end
         return Util.isWithinInterval(start, end, now);
     }
 
@@ -461,6 +461,11 @@ public class HelperMethods extends Activity {
             e.printStackTrace();
         }
 
+        // return null if all crucial location information was not loaded
+        if (location.getId() == 0 || location.getBranchId() == 0
+                || location.getName() == null || location.getName().equals("null"))
+            return null;
+
         return location;
     }
 
@@ -484,10 +489,10 @@ public class HelperMethods extends Activity {
             String country = jsonLocation.getString(Util.getStringValue(R.string.TAG_COUNTRY));
 
             // if values don't equal to "null", add to StringBuilder along with a space
-            if (!address.equals("null")) fullAddress.append(address + " ");
-            if (!city.equals("null")) fullAddress.append(city + " ");
-            if (!state.equals("null")) fullAddress.append(state + " ");
-            if (!zip.equals("null")) fullAddress.append(zip + " ");
+            if (!address.equals("null")) fullAddress.append(address).append(" ");
+            if (!city.equals("null")) fullAddress.append(city).append(" ");
+            if (!state.equals("null")) fullAddress.append(state).append(" ");
+            if (!zip.equals("null")) fullAddress.append(zip).append(" ");
             if (!country.equals("null")) fullAddress.append(country);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -553,6 +558,14 @@ public class HelperMethods extends Activity {
             e.printStackTrace();
         }
 
+        // return null if all crucial test information was not loaded
+        if (test.getBranchId() == 0 || test.getLocation() == null
+                || test.getDate() == null || test.getDayOfWeek() == null
+                || test.getTime() == null || test.getDeadlineDate() == null
+                || test.getDeadlineTime() == null || test.getDeadlineDayOfWeek() == null
+                || test.getGender() == null)
+            return null;
+
         return test;
     }
 
@@ -572,7 +585,7 @@ public class HelperMethods extends Activity {
             hour.name =
                     hoursObject.getString(Util.getStringValue(R.string.TAG_LIBRARY_LOCATION));
 
-            // set day
+            // get day of week
             String day =
                     hoursObject.getString(Util.getStringValue(R.string.TAG_DAY_OF_WEEK));
 
@@ -595,6 +608,11 @@ public class HelperMethods extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // return null if all crucial hour information was not loaded
+        if (hour.getName() == null || hour.getDayOfWeek() == null
+                || hour.getStartTime() == null || hour.getEndTime() == null)
+            return null;
 
         return hour;
 
@@ -624,6 +642,10 @@ public class HelperMethods extends Activity {
             e.printStackTrace();
         }
 
+        // return null if all crucial branch information was not loaded
+        if (branch.getId() == 0 || branch.getName() == null)
+            return null;
+
         return branch;
     }
 
@@ -634,7 +656,6 @@ public class HelperMethods extends Activity {
      * @return alert
      */
     public static Alert setAlert(JSONObject alertObject) {
-        // ToDo handle if any values are null
         // instantiate new alert
         Alert alert = new Alert();
 
@@ -667,6 +688,10 @@ public class HelperMethods extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // return null if all crucial alert information was not loaded
+        if (alert.getAlertText() == null || alert.getLocationName() == null)
+            return null;
 
         return alert;
     }
@@ -969,7 +994,7 @@ public class HelperMethods extends Activity {
             // if internet connection status is true
             if (Util.checkInternetConnection()) {
                 // call AsyncTask to get jseStudentId
-                mainActivity.databaseOperations.getJseStudentId(mainActivity.user);
+                taskGetJseStudentId = new GetJseStudentId().execute();
             }
         }
     }
@@ -1021,4 +1046,70 @@ public class HelperMethods extends Activity {
         // set calendar intent to call JSE during office hours
         Util.calendarIntent("Call JSE", null, null, dateOfEvent, fmt.parseLocalTime(timeOfEvent));
     }
+
+    /**
+     * Background Async Task to Get and Set JseStudentId
+     */
+    class GetJseStudentId extends AsyncTask<Void, Void, Void> {
+
+        /**
+         * Getting and setting user's jseStudentId
+         */
+        protected Void doInBackground(Void... args) {
+            getJseStudentId();
+            if (!studentId.equals(""))
+                updateJseStudentId();
+            return null;
+
+        }
+
+        /**
+         * Function to get jseStudentId
+         */
+        public void getJseStudentId() {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("ssn", mainActivity.user.ssn));
+            params.add(new BasicNameValuePair("dob", mainActivity.user.dob.toString()));
+
+            // get JsonObject of user from Json string
+            JSONObject jseStudentIdJsonObject = HelperMethods.getJsonObject
+                    (Util.getActivity().getString(R.string.url_get_jse_student_id), params);
+
+            // if jseStudentIdJsonObject is not equal to null
+            if (jseStudentIdJsonObject != null) {
+                try {
+                    // try to get String with tag "studentId" from json object
+                    studentId = jseStudentIdJsonObject.getString(Util.getActivity().getString(R.string.TAG_JSE_STUDENT_ID));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            studentId = "";
+        }
+
+        /**
+         * Function to update jseStudentId
+         */
+        public void updateJseStudentId() {
+            // Building Parameters
+            List<NameValuePair> paramsUpdate = new ArrayList<>();
+            paramsUpdate.add(new BasicNameValuePair
+                    ("id", Integer.toString(mainActivity.user.id)));
+            paramsUpdate.add(new BasicNameValuePair("jseStudentId", studentId));
+
+            // get JsonObject of user from Json string
+            JSONObject jseStudentIdJsonObject = HelperMethods.getJsonObject
+                    (Util.getActivity().getString(R.string.url_update_jse_student_id),
+                            paramsUpdate);
+
+            // if jseStudentIdJsonObject is not equal to null - jseStudntId was updated
+            // successfully
+            if (jseStudentIdJsonObject != null) {
+                // set user's JseStudentId
+                mainActivity.user.setJseStudentId(studentId);
+            }
+        }
+    }
+
 }

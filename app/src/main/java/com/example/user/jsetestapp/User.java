@@ -14,7 +14,6 @@ public class User implements Serializable {
     String firstName, lastName, email, password, ssn, defaultLocation, jseStudentId;
     LocalDate dob;
     Gender gender;
-    boolean isJseMember;
     int locationId, id;
 
     // constructor
@@ -207,33 +206,33 @@ public class User implements Serializable {
         }
     }
 
-    /**
-     * Retrieve isJseMember
-     * @return boolean
-     */
-    public boolean isJseMember() {
-        return isJseMember;
-    }
+//    /**
+//     * Retrieve isJseMember
+//     * @return boolean
+//     */
+//    public boolean isJseMember() {
+//        return isJseMember;
+//    }
 
-    /**
-     * Set isJseMember
-     * @param isJseMember - variable of type boolean
-     */
-    public void setIsJseMember(boolean isJseMember) {
-        this.isJseMember = isJseMember;
-    }
-
-    /**
-     * Set the value of isJseMember
-     * @param isJseMember - variable of type String
-     */
-    public void setIsJseMember(String isJseMember) {
-        // if isJseMember is not null
-        if (isJseMember != null) {
-            // set isJseMember to true
-            this.isJseMember = true;
-        }
-    }
+//    /**
+//     * Set isJseMember
+//     * @param isJseMember - variable of type boolean
+//     */
+//    public void setIsJseMember(boolean isJseMember) {
+//        this.isJseMember = isJseMember;
+//    }
+//
+//    /**
+//     * Set the value of isJseMember
+//     * @param isJseMember - variable of type String
+//     */
+//    public void setIsJseMember(String isJseMember) {
+//        // if isJseMember is not null
+//        if (isJseMember != null) {
+//            // set isJseMember to true
+//            this.isJseMember = true;
+//        }
+//    }
 
     /**
      * Retrieve locationId

@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Declare Classes
     HelperMethods helperMethods;
-    DatabaseOperations databaseOperations;
 
     // Declare Fragments
     ContactFragment contactFragment;
@@ -95,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
     private void instantiateClasses() {
         helperMethods = new HelperMethods();
         helperMethods.setMainActivity(this);
-        databaseOperations = new DatabaseOperations();
-        databaseOperations.setMainActivity(this);
     }
 
     /**

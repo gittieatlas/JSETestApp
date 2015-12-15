@@ -101,18 +101,8 @@ public class ContactFragment extends Fragment {
     OnClickListener scheduleTestNumberListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            // if user is jse member
-            if (mainActivity.user.isJseMember) {
-                // call to schedule a test
-                mainActivity.helperMethods.scheduleTest();
-            } else {
-                // set user to be a jse member
-                mainActivity.user.isJseMember = true;
-                // call to schedule a test
-                mainActivity.helperMethods.scheduleTest();
-                // set user to be a non jse member
-                mainActivity.user.isJseMember = false;
-            }
+            // Show Dialog: Schedule A Test
+            Util.showDialogFragment(R.array.schedule_test);
         }
     };
 

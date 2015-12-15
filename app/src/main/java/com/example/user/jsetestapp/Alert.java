@@ -23,7 +23,7 @@ public class Alert implements Serializable {
      * Retrieve locationName
      * @return String
      */
-    public String getLocationName(String locationName){
+    public String getLocationName(){
         return locationName;
     }
 

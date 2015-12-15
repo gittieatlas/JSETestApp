@@ -472,9 +472,11 @@ public class SplashActivity extends AppCompatActivity {
             // try to loop through locationsJsonArray
             for (int i = 0; i < locationsJsonArray.length(); i++) {
                 // get location from JsonObject
-                JSONObject location = locationsJsonArray.getJSONObject(i);
-                // convert JSONObject to location and add to locationsArrayList
-                locationsArrayList.add(HelperMethods.setLocation(location));
+                JSONObject jsonLocation = locationsJsonArray.getJSONObject(i);
+                // convert JSONObject to location
+                Location location =  HelperMethods.setLocation(jsonLocation);
+                // add location to locationsArrayList if it is not null
+                if (location != null) locationsArrayList.add(location);
                 // if taskGetLocations is cancelled
                 if (taskGetLocations.isCancelled()) {
                     // exit method
@@ -501,9 +503,11 @@ public class SplashActivity extends AppCompatActivity {
             // try to loop through testsJsonArray
             for (int i = 0; i < testsJsonArray.length(); i++) {
                 // get test from JsonObject
-                JSONObject test = testsJsonArray.getJSONObject(i);
-                // convert JSONObject to test and add to testsArrayList
-                testsArrayList.add(HelperMethods.setTest(test));
+                JSONObject jsonTest = testsJsonArray.getJSONObject(i);
+                // convert JSONObject to test
+                Test test =  HelperMethods.setTest(jsonTest);
+                // add test to testsArrayList if it is not null
+                if (test != null) testsArrayList.add(test);
                 // if taskGetTests is cancelled
                 if (taskGetTests.isCancelled()) {
                     // exit method
@@ -530,9 +534,11 @@ public class SplashActivity extends AppCompatActivity {
             // try to looping through hoursJsonArray
             for (int i = 0; i < hoursJsonArray.length(); i++) {
                 // get hours from JsonObject
-                JSONObject hours = hoursJsonArray.getJSONObject(i);
-                // convert JSONObject to hours and add to hourArrayList
-                hourArrayList.add(HelperMethods.setHours(hours));
+                JSONObject jsonHour = hoursJsonArray.getJSONObject(i);
+                // convert JSONObject to hour
+                Hour hour =  HelperMethods.setHours(jsonHour);
+                // add test to testsArrayList if it is not null
+                if (hour != null) hourArrayList.add(hour);
                 // if taskGetHours is cancelled
                 if (taskGetHours.isCancelled()) {
                     // exit method
@@ -559,9 +565,13 @@ public class SplashActivity extends AppCompatActivity {
             // try to loop through branchesJsonArray
             for (int i = 0; i < branchesJsonArray.length(); i++) {
                 // get branch from JsonObject
-                JSONObject branch = branchesJsonArray.getJSONObject(i);
+                JSONObject jsonBranch = branchesJsonArray.getJSONObject(i);
+                // convert JSONObject to branch
+                Branch branch =  HelperMethods.setBranch(jsonBranch);
+                // add branch to testsArrayList if it is not null
+                if (branch != null) branchesArrayList.add(branch);
                 // convert JSONObject to branch and add to branchesArrayList
-                branchesArrayList.add(HelperMethods.setBranch(branch));
+                branchesArrayList.add(HelperMethods.setBranch(jsonBranch));
                 // if taskGetBranches is cancelled
                 if (taskGetBranches.isCancelled()) {
                     // exit method

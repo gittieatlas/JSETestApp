@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,10 +23,6 @@ import java.util.List;
 
 public class UpdateProfileFragment extends Fragment {
 
-    // Progress Dialog
-    private ProgressDialog pDialog;
-    private static String result = "";
-
     // Declare Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
@@ -42,6 +37,7 @@ public class UpdateProfileFragment extends Fragment {
     // Declare Variables
     User user = new User();
     AsyncTask taskUpdateUser;
+    private static String result = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -158,6 +154,7 @@ public class UpdateProfileFragment extends Fragment {
 
     /**
      * Function to return position of default location in locationsArrayList
+     *
      * @return int
      */
     public int setLocationSpinnerSelection() {
@@ -165,7 +162,7 @@ public class UpdateProfileFragment extends Fragment {
         try {
             // return position
             return loginActivity.locationsNameArrayList.indexOf(loginActivity.defaultLocation.name);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             // if no such name exists in return 0 for the first item
             return 0;
         }
@@ -173,7 +170,8 @@ public class UpdateProfileFragment extends Fragment {
 
     /**
      * Function to format int before loading the screen
-     * @param value - value to be formatted and / or returned as String
+     *
+     * @param value  - value to be formatted and / or returned as String
      * @param length - desired length of text/int
      */
     private String formatInt(int value, int length) {
@@ -335,8 +333,7 @@ public class UpdateProfileFragment extends Fragment {
         // if application can connect to internet
         if (Util.checkInternetConnection()) {
             // call AsyncTask to create new user
-            //taskUpdateUser = loginActivity.databaseOperations.updateUser(saveUpdatedUser());
-            taskUpdateUser = new UpdateUser(saveUpdatedUser()).execute();
+            taskUpdateUser = new UpdateUser().execute();
         } else {
             // Show Dialog: No Internet Connection
             Util.showDialogFragment(R.array.no_internet_connection);
@@ -347,35 +344,32 @@ public class UpdateProfileFragment extends Fragment {
      * Function to set updated account info to User
      */
     private User saveUpdatedUser() {
-        // instantiate a new user to hold updated user info
-        User updatedUser = new User();
-
         // set id
-        updatedUser.id = loginActivity.user.id;
+        user.id = loginActivity.user.id;
 
         // set email and password
-        updatedUser.email = loginActivity.user.email;
-        updatedUser.setPassword(newPasswordEditText.getText().toString());
+        user.email = loginActivity.user.email;
+        user.setPassword(newPasswordEditText.getText().toString());
 
         // set first and last name
-        updatedUser.setFirstName(firstNameEditText.getText().toString());
-        updatedUser.setLastName(lastNameEditText.getText().toString());
+        user.setFirstName(firstNameEditText.getText().toString());
+        user.setLastName(lastNameEditText.getText().toString());
 
         // set ssn to XXX-XX- plus 4 digits entered
-        updatedUser.setSsn("XXX-XX-" + ssnEditText.getText().toString());
+        user.setSsn("XXX-XX-" + ssnEditText.getText().toString());
 
         // set gender and default location from the selected item of the spinners
-        updatedUser.setGender(genderSpinner.getSelectedItem().toString());
-        updatedUser.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
+        user.setGender(genderSpinner.getSelectedItem().toString());
+        user.setDefaultLocation(locationsSpinner.getSelectedItem().toString());
 
         // set dob from year, month, and day
-        updatedUser.setDob(dobYearEditText.getText().toString(),
+        user.setDob(dobYearEditText.getText().toString(),
                 dobMonthEditText.getText().toString(), dobDayEditText.getText().toString());
 
         // set location id based on text of updatedUser's default location name
-        updatedUser.setLocationId(loginActivity.locationsArrayList, updatedUser);
+        user.setLocationId(loginActivity.locationsArrayList, user);
 
-        return updatedUser;
+        return user;
     }
 
     /**
@@ -400,128 +394,132 @@ public class UpdateProfileFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     /**
      * Background Async Task to Update User
      */
     class UpdateUser extends AsyncTask<String, String, String> {
-        User user = new User();
-        String id, firstName, lastName, gender, dob, ssn, email, password, locationId;
 
-        UpdateUser(User user) {
-            this.user = user;
-            this.id = Integer.toString(user.getId());
-            this.email = user.getEmail();
-            this.password = user.getPassword();
-            this.firstName = user.getFirstName();
-            this.lastName = user.getLastName();
-            this.dob = user.getDob().toString("yyyy-MM-dd");
-            this.gender = Integer.toString(user.getGender(user) + 1);
-            this.ssn = user.getSsn();
-            this.locationId = Integer.toString(user.getLocationId());
-
-
+        // constructor
+        UpdateUser (){
+            saveUpdatedUser();
         }
 
         /**
-         * Before starting background thread Show Progress Dialog
+         * Before starting background thread
          */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgressDialog("Updating account. Please wait...");
+
+            // show progress dialog
+            loginActivity.showProgressDialog("Updating account. Please wait...");
         }
 
         /**
-         * Updating User
+         * Updating user
+         *
+         * @param params - information passed
          */
-        protected String doInBackground(String... args) {
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("id", id));
-            params.add(new BasicNameValuePair("firstName", firstName));
-            params.add(new BasicNameValuePair("lastName", lastName));
-            params.add(new BasicNameValuePair("gender", gender));
-            params.add(new BasicNameValuePair("dob", dob));
-            params.add(new BasicNameValuePair("ssn", ssn));
-            params.add(new BasicNameValuePair("email", email));
-            params.add(new BasicNameValuePair("password", password));
-            params.add(new BasicNameValuePair("locationId", locationId));
-            return UpdateUserInDatabase(params, user);
+        protected String doInBackground(String... params) {
+            // get JsonObject of user from Json string
+            JSONObject userJsonObject = HelperMethods.getJsonObject
+                    (Util.getActivity().getString(R.string.url_update_user),
+                            getUpdateUserHttpParams());
+
+            // if json is not equal to null
+            if (userJsonObject != null) {
+                getUpdateResult(userJsonObject);
+                return updateLocalUser();
+            } else {
+                Log.e("Update User", "Couldn't update user");
+            }
+
+            return "false";
+
         }
 
 
         /**
-         * After completing background task Dismiss the progress dialog
+         * After completing background task
          **/
         protected void onPostExecute(String result) {
-            // dismiss the dialog once done
-
-            updateUser(result);
-            pDialog.dismiss();
-        }
-
-
-        protected void onCancelled(String result){
-
-            pDialog.dismiss();
-        }
-
-    }
-
-    public String UpdateUserInDatabase(List<NameValuePair> params, User user) {
-
-
-        // get JsonObject of user from Json string
-        JSONObject json = HelperMethods.getJsonObject
-                (Util.getActivity().getString(R.string.url_update_user), new ArrayList<NameValuePair>());
-        if (json != null) {
-            try {
-                result = json.getString(Util.getActivity().getString(R.string.TAG_RESULT));
-                //id = Integer.parseInt(json.getString(TAG_JSE_STUDENT_ID));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (json != null && !result.equals("false")) {
-                loginActivity.user = user;
-            }
-
-            return result;
-        }
-        return "false";
-    }
-
-    public void showProgressDialog(String message){
-        pDialog = new ProgressDialog(loginActivity);
-        pDialog.setMessage(message);
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
-
-    // ToDo come back to this
-    public void updateUser(String result) {
-
-        if (loginActivity.updateProfileFragment.isVisible()) {
+            // if account was updated
             if (result.equals("true")) {
-                // user updated
-                // launch activity with main activity intent
-                Util.launchActivity(loginActivity.getLaunchMainActivityIntent("update_profile"));
-
-            } else {
-                //user not updated
-                Util.showDialogFragment(R.array.update_account_failed_msg);
+                // if fragment is visible, launch activity with main activity intent
+                if (loginActivity.updateProfileFragment.isVisible())
+                    Util.launchActivity(
+                            loginActivity.getLaunchMainActivityIntent("update_profile"));
             }
+            // if account was not updated
+            else {
+                // if fragment is visible, show dialog: update account failed
+                if (loginActivity.updateProfileFragment.isVisible())
+                    Util.showDialogFragment(R.array.update_account_failed_msg);
+            }
+
+            // dismiss the dialog
+            loginActivity.pDialog.dismiss();
         }
+
+        /**
+         * After completing background task
+         **/
+        protected void onCancelled(String result) {
+            super.onCancelled(result);
+            // dismiss the dialog
+            loginActivity.pDialog.dismiss();
+        }
+
+    }
+
+    public String updateLocalUser() {
+        if (result.equals("true")) {
+            loginActivity.user = user;
+        }
+        return result;
+    }
+
+    /**
+     * Function to get updateResult from jsonObject
+     *
+     * @param userJsonObject - object that is holding http request info from database
+     **/
+    private void getUpdateResult(JSONObject userJsonObject) {
+        // reset result
+        result = "false";
+
+        // get "result" from json object
+        // false if update was not done, true if update was done
+        try {
+            result = userJsonObject.getString(Util.getActivity().getString(R.string.TAG_RESULT));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<NameValuePair> getUpdateUserHttpParams() {
+        // build parameters for http request
+        List<NameValuePair> httpParams = new ArrayList<>();
+
+        httpParams.add(new BasicNameValuePair("id",
+                Integer.toString(user.getId())));
+        httpParams.add(new BasicNameValuePair("firstName",
+                user.getFirstName()));
+        httpParams.add(new BasicNameValuePair("lastName",
+                user.getLastName()));
+        httpParams.add(new BasicNameValuePair("gender",
+                Integer.toString(user.getGender(user) + 1)));
+        httpParams.add(new BasicNameValuePair("dob",
+                user.getDob().toString("yyyy-MM-dd")));
+        httpParams.add(new BasicNameValuePair("ssn",
+                user.getSsn()));
+        httpParams.add(new BasicNameValuePair("email",
+                user.getEmail()));
+        httpParams.add(new BasicNameValuePair("password",
+                user.getPassword()));
+        httpParams.add(new BasicNameValuePair("locationId",
+                Integer.toString(user.getLocationId())));
+
+        return httpParams;
     }
 }
