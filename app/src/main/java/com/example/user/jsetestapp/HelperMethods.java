@@ -1084,8 +1084,10 @@ public class HelperMethods extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else{
+                studentId = "";
             }
-            studentId = "";
+
         }
 
         /**
