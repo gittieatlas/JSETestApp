@@ -163,8 +163,11 @@ public class MainActivity extends AppCompatActivity {
      * Function to set up toolBar
      */
     private void setupToolbar() {
+        assert getSupportActionBar() != null;
         // designate toolbar as the action bar for this activity
         setSupportActionBar(toolbar);
+        // set title
+        getSupportActionBar().setTitle(getString(R.string.tabLayout_dashboard));
         // Inflate menu
         toolbar.inflateMenu(R.menu.menu_main);
         // Set navigation icon
@@ -277,16 +280,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    /**
-     * Function to set the toolbar title
-     *
-     * @param toolbarTitle - title for toolbar
-     */
-    public void setToolbarTitle(int toolbarTitle) {
-        assert getSupportActionBar() != null;
-        // set title of action bar
-        getSupportActionBar().setTitle(toolbarTitle);
-    }
+
 
     /**
      * Function to sets the minimum height of the scrollView

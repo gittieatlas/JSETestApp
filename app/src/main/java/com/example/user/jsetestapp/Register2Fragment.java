@@ -1,7 +1,6 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,14 +23,10 @@ import java.util.List;
 
 public class Register2Fragment extends Fragment {
 
-    // Progress Dialog
-    private ProgressDialog pDialog;
-
     // testsJsonArray JSONArray
     private String insertResult;
     private int checkEmailResult;
     private int id;
-
 
     // Declare Controls
     View rootView;
@@ -319,58 +314,111 @@ public class Register2Fragment extends Fragment {
     class CreateNewUser extends AsyncTask<String, String, Boolean> {
 
         /**
-         * Before starting background thread Show Progress Dialog
-         * Runs on the UI thread before doInBackground
-         * Good for toggling visibility of a progress indicator
+         * Before starting background thread
          */
         @Override
         protected void onPreExecute() {
-
             super.onPreExecute();
-            showProgressDialog("Creating account. Please wait...");
+            // show progress dialog
+            loginActivity.showProgressDialog("Creating account. Please wait...");
         }
 
         /**
-         * method to get json by making HTTP call
-         * @param params - params to use for the task
-         * @return Boolean - return true/false if task was successful.
+         * Creating user
+         * @param params - information passed
+         * @return Boolean
          */
         protected Boolean doInBackground(String... params) {
+            // get JsonObject of user from Json string
+            JSONObject userJsonObject = HelperMethods.getJsonObject
+                    (Util.getActivity().getString(R.string.url_create_user), getUserHttpParams());
 
-            return addUserToDatabase();
-
+            // if json is not null
+            if (userJsonObject != null) {
+                getEmailResult(userJsonObject);
+                return checkIfUserInserted(userJsonObject);
+            }
+            return false;
         }
 
         /**
-         * @param result - param that hold async task result
+         * After completing background task
+         * @param result - param that holds result
          **/
         protected void onPostExecute(Boolean result) {
 
-            createUser(result);
+                // create account was unsuccessful: result is false
+                if (!result) {
+                    if (loginActivity.register2Fragment.isVisible())
+                        // if fragment is visible, show dialog: create account failed
+                    Util.showDialogFragment(R.array.create_account_failed_insert_failed);
+                }
+                // create account was successful: result is true
+                else {
+                    // checkEmailResult is equal 1 - email already exists
+                    if (checkEmailResult == 1) {
+                        if (loginActivity.register2Fragment.isVisible())
+                            // if fragment is visible, show dialog:
+                            // create account failed duplicate email
+                            Util.showDialogFragment(R.array.create_account_failed_email_duplicate);
+                    }
+                    // checkEmailResult is equal 0 - email doesn't exists
+                    else {
+                        // insertResult is equal to false - user did not get inserted
+                        if (insertResult.equals("false")) {
+                            if (loginActivity.register2Fragment.isVisible())
+                                // if fragment is visible, show dialog: create account failed
+                                Util.showDialogFragment
+                                        (R.array.create_account_failed_insert_failed);
+                        }
+                        // insertResult is equal to true - user was inserted successfully
+                        else {
+                            // if fragment is visible
+                            if (loginActivity.register2Fragment.isVisible()) {
+                                // set id to user
+                                loginActivity.user.setId(id);
+                                // launch activity with main activity intent
+                                Util.launchActivity(loginActivity
+                                        .getLaunchMainActivityIntent("create_account"));
+                            }
+                            // if fragment is not visible
+                            else {
+                                // if id is not equal to 0
+                                if (id != 0) {
+                                    // set id to user
+                                    loginActivity.user.setId(id);
+                                }
+                            }
+                        }
+                    }
+                }
 
             // dismiss the dialog once done
-            pDialog.dismiss();
+            loginActivity.pDialog.dismiss();
 
         }
 
-
+        /**
+         * After completing background task
+         **/
         protected void onCancelled(Boolean result) {
-
-            //Toast.makeText(loginActivity.getContext(), "task onCancelled", Toast.LENGTH_LONG).show();
-            if (id != 0) loginActivity.user.setId(id);
-            pDialog.dismiss();
+            // if id is not equal to 0
+            if (id != 0)
+                // set id of user
+                loginActivity.user.setId(id);
+            // dismiss the dialog
+            loginActivity.pDialog.dismiss();
         }
 
     }
 
-    public boolean addUserToDatabase() {
-        // initialize variables
-        insertResult = "false";
-        checkEmailResult = 1;
-        id = 0;
-
-        //User user = params[0];
-        // Building Parameters
+    /**
+     * Function to get httpParams - user information
+     *
+     * @return List
+     **/
+    private List<NameValuePair> getUserHttpParams() {
+        // build parameters for http request
         List<NameValuePair> httpParams = new ArrayList<>();
         httpParams.add(new BasicNameValuePair("firstName", loginActivity.user.getFirstName()));
         httpParams.add(new BasicNameValuePair("lastName", loginActivity.user.getLastName()));
@@ -383,96 +431,53 @@ public class Register2Fragment extends Fragment {
         httpParams.add(new BasicNameValuePair("password", loginActivity.user.getPassword()));
         httpParams.add(new BasicNameValuePair("locationId",
                 Integer.toString(loginActivity.user.getLocationId())));
-
-        // get JsonObject of user from Json string
-        JSONObject json = HelperMethods.getJsonObject
-                (Util.getActivity().getString(R.string.url_create_user), httpParams);
-
-        // if json is not null
-        if (json != null) {
-
-            try {
-                // try to get int with tag "checkEmailResult" from json object
-                checkEmailResult = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_CHECK_EMAIL_RESULT)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            // if email does not exist, see if insert was completed successfully
-            if (checkEmailResult==0) {
-                try {
-                    // try to get String with tag "insertResult" from json object
-                    insertResult = json.getString(Util.getActivity().getString(R.string.TAG_INSERT_RESULT));
-                    // try to get int with tag "id" from json object
-                    id = Integer.parseInt(json.getString(Util.getActivity().getString(R.string.TAG_ID)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return true;
-        }
-        return false;
+        return httpParams;
     }
 
     /**
-     * Function to create user
-     * @param result - param that hold result
+     * Function to get checkEmailResult from jsonObject
+     *
+     * @param userJsonObject - object that is holding http request info from database
      **/
-    public void createUser(boolean result) {
+    private void getEmailResult(JSONObject userJsonObject) {
+        // reset checkEmailResult
+        checkEmailResult = 1;
 
-        // if register2Fragment is visible
-        if (loginActivity.register2Fragment.isVisible()) {
-            // if success = 0 show dialog user cant be created
-            if (!result) {
-                Util.showDialogFragment(R.array.create_account_failed_insert_failed);
-                // if success = 1
-            } else {
-                // if email exists show dialog email exits
-                if (checkEmailResult == 1) {
-                    Util.showDialogFragment(R.array.create_account_failed_email_duplicate);
-                }
-                // if email doest exists
-                else {
-                    // if not inserted
-                    if (insertResult.equals("false")) {
-                        Util.showDialogFragment(R.array.create_account_failed_insert_failed);
-                    }
-                    // if inserted
-                    else {
-                        // set id to user
-                        loginActivity.user.setId(id);
-                        // launch activity with main activity intent
-                        Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
-                    }
-                }
-            }
-
-        } else {
-            if (id!=0){
-                // set id to user
-                loginActivity.user.setId(id);
-            }
-        }
-
-
-    }
-
-    public void showProgressDialog(String message) {
-        pDialog = new ProgressDialog(loginActivity);
-        pDialog.setMessage(message);
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
-
-    @Override
-    public void onPause() {
-    super.onPause();
-        if (taskNewUser != null){
-            taskNewUser.cancel(true);
+        // try to get int with tag "checkEmailResult" from json object
+        // 0 if email does not exist, 1 if email exist
+        try {
+            checkEmailResult = Integer.parseInt(userJsonObject.getString(Util.getActivity()
+                    .getString(R.string.TAG_CHECK_EMAIL_RESULT)));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Function to check if user was inserted from jsonObject
+     *
+     * @param userJsonObject - object that is holding http request info from database
+     * @return Boolean
+     **/
+    private Boolean checkIfUserInserted(JSONObject userJsonObject){
+        // initialize variables
+        insertResult = "false";
+        id = 0;
 
+        // if email does not exist, see if insert was completed successfully
+        if (checkEmailResult==0) {
+            try {
+                // try to get String with tag "insertResult" from json object
+                insertResult = userJsonObject.getString(Util.getActivity()
+                        .getString(R.string.TAG_INSERT_RESULT));
+                // try to get int with tag "id" from json object
+                id = Integer.parseInt(userJsonObject.getString(Util.getActivity()
+                        .getString(R.string.TAG_ID)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
 
 }
