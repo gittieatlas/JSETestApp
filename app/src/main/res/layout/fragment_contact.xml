@@ -5,29 +5,73 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="72dp"
-    android:paddingLeft="@dimen/default_margin"
     android:paddingTop="@dimen/default_margin"
     tools:context=".contactFragment">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/officeNumber"
-        android:clickable="true" >
+        android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="72dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:src="@drawable/phone"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/jse_office"
-            android:textColor="@color/primary" />
+            android:id="@+id/officeNumber"
+            android:clickable="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/jse_phone_number"
-            android:textColor="@color/primary_text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/jse_office"
+                android:textColor="@color/primary"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/jse_phone_number"
+                android:textColor="@color/primary_text" />
+
+        </LinearLayout>
     </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView4"
+                android:src="@drawable/clipboard_text"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -39,11 +83,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
             android:text="@string/schedule_test"
-            android:textColor="@color/primary" />
-
-
+            android:textColor="@color/primary"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -51,6 +94,30 @@
             android:text="@string/schedule_test_phone_number"
             android:textColor="@color/primary_text" />
     </LinearLayout>
+        </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView5"
+                android:src="@drawable/email_outline"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -62,9 +129,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
             android:text="@string/email_address"
-            android:textColor="@color/primary" />
+            android:textColor="@color/primary"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,64 +140,99 @@
             android:textColor="@color/primary_text" />
     </LinearLayout>
 
+</LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
-            android:text="@string/office_hours"
-            android:textColor="@color/primary" />
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_width="72dp"
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/jse_office_hours_mon_thurs"
-                    android:textColor="@color/primary_text" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/jse_office_hours_friday"
-                    android:textColor="@color/primary_text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/jse_office_hours_mon_thurs_hours_start_time"
-                    android:textColor="@color/primary_text"
-                    android:id="@+id/jseOfficeHoursMonThursTextView" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/jse_office_hours_friday_hours_start_time"
-                    android:textColor="@color/primary_text"
-                    android:id="@+id/jseOfficeHoursFridayTextView" />
-            </LinearLayout>
-
+                android:id="@+id/imageView2"
+                android:src="@drawable/clock"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/office_hours"
+                android:textColor="@color/primary"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/jse_office_hours_mon_thurs"
+                        android:textColor="@color/primary_text" />
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/jse_office_hours_mon_thurs_hours_start_time"
+                        android:textColor="@color/secondary_text"
+                        android:id="@+id/jseOfficeHoursMonThursTextView" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/jse_office_hours_friday"
+                        android:textColor="@color/primary_text" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/jse_office_hours_friday_hours_start_time"
+                        android:textColor="@color/secondary_text"
+                        android:id="@+id/jseOfficeHoursFridayTextView" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
     </LinearLayout>
+
+</LinearLayout>
