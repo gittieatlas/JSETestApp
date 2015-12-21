@@ -333,7 +333,7 @@ public class LoginFragment extends Fragment {
                 user.setDob(userJsonObject.getString(
                         Util.getActivity().getString(R.string.TAG_DOB)));
                 // set gender
-                user.setGender(userJsonObject.getString(
+                user.setGender(userJsonObject.getInt(
                         Util.getActivity().getString(R.string.TAG_GENDER)));
 
                 // set user mainActivity to user

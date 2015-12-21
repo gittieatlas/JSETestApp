@@ -183,13 +183,8 @@ public class User implements Serializable {
      * @param gender - variable of type String
      */
     public void setGender(String gender) {
-        try {
             // assign value of gender (in uppercase) to gender
             this.gender = Gender.valueOf(gender.toUpperCase());
-        } catch (Exception ex) {
-            // assign value of FEMALE to gender
-            this.gender = Gender.FEMALE;
-        }
     }
 
     /**
@@ -197,42 +192,9 @@ public class User implements Serializable {
      * @param gender - variable of type int
      */
     public void setGender(int gender) {
-        try {
             // assign value of int - 1 to gender
             this.gender = Gender.values()[gender-1];
-        } catch (Exception ex) {
-            // assign value of FEMALE as gender
-            this.gender = Gender.FEMALE;
-        }
     }
-
-//    /**
-//     * Retrieve isJseMember
-//     * @return boolean
-//     */
-//    public boolean isJseMember() {
-//        return isJseMember;
-//    }
-
-//    /**
-//     * Set isJseMember
-//     * @param isJseMember - variable of type boolean
-//     */
-//    public void setIsJseMember(boolean isJseMember) {
-//        this.isJseMember = isJseMember;
-//    }
-//
-//    /**
-//     * Set the value of isJseMember
-//     * @param isJseMember - variable of type String
-//     */
-//    public void setIsJseMember(String isJseMember) {
-//        // if isJseMember is not null
-//        if (isJseMember != null) {
-//            // set isJseMember to true
-//            this.isJseMember = true;
-//        }
-//    }
 
     /**
      * Retrieve locationId

@@ -381,6 +381,10 @@ public class MainActivity extends AppCompatActivity {
      * @return bundle
      */
     public Bundle getLaunchLoginActivityBundle(String outcome) {
+
+        testsArrayList = (ArrayList<Test>) getIntent()
+                .getExtras().getSerializable("testsArrayList");
+
         // create bundle
         Bundle bundle = new Bundle();
 
