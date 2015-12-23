@@ -17,6 +17,8 @@ public class RecyclerViewViewHolder extends ViewHolder {
     TextView testDate;
     TextView testDeadlineTitle;
     TextView testDeadlineDetails;
+    TextView testDeadlineDate;
+    TextView testDeadlineTime;
     ImageButton imageButton;
     FrameLayout imageButtonWrapper;
 
@@ -33,8 +35,10 @@ public class RecyclerViewViewHolder extends ViewHolder {
         testDay = (TextView) this.itemView.findViewById(R.id.testDayTextView);
         testTime = (TextView) this.itemView.findViewById(R.id.testTimeTextView);
         testDate = (TextView) this.itemView.findViewById(R.id.testDateTextView);
-        testDeadlineTitle = (TextView) this.itemView.findViewById(R.id.testDealineTitleTextView);
-        testDeadlineDetails = (TextView) this.itemView.findViewById(R.id.testDealineDetailsTextView);
+        testDeadlineTitle = (TextView) this.itemView.findViewById(R.id.testDeadlineTitleTextView);
+        testDeadlineDetails = (TextView) this.itemView.findViewById(R.id.testDeadlineDayTextView);
+        testDeadlineDate = (TextView) this.itemView.findViewById(R.id.testDeadlineDateTextView);
+        testDeadlineTime = (TextView) this.itemView.findViewById(R.id.testDeadlineTimeTextView);
 
         // initialize and reference ImageButton
         imageButton = (ImageButton) this.itemView.findViewById(R.id.imageButton);

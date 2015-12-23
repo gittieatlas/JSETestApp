@@ -133,9 +133,9 @@ public class DashboardFragment extends Fragment {
      * Function to check for alerts in user's default location
      */
     public void findAlerts() {
-        // loop through each alert in alertArrayList
+        // loop through each ic_alert_green_24dp in alertArrayList
         for (Alert alert : mainActivity.alertArrayList) {
-            // if location of alert is equal to default location
+            // if location of ic_alert_green_24dp is equal to default location
             if (alert.locationName.equals(mainActivity.defaultLocation.getName())) {
                 setAlertInformation(alert);
             }
@@ -149,7 +149,7 @@ public class DashboardFragment extends Fragment {
     }
 
     /**
-     * Function to set text views with alert information
+     * Function to set text views with ic_alert_green_24dp information
      */
     public void setAlertInformation(Alert alert){
         alertsMessageTextView.setText(alert.alertText);

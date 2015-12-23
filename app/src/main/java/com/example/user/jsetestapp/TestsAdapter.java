@@ -46,7 +46,9 @@ public class TestsAdapter extends Adapter<RecyclerViewViewHolder> {
         holder.testDate.setText(arrayListTestDataObject.get(position).getTestDate());
         holder.testDeadlineTitle.setText(arrayListTestDataObject.get(position)
                 .getTestDeadlineTitle());
-        holder.testDeadlineDetails.setText(arrayListTestDataObject.get(position).getTestDeadlineDetails());
+        holder.testDeadlineDetails.setText(arrayListTestDataObject.get(position).getTestDeadlineDay());
+        holder.testDeadlineTime.setText(arrayListTestDataObject.get(position).getTestDeadlineTime());
+        holder.testDeadlineDate.setText(arrayListTestDataObject.get(position).getTestDeadlineDate());
     }
 
     /**

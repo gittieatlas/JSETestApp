@@ -4,113 +4,255 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".DashboardFragment"
     android:paddingBottom="72dp"
-    android:paddingTop="@dimen/default_margin">
+    android:paddingTop="@dimen/default_margin"
+    tools:context=".DashboardFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/locationLabelTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/default_location_label"
-            style="@style/App_TextView_Colored_Label" />
-
-        <TextView
-            android:id="@+id/locationTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/primary_text" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/map_marker" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ADDRESS"
-            style="@style/App_TextView_Colored_Label"
-            android:layout_marginTop="@dimen/default_margin"/>
-
-        <TextView
-            android:id="@+id/locationAddressTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primary_text" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PHONE NUMBER"
-            style="@style/App_TextView_Colored_Label"
-            android:layout_marginTop="@dimen/default_margin"/>
-        <TextView
-            android:id="@+id/locationPhoneNumberTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primary_text"/>
-
-
-        <TextView
-            android:id="@+id/locationLibraryHoursTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
-            android:text="@string/hours_title"
-            style="@style/App_TextView_Colored_Label" />
-
-        <ListView
-            android:id="@+id/libraryHoursListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:clickable="false"
-            android:dividerHeight="0dp"
-            android:divider="@null"/>
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/alertsLinearlayout"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/roundMapImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/map_icon_round"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_map_marker_radius_green_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/locationLabelTextView"
+                style="@style/App_TextView_Colored_Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_location_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primary_text" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/mapImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin"
+                android:src="@drawable/ic_map_marker_green_24dp"
+                android:contentDescription="@string/map_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/App_TextView_Colored_Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/address_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/locationAddressTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/phoneImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin"
+                android:src="@drawable/phone"
+                android:contentDescription="@string/phone_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/App_TextView_Colored_Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/phone_number_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/locationPhoneNumberTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/clockImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin"
+                android:src="@drawable/ic_clock_green_24dp"
+                android:contentDescription="@string/clock_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/locationLibraryHoursTextView"
+                style="@style/App_TextView_Colored_Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/hours_title"
+                android:textStyle="bold" />
+
+            <ListView
+                android:id="@+id/libraryHoursListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:layout_marginTop="@dimen/default_margin" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/alertImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin"
+                android:src="@drawable/ic_alert_green_24dp"
+                android:contentDescription="@string/alert_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alertsLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/default_margin">
+            android:layout_marginTop="@dimen/default_margin"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/alertsTitleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/alert"
-                android:textColor="@color/primary" />
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
                 <TextView
                     android:id="@+id/alertsDayTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:layout_weight="1"
-                    android:textColor="@color/primary_text"/>
-
+                    android:textColor="@color/primary_text" />
 
                 <TextView
                     android:id="@+id/alertsDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:layout_weight="1"
-                    android:textColor="@color/primary_text"/>
+                    android:textColor="@color/primary_text" />
 
 
                 <TextView
@@ -118,8 +260,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:layout_weight="2"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textColor="@color/primary_text" />
 
             </LinearLayout>
@@ -128,18 +271,19 @@
                 android:id="@+id/AlertsMessageTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
                 android:textColor="@color/secondary_text" />
 
         </LinearLayout>
-
     </LinearLayout>
+
 
     <android.support.v7.widget.CardView
         android:id="@+id/findTestButton"
+        style="@style/App_CardLayout_Button"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        style="@style/App_CardLayout_Button">
+        android:layout_height="36dp">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -147,10 +291,10 @@
 
             <TextView
                 android:id="@+id/textView"
+                style="@style/App_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/find_test"
-                style="@style/App_Button"/>
+                android:text="@string/find_test" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

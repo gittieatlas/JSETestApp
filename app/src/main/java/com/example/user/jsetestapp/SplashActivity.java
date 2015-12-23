@@ -571,7 +571,7 @@ public class SplashActivity extends AppCompatActivity {
                 // add branch to testsArrayList if it is not null
                 if (branch != null) branchesArrayList.add(branch);
                 // convert JSONObject to branch and add to branchesArrayList
-                branchesArrayList.add(HelperMethods.setBranch(jsonBranch));
+               // branchesArrayList.add(HelperMethods.setBranch(jsonBranch));
                 // if taskGetBranches is cancelled
                 if (taskGetBranches.isCancelled()) {
                     // exit method
@@ -597,9 +597,9 @@ public class SplashActivity extends AppCompatActivity {
         try {
             // try to loop through alertsJsonArray
             for (int i = 0; i < alertsJsonArray.length(); i++) {
-                // get alert from JsonObject
+                // get ic_alert_green_24dp from JsonObject
                 JSONObject alert = alertsJsonArray.getJSONObject(i);
-                // convert JSONObject to alert and add to alertArrayList
+                // convert JSONObject to ic_alert_green_24dp and add to alertArrayList
                 alertArrayList.add(HelperMethods.setAlert(alert));
                 // if taskGetAlerts is cancelled
                 if (taskGetAlerts.isCancelled()) {

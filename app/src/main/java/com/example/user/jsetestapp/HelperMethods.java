@@ -299,15 +299,20 @@ public class HelperMethods extends Activity {
         String testDate =
                 test.getDate().toString("MMMM dd yyyy");
         String testDeadlineTitle =
-                "Registration Deadline: ";
+                "DEADLINE TO REGISTER";
         String testDeadlineDetails =
-                Util.firstLetterCaps(test.getDeadlineDayOfWeek().toString()) + " "
-                        + test.getDeadlineDate().toString("MMMM dd yyyy") + " "
-                        + test.getDeadlineTime().toString("hh:mm a");
+                Util.firstLetterCaps(test.getDeadlineDayOfWeek().toString());
+        String testDeadlineTime =
+                test.getDeadlineTime().toString("hh:mm a");
+        String testDeadlineDate =
+                Util.firstLetterCaps(test.getDeadlineDate().toString("MMMM dd yyyy"));
+
+
+
 
         // create new TestDataObject from strings
         TestDataObject obj = new TestDataObject(location, testDay, testTime,
-                testDate, testDeadlineTitle, testDeadlineDetails);
+                testDate, testDeadlineTitle, testDeadlineDetails, testDeadlineTime, testDeadlineDate);
 
         // add obj to testsFilteredArrayList
         mainActivity.testsFilteredArrayList.add(obj);
@@ -650,16 +655,16 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to create a alert object from a JSONObject
+     * Function to create a ic_alert_green_24dp object from a JSONObject
      *
      * @param alertObject - JSONObject with test values
-     * @return alert
+     * @return ic_alert_green_24dp
      */
     public static Alert setAlert(JSONObject alertObject) {
-        // instantiate new alert
+        // instantiate new ic_alert_green_24dp
         Alert alert = new Alert();
 
-        // set alert values from corresponding JSONObject values
+        // set ic_alert_green_24dp values from corresponding JSONObject values
         try {
             // set location name
             alert.setLocationName(
@@ -681,7 +686,7 @@ public class HelperMethods extends Activity {
             alert.setTime(LocalTime.parse(
                     timeStamp.substring(timeStamp.length() - 8)));
 
-            // set alert text
+            // set ic_alert_green_24dp text
             alert.setAlertText(
                     alertObject.getString(Util.getStringValue(R.string.TAG_ALERT_TEXT)));
 
@@ -689,7 +694,7 @@ public class HelperMethods extends Activity {
             e.printStackTrace();
         }
 
-        // return null if all crucial alert information was not loaded
+        // return null if all crucial ic_alert_green_24dp information was not loaded
         if (alert.getAlertText() == null || alert.getLocationName() == null)
             return null;
 
@@ -1000,7 +1005,7 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to set event time and date of for a calendar event
+     * Function to set event time and date of for a ic_calendar_green_24dp event
      */
     public void setReminderToCallJse() {
         // get current day of week
@@ -1034,7 +1039,7 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to create calendar event that will remind user to call JSE
+     * Function to create ic_calendar_green_24dp event that will remind user to call JSE
      *
      * @param timeOfEvent -
      * @param dateOfEvent -
@@ -1043,7 +1048,7 @@ public class HelperMethods extends Activity {
         // create DateTimeFormatter for time of reminder
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
 
-        // set calendar intent to call JSE during office hours
+        // set ic_calendar_green_24dp intent to call JSE during office hours
         Util.calendarIntent("Call JSE", null, null, dateOfEvent, fmt.parseLocalTime(timeOfEvent));
     }
 

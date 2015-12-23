@@ -7,7 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.joda.time.LocalDate;
@@ -118,7 +122,7 @@ public class Util extends Activity {
         if (dobDay.length() != 2)
             return false;
 
-        // check if actual values entered is a valid calendar date
+        // check if actual values entered is a valid ic_calendar_green_24dp date
         try {
             // instantiate user
             User user = new User();
@@ -321,7 +325,7 @@ public class Util extends Activity {
                                       LocalDate testDate, LocalTime testTime) {
         // Create an Intent. Set the action to ACTION_INSERT
         Intent intent = new Intent(Intent.ACTION_INSERT);
-        // Set type as calendar event
+        // Set type as ic_calendar_green_24dp event
         intent.setType("vnd.android.cursor.item/event");
         // If title is not null
         if (title != null){
@@ -340,7 +344,7 @@ public class Util extends Activity {
         }
         // If testDat is not null and testTime is not null
         if (testDate!=null && testTime!=null){
-            // startTime equals to a calendar object whose fields are set to current date and time:
+            // startTime equals to a ic_calendar_green_24dp object whose fields are set to current date and time:
             Calendar startTime = Calendar.getInstance();
             // Set date and time of startTime
             startTime.set(testDate.getYear(), testDate.getMonthOfYear() - 1,
@@ -357,8 +361,8 @@ public class Util extends Activity {
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             activity.startActivity(intent);
         } else {
-            // Show message: "No calendar clients installed."
-            Toast.makeText(context, "No calendar clients installed.",
+            // Show message: "No ic_calendar_green_24dp clients installed."
+            Toast.makeText(context, "No ic_calendar_green_24dp clients installed.",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -405,5 +409,68 @@ public class Util extends Activity {
 
         // return true if ConnectionDetector can connect to internet
         return cd.isConnectingToInternet();
+    }
+
+
+
+
+    /**
+     * Method to show the toolbar and remove margin from scrollView
+     *
+     * @param toolbarLinearLayout - container holding the toolbar
+     * @param scrollViewLinearLayout - container holding the scrollView
+     */
+    public static void showToolbar(LinearLayout toolbarLinearLayout,
+                                   LinearLayout scrollViewLinearLayout) {
+// if toolbar is not null, show toolbar layout
+        if (toolbarLinearLayout != null) {
+            toolbarLinearLayout.setVisibility(View.VISIBLE);
+        }
+
+// if scrollView is not null, add margin to the container
+        if (scrollViewLinearLayout != null) {
+// set size in ??
+            int sizeInDP = 56;
+// convert size to dp
+            int marginInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeInDP,
+                    getActivity().getResources().getDisplayMetrics());
+
+// create new LayoutParams
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            );
+// set margins
+            params.setMargins(0, marginInDp, 0, 0);
+// add params to scrollView container
+            scrollViewLinearLayout.setLayoutParams(params);
+        }
+    }
+
+    /**
+     * Method to hide the toolbar and remove margin from scrollView
+     *
+     * @param toolbarLinearLayout - container holding the toolbar
+     * @param scrollViewLinearLayout - container holding the scrollView
+     */
+    public static void hideToolbar(LinearLayout toolbarLinearLayout,
+                                   LinearLayout scrollViewLinearLayout) {
+// if toolbar is not null, hide toolbar layout
+        if (toolbarLinearLayout != null) {
+            toolbarLinearLayout.setVisibility(View.GONE);
+        }
+
+// if scrollView is not null, add margin to the container
+        if (scrollViewLinearLayout != null) {
+// create new LayoutParams
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            );
+// set margins
+            params.setMargins(0, 0, 0, 0);
+// add params to scrollView container
+            scrollViewLinearLayout.setLayoutParams(params);
+        }
     }
 }
