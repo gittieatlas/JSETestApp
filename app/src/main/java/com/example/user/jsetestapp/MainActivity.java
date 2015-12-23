@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     // Declare Controls
     TabLayout tabLayout;
     Toolbar toolbar;
+    LinearLayout toolbarLinearLayout;
+    LinearLayout scrollViewLinearLayout;
     ScrollView scrollView;
     LinearLayout tabLayoutLinearLayout;
     FrameLayout container;
@@ -118,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
     private void initializeViews() {
         // initialize and reference controls
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarLinearLayout = (LinearLayout) findViewById(R.id.toolbarLinearLayout);
+        scrollViewLinearLayout = (LinearLayout) findViewById(R.id.scrollViewLinearLayout);
         tabLayoutLinearLayout = (LinearLayout) findViewById(R.id.tabLayoutLinearLayout);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (FrameLayout) findViewById(R.id.container);

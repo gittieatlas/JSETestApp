@@ -6,16 +6,16 @@
     android:focusableInTouchMode="true"
     tools:context=".SplashActivity"
     android:orientation="vertical"
-    android:background="@color/primary_dark">
+    android:background="@color/primary">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="JSE"
+        android:text="@string/app_name"
         android:id="@+id/JSE"
         android:gravity="center_vertical|center_horizontal"
-        android:textSize="72dp"
+        android:textSize="72sp"
         android:textStyle="bold"
         android:textColor="@color/icons" />
 </LinearLayout>

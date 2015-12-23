@@ -47,6 +47,15 @@ public class SearchFragment extends Fragment {
         setSpinnerSelections();
         // select search tab
         mainActivity.tabLayout.getTabAt(1).select();
+
+        Util.hideToolbar(mainActivity.toolbarLinearLayout, mainActivity.scrollViewLinearLayout);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Util.showToolbar(mainActivity.toolbarLinearLayout,  mainActivity.scrollViewLinearLayout );
     }
 
     /**
@@ -86,7 +95,7 @@ public class SearchFragment extends Fragment {
         registrationDateTextView = (TextView) rootView.findViewById(R.id.registrationDateTextView);
 
         // initialize and reference Spinners
-        locationsSpinner = (Spinner) rootView.findViewById(R.id.locationSpinner);
+        locationsSpinner = (Spinner) rootView.findViewById(R.id.branchSpinner);
         daysOfWeekSpinner = (Spinner) rootView.findViewById(R.id.dayOfWeekSpinner);
 
         // initialize and reference CardView

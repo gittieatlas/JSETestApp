@@ -7,34 +7,43 @@
     android:focusableInTouchMode="true"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar"
+    <LinearLayout
+        android:id="@+id/toolbarLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:elevation="4dp"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        >
+        android:layout_height="56dp"
+        android:orientation="horizontal">
 
-    </android.support.v7.widget.Toolbar>
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            android:elevation="4dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    </LinearLayout>
 
-
-    <ScrollView
-        android:id="@+id/scrollView"
+    <LinearLayout
+        android:id="@+id/scrollViewLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginTop="56dp"
-        android:fillViewport="true"
-        android:scrollIndicators="none"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/container"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </ScrollView>
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollIndicators="none">
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/tabLayoutLinearLayout"
@@ -44,24 +53,23 @@
         android:orientation="vertical">
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/coordinatorLayout"/>
+            android:layout_height="wrap_content" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             style="@style/TabBar"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_below="@+id/toolbar"
             android:background="?attr/colorPrimary"
             android:scrollbars="horizontal"
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
-            app:tabMode="fixed"
             app:tabIndicatorHeight="4dp"
-            app:tabTextAppearance="@style/App_TabLayoutTextAppearance"/>
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/App_TabLayoutTextAppearance" />
+
     </LinearLayout>
+
 </RelativeLayout>

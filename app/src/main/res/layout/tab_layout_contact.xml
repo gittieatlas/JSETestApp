@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_phone_white_24dp"
-        style="@style/App_TabLayoutImageAppearance" />/>
+        style="@style/App_TabLayoutImageAppearance"
+        android:contentDescription="@string/phone_icon_desc"/>
 
     <TextView
         android:id="@+id/tab_title_contact"

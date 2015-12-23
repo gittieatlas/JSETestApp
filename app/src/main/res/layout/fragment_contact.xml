@@ -5,232 +5,261 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="72dp"
-    android:paddingTop="@dimen/default_margin"
     tools:context=".contactFragment">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/officePhoneLinearLayout"
+        android:paddingTop="@dimen/default_margin"
+        android:paddingBottom="@dimen/default_margin">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="72dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/phoneIconLinearLayout">
 
             <ImageView
+                android:id="@+id/phoneImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/phone"
-                android:layout_gravity="center_horizontal" />
+                android:contentDescription="@string/phone_icon_desc"/>
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/officeNumberLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/officeNumber"
-            android:clickable="true">
+            android:clickable="true"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="@string/jse_office"
                 android:textColor="@color/primary"
-                android:layout_marginBottom="8dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/jseOfficeTextView" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/jse_phone_number"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"
+                android:id="@+id/jseOfficePhoneNumberTextView" />
 
         </LinearLayout>
     </LinearLayout>
 
     <View
         style="@style/App_Divider"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin" />
+        android:id="@+id/divider1" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/registerTestLinearLayout"
+        android:paddingTop="@dimen/default_margin"
+        android:paddingBottom="@dimen/default_margin">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="72dp"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/testsIconLinearLayout">
 
             <ImageView
+                android:id="@+id/testsImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView4"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/clipboard_text"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scheduleTestNumber"
-        android:clickable="true" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/schedule_test"
-            android:textColor="@color/primary"
-            android:layout_marginBottom="8dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/schedule_test_phone_number"
-            android:textColor="@color/primary_text" />
-    </LinearLayout>
-        </LinearLayout>
-
-    <View
-        style="@style/App_Divider"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="72dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/imageView5"
-                android:src="@drawable/email_outline"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/emailAddress"
-        android:clickable="true" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email_address"
-            android:textColor="@color/primary"
-            android:layout_marginBottom="8dp"
-            android:textStyle="bold" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/jse_email_address"
-            android:textColor="@color/primary_text" />
-    </LinearLayout>
-
-</LinearLayout>
-
-    <View
-        style="@style/App_Divider"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="72dp"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:src="@drawable/ic_clock_green_24dp"
-                android:layout_gravity="center_horizontal" />
+                android:contentDescription="@string/tests_icon_desc"/>
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/scheduleTestNumberLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/schedule_test"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                android:id="@+id/registerTestTextView" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/schedule_test_phone_number"
+                android:textColor="@color/primary_text"
+                android:id="@+id/registerTestPhoneNumberTextView" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:id="@+id/divider2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/emailLinearLayout"
+        android:paddingBottom="@dimen/default_margin"
+        android:paddingTop="@dimen/default_margin">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/emailIconLinearLayout">
+
+            <ImageView
+                android:id="@+id/emaiImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/email_outline"
+                android:contentDescription="@string/email_icon_desc" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/emailAddressLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/email_address"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                android:id="@+id/emailTextView" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/jse_email_address"
+                android:textColor="@color/primary_text"
+                android:id="@+id/emailAddressTextView" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        style="@style/App_Divider"
+        android:id="@+id/divider3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/officeHoursLinearLayout"
+        android:paddingTop="@dimen/default_margin"
+        android:paddingBottom="@dimen/default_margin">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/hoursIconLinearLayout">
+
+            <ImageView
+                android:id="@+id/hoursImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_clock_green_24dp"
+                android:contentDescription="@string/clock_icon_desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/hoursLinearLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="@string/office_hours"
                 android:textColor="@color/primary"
-                android:layout_marginBottom="8dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/officeHoursTextView" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/hoursTextLinearLayout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/monThursLinearLayout">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="@string/jse_office_hours_mon_thurs"
-                        android:textColor="@color/primary_text" />
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/monThursTextView" />
 
                     <TextView
 
+                        android:id="@+id/jseOfficeHoursMonThursTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/jse_office_hours_mon_thurs_hours_start_time"
-                        android:textColor="@color/secondary_text"
-                        android:id="@+id/jseOfficeHoursMonThursTextView" />
+                        android:textColor="@color/secondary_text" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/FridayLinearLayout">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="@string/jse_office_hours_friday"
-                        android:textColor="@color/primary_text" />
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/fridayTextView" />
 
                     <TextView
+                        android:id="@+id/jseOfficeHoursFridayTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/jse_office_hours_friday_hours_start_time"
-                        android:textColor="@color/secondary_text"
-                        android:id="@+id/jseOfficeHoursFridayTextView" />
+                        android:textColor="@color/secondary_text" />
 
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
-
 
 
     </LinearLayout>

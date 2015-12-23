@@ -48,9 +48,9 @@ public class ContactFragment extends Fragment {
      */
     private void initializeViews(View rootView) {
         // initialize and reference LinearLayouts
-        officeNumber = (LinearLayout) rootView.findViewById(R.id.officeNumber);
-        scheduleTestNumber = (LinearLayout) rootView.findViewById(R.id.scheduleTestNumber);
-        emailAddress = (LinearLayout) rootView.findViewById(R.id.emailAddress);
+        officeNumber = (LinearLayout) rootView.findViewById(R.id.officePhoneLinearLayout);
+        scheduleTestNumber = (LinearLayout) rootView.findViewById(R.id.registerTestLinearLayout);
+        emailAddress = (LinearLayout) rootView.findViewById(R.id.emailLinearLayout);
 
         // initialize and reference TextViews
         jseOfficeHoursMonThursTextView = (TextView) rootView.findViewById(R.id.jseOfficeHoursMonThursTextView);

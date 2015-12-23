@@ -118,7 +118,7 @@
     </style>
 
     <style name="App_TextView_Colored_Label">
-        <item name="android:textAllCaps">true</item>
+       <!-- <item name="android:textAllCaps">true</item> -->
         <item name="android:textColor">@color/primary</item>
     </style>
 

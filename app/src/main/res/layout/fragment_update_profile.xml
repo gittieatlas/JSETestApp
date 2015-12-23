@@ -183,25 +183,6 @@
             android:layout_height="0dip" />
 
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/rightButton"
-            style="@style/App_CardLayout_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp">
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <TextView
-                    android:id="@+id/textView"
-                    style="@style/App_Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/find_test" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
 
         <LinearLayout
             style="?android:buttonBarStyle"
@@ -222,7 +203,7 @@
                 android:textColor="@color/primary_text" />
 
             <Button
-                android:id="@+id/rightButton2"
+                android:id="@+id/rightButton"
                 style="?android:buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
