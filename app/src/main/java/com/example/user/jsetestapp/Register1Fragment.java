@@ -42,6 +42,8 @@ public class Register1Fragment extends Fragment {
 
         // give focus to emailEditText
         emailEditText.requestFocus();
+
+        loginActivity.showToolbar(false);
     }
 
     /**
@@ -54,8 +56,8 @@ public class Register1Fragment extends Fragment {
         confirmPasswordEditText = (EditText) rootView.findViewById(R.id.confirmPasswordEditText);
 
         // initialize and reference Buttons
-        buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
-        buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
+        buttonLeft = (Button) rootView.findViewById(R.id.signUpButton);
+        buttonRight = (Button) rootView.findViewById(R.id.signInButton);
     }
 
     /**
@@ -71,7 +73,7 @@ public class Register1Fragment extends Fragment {
     }
 
     /**
-     * OnClickListener for buttonLeft
+     * OnClickListener for signUpButton
      */
     OnClickListener buttonLeftOnClickListener = new OnClickListener() {
         @Override
@@ -84,7 +86,7 @@ public class Register1Fragment extends Fragment {
     };
 
     /**
-     * OnClickListener for buttonRight
+     * OnClickListener for signInButton
      */
     OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override

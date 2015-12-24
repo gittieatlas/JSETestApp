@@ -235,6 +235,8 @@ public class Util extends Activity {
 
         // close this activity
         activity.finish();
+
+        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**
@@ -411,9 +413,6 @@ public class Util extends Activity {
         return cd.isConnectingToInternet();
     }
 
-
-
-
     /**
      * Method to show the toolbar and remove margin from scrollView
      *
@@ -422,27 +421,27 @@ public class Util extends Activity {
      */
     public static void showToolbar(LinearLayout toolbarLinearLayout,
                                    LinearLayout scrollViewLinearLayout) {
-// if toolbar is not null, show toolbar layout
+        // if toolbar is not null, show toolbar layout
         if (toolbarLinearLayout != null) {
             toolbarLinearLayout.setVisibility(View.VISIBLE);
         }
 
-// if scrollView is not null, add margin to the container
+        // if scrollView is not null, add margin to the container
         if (scrollViewLinearLayout != null) {
-// set size in ??
+            // set size in ??
             int sizeInDP = 56;
-// convert size to dp
+            // convert size to dp
             int marginInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeInDP,
                     getActivity().getResources().getDisplayMetrics());
 
-// create new LayoutParams
+            // create new LayoutParams
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             );
-// set margins
+            // set margins
             params.setMargins(0, marginInDp, 0, 0);
-// add params to scrollView container
+            // add params to scrollView container
             scrollViewLinearLayout.setLayoutParams(params);
         }
     }
@@ -455,21 +454,21 @@ public class Util extends Activity {
      */
     public static void hideToolbar(LinearLayout toolbarLinearLayout,
                                    LinearLayout scrollViewLinearLayout) {
-// if toolbar is not null, hide toolbar layout
+        // if toolbar is not null, hide toolbar layout
         if (toolbarLinearLayout != null) {
             toolbarLinearLayout.setVisibility(View.GONE);
         }
 
-// if scrollView is not null, add margin to the container
+        // if scrollView is not null, add margin to the container
         if (scrollViewLinearLayout != null) {
-// create new LayoutParams
+            // create new LayoutParams
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             );
-// set margins
+            // set margins
             params.setMargins(0, 0, 0, 0);
-// add params to scrollView container
+            // add params to scrollView container
             scrollViewLinearLayout.setLayoutParams(params);
         }
     }

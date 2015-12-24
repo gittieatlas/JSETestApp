@@ -3,6 +3,8 @@ package com.example.user.jsetestapp;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -25,8 +26,9 @@ public class LoginFragment extends Fragment {
 
     // Declare Controls
     View rootView;
-    RelativeLayout rootLayout;
-    Button buttonLeft, buttonRight;
+    CoordinatorLayout rootLayout;
+    Button signUpButton;
+    CardView signInButton;
     TextView forgotPasswordTextView;
     EditText emailEditText, passwordEditText;
 
@@ -36,7 +38,6 @@ public class LoginFragment extends Fragment {
     // Declare Variables
     AsyncTask taskGetUser;
     private static int loginResult;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -63,17 +64,18 @@ public class LoginFragment extends Fragment {
             // launch activity with main activity intent
             Util.launchActivity(loginActivity.getLaunchMainActivityIntent("login"));
         }
+
+        loginActivity.showToolbar(false);
     }
 
     /**
      * Function to initialize controls
      */
     private void initializeViews() {
-        // initialize and reference RelativeLayouts
-        rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
+        // initialize and reference CoordinatorLayout
+        rootLayout = (CoordinatorLayout) rootView.findViewById(R.id.rootLayout);
 
         // initialize and reference EditTexts
-        rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
         emailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         passwordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
 
@@ -81,8 +83,8 @@ public class LoginFragment extends Fragment {
         forgotPasswordTextView = (TextView) rootView.findViewById(R.id.forgotPasswordTextView);
 
         // initialize and reference Buttons
-        buttonLeft = (Button) rootView.findViewById(R.id.buttonLeft);
-        buttonRight = (Button) rootView.findViewById(R.id.buttonRight);
+        signUpButton = (Button) rootView.findViewById(R.id.signUpButton);
+        signInButton = (CardView) rootView.findViewById(R.id.signInButton);
     }
 
     /**
@@ -91,15 +93,15 @@ public class LoginFragment extends Fragment {
     private void registerListeners() {
         // set onClickListeners
         forgotPasswordTextView.setOnClickListener(forgotPasswordEditTextOnClickListener);
-        buttonLeft.setOnClickListener(buttonLeftOnClickListener);
-        buttonRight.setOnClickListener(buttonRightOnClickListener);
+        signUpButton.setOnClickListener(buttonLeftOnClickListener);
+        signInButton.setOnClickListener(buttonRightOnClickListener);
 
         // Set up touch listener for non-text box views to hide keyboard
         HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
     }
 
     /**
-     * OnClickListener for buttonRight
+     * OnClickListener for signInButton
      */
     OnClickListener buttonRightOnClickListener = new OnClickListener() {
         @Override
@@ -111,7 +113,7 @@ public class LoginFragment extends Fragment {
 
 
     /**
-     * OnClickListener for buttonLeft
+     * OnClickListener for signUpButton
      */
     OnClickListener buttonLeftOnClickListener = new OnClickListener() {
         @Override
@@ -284,8 +286,6 @@ public class LoginFragment extends Fragment {
             super.onCancelled(id);
             loginActivity.pDialog.dismiss();
         }
-
-
     }
 
     /**

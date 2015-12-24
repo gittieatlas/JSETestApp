@@ -48,14 +48,7 @@ public class SearchFragment extends Fragment {
         // select search tab
         mainActivity.tabLayout.getTabAt(1).select();
 
-        Util.hideToolbar(mainActivity.toolbarLinearLayout, mainActivity.scrollViewLinearLayout);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        Util.showToolbar(mainActivity.toolbarLinearLayout,  mainActivity.scrollViewLinearLayout );
+        mainActivity.showToolbar(false);
     }
 
     /**

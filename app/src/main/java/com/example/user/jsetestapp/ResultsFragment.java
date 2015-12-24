@@ -58,6 +58,13 @@ public class ResultsFragment extends Fragment
                 new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mainActivity.showToolbar(true);
+    }
+
     /**
      * Function to initialize controls
      */

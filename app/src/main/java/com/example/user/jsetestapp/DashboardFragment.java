@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 public class DashboardFragment extends Fragment {
 
-
     // Declare Controls
     TextView locationTextView, locationAddressTextView, locationPhoneNumberTextView,
             alertsTitleTextView, alertsDayTextView, alertsDateTextView, alertsTimeTextView,
@@ -52,6 +51,8 @@ public class DashboardFragment extends Fragment {
         super.onResume();
         // select dashboard tab
         mainActivity.tabLayout.getTabAt(0).select();
+
+        mainActivity.showToolbar(true);
     }
 
     /**

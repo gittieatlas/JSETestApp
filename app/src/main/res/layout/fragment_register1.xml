@@ -81,7 +81,7 @@
             android:showDividers="middle">
 
             <Button
-                android:id="@+id/buttonLeft"
+                android:id="@+id/signUpButton"
                 style="?android:buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 android:textColor="@color/primary_text" />
 
             <Button
-                android:id="@+id/buttonRight"
+                android:id="@+id/signInButton"
                 style="?android:buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

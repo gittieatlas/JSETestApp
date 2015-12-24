@@ -41,6 +41,8 @@ public class ContactFragment extends Fragment {
         super.onResume();
         // select contact tab
         mainActivity.tabLayout.getTabAt(3).select();
+
+        mainActivity.showToolbar(true);
     }
 
     /**
