@@ -1,8 +1,10 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -33,7 +35,7 @@ public class Register2Fragment extends Fragment {
     Spinner genderSpinner, locationsSpinner;
     EditText firstNameEditText, lastNameEditText, dobMonthEditText;
     EditText dobDayEditText, dobYearEditText, ssnEditText;
-    Button rightButton, leftButton;
+    CardView registerButton;
 
     // Declare Activities
     LoginActivity loginActivity;
@@ -51,6 +53,10 @@ public class Register2Fragment extends Fragment {
         initializeViews();
         registerListeners();
 
+        // set navigation icon in toolbar
+        loginActivity.toolbar.setNavigationIcon(getResources().
+                getDrawable(R.drawable.ic_arrow_left_white_24dp));
+
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_register2, loginActivity.toolbar);
 
@@ -62,11 +68,21 @@ public class Register2Fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        loginActivity.showToolbar(true);
         // if user was created before the activity got paused and did not switch activities
         if (loginActivity.user.getId() != 0) {
             // launch MainActivity
             Util.launchActivity(loginActivity.getLaunchMainActivityIntent("create_account"));
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Set navigation icon to transparent
+        loginActivity.toolbar.setNavigationIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
     /**
@@ -82,8 +98,7 @@ public class Register2Fragment extends Fragment {
         ssnEditText = (EditText) rootView.findViewById(R.id.ssnEditText);
 
         // initialize and reference Buttons
-        rightButton = (Button) rootView.findViewById(R.id.rightButton);
-        leftButton = (Button) rootView.findViewById(R.id.leftButton);
+        registerButton = (CardView) rootView.findViewById(R.id.registerButton);
 
         // initialize and reference Spinners
         genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
@@ -110,8 +125,7 @@ public class Register2Fragment extends Fragment {
      */
     private void registerListeners() {
         // set onClickListeners
-        rightButton.setOnClickListener(rightButtonListener);
-        leftButton.setOnClickListener(leftButtonListener);
+        registerButton.setOnClickListener(rightButtonListener);
 
         // set textWatchers
         dobDayEditText.addTextChangedListener(textWatcher);

@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     ContactFragment contactFragment;
     SearchFragment searchFragment;
     LibrariesFragment librariesFragment;
+    LibrariesSearchFragment librariesSearchFragment;
     DashboardFragment dashboardFragment;
     ResultsFragment resultsFragment;
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Alert> alertArrayList;
     User user;
     Location defaultLocation;
+    Location searchedLibrary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         contactFragment.setMainActivity(this);
         searchFragment = new SearchFragment();
         searchFragment.setMainActivity(this);
+        librariesSearchFragment = new LibrariesSearchFragment();
+        librariesSearchFragment.setMainActivity(this);
         librariesFragment = new LibrariesFragment();
         librariesFragment.setMainActivity(this);
         dashboardFragment = new DashboardFragment();
@@ -183,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // check if resultsFragment is visible
-                if (resultsFragment.isVisible())
+                if (resultsFragment.isVisible() || librariesFragment.isVisible())
                     // pop the backStack
                     getFragmentManager().popBackStack();
             }
@@ -251,10 +255,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 // third tab - Libraries
                 case 2:
-                    // check if librariesFragment is visible or not
-                    if (!librariesFragment.isVisible()) {
+                    // check if librariesSearchFragment is visible or not
+                    if (!librariesSearchFragment.isVisible()) {
                         // if its not visible call a method that will return this fragment
-                        HelperMethods.replaceFragment(librariesFragment,
+                        HelperMethods.replaceFragment(librariesSearchFragment,
                                 getResources().getString(R.string.toolbar_title_libraries));
                     }
                     // exit the switch statement
@@ -443,5 +447,18 @@ public class MainActivity extends AppCompatActivity {
             Util.callIntent(Util.getStringValue(R.string.jse_phone_number));
         }
 
+    }
+
+    /**
+     * method to display or hide toolbar
+     *
+     * @param show - true if toolbar should be displayed
+     */
+    public void showToolbar(Boolean show) {
+        if (show) {
+            Util.showToolbar(toolbarLinearLayout, scrollViewLinearLayout);
+        } else {
+            Util.hideToolbar(toolbarLinearLayout, scrollViewLinearLayout);
+        }
     }
 }

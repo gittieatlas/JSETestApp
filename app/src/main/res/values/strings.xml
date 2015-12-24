@@ -149,6 +149,12 @@
     <string name="searchBranch">Search by branch</string>
     <string name="searchDay">Search by day of week</string>
 
+    <!-- fragment_search_libraries controls-->
+    <string name="searchLocation">Search by location</string>
+
+    <!-- fragment_libraries controls-->
+    <string name="librarie_location_title">LOCATION</string>
+
     <!-- fragment_dashboard controls-->
     <string name="default_location_title">Default Location</string>
     <string name="location">Location Name</string>

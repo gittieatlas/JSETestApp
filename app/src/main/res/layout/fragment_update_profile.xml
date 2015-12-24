@@ -14,10 +14,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:paddingBottom="72dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <TextView
+            android:id="@+id/firstNameTextView"
             style="@style/App_TextView_Colored_Label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
             android:inputType="textPersonName" />
 
         <TextView
+            android:id="@+id/lastNameTextView"
             style="@style/App_TextView_Colored_Label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,6 +47,7 @@
             android:inputType="textPersonName" />
 
         <TextView
+            android:id="@+id/birthdayTextView"
             style="@style/App_TextView_Colored_Label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,42 +61,45 @@
 
             <EditText
                 android:id="@+id/dobMonthEditText"
+                style="@style/App_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/App_EditText"
+                android:layout_marginEnd="7dp"
                 android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:imeOptions="actionNext"
                 android:inputType="number"
-                android:maxLength="2"
-                android:imeOptions="actionNext"/>
+                android:maxLength="2" />
 
 
             <EditText
                 android:id="@+id/dobDayEditText"
+                style="@style/App_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/App_EditText"
+                android:layout_marginEnd="7dp"
                 android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:imeOptions="actionNext"
                 android:inputType="number"
-                android:maxLength="2"
-                android:imeOptions="actionNext"/>
+                android:maxLength="2" />
 
             <EditText
                 android:id="@+id/dobYearEditText"
+                style="@style/App_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/App_EditText"
+                android:imeOptions="actionNext"
                 android:inputType="number"
-                android:maxLength="4"
-                android:imeOptions="actionNext"/>
+                android:maxLength="4" />
 
 
         </LinearLayout>
 
 
         <TextView
+            android:id="@+id/ssnNameTextView"
             style="@style/App_TextView_Colored_Label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,10 +112,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
-            android:maxLength="4"
-            />
+            android:maxLength="4" />
 
         <TextView
+            android:id="@+id/genderTextView"
             style="@style/App_TextView_Colored_Label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,11 +126,11 @@
             android:id="@+id/spinnerGender"
             style="@style/App_Spinner" />
 
-
         <View style="@style/App_Divider_Spinner" />
 
 
         <TextView
+            android:id="@+id/defaultLocationTextView"
             style="@style/App_TextView_Colored_Label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -165,85 +171,24 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/updateProfileButton"
+            style="@style/App_CardLayout_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp">
 
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-
-    <LinearLayout
-        android:id="@+id/buttonBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:divider="?android:dividerHorizontal"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dip" />
-
-
-
-        <LinearLayout
-            style="?android:buttonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="?android:dividerHorizontal"
-            android:dividerPadding="10dp"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <Button
-                android:id="@+id/leftButton"
-                style="?android:buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/update_profile_left"
-                android:textColor="@color/primary_text" />
-
-            <Button
-                android:id="@+id/rightButton"
-                style="?android:buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:text="@string/update_profile_right"
-                android:textColor="@color/primary" />
-        </LinearLayout>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/App_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_profile_right" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+</LinearLayout>
 
 </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

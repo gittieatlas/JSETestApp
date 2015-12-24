@@ -1,8 +1,11 @@
 package com.example.user.jsetestapp;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,18 +29,20 @@ public class UpdateProfileFragment extends Fragment {
     // Declare Controls
     View rootView;
     Spinner genderSpinner, locationsSpinner;
-    Button rightButton, leftButton;
+    CardView updateProfileButton;
     EditText firstNameEditText, lastNameEditText, dobMonthEditText, dobDayEditText;
     EditText dobYearEditText, ssnEditText, newPasswordEditText, confirmNewPasswordEditText;
 
     // Declare Activities
-    MainActivity mainActivity;
     LoginActivity loginActivity;
 
     // Declare Variables
     User user = new User();
     AsyncTask taskUpdateUser;
     private static String result = "";
+
+    Boolean userSaved = false;
+    Boolean pageLoaded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -48,6 +53,10 @@ public class UpdateProfileFragment extends Fragment {
 
         initializeViews();
         registerListeners();
+
+        // set navigation icon in toolbar
+        loginActivity.toolbar.setNavigationIcon(getResources().
+                getDrawable(R.drawable.ic_arrow_left_white_24dp));
 
         // set toolbar title
         Util.setToolbarTitle(R.string.toolbar_title_update_profile, loginActivity.toolbar);
@@ -60,11 +69,113 @@ public class UpdateProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        loginActivity.showToolbar(true);
+
         loadUserInfoOnScreen();
 
         // clear focus, if any, from screen
         firstNameEditText.requestFocus();
         firstNameEditText.clearFocus();
+
+
+
+        //my code
+        userSaved = false;
+
+        if (pageLoaded){
+            // check if there are values in sp
+            if (loginActivity.getSharedPrefs().firstName != null){
+                // if there are compare to db
+                if (!loginActivity.getSharedPrefs().firstName.equals(loginActivity.user.firstName))
+                    firstNameEditText.setText(loginActivity.getSharedPrefs().firstName);
+            }
+
+            if (loginActivity.getSharedPrefs().lastName != null) {
+                if (!loginActivity.getSharedPrefs().lastName.equals(loginActivity.user.lastName))
+                    lastNameEditText.setText(loginActivity.getSharedPrefs().lastName);
+            }
+
+            if (loginActivity.getSharedPrefs().ssn != null) {
+                if (!loginActivity.getSharedPrefs().ssn.equals(loginActivity.user.ssn))
+                    ssnEditText.setText(loginActivity.getSharedPrefs().ssn);
+            }
+
+//            if (loginActivity.getSharedPrefs().gender != null) {
+//                if (!loginActivity.getSharedPrefs().gender.equals(loginActivity.user.gender))
+//                    genderSpinner.setSelection(loginActivity.getSharedPrefs().gender.ordinal());
+//            }
+
+
+
+            String date = loginActivity.getSharedPrefs().dob.toString();
+            String userDate = loginActivity.user.dob.toString();
+            if (!date.equals(userDate)){
+                dobMonthEditText.setText(formatInt(loginActivity.getSharedPrefs().dob.getMonthOfYear(), 2));
+                dobDayEditText.setText(formatInt(loginActivity.getSharedPrefs().dob.getDayOfMonth(), 2));
+                dobYearEditText.setText(formatInt(loginActivity.getSharedPrefs().dob.getYear(), 4));
+            }
+
+//        Handle dob when empty
+//        String month = formatInt(loginActivity.getSharedPrefs().dob.getMonthOfYear(), 2);
+//        String userMonths = formatInt(loginActivity.user.dob.getMonthOfYear(), 2);
+//        if (formatInt(loginActivity.getSharedPrefs().dob.getMonthOfYear(), 2) != null){
+//            if (!month.equals(userMonths))
+//                dobMonthEditText.setText(formatInt(loginActivity.getSharedPrefs().dob.getMonthOfYear(), 2));
+//        }
+
+
+//        User sharedPrefsUser = loginActivity.getSharedPrefs();
+//        if (!sharedPrefsUser.firstName.equals(loginActivity.user.firstName))
+//            firstNameEditText.setText(sharedPrefsUser.firstName);
+//        else if (!sharedPrefsUser.lastName.equals(loginActivity.user.lastName))
+//            lastNameEditText.setText(sharedPrefsUser.lastName);
+//        else if (!sharedPrefsUser.ssn.equals(loginActivity.user.ssn))
+//            ssnEditText.setText(sharedPrefsUser.ssn);
+//        else if (!sharedPrefsUser.dob.equals(loginActivity.user.dob)) {
+//            dobMonthEditText.setText(formatInt(sharedPrefsUser.dob.getMonthOfYear(), 2));
+//            dobDayEditText.setText(formatInt(sharedPrefsUser.dob.getDayOfMonth(), 2));
+//            dobYearEditText.setText(formatInt(sharedPrefsUser.dob.getYear(), 4));
+//        }
+//        else if (!sharedPrefsUser.gender.equals(loginActivity.user.gender)){
+//            // set selection of genderSpinner to User's gender
+//            genderSpinner.setSelection(user.gender.ordinal());
+//        }
+            //Toast.makeText(Util.getActivity(), value, Toast.LENGTH_LONG).show();    }
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // if user not saved
+        if (!userSaved) {
+            // if user's first name is not equals to firstNameEditText
+            if (!loginActivity.user.firstName.equals(firstNameEditText.getText().toString()) ||
+                    !loginActivity.user.lastName.equals(lastNameEditText.getText().toString()) ||
+                    !loginActivity.user.ssn.equals(ssnEditText.getText().toString()) ||
+                    !Integer.toString(loginActivity.user.dob.getMonthOfYear()).equals(dobMonthEditText.getText().toString())){
+                        loginActivity.setSharedPrefs(firstNameEditText.getText().toString(),
+                        lastNameEditText.getText().toString(), ssnEditText.getText().toString(),
+                        dobMonthEditText.getText().toString(), dobDayEditText.getText().toString(),
+                        dobYearEditText.getText().toString());
+                //,genderSpinner.getSelectedItem().toString()
+                // set gender and default location from the selected item of the spinners
+            }
+        pageLoaded = true;
+
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Set navigation icon to transparent
+        loginActivity.toolbar.setNavigationIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
     /**
@@ -86,10 +197,9 @@ public class UpdateProfileFragment extends Fragment {
         genderSpinner = (Spinner) rootView.findViewById(R.id.spinnerGender);
         locationsSpinner = (Spinner) rootView.findViewById(R.id.spinnerDefaultLocation);
 
-        // initialize and reference Buttons
-        rightButton = (Button) rootView.findViewById(R.id.rightButton);
-        leftButton = (Button) rootView.findViewById(R.id.leftButton);
 
+        // initialize and reference CardView
+        updateProfileButton = (CardView) rootView.findViewById(R.id.updateProfileButton);
         bindDataToSpinners();
     }
 
@@ -98,8 +208,8 @@ public class UpdateProfileFragment extends Fragment {
      */
     private void registerListeners() {
         // set onClickListeners
-        rightButton.setOnClickListener(rightButtonListener);
-        leftButton.setOnClickListener(leftButtonListener);
+        updateProfileButton.setOnClickListener(rightButtonListener);
+       // leftButton.setOnClickListener(leftButtonListener);
 
         // set textWatchers
         dobDayEditText.addTextChangedListener(textWatcher);
@@ -344,6 +454,7 @@ public class UpdateProfileFragment extends Fragment {
      * Function to set updated account info to User
      */
     private User saveUpdatedUser() {
+        userSaved = true;
         // set id
         user.id = loginActivity.user.id;
 
@@ -522,4 +633,6 @@ public class UpdateProfileFragment extends Fragment {
 
         return httpParams;
     }
+
+
 }

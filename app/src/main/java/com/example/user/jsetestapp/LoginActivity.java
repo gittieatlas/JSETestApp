@@ -2,12 +2,18 @@ package com.example.user.jsetestapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     ScrollView scrollView;
     FrameLayout container;
     CoordinatorLayout coordinatorLayout;
+    LinearLayout toolbarLinearLayout;
+    LinearLayout scrollViewLinearLayout;
 
     // Declare Classes;
     HelperMethods helperMethods;
@@ -40,6 +48,16 @@ public class LoginActivity extends AppCompatActivity {
     User user;
     ProgressDialog pDialog;
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String user_first_name = "firstNameKey";
+    public static final String user_last_name = "lastNameKey";
+    public static final String user_ssn= "ssnNameKey";
+    public static final String user_dob_month= "dobMonthNameKey";
+    public static final String user_dob_day= "dobDayNameKey";
+    public static final String user_dob_year= "dobYearNameKey";
+    public static final String user_gender= "genderNameKey";
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // call the parent activities onCreate
@@ -56,6 +74,52 @@ public class LoginActivity extends AppCompatActivity {
         initializeViews();
         initializeVariables();
         inflateScrollViewWithFragment();
+        setupToolbarIcon();
+        //sharedP();
+
+
+    }
+
+    public void setSharedPrefs(String firstName, String lastName, String ssn, String dobMonth,
+                               String dobDay, String dobYear)
+//                               String dobMonth, String dobDay, String dobYear, String gender)
+    {
+
+            sharedpreferences = getSharedPreferences(MyPREFERENCES, this.MODE_PRIVATE);
+            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            editor.putString(user_first_name, firstName);
+            editor.putString(user_last_name, lastName);
+            editor.putString(user_ssn, ssn);
+            editor.putString(user_dob_year, "2000");
+            editor.putString(user_dob_month, "02");
+            editor.putString(user_dob_day, "11");
+            //editor.putString(user_gender, gender);
+            editor.commit();
+
+    }
+
+
+    public User getSharedPrefs() {
+
+            sharedpreferences = getSharedPreferences(MyPREFERENCES, this.MODE_PRIVATE);
+
+            User sharedpreferencesUser = new User();
+
+            sharedpreferencesUser.setFirstName(sharedpreferences.getString(user_first_name, null));
+            sharedpreferencesUser.setLastName(sharedpreferences.getString(user_last_name, null));
+            sharedpreferencesUser.setSsn(sharedpreferences.getString(user_ssn, null));
+            sharedpreferencesUser.setDob("1990", "11", "11");
+//            sharedpreferencesUser.setDob(sharedpreferences.getString(user_dob_year, null),
+//                    sharedpreferences.getString(user_dob_month, null),
+//                    sharedpreferences.getString(user_dob_day, null));
+//            if (sharedpreferences.getString(user_gender, null) == null)
+//            sharedpreferencesUser.setGender(user.gender);
+//        else
+//            sharedpreferencesUser.setGender(sharedpreferences.getString(user_gender, null));
+
+        return sharedpreferencesUser;
     }
 
     @Override
@@ -67,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause() {
+           public void onPause() {
         super.onPause();
 
         cancelRunningAsyncTasks();
@@ -77,8 +141,11 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         // if update profile is visible
         if (updateProfileFragment != null && updateProfileFragment.isVisible()) {
-            // launch activity with main activity intent
-            Util.launchActivity(getLaunchMainActivityIntent("update_profile_cancel"));
+            //do nothing
+        }
+        // if update profile is visible
+        else if (register2Fragment != null && register2Fragment.isVisible()) {
+            //do nothing
         }
         // if there are fragments in the back stack
         else if (getFragmentManager().getBackStackEntryCount() > 1) {
@@ -125,6 +192,8 @@ public class LoginActivity extends AppCompatActivity {
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        toolbarLinearLayout = (LinearLayout) findViewById(R.id.toolbarLinearLayout);
+        scrollViewLinearLayout = (LinearLayout) findViewById(R.id.scrollViewLinearLayout);
     }
 
     /**
@@ -160,7 +229,34 @@ public class LoginActivity extends AppCompatActivity {
             // inflate scrollView with LoginFragment
             HelperMethods.replaceFragment(loginFragment,
                     getResources().getString(R.string.toolbar_title_login));
+
         }
+    }
+
+    /**
+     * Function to set up toolBar
+     */
+    private void setupToolbarIcon() {
+            // Set navigation icon
+            toolbar.setNavigationIcon(
+                    new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+
+        // Navigation onClickLister
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // if update profile is visible
+                if (updateProfileFragment != null && updateProfileFragment.isVisible()) {
+                    // launch activity with main activity intent
+                    Util.launchActivity(getLaunchMainActivityIntent("update_profile_cancel"));
+                }
+                // if register2fragment is visible
+                else if (register2Fragment != null && register2Fragment.isVisible()) {
+                    // pop the backStack
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
     }
 
     /**
@@ -173,6 +269,8 @@ public class LoginActivity extends AppCompatActivity {
             //  show snack bar - "log out successful"
             helperMethods.showSnackBar(getString(R.string.msg_logged_out));
 
+            // my code
+            clearSharedPreferences();
         }
         // else if getIntentOutcome = "update_profile", get user and default location from intent
         else if (getIntent().getExtras().getString("outcome").equals("update_profile")) {
@@ -280,5 +378,26 @@ public class LoginActivity extends AppCompatActivity {
 
         // show dialog
         pDialog.show();
+    }
+
+    public void clearSharedPreferences(){
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, this.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        editor.clear();
+        editor.commit();
+    }
+
+    /**
+     * method to display or hide toolbar
+     *
+     * @param show - true if toolbar should be displayed
+     */
+    public void showToolbar(Boolean show) {
+        if (show) {
+            Util.showToolbar(toolbarLinearLayout, scrollViewLinearLayout);
+        } else {
+            Util.hideToolbar(toolbarLinearLayout, scrollViewLinearLayout);
+        }
     }
 }
