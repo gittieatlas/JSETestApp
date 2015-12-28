@@ -6,16 +6,23 @@
     android:focusableInTouchMode="true"
     tools:context=".SplashActivity"
     android:orientation="vertical"
-    android:background="@color/primary">
+    android:background="@color/primary"
+    android:gravity="center_vertical|center_horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/app_name"
-        android:id="@+id/JSE"
-        android:gravity="center_vertical|center_horizontal"
-        android:textSize="72sp"
-        android:textStyle="bold"
-        android:textColor="@color/icons" />
+
+        <TextView
+            android:id="@+id/logoTextView"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/circle_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/app_name"
+            android:textColor="@color/icons"
+            android:textSize="56dp"
+            android:textStyle="bold" />
 </LinearLayout>

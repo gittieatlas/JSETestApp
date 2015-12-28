@@ -60,7 +60,7 @@
         <item>@string/d_schedule_test_become_member</item>
         <item>@string/d_call</item>
         <item>@string/d_cancel</item>
-        <item>@string/d_ok</item>
+        <item>@null</item>
         <item>@drawable/ic_clipboard_text_grey600_24dp</item>
     </array>
 

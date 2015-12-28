@@ -16,8 +16,8 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/default_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/default_margin">
+        android:paddingTop="@dimen/default_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <FrameLayout
             android:id="@+id/imageButtonWrapper"
@@ -61,18 +61,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/day"
                     android:textColor="@color/primary_text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/testTimeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
                     android:text="@string/time"
                     android:textColor="@color/secondary_text" />
 
@@ -84,6 +79,7 @@
                     android:layout_marginStart="6dp"
                     android:text="@string/date"
                     android:textColor="@color/secondary_text" />
+
             </LinearLayout>
 
 
@@ -113,18 +109,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/day"
                         android:textColor="@color/primary_text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/testDeadlineTimeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginStart="6dp"
                         android:text="@string/time"
                         android:textColor="@color/secondary_text" />
 

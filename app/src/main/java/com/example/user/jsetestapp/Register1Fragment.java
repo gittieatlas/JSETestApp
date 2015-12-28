@@ -2,18 +2,22 @@ package com.example.user.jsetestapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class Register1Fragment extends Fragment {
 
     // Declare Controls
     View rootView;
-    Button buttonLeft, buttonRight;
+    LinearLayout logoTitleLinearLayout;
+    CardView continueButton, formCardView;
+    Button signInButton;
     EditText emailEditText, passwordEditText, confirmPasswordEditText;
 
     // Declare Activities
@@ -56,8 +60,12 @@ public class Register1Fragment extends Fragment {
         confirmPasswordEditText = (EditText) rootView.findViewById(R.id.confirmPasswordEditText);
 
         // initialize and reference Buttons
-        buttonLeft = (Button) rootView.findViewById(R.id.signUpButton);
-        buttonRight = (Button) rootView.findViewById(R.id.signInButton);
+        continueButton = (CardView) rootView.findViewById(R.id.continueButton);
+        signInButton = (Button) rootView.findViewById(R.id.signInButton);
+
+        // initialize layouts
+        formCardView = (CardView) rootView.findViewById(R.id.formCardView);
+        logoTitleLinearLayout = (LinearLayout) rootView.findViewById(R.id.logoTitleLinearLayout);
     }
 
     /**
@@ -65,35 +73,33 @@ public class Register1Fragment extends Fragment {
      */
     private void registerListeners() {
         // set onClickListeners
-        buttonLeft.setOnClickListener(buttonLeftOnClickListener);
-        buttonRight.setOnClickListener(buttonRightOnClickListener);
+        continueButton.setOnClickListener(continueButtonOnClickListener);
+        signInButton.setOnClickListener(signInButtonOnClickListener);
 
         // set onTouchListener for all non ediText controls to hide the soft keyboard
         HelperMethods.registerTouchListenerForNonEditText(rootView.findViewById(R.id.rootLayout));
     }
 
     /**
-     * OnClickListener for signUpButton
+     * OnClickListener for continueButton
      */
-    OnClickListener buttonLeftOnClickListener = new OnClickListener() {
+    OnClickListener continueButtonOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            // this will be the "already have an account? Sign in" button
-
-            // undo the last back stack transaction
-            loginActivity.getFragmentManager().popBackStack();
+            // if form validates, go to create account step 2.
+            // otherwise a dialog will display with errors found
+            if (formValidates()) goToCreateAccountStep2();
         }
     };
 
     /**
      * OnClickListener for signInButton
      */
-    OnClickListener buttonRightOnClickListener = new OnClickListener() {
+    OnClickListener signInButtonOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            // if form validates, go to create account step 2.
-            // otherwise a dialog will display with errors found
-            if (formValidates()) goToCreateAccountStep2();
+            // undo the last back stack transaction
+            loginActivity.getFragmentManager().popBackStack();
         }
     };
 

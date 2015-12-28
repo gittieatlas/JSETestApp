@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     Toolbar toolbar;
     ScrollView scrollView;
     FrameLayout container;
-    CoordinatorLayout coordinatorLayout;
+    //CoordinatorLayout coordinatorLayout;
     LinearLayout toolbarLinearLayout;
     LinearLayout scrollViewLinearLayout;
 
@@ -191,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         container = (FrameLayout) findViewById(R.id.container);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        //coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         toolbarLinearLayout = (LinearLayout) findViewById(R.id.toolbarLinearLayout);
         scrollViewLinearLayout = (LinearLayout) findViewById(R.id.scrollViewLinearLayout);
     }

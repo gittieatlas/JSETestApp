@@ -235,8 +235,6 @@ public class Util extends Activity {
 
         // close this activity
         activity.finish();
-
-        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**

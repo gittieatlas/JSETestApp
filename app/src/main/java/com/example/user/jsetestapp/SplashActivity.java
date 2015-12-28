@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
+import timber.log.Timber;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -44,8 +46,7 @@ public class SplashActivity extends AppCompatActivity {
         // call the parent activities onCreate
         super.onCreate(savedInstanceState);
 
-        // Entry point to initialize Fabric and contained Kits
-        Fabric.with(this, new Crashlytics());
+        setUpCrashlyticsAndLogging();
 
         // attach xml to activity
         setContentView(R.layout.activity_splash);
@@ -97,6 +98,25 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     /**
+     * method to set up crashlytics and timber library for logging
+     */
+    private void setUpCrashlyticsAndLogging() {
+        // initialize Crashlytics - disable in DEBUG mode
+        CrashlyticsCore core = new CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build();
+        // Entry point to initialize Fabric with Crashlytics kit
+        Fabric.with(this, new Crashlytics.Builder().core(core).build());
+
+        // add a debugging tree if buildConfig is DEBUG
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+        // add a Crashlytics tree
+        Timber.plant(new CrashlyticsTree());
+    }
+
+    /**
      * Function to instantiate fragments
      */
     private void instantiateClasses() {
@@ -111,6 +131,7 @@ public class SplashActivity extends AppCompatActivity {
 
         /**
          * method to get json by making HTTP call
+         *
          * @param params - params to use for the task
          * @return Boolean - return true/false if task was successful.
          */
@@ -156,6 +177,7 @@ public class SplashActivity extends AppCompatActivity {
 
         /**
          * method to get json by making HTTP call
+         *
          * @param params - params to use for the task
          * @return Boolean - return true/false if task was successful.
          */
@@ -201,6 +223,7 @@ public class SplashActivity extends AppCompatActivity {
 
         /**
          * method to get json by making HTTP call
+         *
          * @param params - params to use for the task
          * @return Boolean - return true/false if task was successful.
          */
@@ -247,6 +270,7 @@ public class SplashActivity extends AppCompatActivity {
 
         /**
          * method to get json by making HTTP call
+         *
          * @param params - params to use for the task
          * @return Boolean - return true/false if task was successful.
          */
@@ -292,6 +316,7 @@ public class SplashActivity extends AppCompatActivity {
 
         /**
          * method to get json by making HTTP call
+         *
          * @param params - params to use for the task
          * @return Boolean - return true/false if task was successful.
          */
@@ -427,6 +452,7 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * Function to create an intent to launch LoginActivity
+     *
      * @param tag - string to describe intent intention
      * @return Intent
      */
@@ -442,6 +468,7 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * Function to create bundle for LoginActivity
+     *
      * @param outcome - string to describe intent intention
      * @return bundle
      */
@@ -475,7 +502,7 @@ public class SplashActivity extends AppCompatActivity {
                 // get location from JsonObject
                 JSONObject jsonLocation = locationsJsonArray.getJSONObject(i);
                 // convert JSONObject to location
-                Location location =  HelperMethods.setLocation(jsonLocation);
+                Location location = HelperMethods.setLocation(jsonLocation);
                 // add location to locationsArrayList if it is not null
                 if (location != null) locationsArrayList.add(location);
                 // if taskGetLocations is cancelled
@@ -506,7 +533,7 @@ public class SplashActivity extends AppCompatActivity {
                 // get test from JsonObject
                 JSONObject jsonTest = testsJsonArray.getJSONObject(i);
                 // convert JSONObject to test
-                Test test =  HelperMethods.setTest(jsonTest);
+                Test test = HelperMethods.setTest(jsonTest);
                 // add test to testsArrayList if it is not null
                 if (test != null) testsArrayList.add(test);
                 // if taskGetTests is cancelled
@@ -519,7 +546,6 @@ public class SplashActivity extends AppCompatActivity {
             // if Json string is empty print error in console
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -537,7 +563,7 @@ public class SplashActivity extends AppCompatActivity {
                 // get hours from JsonObject
                 JSONObject jsonHour = hoursJsonArray.getJSONObject(i);
                 // convert JSONObject to hour
-                Hour hour =  HelperMethods.setHours(jsonHour);
+                Hour hour = HelperMethods.setHours(jsonHour);
                 // add test to testsArrayList if it is not null
                 if (hour != null) hourArrayList.add(hour);
                 // if taskGetHours is cancelled
@@ -568,11 +594,11 @@ public class SplashActivity extends AppCompatActivity {
                 // get branch from JsonObject
                 JSONObject jsonBranch = branchesJsonArray.getJSONObject(i);
                 // convert JSONObject to branch
-                Branch branch =  HelperMethods.setBranch(jsonBranch);
+                Branch branch = HelperMethods.setBranch(jsonBranch);
                 // add branch to testsArrayList if it is not null
                 if (branch != null) branchesArrayList.add(branch);
                 // convert JSONObject to branch and add to branchesArrayList
-               // branchesArrayList.add(HelperMethods.setBranch(jsonBranch));
+                // branchesArrayList.add(HelperMethods.setBranch(jsonBranch));
                 // if taskGetBranches is cancelled
                 if (taskGetBranches.isCancelled()) {
                     // exit method
@@ -616,6 +642,7 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * Function to check which dialog the positive button is from
+     *
      * @param listenerTag - tag of dialog created
      */
     public void dialogFragmentPositiveClick(String listenerTag) {

@@ -61,6 +61,8 @@ android {
         compile 'com.android.support:recyclerview-v7:23.0.0'
 
         provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+
+        compile 'com.jakewharton.timber:timber:3.1.0'
     }
 }
 crashlytics {

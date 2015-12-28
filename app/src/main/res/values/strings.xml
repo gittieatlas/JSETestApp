@@ -103,9 +103,11 @@
     <string name="login_right">SIGN IN</string>
     <string name="login_sign_up_msg">Don\'t have an account?</string>
     <string name="login_sign_up">Sign Up</string>
+    <string name="register1_sign_in_msg">Already have an account?</string>
+    <string name="register1_sign_in">Sign In</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="register_1_right">CONTINUE</string>
-    <string name="register_1_left">BACK</string>
+    <string name="register1_continue">CONTINUE</string>
+    <string name="register_1_right">CREATE</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="dob">Birthday</string>
@@ -186,7 +188,7 @@
     <string name="toolbar_title_libraries_search">Search Libraries</string>
     <string name="toolbar_title_libraries">Libraries</string>
     <string name="toolbar_title_login">Welcome to JSE</string>
-    <string name="toolbar_title_register1">Create an Account - Step 1</string>
+    <string name="toolbar_title_register1">Create Account</string>
     <string name="toolbar_title_register2">Create an Account - Step 2</string>
     <string name="toolbar_title_search">Search for a Test</string>
     <string name="toolbar_title_results">Tests</string>
@@ -273,6 +275,6 @@
     <string name="calendar_icon">Calendar Icon</string>
 
 
-
+<string name="monthDayYear">MMM dd yyyy</string>
 
 </resources>

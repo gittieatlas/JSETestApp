@@ -297,7 +297,7 @@ public class HelperMethods extends Activity {
         String testTime =
                 test.getTime().toString("hh:mm a");
         String testDate =
-                test.getDate().toString("MMMM dd yyyy");
+                test.getDate().toString(Util.getStringValue(R.string.monthDayYear));
         String testDeadlineTitle =
                 "DEADLINE TO REGISTER";
         String testDeadlineDetails =
@@ -305,7 +305,7 @@ public class HelperMethods extends Activity {
         String testDeadlineTime =
                 test.getDeadlineTime().toString("hh:mm a");
         String testDeadlineDate =
-                Util.firstLetterCaps(test.getDeadlineDate().toString("MMMM dd yyyy"));
+                Util.firstLetterCaps(test.getDeadlineDate().toString("MMM dd yyyy"));
 
 
 

@@ -22,6 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class LoginFragment extends Fragment {
 
     // Declare Controls
@@ -242,7 +244,8 @@ public class LoginFragment extends Fragment {
             // if json is not equal to null
             if (userJsonObject != null) {
                 getLoginResult(userJsonObject);
-                return getUserFromDataBase(userJsonObject);
+      return getUserFromDataBase(userJsonObject);
+
             } else {
                 Log.e("Get User", "Couldn't get any login users");
             }
