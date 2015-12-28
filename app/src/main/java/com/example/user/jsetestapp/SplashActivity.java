@@ -421,6 +421,7 @@ public class SplashActivity extends AppCompatActivity {
         if (gotLocations && gotTests && gotHours && gotBranches && gotAlerts) {
             // launch activity with login activity intent
             Util.launchActivity(getLaunchLoginActivityIntent("login"));
+            
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.user.jsetestapp;
 import android.app.Fragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ public class LibrariesFragment extends Fragment {
 
     // Declare Controls
     TextView locationTextView, locationAddressTextView, locationPhoneNumberTextView;
+    FloatingActionButton fab;
 
     // Declare Activities
     MainActivity mainActivity;
@@ -35,6 +37,7 @@ public class LibrariesFragment extends Fragment {
 
         initializeViews(rootView);
         registerListeners();
+        setupFab();
         loadLibraryInformation();
         setUpHoursListView();
 
@@ -79,7 +82,30 @@ public class LibrariesFragment extends Fragment {
 
         // initialize and reference ListView
         lvDetail = (ListView) rootView.findViewById(R.id.libraryHoursListView);
+
+        // initialize and reference FloatingActionButton
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
     }
+
+    /**
+     * Function to set up Fab
+     */
+    private void setupFab() {
+        // set onClickListener
+        fab.setOnClickListener(fabListener);
+    }
+
+    /**
+     * OnClickListener for fab
+     */
+    OnClickListener fabListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            // find available tests at selected location
+            mainActivity.helperMethods.findTests(mainActivity.searchedLibrary);
+        }
+    };
 
     /**
      * Function to register listeners

@@ -20,6 +20,7 @@ public class LibrariesSearchFragment extends Fragment {
     // Declare Activities
     MainActivity mainActivity;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -104,9 +105,27 @@ public class LibrariesSearchFragment extends Fragment {
         // create array list from locationsNameArrayList
         ArrayList<String> arrayList = mainActivity.locationsNameArrayList;
         // remove value of the first location "Location"
-        arrayList.remove(0);
+        for (String s: arrayList){
+            if (s.equals("Location"))
+                arrayList.remove(0);
+            break;
+        }
+
         return arrayList;
     }
+
+//    /**
+//     * Function to set remove first value of locationsNameArrayList
+//     */
+//    public void editLocationsNameArrayList() {
+//        for (String s: arrayList){
+//            if (s.equals("Location")){
+//                // remove value of the first location "Location"
+//                arrayList.remove(0);
+//                break;
+//            }
+//        }
+//    }
 
     /**
      * Function to register listeners
