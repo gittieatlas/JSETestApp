@@ -155,7 +155,7 @@ public class ResultsFragment extends Fragment
     public void onImageItemClick(View view, int position) {
         // assign selected test to new test
         Test test = mainActivity.testsArrayList.get(position);
-        // open ic_calendar_green_24dp and populate it with test information
+        // open calendar and populate it with test information
         Util.calendarIntent("JSE Test at " + test.getLocation(), getTestAddress(test),
                 null, test.getDate(), test.getTime());
     }

@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
@@ -137,7 +138,7 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-            addLocationToLocationsArrayList();
+            if (!isCancelled()) addLocationToLocationsArrayList();
 
             // return true/false if locationsArrayList is empty or if task is canceled
             return !(locationsArrayList.size() == 0 || isCancelled());
@@ -183,7 +184,7 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-            addTestToTestsArrayList();
+            if (!isCancelled()) addTestToTestsArrayList();
 
             // return true/false if testsArrayList is empty or if task is canceled
             return !(testsArrayList.size() == 0 || isCancelled());
@@ -229,7 +230,7 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-            addHoursToHoursArrayList();
+            if (!isCancelled()) addHoursToHoursArrayList();
 
             // return true/false if hourArrayList is empty or if task is canceled
             return !(hourArrayList.size() == 0 || isCancelled());
@@ -276,7 +277,7 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-            addBranchesToBranchesArrayList();
+            if (!isCancelled())  addBranchesToBranchesArrayList();
 
             // return true/false if branchesArrayList is empty or if task is canceled
             return !(branchesArrayList.size() == 0 || isCancelled());
@@ -322,7 +323,7 @@ public class SplashActivity extends AppCompatActivity {
          */
         @Override
         protected Boolean doInBackground(Void... params) {
-            addAlertsToAlertsArrayList();
+            if (!isCancelled()) addAlertsToAlertsArrayList();
 
             // return true/false if alertArrayList is empty or if task is canceled
             return !(alertArrayList.size() == 0 || isCancelled());
@@ -446,6 +447,8 @@ public class SplashActivity extends AppCompatActivity {
         if (gotLocations && gotTests && gotHours && gotBranches && gotAlerts) {
             // launch activity with login activity intent
             Util.launchActivity(getLaunchLoginActivityIntent("login"));
+
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             
         }
     }
@@ -491,11 +494,16 @@ public class SplashActivity extends AppCompatActivity {
      * Function to add locations from locationJsonArray to locationsArrayList
      */
     public void addLocationToLocationsArrayList() {
+        JSONArray locationsJsonArray = new JSONArray();
         // get JsonArray of locations from Json string
-        JSONArray locationsJsonArray = HelperMethods.getJsonArray(
-                Util.getActivity().getString(R.string.locations_url),
-                Util.getActivity().getString(R.string.TAG_LOCATIONS),
-                new ArrayList<NameValuePair>());
+        try {
+            locationsJsonArray = HelperMethods.getJsonArray(
+                    Util.getActivity().getString(R.string.locations_url),
+                    Util.getActivity().getString(R.string.TAG_LOCATIONS),
+                    new ArrayList<NameValuePair>());
+        } catch (Exception ex){
+            return;
+        }
         try {
             // try to loop through locationsJsonArray
             for (int i = 0; i < locationsJsonArray.length(); i++) {
@@ -522,10 +530,16 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void addTestToTestsArrayList() {
         // get JsonArray of tests from Json string
-        JSONArray testsJsonArray = HelperMethods.getJsonArray(
+        JSONArray testsJsonArray = new JSONArray();
+
+        try {
+        testsJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.tests_url),
                 Util.getActivity().getString(R.string.TAG_TESTS),
                 new ArrayList<NameValuePair>());
+        } catch (Exception ex){
+            return;
+        }
 
         try {
             // try to loop through testsJsonArray
@@ -553,10 +567,16 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void addHoursToHoursArrayList() {
         // get JsonArray of hours from Json string
-        JSONArray hoursJsonArray = HelperMethods.getJsonArray(
+        JSONArray hoursJsonArray = new JSONArray();
+        try {
+        hoursJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.hours_url),
                 Util.getActivity().getString(R.string.TAG_HOURS),
                 new ArrayList<NameValuePair>());
+        } catch (Exception ex){
+            return;
+        }
+
         try {
             // try to looping through hoursJsonArray
             for (int i = 0; i < hoursJsonArray.length(); i++) {
@@ -583,10 +603,16 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void addBranchesToBranchesArrayList() {
         // get JsonArray of branches from Json string
-        JSONArray branchesJsonArray = HelperMethods.getJsonArray(
+        JSONArray branchesJsonArray = new JSONArray();
+
+        try {
+        branchesJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.branches_url),
                 Util.getActivity().getString(R.string.TAG_BRANCHES),
                 new ArrayList<NameValuePair>());
+        } catch (Exception ex){
+            return;
+        }
 
         try {
             // try to loop through branchesJsonArray
@@ -616,10 +642,16 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void addAlertsToAlertsArrayList() {
         // get JsonArray of alerts from Json string
-        JSONArray alertsJsonArray = HelperMethods.getJsonArray(
+        JSONArray alertsJsonArray = new JSONArray();
+
+        try {
+        alertsJsonArray = HelperMethods.getJsonArray(
                 Util.getActivity().getString(R.string.alerts_url),
                 Util.getActivity().getString(R.string.TAG_ALERTS),
                 new ArrayList<NameValuePair>());
+        } catch (Exception ex){
+            return;
+        }
 
         try {
             // try to loop through alertsJsonArray

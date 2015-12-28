@@ -1005,7 +1005,7 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to set event time and date of for a ic_calendar_green_24dp event
+     * Function to set event time and date of for a calendar event
      */
     public void setReminderToCallJse() {
         // get current day of week
@@ -1039,7 +1039,7 @@ public class HelperMethods extends Activity {
     }
 
     /**
-     * Function to create ic_calendar_green_24dp event that will remind user to call JSE
+     * Function to create calendar event that will remind user to call JSE
      *
      * @param timeOfEvent -
      * @param dateOfEvent -
@@ -1048,7 +1048,7 @@ public class HelperMethods extends Activity {
         // create DateTimeFormatter for time of reminder
         DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm a");
 
-        // set ic_calendar_green_24dp intent to call JSE during office hours
+        // set calendar intent to call JSE during office hours
         Util.calendarIntent("Call JSE", null, null, dateOfEvent, fmt.parseLocalTime(timeOfEvent));
     }
 

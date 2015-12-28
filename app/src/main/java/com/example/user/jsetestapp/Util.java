@@ -344,7 +344,7 @@ public class Util extends Activity {
         }
         // If testDat is not null and testTime is not null
         if (testDate!=null && testTime!=null){
-            // startTime equals to a ic_calendar_green_24dp object whose fields are set to current date and time:
+            // startTime equals to a calendar object whose fields are set to current date and time:
             Calendar startTime = Calendar.getInstance();
             // Set date and time of startTime
             startTime.set(testDate.getYear(), testDate.getMonthOfYear() - 1,
@@ -361,8 +361,8 @@ public class Util extends Activity {
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             activity.startActivity(intent);
         } else {
-            // Show message: "No ic_calendar_green_24dp clients installed."
-            Toast.makeText(context, "No ic_calendar_green_24dp clients installed.",
+            // Show message: "No calendar clients installed."
+            Toast.makeText(context, "No calendar clients installed.",
                     Toast.LENGTH_SHORT).show();
         }
     }
