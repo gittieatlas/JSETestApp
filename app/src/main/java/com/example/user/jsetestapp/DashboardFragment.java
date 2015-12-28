@@ -155,7 +155,7 @@ public class DashboardFragment extends Fragment {
     public void setAlertInformation(Alert alert){
         alertsMessageTextView.setText(alert.alertText);
         alertsDayTextView.setText(Util.firstLetterCaps(alert.getDayOfWeek().toString()));
-        alertsDateTextView.setText(alert.getDate().toString("MMMM dd yyyy"));
+        alertsDateTextView.setText(alert.getDate().toString("MMM dd yy"));
         alertsTimeTextView.setText(alert.getTime().toString("hh:mm a"));
     }
 
